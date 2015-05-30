@@ -1,0 +1,17 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+
+    name:
+        label: bedard.shop::lang.common.name
+
+    slug:
+        label: bedard.shop::lang.common.slug
+
+    product_count:
+        label: Total Products
+        type: partial
+        path: $/bedard/shop/models/category/_product_count.htm
+        sortable: false

@@ -1,0 +1,16 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+
+    name:
+        label: bedard.shop::lang.common.name
+
+    price:
+        label: bedard.shop::lang.products.price
+
+    status:
+        label: bedard.shop::lang.products.status
+        type: partial
+        path: $/bedard/shop/models/product/_status.htm

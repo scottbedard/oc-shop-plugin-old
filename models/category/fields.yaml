@@ -1,0 +1,35 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+
+    name:
+        label: bedard.shop::lang.common.name
+        span: left
+
+    slug:
+        label: bedard.shop::lang.common.slug
+        span: right
+        preset:
+            field: name
+            type: slug
+
+tabs:
+    fields:
+
+        parent:
+            tab: bedard.shop::lang.categories.relationships
+            label: bedard.shop::lang.categories.parent_category
+            type: dropdown
+            span: left
+
+        is_inheriting:
+            tab: bedard.shop::lang.categories.relationships
+            label: bedard.shop::lang.categories.inherit_children
+            type: radio
+            options:
+                1: bedard.shop::lang.categories.inherit_children_on
+                0: bedard.shop::lang.categories.inherit_children_off
+            default: 1
+            span: right

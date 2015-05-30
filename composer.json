@@ -1,0 +1,24 @@
+{
+    "name": "bedard/shop",
+    "description": "A basic ecommerce platform for OctoberCMS.",
+    "homepage": "http://scottbedard.net/",
+    "keywords": ["octobercms", "ecommerce", "shop"],
+    "authors": [
+        {
+            "name": "Scott Bedard",
+            "email": "scottbedard90@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Bedard\\Shop\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.7.*@dev",
+        "keios/oc-plugin-testsuite": "dev-master"
+    },
+    "require": {
+        "php": ">=5.4.0"
+    }
+}

@@ -1,0 +1,13 @@
+.bedard-shop.list .list-icon {
+  display: inline-block;
+  font-size: 16px;
+  margin-right: 3px;
+  text-align: center;
+  width: 22px;
+}
+.bedard-shop.list .list-icon.green {
+  color: #8da85e;
+}
+.bedard-shop.list .list-icon.red {
+  color: #cc3300;
+}

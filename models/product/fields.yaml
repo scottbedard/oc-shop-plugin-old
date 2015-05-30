@@ -1,0 +1,64 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    name:
+        label: bedard.shop::lang.common.name
+        span: left
+        placeholder: bedard.shop::lang.products.name_placeholder
+
+    slug:
+        label: bedard.shop::lang.common.slug
+        span: right
+        placeholder: bedard.shop::lang.products.slug_placeholder
+        preset:
+            field: name
+            type: slug
+
+    toolbar:
+        type: partial
+        path: product_toolbar
+        cssClass: collapse-visible
+
+secondaryTabs:
+    stretch: true
+    fields:
+
+        inventories@update:
+            tab: bedard.shop::lang.products.options_inventories
+            type: options-inventories
+
+        description:
+            tab: bedard.shop::lang.products.details_tab
+            label: bedard.shop::lang.products.description
+            comment: bedard.shop::lang.products.markdown_allowed
+            type: codeeditor
+            stretch: true
+            size: huge
+            cssClass: field-slim
+            type: codeeditor
+            language: markdown
+            showGutter: false
+            wrapWords: true
+            fontSize: 13
+            margin: 15
+            span: left
+
+        base_price:
+            tab: bedard.shop::lang.products.details_tab
+            label: bedard.shop::lang.products.price
+            placeholder: '0.00'
+            span: right
+
+        is_active:
+            tab: bedard.shop::lang.products.details_tab
+            label: bedard.shop::lang.products.is_active
+            type: switch
+            default: true
+            span: right
+
+        categories:
+            tab: bedard.shop::lang.categories.controller
+            label: bedard.shop::lang.categories.controller
+            type: checkboxlist

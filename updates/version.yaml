@@ -1,0 +1,10 @@
+1.0.1:
+    - First version of Bedard.Shop
+    - create_categories_table.php
+    - create_products_table.php
+    - create_category_product_tables.php
+    - create_options_table.php
+    - create_values_table.php
+    - create_inventories_table.php
+    - create_inventory_value_table.php
+    - dev_seeds.php
