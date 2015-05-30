@@ -3,10 +3,17 @@
 return [
 
     //
+    // General
+    //
+    'general' => [
+        'plugin'                => 'Shop',
+        'description'           => 'A feature rich ecommerce platform.',
+    ],
+
+    //
     // Permissions
     //
     'permissions' => [
-        'tab'                   => 'Shop',
         'access_categories'     => 'Manage categories',
         'access_products'       => 'Manage products and inventories',
     ],

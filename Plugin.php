@@ -18,8 +18,8 @@ class Plugin extends PluginBase
     public function pluginDetails()
     {
         return [
-            'name'        => 'Shop',
-            'description' => 'A feature rich ecommerce platform.',
+            'name'        => 'bedard.shop::lang.general.plugin',
+            'description' => 'bedard.shop::lang.general.description',
             'author'      => 'Scott Bedard',
             'icon'        => 'icon-shopping-cart'
         ];
@@ -42,13 +42,13 @@ class Plugin extends PluginBase
 
                 'sideMenu' => [
                     'categories' => [
-                        'label'         => Lang::get('bedard.shop::lang.categories.controller'),
+                        'label'         => 'bedard.shop::lang.categories.controller',
                         'icon'          => 'icon-folder-o',
                         'url'           => Backend::url('bedard/shop/categories'),
                         'permissions'   => ['bedard.shop.access_categories'],
                     ],
                     'products' => [
-                        'label'         => Lang::get('bedard.shop::lang.products.controller'),
+                        'label'         => 'bedard.shop::lang.products.controller',
                         'icon'          => 'icon-cubes',
                         'url'           => Backend::url('bedard/shop/products'),
                         'permissions'   => ['bedard.shop.access_products'],
@@ -65,16 +65,14 @@ class Plugin extends PluginBase
      */
     public function registerPermissions()
     {
-        $shop = Lang::get('bedard.shop::lang.permissions.tab');
-
         return [
             'bedard.shop.access_categories' => [
-                'tab'   => $shop,
-                'label' => Lang::get('bedard.shop::lang.permissions.access_categories'),
+                'tab'   => 'bedard.shop::lang.general.plugin',
+                'label' => 'bedard.shop::lang.permissions.access_categories',
             ],
             'bedard.shop.access_products' => [
-                'tab'   => $shop,
-                'label' => Lang::get('bedard.shop::lang.permissions.access_products'),
+                'tab'   => 'bedard.shop::lang.general.plugin',
+                'label' => 'bedard.shop::lang.permissions.access_products',
             ],
         ];
     }
