@@ -26,6 +26,10 @@ showSetup: true
 # Displays the sorting link on each column
 showSorting: true
 
+# Display the list as a nested tree, expanded by default
+showTree: true
+treeExpanded: true
+
 # Default sorting column
 defaultSort:
     column: position
