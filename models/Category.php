@@ -51,15 +51,15 @@ class Category extends Model
         ],
     ];
     public $belongsToMany = [
+        'inheriting' => [
+            'Bedard\Shop\Models\Category',
+            'table'     => 'bedard_shop_category_inheritance',
+            'key'       => 'parent_id',
+            'otherKey'  => 'inherited_id',
+        ],
         'products' => [
             'Bedard\Shop\Models\Product',
-            'table' => 'bedard_shop_category_product',
-        ],
-    ];
-    public $hasMany = [
-        'children' => [
-            'Bedard\Shop\Models\Category',
-            'key' => 'parent_id',
+            'table'     => 'bedard_shop_category_product',
         ],
     ];
 
@@ -70,6 +70,11 @@ class Category extends Model
         'name'  => 'required',
         'slug'  => 'required|between:3,64|unique:bedard_shop_categories',
     ];
+
+    /**
+     * @var boolean     Determines if categories should be synchronized after delete
+     */
+    public $syncAfterDelete = true;
 
     /**
      * Model Events
@@ -85,6 +90,17 @@ class Category extends Model
         }
     }
 
+    public function afterCreate()
+    {
+        self::clearTreeCache();
+        $this->syncParents();
+    }
+
+    public function afterUpdate()
+    {
+        self::syncAllCategories();
+    }
+
     public function afterDelete()
     {
         // Remove the parent_id of child categories after delete
@@ -96,6 +112,8 @@ class Category extends Model
         DB::table($this->belongsToMany['products']['table'])
             ->where('category_id', $this->attributes['id'])
             ->delete();
+
+        if ($this->syncAfterDelete) self::syncAllCategories();
     }
 
     /**
@@ -138,5 +156,28 @@ class Category extends Model
         }
 
         return $options;
+    }
+
+    /**
+     * Synchronize a category with parent categories inheriting it
+     */
+    public function syncParents()
+    {
+        foreach (array_reverse($this->getParents()) as $parent) {
+            if (!$parent->is_inheriting) break;
+            $parent->inheriting()->add($this);
+        }
+    }
+
+    /**
+     * Synchronizes all categories with the parent categories inheriting them
+     */
+    public static function syncAllCategories()
+    {
+        self::clearTreeCache();
+        DB::table(self::make()->belongsToMany['inheriting']['table'])->truncate();
+        foreach (self::all() as $category) {
+            $category->syncParents();
+        }
     }
 }

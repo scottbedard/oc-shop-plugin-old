@@ -1,7 +1,6 @@
 <?php namespace Bedard\Shop\Tests\Functional\Models;
 
 use Bedard\Shop\Models\Category;
-use Bedard\Shop\Models\Product;
 use Bedard\Shop\Tests\Fixtures\Generate;
 use DB;
 
@@ -81,5 +80,31 @@ class CategoryModelTest extends \OctoberPluginTestCase
                 ->where('category_id', $category->id)
                 ->first()
         );
+    }
+
+    public function test_category_inheritance()
+    {
+        $parent     = Generate::category('Parent', ['is_inheriting' => true]);
+        $child      = Generate::category('Child', ['parent_id' => $parent->id, 'is_inheriting' => true]);
+        $grandchild = Generate::category('Grandchild', ['parent_id' => $child->id, 'is_inheriting' => true]);
+        $unrelated  = Generate::category('Unrelated');
+
+        // Parent should be inheriting Child and Grandchild
+        $parent->load('inheriting');
+        $this->assertTrue((bool) $parent->inheriting->find($child->id));
+        $this->assertTrue((bool) $parent->inheriting->find($grandchild->id));
+        $this->assertFalse((bool) $parent->inheriting->find($unrelated->id));
+
+        // Change Child's inheritance, and Parent should no longer have Grandchild
+        $child->is_inheriting = false;
+        $child->save();
+        $parent->load('inheriting');
+        $this->assertTrue((bool) $parent->inheriting->find($child->id));
+        $this->assertFalse((bool) $parent->inheriting->find($grandchild->id));
+
+        // If we delete child, Parent should no longer be inheriting anything
+        $child->delete();
+        $parent->load('inheriting');
+        $this->assertEquals($parent->inheriting->count(), 0);
     }
 }

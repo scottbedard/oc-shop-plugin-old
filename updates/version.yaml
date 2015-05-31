@@ -1,8 +1,9 @@
 1.0.1:
     - First version of Bedard.Shop
     - create_categories_table.php
+    - create_category_inheritance_table.php
     - create_products_table.php
-    - create_category_product_tables.php
+    - create_category_product_table.php
     - create_options_table.php
     - create_values_table.php
     - create_inventories_table.php

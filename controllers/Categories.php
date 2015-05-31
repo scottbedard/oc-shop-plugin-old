@@ -63,6 +63,7 @@ class Categories extends Controller
                 ]);
         }
 
+        Category::syncAllCategories();
         return $this->listRefresh();
     }
 
@@ -74,9 +75,11 @@ class Categories extends Controller
         if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
             foreach ($checkedIds as $postId) {
                 if ($model = Category::find($postId)) {
+                    $model->syncAfterDelete = false;
                     $model->delete();
                 }
             }
+            Category::syncAllCategories();
             Flash::success(Lang::get('backend::lang.list.delete_selected_success'));
         }
         return $this->listRefresh();
