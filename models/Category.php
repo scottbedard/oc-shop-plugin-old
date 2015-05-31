@@ -92,13 +92,20 @@ class Category extends Model
 
     public function afterCreate()
     {
+        // Add the new category to it's parent's inherited categories
         self::clearTreeCache();
         $this->syncParents();
     }
 
     public function afterUpdate()
     {
-        self::syncAllCategories();
+        // If the nesting or inheritance has changed, synchronize all categories
+        $original = $this->getOriginal();
+        $parent_id = isset($original['parent_id']) ? $original['parent_id'] : null;
+        $is_inheriting = isset($original['is_inheriting']) ? $original['is_inheriting'] : true;
+        if ($parent_id != $this->parent_id || $is_inheriting != $this->is_inheriting) {
+            self::syncAllCategories();
+        }
     }
 
     public function afterDelete()
