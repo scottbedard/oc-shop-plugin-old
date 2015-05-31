@@ -15,6 +15,12 @@ class Category extends Model
     use \October\Rain\Database\Traits\SimpleTree,
         \October\Rain\Database\Traits\Validation;
 
+    function __construct()
+    {
+        parent::__construct();
+        $this->setTreeOrderBy('position', 'asc');
+    }
+
     /**
      * @var string The database table used by the model.
      */
@@ -47,11 +53,7 @@ class Category extends Model
     public $belongsToMany = [
         'products' => [
             'Bedard\Shop\Models\Product',
-            'table' => 'bedard_shop_cat_prod',
-        ],
-        'displayProducts' => [
-            'Bedard\Shop\Models\Product',
-            'table' => 'bedard_shop_cat_prod_display',
+            'table' => 'bedard_shop_category_product',
         ],
     ];
     public $hasMany = [
@@ -83,12 +85,6 @@ class Category extends Model
         }
     }
 
-    public function afterUpdate()
-    {
-        // Keep the display products synchronized
-        $this->syncBranchProducts();
-    }
-
     public function afterDelete()
     {
         // Remove the parent_id of child categories after delete
@@ -100,8 +96,6 @@ class Category extends Model
         DB::table($this->belongsToMany['products']['table'])
             ->where('category_id', $this->attributes['id'])
             ->delete();
-
-        $this->syncBranchProducts();
     }
 
     /**
@@ -144,27 +138,5 @@ class Category extends Model
         }
 
         return $options;
-    }
-
-    /**
-     * Synchronizes the display of all products on this category's branch
-     */
-    public function syncBranchProducts()
-    {
-        self::clearTreeCache();
-        $branch = $this->getAllChildren()->lists('id');
-        foreach ($this->getParentsAndSelf() as $parent) {
-            $branch[] = $parent->id;
-        }
-
-        $products = Product::whereHas('categories', function($query) use ($branch) {
-                $query->whereIn('id', $branch);
-            })
-            ->orWhereHas('displayCategories', function($query) use ($branch) {
-                $query->whereIn('id', $branch);
-            })
-            ->get();
-
-        Product::syncProducts($products);
     }
 }

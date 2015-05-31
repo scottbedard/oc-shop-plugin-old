@@ -3,9 +3,10 @@
 use BackendMenu;
 use Backend\Classes\Controller;
 use Bedard\Shop\Models\Category;
-use Bedard\Shop\Widgets\ReorderCategories;
+use DB;
 use Flash;
 use Lang;
+use Owl\Widgets\TreeSort\Widget as TreeSort;
 
 /**
  * Categories Back-end Controller
@@ -31,9 +32,11 @@ class Categories extends Controller
         $this->addCss('/plugins/bedard/shop/assets/css/form.css');
         $this->addCss('/plugins/bedard/shop/assets/css/list.css');
 
-        // Bind the reorder widget
-        $reorderCategories = new ReorderCategories($this);
-        $reorderCategories->bindToController();
+        // Bind the treesort widget
+        $treesort = new TreeSort($this);
+        $treesort->header = Lang::get('bedard.shop::lang.categories.reorder');
+        $treesort->empty = Lang::get('bedard.shop::lang.categories.reorder_empty');
+        $treesort->bindToController();
     }
 
     /**
@@ -43,8 +46,24 @@ class Categories extends Controller
      */
     public function index($userId = null)
     {
-        $this->widget->reorderCategories->injectAssets();
         $this->asExtension('ListController')->index();
+    }
+
+    /**
+     * Update the category tree
+     */
+    public function index_onUpdateTree()
+    {
+        foreach (input('treeData') as $i => $node) {
+            DB::table(Category::make()->table)
+                ->where('id', $node['id'])
+                ->update([
+                    'position'  => $i,
+                    'parent_id' => $node['parent_id'] ?: null
+                ]);
+        }
+
+        return $this->listRefresh();
     }
 
     /**

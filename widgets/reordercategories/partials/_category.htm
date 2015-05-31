@@ -1,8 +1,0 @@
-<li data-id="<?= $category->id ?>">
-    <?= $category->name ?>
-    <ol data-parent="<?= $category->id ?>">
-        <?php foreach ($category->getChildren() as $child): ?>
-            <?= $this->makePartial('category', ['category' => $child]) ?>
-        <?php endforeach ?>
-    </ol>
-</li>

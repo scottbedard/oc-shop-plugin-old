@@ -42,11 +42,7 @@ class Product extends Model
     public $belongsToMany = [
         'categories' => [
             'Bedard\Shop\Models\Category',
-            'table' => 'bedard_shop_cat_prod',
-        ],
-        'displayCategories' => [
-            'Bedard\Shop\Models\Category',
-            'table' => 'bedard_shop_cat_prod_display',
+            'table' => 'bedard_shop_category_product',
         ],
     ];
 
@@ -67,20 +63,11 @@ class Product extends Model
     /**
      * Model Events
      */
-    public function afterSave()
-    {
-        // Synchronize the product's display categories
-        $this->syncCategories();
-    }
 
     public function afterDelete()
     {
         // Keep pivot tables clean
         DB::table($this->belongsToMany['categories']['table'])
-            ->where('product_id', $this->attributes['id'])
-            ->delete();
-
-        DB::table($this->belongsToMany['displayCategories']['table'])
             ->where('product_id', $this->attributes['id'])
             ->delete();
     }
@@ -121,43 +108,5 @@ class Product extends Model
         // Cache the compiled markdown description
         $this->attributes['description'] = $value;
         $this->attributes['description_html'] = Markdown::parse(trim($value));
-    }
-
-    /**
-     * Synchronizes a product with the categories it should be displayed in.
-     * This takes into account category nesting, and product inheritance.
-     */
-    public function syncCategories()
-    {
-        $display = $this->categories->lists('id');
-
-        if ($display) {
-            Category::clearTreeCache();
-            foreach ($this->categories as $category) {
-                foreach (array_reverse($category->getParents()) as $parent) {
-                    if (!$parent->is_inheriting || $parent->filter !== null) break;
-                    $display[] = $parent->id;
-                }
-            }
-        }
-
-        $this->displayCategories()->sync($display);
-    }
-
-    /**
-     * Queues the synchronization of multiple product's category display
-     *
-     * @param   Illuminate\Database\Eloquent\Collection $products
-     * @return  void
-     */
-    public static function syncProducts($products)
-    {
-        foreach ($products as $product) {
-            $id = $product->id;
-            Queue::push(function($job) use ($id) {
-                $product = Product::with('categories')->find($id);
-                $product->syncCategories();
-            });
-        }
     }
 }

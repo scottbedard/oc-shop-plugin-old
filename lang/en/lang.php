@@ -51,7 +51,7 @@ return [
         'parent_empty'          => '<i>None</i>',
         'relationships'         => 'Relationships',
         'reorder'               => 'Re-order Categories',
-        'reorder_none'          => 'There are no categories to re-order.',
+        'reorder_empty'         => 'There are no categories to re-order.',
         'reorder_success'       => 'Categories have been successfully re-ordered!',
     ],
 

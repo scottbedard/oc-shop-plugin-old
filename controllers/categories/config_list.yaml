@@ -31,9 +31,9 @@ showTree: true
 treeExpanded: true
 
 # Default sorting column
-defaultSort:
-    column: position
-    direction: asc
+# defaultSort:
+#     column: position
+#     direction: asc
 
 # Display checkboxes next to each record
 showCheckboxes: true

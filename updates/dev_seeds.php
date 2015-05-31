@@ -1,7 +1,6 @@
 <?php namespace RainLab\Blog\Updates;
 
-use Bedard\Shop\Models\Category;
-use Bedard\Shop\Models\Product;
+use Bedard\Shop\Tests\Fixtures\Generate;
 use October\Rain\Database\Updates\Seeder;
 
 class DevSeeds extends Seeder
@@ -19,17 +18,17 @@ class DevSeeds extends Seeder
 
     public function seedCategories()
     {
-        $all        = Category::create(['name' => 'All', 'slug' => 'all', 'position' => 1, 'filter' => 'all']);
-        $clothing   = Category::create(['name' => 'Clothing', 'slug' => 'clothing', 'position' => 2]);
-        $summer     = Category::create(['name' => 'Summer', 'slug' => 'summer', 'parent_id' => $clothing->id, 'position' => 3]);
-        $sandals    = Category::create(['name' => 'Sandals', 'slug' => 'sandals', 'parent_id' => $summer->id, 'position' => 4]);
-        $shirts     = Category::create(['name' => 'Shirts', 'slug' => 'shirts', 'parent_id' => $summer->id, 'position' => 5]);
-        $tshirts    = Category::create(['name' => 'T-Shirts', 'slug' => 't-shirts', 'parent_id' => $shirts->id, 'position' => 6]);
-        $tanks      = Category::create(['name' => 'Tanks', 'slug' => 'tanks', 'parent_id' => $shirts->id, 'position' => 7]);
-        $shorts     = Category::create(['name' => 'Shorts', 'slug' => 'shorts', 'parent_id' => $summer->id, 'position' => 8]);
-        $winter     = Category::create(['name' => 'Winter', 'slug' => 'winter', 'parent_id' => $clothing->id, 'position' => 9]);
-        $hats       = Category::create(['name' => 'Wool Hats', 'slug' => 'wool-hats', 'parent_id' => $winter->id, 'position' => 10]);
-        $jackets    = Category::create(['name' => 'Jackets', 'slug' => 'jackets', 'parent_id' => $winter->id, 'position' => 11]);
+        $all        = Generate::category('All',         ['position' => 1, 'filter' => 'all']);
+        $clothing   = Generate::category('Clothing',    ['position' => 2]);
+        $summer     = Generate::category('Summer',      ['position' => 3, 'parent_id' => $clothing->id]);
+        $sandals    = Generate::category('Sandals',     ['position' => 4, 'parent_id' => $summer->id]);
+        $shirts     = Generate::category('Shirts',      ['position' => 5, 'parent_id' => $summer->id]);
+        $tshirts    = Generate::category('T-Shirts',    ['position' => 6, 'parent_id' => $shirts->id]);
+        $tanks      = Generate::category('Tanks',       ['position' => 7, 'parent_id' => $shirts->id]);
+        $shorts     = Generate::category('Shorts',      ['position' => 8, 'parent_id' => $summer->id]);
+        $winter     = Generate::category('Winter',      ['position' => 9, 'parent_id' => $clothing->id]);
+        $hats       = Generate::category('Hats',        ['position' => 10, 'parent_id' => $winter->id]);
+        $jackets    = Generate::category('Jackets',     ['position' => 11, 'parent_id' => $winter->id]);
     }
 
     public function seedProducts()
@@ -37,28 +36,14 @@ class DevSeeds extends Seeder
         $adjectives = ['awesome', 'crappy', 'average', 'red', 'blue', 'green', 'white'];
 
         foreach ($adjectives as $adjective) {
-            $shirt = Product::create([
-                'name'          => ucfirst($adjective).' shirt',
-                'slug'          => $adjective.'-shirt',
-                'base_price'    => rand(5, 15),
-            ]);
+            $shirt = Generate::product(ucfirst($adjective).' shirt', ['base_price' => rand(5, 15)]);
             $shirt->categories()->sync([rand(5, 7)]);
 
-            $hat = Product::create([
-                'name'          => ucfirst($adjective).' hat',
-                'slug'          => $adjective.'-hat',
-                'base_price'    => rand(5, 15),
-            ]);
+            $hat = Generate::product(ucfirst($adjective).' hat', ['base_price' => rand(5, 15)]);
             $hat->categories()->sync([10]);
 
-            $jacket = Product::create([
-                'name'          => ucfirst($adjective).' jacket',
-                'slug'          => $adjective.'-jacket',
-                'base_price'    => rand(5, 15),
-            ]);
+            $jacket = Generate::product(ucfirst($adjective).' jacket', ['base_price' => rand(5, 15)]);
             $hat->categories()->sync([11]);
         }
-
-        Product::syncProducts(Product::all());
     }
 }
