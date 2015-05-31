@@ -1,0 +1,108 @@
+#options-inventories {
+    //
+    // Add button
+    //
+    a.add-btn {
+        border: dotted 2px #ebebeb;
+        border-radius: 5px;
+        color: #bdc3c7;
+        font-size: 13px;
+        font-weight: 600;
+        display: block;
+        margin-top: 20px;
+        padding: 13px 15px;
+        text-transform: uppercase;
+        vertical-align: middle;
+
+        i {
+            margin-right: 10px;
+        }
+
+        &:hover {
+            text-decoration: none;
+            background-color: #58b6f7 !important;
+            color: #ffffff !important;
+            border: none;
+            padding: 15px 17px;
+        }
+    }
+
+    //
+    // Lists
+    //
+    ol {
+        font-size: 13px;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+
+        li {
+            color: #666;
+            height: 60px;
+
+            > div.table {
+                display: table;
+
+                > div {
+                    display: table-cell;
+                    height: 60px;
+                    vertical-align: middle;
+                }
+            }
+
+            .details {
+                .data {
+                    font-size: 12px;
+                }
+            }
+
+            .control {
+                font-size: 20px;
+                text-align: center;
+                width: 60px;
+
+                &.handle {
+                    cursor: move;
+                }
+
+                &.handle, &.delete {
+                    background-color: #2581B8;
+                    border-left: 1px solid #58B6F7;
+                    opacity: 0;
+                }
+            }
+
+            &:hover {
+                background-color: #58B6F7 !important;
+                color: #fefefe !important;
+                cursor: pointer;
+
+                .control {
+                    &.handle, &.delete {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.options-inventories-modal {
+    .modal-body {
+        padding-bottom: 20px;
+    }
+
+    .modal-footer {
+        .loading-indicator {
+            display: none;
+            padding: 0;
+
+            div, span {
+                float: right;
+                margin-left: 15px;
+                position: relative;
+            }
+        }
+    }
+}

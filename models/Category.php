@@ -51,7 +51,7 @@ class Category extends Model
         ],
     ];
     public $belongsToMany = [
-        'inheriting' => [
+        'inherited' => [
             'Bedard\Shop\Models\Category',
             'table'     => 'bedard_shop_category_inheritance',
             'key'       => 'parent_id',
@@ -172,7 +172,7 @@ class Category extends Model
     {
         foreach (array_reverse($this->getParents()) as $parent) {
             if (!$parent->is_inheriting) break;
-            $parent->inheriting()->add($this);
+            $parent->inherited()->add($this);
         }
     }
 
@@ -182,7 +182,7 @@ class Category extends Model
     public static function syncAllCategories()
     {
         self::clearTreeCache();
-        DB::table(self::make()->belongsToMany['inheriting']['table'])->truncate();
+        DB::table(self::make()->belongsToMany['inherited']['table'])->truncate();
         foreach (self::all() as $category) {
             $category->syncParents();
         }

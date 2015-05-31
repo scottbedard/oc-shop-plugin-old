@@ -1,6 +1,9 @@
 <?php namespace Bedard\Shop\FormWidgets;
 
 use Backend\Classes\FormWidgetBase;
+use Bedard\Shop\Models\Inventory;
+use Bedard\Shop\Models\Option;
+use Flash;
 
 /**
  * OptionsInventories Form Widget
@@ -16,13 +19,6 @@ class OptionsInventories extends FormWidgetBase
     /**
      * {@inheritDoc}
      */
-    public function init()
-    {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function render()
     {
         $this->prepareVars();
@@ -34,9 +30,7 @@ class OptionsInventories extends FormWidgetBase
      */
     public function prepareVars()
     {
-        $this->vars['name'] = $this->formField->getName();
-        $this->vars['value'] = $this->getLoadValue();
-        $this->vars['model'] = $this->model;
+        $this->vars['options'] = Option::where('product_id', $this->model->id)->get();
     }
 
     /**
@@ -49,11 +43,49 @@ class OptionsInventories extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * Display a form to create or update a product option
+     *
+     * @return  makePartial()
      */
-    public function getSaveValue($value)
+    public function onDisplayOption()
     {
-        return $value;
+        $form = $this->makeConfig('$/bedard/shop/models/option/fields.yaml');
+
+        if ($id = input('id')) {
+            $form->model = Option::findOrNew($id);
+            $header = 'update';
+        } else {
+            $form->model = new Option;
+            $header = 'create';
+        }
+
+        return $this->makePartial('form', [
+            'header'        => $header,
+            'handler'       => 'onProcessOption',
+            'model'         => $form->model,
+            'product_id'    => $this->model->id,
+            'form'          => $this->makeWidget('Backend\Widgets\Form', $form),
+        ]);
     }
 
+    /**
+     * Create or update a product option
+     *
+     * @return  array
+     */
+    public function onProcessOption()
+    {
+        $option = Option::findOrNew(intval(input('id')));
+        $option->name = input('name');
+        $option->product_id = input('product_id');
+        $option->placeholder = input('placeholder');
+        $option->save();
+
+        Flash::success('hooray, it worked');
+        $this->prepareVars();
+
+        return [
+            '#formOptions' => $this->makePartial('options')
+        ];
+    }
 }

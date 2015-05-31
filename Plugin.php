@@ -86,8 +86,8 @@ class Plugin extends PluginBase
     {
         return [
             'Bedard\Shop\FormWidgets\OptionsInventories' => [
-                'label' => 'Options And Inventories',
-                'code'  => 'options-inventories'
+                'label' => 'Options & Inventories',
+                'code'  => 'optionsinventories'
             ],
         ];
     }

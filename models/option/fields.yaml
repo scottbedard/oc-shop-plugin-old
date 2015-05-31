@@ -3,6 +3,9 @@
 # ===================================
 
 fields:
-    id:
-        label: ID
-        disabled: true
+
+    name:
+        label: Name
+
+    placeholder:
+        label: Placeholder

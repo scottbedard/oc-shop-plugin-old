@@ -1,17 +1,17 @@
-<?php if ($this->previewMode): ?>
+<div id="options-inventories">
 
-    <div class="form-control">
-        <?= $value ?>
+    <!-- Options subwidget -->
+    <div class="form-group widget-field span-left">
+        <label>Options</label>
+        <div id="formOptions">
+            <?= $this->makePartial('options', ['options' => $options]) ?>
+        </div>
     </div>
 
-<?php else: ?>
+    <!-- Inventory subwidget -->
+    <div class="form-group widget-field span-right">
+        <label>Inventories</label>
+        World
+    </div>
 
-    <input
-        type="text"
-        id="<?= $this->getId('input') ?>"
-        name="<?= $name ?>"
-        value="<?= $value ?>"
-        class="form-control"
-        autocomplete="off" />
-
-<?php endif ?>
+</div>

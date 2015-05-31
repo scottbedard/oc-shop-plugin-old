@@ -50,6 +50,17 @@ class Categories extends Controller
     }
 
     /**
+     * Extend the list query
+     *
+     * @param   Illuminate\Database\Query\Builder   $query
+     * @return  Illuminate\Database\Query\Builder
+     */
+    public function listExtendQuery($query)
+    {
+        $query->with('products', 'inherited.products');
+    }
+
+    /**
      * Update the category tree
      */
     public function index_onUpdateTree()

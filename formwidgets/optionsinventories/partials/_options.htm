@@ -1,0 +1,26 @@
+<div>
+    <ol class="list" data-model="Option">
+        <?php if ($options): ?>
+            <?php foreach ($options as $option): ?>
+                <li data-id="<?= $option->id ?>">
+                    <input type="hidden" name="optionPosition[]" value="<?= $option->id ?>" />
+
+                    <div class="table">
+                        <div class="control icon"><i class="icon-plus"></i></div>
+                        <div class="details">
+                            <div class="name"><?= $option->name ?></div>
+                            <div class="data">one, two, three</div>
+                        </div>
+                        <div class="control handle"><i class="icon-bars"></i></div>
+                        <div class="control delete"><i class="icon-trash"></i></div>
+                    </div>
+                </li>
+            <?php endforeach ?>
+        <?php endif ?>
+    </ol>
+
+    <a href="#" class="add-btn" data-control="add">
+        <i class="icon-plus"></i>
+        Create Option
+    </a>
+</div>

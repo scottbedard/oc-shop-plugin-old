@@ -1,5 +1,80 @@
-/*
- * This is a sample StyleSheet file used by {{ name }}
- *
- * You can delete this file if you want
- */
+#options-inventories a.add-btn {
+  border: dotted 2px #ebebeb;
+  border-radius: 5px;
+  color: #bdc3c7;
+  font-size: 13px;
+  font-weight: 600;
+  display: block;
+  margin-top: 20px;
+  padding: 13px 15px;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+#options-inventories a.add-btn i {
+  margin-right: 10px;
+}
+#options-inventories a.add-btn:hover {
+  text-decoration: none;
+  background-color: #58b6f7 !important;
+  color: #ffffff !important;
+  border: none;
+  padding: 15px 17px;
+}
+#options-inventories ol {
+  font-size: 13px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+#options-inventories ol li {
+  color: #666;
+  height: 60px;
+}
+#options-inventories ol li > div.table {
+  display: table;
+}
+#options-inventories ol li > div.table > div {
+  display: table-cell;
+  height: 60px;
+  vertical-align: middle;
+}
+#options-inventories ol li .details .data {
+  font-size: 12px;
+}
+#options-inventories ol li .control {
+  font-size: 20px;
+  text-align: center;
+  width: 60px;
+}
+#options-inventories ol li .control.handle {
+  cursor: move;
+}
+#options-inventories ol li .control.handle,
+#options-inventories ol li .control.delete {
+  background-color: #2581B8;
+  border-left: 1px solid #58B6F7;
+  opacity: 0;
+}
+#options-inventories ol li:hover {
+  background-color: #58B6F7 !important;
+  color: #fefefe !important;
+  cursor: pointer;
+}
+#options-inventories ol li:hover .control.handle,
+#options-inventories ol li:hover .control.delete {
+  opacity: 1;
+}
+.options-inventories-modal .modal-body {
+  padding-bottom: 20px;
+}
+.options-inventories-modal .modal-footer .loading-indicator {
+  display: none;
+  padding: 0;
+}
+.options-inventories-modal .modal-footer .loading-indicator div,
+.options-inventories-modal .modal-footer .loading-indicator span {
+  float: right;
+  margin-left: 15px;
+  position: relative;
+}

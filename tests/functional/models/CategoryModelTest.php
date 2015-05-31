@@ -90,21 +90,21 @@ class CategoryModelTest extends \OctoberPluginTestCase
         $unrelated  = Generate::category('Unrelated');
 
         // Parent should be inheriting Child and Grandchild
-        $parent->load('inheriting');
-        $this->assertTrue((bool) $parent->inheriting->find($child->id));
-        $this->assertTrue((bool) $parent->inheriting->find($grandchild->id));
-        $this->assertFalse((bool) $parent->inheriting->find($unrelated->id));
+        $parent->load('inherited');
+        $this->assertTrue((bool) $parent->inherited->find($child->id));
+        $this->assertTrue((bool) $parent->inherited->find($grandchild->id));
+        $this->assertFalse((bool) $parent->inherited->find($unrelated->id));
 
         // Change Child's inheritance, and Parent should no longer have Grandchild
         $child->is_inheriting = false;
         $child->save();
-        $parent->load('inheriting');
-        $this->assertTrue((bool) $parent->inheriting->find($child->id));
-        $this->assertFalse((bool) $parent->inheriting->find($grandchild->id));
+        $parent->load('inherited');
+        $this->assertTrue((bool) $parent->inherited->find($child->id));
+        $this->assertFalse((bool) $parent->inherited->find($grandchild->id));
 
         // If we delete child, Parent should no longer be inheriting anything
         $child->delete();
-        $parent->load('inheriting');
-        $this->assertEquals($parent->inheriting->count(), 0);
+        $parent->load('inherited');
+        $this->assertEquals($parent->inherited->count(), 0);
     }
 }
