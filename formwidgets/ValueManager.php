@@ -1,6 +1,7 @@
 <?php namespace Bedard\Shop\FormWidgets;
 
 use Backend\Classes\FormWidgetBase;
+use Bedard\Shop\Models\Value;
 
 /**
  * ValueManager Form Widget
@@ -16,13 +17,6 @@ class ValueManager extends FormWidgetBase
     /**
      * {@inheritDoc}
      */
-    public function init()
-    {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function render()
     {
         $this->prepareVars();
@@ -34,9 +28,8 @@ class ValueManager extends FormWidgetBase
      */
     public function prepareVars()
     {
-        $this->vars['name'] = $this->formField->getName();
-        $this->vars['value'] = $this->getLoadValue();
         $this->vars['model'] = $this->model;
+        $this->vars['newValue'] = new Value;
     }
 
     /**

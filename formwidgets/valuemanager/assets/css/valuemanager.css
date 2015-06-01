@@ -5,7 +5,11 @@
 }
 #valuemanager li {
   cursor: text;
+  margin-bottom: 10px;
   display: table;
+}
+#valuemanager li.sortable-placeholder {
+  height: 45px;
 }
 #valuemanager li.flash {
   border-color: #D35400 !important;

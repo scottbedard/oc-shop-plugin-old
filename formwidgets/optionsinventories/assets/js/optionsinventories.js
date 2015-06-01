@@ -74,7 +74,6 @@
                 success: function(data) {
                     this.success(data).done(function() {
                         $popup.trigger('close.oc.popup');
-                        $(document).trigger('render');
                     });
                 },
                 complete: function(data) {
@@ -96,10 +95,10 @@
         var self = this,
             model = $li.closest('ol').data('model'),
             handler = OptionsInventoriesAlias + '::onDelete' + model,
-            title   = lang['relation.delete_confirm'] || 'Are you sure?',
-            text    = lang[model + '.delete_text'] || false,
-            confirm = lang['form.confirm'] || 'Yes',
-            cancel  = lang['form.cancel'] || 'No';
+            title   = OptionsInventoriesLang['relation.delete_confirm'] || 'Are you sure?',
+            text    = OptionsInventoriesLang[model + '.delete_text'] || false,
+            confirm = OptionsInventoriesLang['form.confirm'] || 'Yes',
+            cancel  = OptionsInventoriesLang['form.cancel'] || 'No';
 
         $li.addClass('pre-delete');
         swal({

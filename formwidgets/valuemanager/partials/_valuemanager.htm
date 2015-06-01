@@ -1,8 +1,8 @@
 <div id="valuemanager">
     <ol>
-        <?= $this->makePartial('value', ['value' => 'One']) ?>
-        <?= $this->makePartial('value', ['value' => 'Two']) ?>
-        <?= $this->makePartial('value', ['value' => 'Three']) ?>
+        <?php foreach ($this->model->values as $value): ?>
+            <?= $this->makePartial('value', ['value' => $value]) ?>
+        <?php endforeach ?>
     </ol>
 
     <input
@@ -12,7 +12,7 @@
         data-control="add-value" />
 
     <script type="text/template" data-control="template">
-        <?= $this->makePartial('value', ['value' => '']) ?>
+        <?= $this->makePartial('value', ['value' => $newValue]) ?>
     </script>
 </div>
 

@@ -38,4 +38,11 @@ class Value extends Model
         ],
     ];
 
+    /**
+     * Model Events
+     */
+    public function afterDelete()
+    {
+        // todo: delete associated inventories
+    }
 }

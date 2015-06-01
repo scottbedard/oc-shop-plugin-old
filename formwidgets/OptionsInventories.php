@@ -3,6 +3,7 @@
 use Backend\Classes\FormWidgetBase;
 use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Option;
+use Bedard\Shop\Models\Value;
 use Lang;
 use Flash;
 
@@ -46,6 +47,7 @@ class OptionsInventories extends FormWidgetBase
             'form.cancel'               => Lang::get('backend::lang.form.cancel'),
             'form.confirm'              => Lang::get('backend::lang.form.confirm'),
             'Option.delete_text'        => Lang::get('bedard.shop::lang.options.delete_text'),
+            'value.delete_text'         => Lang::get('bedard.shop::lang.values.delete_text'),
         ]);
 
         // These variables will be used normally by partials
@@ -95,14 +97,39 @@ class OptionsInventories extends FormWidgetBase
      */
     public function onProcessOption()
     {
-        $option = Option::findOrNew(intval(input('id')));
+        $optionId = intval(input('id'));
+        $option = Option::findOrNew($optionId);
         $option->name = input('name');
         $option->product_id = input('product_id');
         $option->placeholder = input('placeholder');
 
-        $name = Lang::get('bedard.shop::lang.options.model');
+        $model = Lang::get('bedard.shop::lang.options.model');
         if ($option->save()) {
-            Flash::success(Lang::get('backend::lang.form.create_success', ['name' => $name]));
+            $ids = input('valueIds') ?: [];
+            $names = input('valueNames') ?: [];
+
+            // Create or update the values
+            foreach ($ids as $i => $id) {
+                $value = Value::findOrNew($id);
+                $value->option_id = $option->id;
+                $value->position = $i;
+                $value->name = $names[$i];
+                $value->save();
+            }
+
+            // Delete ones that aren't present in $ids
+            $option->load('values');
+            foreach ($option->values as $value) {
+                if (!in_array($value->id, $ids)) {
+                    $value->delete();
+                }
+            }
+
+            if ($optionId) {
+                Flash::success(Lang::get('backend::lang.form.create_success', ['name' => $model]));
+            } else {
+                Flash::success(Lang::get('backend::lang.form.update_success', ['name' => $model]));
+            }
         }
 
         return $this->renderPartials();
@@ -118,19 +145,14 @@ class OptionsInventories extends FormWidgetBase
             $success = $option->delete();
         }
 
-        $name = Lang::get('bedard.shop::lang.options.model');
+        $model = Lang::get('bedard.shop::lang.options.model');
         if ($success) {
-            Flash::success(Lang::get('backend::lang.form.delete_success', ['name' => $name]));
+            Flash::success(Lang::get('backend::lang.form.delete_success', ['name' => $model]));
         } else {
-            Flash::error(Lang::get('bedard.shop::lang.form.delete_failed_name', ['name' => $name]));
+            Flash::error(Lang::get('bedard.shop::lang.form.delete_failed_name', ['name' => $model]));
         }
 
         return $this->renderPartials();
-    }
-
-    public function onReorderOptions()
-    {
-        // echo 'hello';
     }
 
     /**

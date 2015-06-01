@@ -1,11 +1,24 @@
-<li class="form-control" data-value="<?= strtolower($value) ?>">
+<li class="form-control" data-name="<?= strtolower($value->name) ?>">
+
+    <input
+        type="hidden"
+        name="valueIds[]"
+        value="<?= isset($value->id) ? $value->id : 0 ?>">
+
     <span class="handle">
         <i class="icon-bars"></i>
     </span>
+
     <span class="input">
-        <input type="text" name="value[]" value="<?= $value ?>">
+        <input
+            type="text"
+            name="valueNames[]"
+            value="<?= $value->name ?>"
+            data-control="name">
     </span>
+
     <span class="delete">
         <i class="icon-trash-o"></i>
     </span>
+
 </li>
