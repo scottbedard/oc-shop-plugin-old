@@ -1,13 +1,11 @@
 +function ($) { "use strict";
 
     var OptionsInventories = function ($el) {
-        var self = this;
-
-        this.$el = $el;
+        var self = this,
+            $list = $el.find('ol');
 
         // Trigger the popup with a new item
         $('a[data-control="add"]').unbind().on('click', function() {
-            var $list = $(this).parent().find('ol').first();
             $list.append('<li></li>');
             var $li = $list.find('li').last();
 
@@ -19,7 +17,6 @@
             self.deleteItem($(this).closest('li'));
             return false;
         }).on('click', 'li', function() {
-            var $list = $(this).parent();
             self.triggerPopup($list, $(this), false);
             return false;
         });
@@ -140,11 +137,12 @@
         $('div#options-inventories').OptionsInventories();
         $('div#options-inventories ol[data-model="Option"]')
             .sortable()
-            .bind('sortupdate', function() {
-                $.request(OptionsInventoriesAlias + '::onReorderOptions', {
-
-                })
-            });;
+            .bind('sortstart', function(e, ui) {
+                $(this).addClass('sorting');
+            })
+            .bind('sortstop', function(e, ui) {
+                $(this).removeClass('sorting')
+            });
     });
 
 }(window.jQuery);

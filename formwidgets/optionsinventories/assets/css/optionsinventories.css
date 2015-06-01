@@ -52,17 +52,17 @@
 }
 #options-inventories ol li .control.handle,
 #options-inventories ol li .control.delete {
-  background-color: #2581B8;
-  border-left: 1px solid #58B6F7;
   opacity: 0;
 }
-#options-inventories ol li:hover {
+#options-inventories ol li:not(.sorting):hover {
   background-color: #58B6F7;
   color: #fefefe;
   cursor: pointer;
 }
-#options-inventories ol li:hover .control.handle,
-#options-inventories ol li:hover .control.delete {
+#options-inventories ol li:not(.sorting):hover .control.handle,
+#options-inventories ol li:not(.sorting):hover .control.delete {
+  background-color: #2581B8;
+  border-left: 1px solid #58B6F7;
   opacity: 1;
 }
 #options-inventories ol li.pre-delete {

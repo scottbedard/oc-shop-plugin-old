@@ -67,19 +67,19 @@
                 }
 
                 &.handle, &.delete {
-                    background-color: #2581B8;
-                    border-left: 1px solid #58B6F7;
                     opacity: 0;
                 }
             }
 
-            &:hover {
+            &:not(.sorting):hover {
                 background-color: #58B6F7;
                 color: #fefefe;
                 cursor: pointer;
 
                 .control {
                     &.handle, &.delete {
+                        background-color: #2581B8;
+                        border-left: 1px solid #58B6F7;
                         opacity: 1;
                     }
                 }
