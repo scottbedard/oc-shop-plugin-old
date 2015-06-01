@@ -51,6 +51,7 @@ class OptionsInventories extends FormWidgetBase
         ]);
 
         // These variables will be used normally by partials
+        $this->model->options->load('values');
         $this->vars['options']      = $this->model->options;
         $this->vars['option_name']  = Lang::get('bedard.shop::lang.options.model');
     }
@@ -97,15 +98,16 @@ class OptionsInventories extends FormWidgetBase
      */
     public function onProcessOption()
     {
-        $optionId = intval(input('id'));
+        $optionId = intval(input('model_id'));
+
         $option = Option::findOrNew($optionId);
         $option->name = input('name');
-        $option->product_id = input('product_id');
+        $option->product_id = intval(input('product_id'));
         $option->placeholder = input('placeholder');
 
         $model = Lang::get('bedard.shop::lang.options.model');
         if ($option->save()) {
-            $ids = input('valueIds') ?: [];
+            $ids = $savedIds = input('valueIds') ?: [];
             $names = input('valueNames') ?: [];
 
             // Create or update the values
@@ -115,12 +117,15 @@ class OptionsInventories extends FormWidgetBase
                 $value->position = $i;
                 $value->name = $names[$i];
                 $value->save();
+
+                $savedIds[] = $value->id;
             }
 
-            // Delete ones that aren't present in $ids
+
+            // Delete ones that weren't saved
             $option->load('values');
             foreach ($option->values as $value) {
-                if (!in_array($value->id, $ids)) {
+                if (!in_array($value->id, $savedIds)) {
                     $value->delete();
                 }
             }

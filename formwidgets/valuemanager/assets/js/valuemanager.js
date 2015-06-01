@@ -15,7 +15,9 @@
 
         $(document).on('render', function() {
             $list.unbind()
-                .sortable()
+                .sortable({
+                    handle: '.handle',
+                })
                 .on('click', '.delete', function() {
                     self.deleteValue($(this).closest('li'));
                 })

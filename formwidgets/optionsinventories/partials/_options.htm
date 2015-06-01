@@ -8,7 +8,7 @@
                         <div class="control icon"><i class="icon-plus"></i></div>
                         <div class="details">
                             <div class="name"><?= $option->name ?></div>
-                            <div class="data">one, two, three</div>
+                            <div class="data"><?= implode(', ', $option->values->lists('name')) ?></div>
                         </div>
                         <div class="control handle"><i class="icon-bars"></i></div>
                         <div class="control delete"><i class="icon-trash"></i></div>

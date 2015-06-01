@@ -29,6 +29,7 @@ class Option extends Model
     public $hasMany = [
         'values' => [
             'Bedard\Shop\Models\Value',
+            'order' => 'position asc',
         ],
     ];
     public $belongsTo = [
