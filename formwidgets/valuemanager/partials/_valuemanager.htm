@@ -9,7 +9,8 @@
         type="text"
         class="form-control"
         autocomplete="off"
-        data-control="add-value" />
+        data-control="add-value"
+        placeholder="<?= e(trans('bedard.shop::lang.values.placeholder')) ?>" />
 
     <script type="text/template" data-control="template">
         <?= $this->makePartial('value', ['value' => $newValue]) ?>

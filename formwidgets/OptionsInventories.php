@@ -5,6 +5,7 @@ use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Option;
 use Bedard\Shop\Models\Value;
 use Lang;
+use Flash;
 
 /**
  * OptionsInventories Form Widget

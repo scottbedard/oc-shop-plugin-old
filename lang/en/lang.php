@@ -93,5 +93,6 @@ return [
         'delete_text'           => 'Related inventories will be deleted upon saving.',
         'name_required'         => 'All option values must be named.',
         'name_unique'           => 'Option value names must be unique.',
+        'placeholder'           => 'Type value and press "enter" or "tab"',
     ],
 ];
