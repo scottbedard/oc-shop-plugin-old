@@ -21,7 +21,7 @@
                         data-request="onSave"
                         data-request-data="redirect:0"
                         data-hotkey="ctrl+s, cmd+s"
-                        data-load-indicator="<?= e(trans('backend::lang.form.saving_name', ['name' => 'Category'])) ?>"
+                        data-load-indicator="<?= e(trans('backend::lang.form.saving_name', ['name' => e(trans('bedard.shop::lang.categories.model'))])) ?>"
                         class="btn btn-primary">
                         <?= e(trans('backend::lang.form.save')) ?>
                     </button>
@@ -30,7 +30,7 @@
                         data-request="onSave"
                         data-request-data="close:1"
                         data-hotkey="ctrl+enter, cmd+enter"
-                        data-load-indicator="<?= e(trans('backend::lang.form.saving_name', ['name' => 'Category'])) ?>"
+                        data-load-indicator="<?= e(trans('backend::lang.form.saving_name', ['name' => e(trans('bedard.shop::lang.categories.model'))])) ?>"
                         class="btn btn-default">
                         <?= e(trans('backend::lang.form.save_and_close')) ?>
                     </button>
@@ -39,7 +39,7 @@
                         class="oc-icon-trash-o btn-icon danger pull-right"
                         data-request="onDelete"
                         data-load-indicator="<?= e(trans('backend::lang.form.deleting_name', ['name' => 'Category'])) ?>"
-                        data-request-confirm="<?= e(trans('bedard.shop::lang.form.delete_confirm_name', ['name' => 'category'])) ?>">
+                        data-request-confirm="<?= e(trans('bedard.shop::lang.form.delete_confirm_name', ['name' => e(trans('bedard.shop::lang.categories.model'))])) ?>">
                     </button>
                     <span class="btn-text">
                         <?= e(trans('backend::lang.form.or')) ?> <a href="<?= Backend::url('bedard/shop/categories') ?>"><?= e(trans('backend::lang.form.cancel')) ?></a>
@@ -55,7 +55,7 @@
     <p class="flash-message static error"><?= e($this->fatalError) ?></p>
     <p>
         <a href="<?= Backend::url('bedard/shop/categories') ?>" class="btn btn-default">
-            <?= e(trans('bedard.shop::lang.form.return_to_name_list', ['name' => 'category'])) ?>
+            <?= e(trans('bedard.shop::lang.form.return_to_name_list', ['name' => e(trans('bedard.shop::lang.categories.model'))])) ?>
         </a>
     </p>
 

@@ -5,11 +5,10 @@
             <?= Form::open([
                 'class' => 'layout',
                 'data-change-monitor' => 'true',
-                'data-window-close-confirm' => e(trans('rainlab.blog::lang.post.close_confirm')),
-                'id' => 'post-form'
+                'data-window-close-confirm' => e(trans('backend::lang.form.confirm_tab_close')),
+                'id' => 'product-form'
             ]) ?>
                 <?= $this->formRender() ?>
-
             <?= Form::close() ?>
         </div>
     </div>
@@ -23,7 +22,7 @@
         <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
         <p>
             <a href="<?= Backend::url('bedard/shop/products') ?>" class="btn btn-default">
-                <?= e(trans('rainlab.blog::lang.post.return_to_posts')) ?>
+                <?= e(trans('bedard.shop::lang.form.return_to_name_list', ['name' => e(trans('bedard.shop::lang.products.model'))])) ?>
             </a>
         </p>
     </div>

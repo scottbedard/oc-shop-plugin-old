@@ -9,7 +9,6 @@
                 'id' => 'product-form'
             ]) ?>
                 <?= $this->formRender() ?>
-
             <?= Form::close() ?>
         </div>
     </div>
@@ -22,7 +21,7 @@
         <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
         <p>
             <a href="<?= Backend::url('bedard/shop/products') ?>" class="btn btn-default">
-                <?= e(trans('bedard.shop::lang.form.return_to_name_list', ['name' => 'category'])) ?>
+                <?= e(trans('bedard.shop::lang.form.return_to_name_list', ['name' => e(trans('bedard.shop::lang.products.model'))])) ?>
             </a>
         </p>
     </div>
