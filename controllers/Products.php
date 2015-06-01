@@ -32,6 +32,21 @@ class Products extends Controller
     }
 
     /**
+     * Extend the form fields
+     */
+    public function formExtendFields($form)
+    {
+        if ($this->user->hasAccess('bedard.shop.access_inventories')) {
+            $form->addSecondaryTabFields([
+                'optionsinventories@update' => [
+                    'tab'   => 'bedard.shop::lang.products.options_inventories',
+                    'type'  => 'optionsinventories',
+                ],
+            ]);
+        }
+    }
+
+    /**
      * Delete selected rows
      */
     public function index_onDelete()

@@ -15,7 +15,8 @@ return [
     //
     'permissions' => [
         'access_categories'     => 'Manage categories',
-        'access_products'       => 'Manage products and inventories',
+        'access_products'       => 'Manage products',
+        'access_inventories'    => 'Manage product options and inventories',
     ],
 
     //
@@ -78,7 +79,7 @@ return [
     ],
 
     'options' => [
-        'delete_text'           => 'Related inventories will also be deleted.',
+        'delete_text'           => 'Related inventories will be deleted.',
         'model'                 => 'Option',
         'placeholder'           => 'Placeholder',
         'update_success'        => 'Successfully updated option!',
@@ -87,4 +88,7 @@ return [
         'widget_label'          => 'Options',
     ],
 
+    'values' => [
+        'delete_text'           => 'Related inventories will be deleted upon saving.',
+    ],
 ];

@@ -74,6 +74,10 @@ class Plugin extends PluginBase
                 'tab'   => 'bedard.shop::lang.general.plugin',
                 'label' => 'bedard.shop::lang.permissions.access_products',
             ],
+            'bedard.shop.access_inventories' => [
+                'tab'   => 'bedard.shop::lang.general.plugin',
+                'label' => 'bedard.shop::lang.permissions.access_inventories',
+            ],
         ];
     }
 

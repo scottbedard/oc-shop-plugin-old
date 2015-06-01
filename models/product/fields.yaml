@@ -25,10 +25,6 @@ secondaryTabs:
     stretch: true
     fields:
 
-        optionsinventories@update:
-            tab: bedard.shop::lang.products.options_inventories
-            type: optionsinventories
-
         description:
             tab: bedard.shop::lang.products.details_tab
             label: bedard.shop::lang.products.description
