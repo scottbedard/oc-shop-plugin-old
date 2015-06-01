@@ -1,6 +1,7 @@
 <?php namespace Bedard\Shop\Tests\Fixtures;
 
 use Bedard\Shop\Models\Category;
+use Bedard\Shop\Models\Option;
 use Bedard\Shop\Models\Product;
 
 class Generate {
@@ -25,6 +26,26 @@ class Generate {
         $category->save();
 
         return $category;
+    }
+
+    /**
+     * Generates an option for use in tests
+     *
+     * @param   string      $name
+     * @param   array       $data
+     * @return  Option
+     */
+    public static function option($name, $data = [])
+    {
+        $option = new Option;
+        $option->name = $name;
+
+        foreach ($data as $key => $value) {
+            $option->$key = $value;
+        }
+
+        $option->save();
+        return $option;
     }
 
     /**

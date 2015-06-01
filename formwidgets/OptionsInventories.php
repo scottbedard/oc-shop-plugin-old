@@ -5,8 +5,6 @@ use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Option;
 use Bedard\Shop\Models\Value;
 use Lang;
-use Flash;
-use October\Rain\Exception\ValidationException;
 
 /**
  * OptionsInventories Form Widget
@@ -107,7 +105,7 @@ class OptionsInventories extends FormWidgetBase
 
         $ids = $savedIds = input('valueIds') ?: [];
         $values = input('valueNames') ?: [];
-        $this->validateOptionValues($option, $values);
+        $option->validateValues($values);
 
         if ($option->save()) {
             $option->load('values');
@@ -156,35 +154,6 @@ class OptionsInventories extends FormWidgetBase
         }
 
         return $this->renderPartials();
-    }
-
-    /**
-     * Validate the Option and Values
-     *
-     * @param   Option  $option
-     * @param   array   $values
-     */
-    protected function validateOptionValues(Option $option, array $values)
-    {
-        $option->validate();
-
-        if (count($values) == 0) {
-            $message = Lang::get('bedard.shop::lang.options.values_required');
-            Flash::error($message);
-            throw new ValidationException($message);
-        }
-
-        if (in_array('', $values)) {
-            $message = Lang::get('bedard.shop::lang.values.name_required');
-            Flash::error($message);
-            throw new ValidationException($message);
-        }
-
-        if (count($values) != count(array_unique($values))) {
-            $message = Lang::get('bedard.shop::lang.values.name_unique');
-            Flash::error($message);
-            throw new ValidationException($message);
-        }
     }
 
     /**
