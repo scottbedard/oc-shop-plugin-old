@@ -106,8 +106,8 @@ class OptionsInventories extends FormWidgetBase
         $option->placeholder = input('placeholder');
 
         $ids = $savedIds = input('valueIds') ?: [];
-        $names = input('valueNames') ?: [];
-        $this->validateValues($names);
+        $values = input('valueNames') ?: [];
+        $this->validateOptionValues($option, $values);
 
         if ($option->save()) {
             $option->load('values');
@@ -115,7 +115,7 @@ class OptionsInventories extends FormWidgetBase
                 $value = Value::findOrNew($id);
                 $value->option_id = $option->id;
                 $value->position = $i;
-                $value->name = $names[$i];
+                $value->name = $values[$i];
                 $value->save();
 
                 $savedIds[] = $value->id;
@@ -159,12 +159,15 @@ class OptionsInventories extends FormWidgetBase
     }
 
     /**
-     * Validate the array of value names
+     * Validate the Option and Values
      *
+     * @param   Option  $option
      * @param   array   $values
      */
-    protected function validateValues(array $values)
+    protected function validateOptionValues(Option $option, array $values)
     {
+        $option->validate();
+
         if (count($values) == 0) {
             $message = Lang::get('bedard.shop::lang.options.values_required');
             Flash::error($message);

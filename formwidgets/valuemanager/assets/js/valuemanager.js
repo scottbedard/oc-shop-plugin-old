@@ -13,15 +13,13 @@
             }
         });
 
-        $(document).on('render', function() {
-            $list.unbind()
-                .sortable({
-                    handle: '.handle',
-                })
-                .on('click', '.delete', function() {
-                    self.deleteValue($(this).closest('li'));
-                })
-        });
+        $list.unbind()
+            .sortable({
+                handle: '.handle',
+            })
+            .on('click', '.delete', function() {
+                self.deleteValue($(this).closest('li'));
+            })
     }
 
     //
@@ -53,7 +51,7 @@
         $list.append($item);
         $input.val('');
 
-        $list.sortable('destroy').sortable();
+        $list.sortable('destroy').sortable({ handle: '.handle' });
     }
 
     //
