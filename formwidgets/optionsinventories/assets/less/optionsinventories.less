@@ -74,14 +74,23 @@
             }
 
             &:hover {
-                background-color: #58B6F7 !important;
-                color: #fefefe !important;
+                background-color: #58B6F7;
+                color: #fefefe;
                 cursor: pointer;
 
                 .control {
                     &.handle, &.delete {
                         opacity: 1;
                     }
+                }
+            }
+
+            &.pre-delete {
+                background-color: #CC3300;
+                color: #fefefe;
+
+                .handle, .delete {
+                    opacity: 0 !important;
                 }
             }
         }

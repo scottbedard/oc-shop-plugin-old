@@ -71,7 +71,6 @@
 
         // Submit the form on apply button click
         $apply.on('click', function() {
-
             $loadingIndicator.show();
             $form.request(self.alias + '::onProcess' + $list.data('model'), {
                 success: function(data) {
@@ -96,7 +95,37 @@
     //
     OptionsInventories.prototype.deleteItem = function($li)
     {
-        console.log ('deleting');
+        var self = this,
+            model = $li.closest('ol').data('model'),
+            handler = this.alias + '::onDelete' + model,
+            title   = lang['relation.delete_confirm'] || 'Are you sure?',
+            text    = lang[model + '.delete_text'] || false,
+            confirm = lang['form.confirm'] || 'Yes',
+            cancel  = lang['form.cancel'] || 'No';
+
+        $li.addClass('pre-delete');
+        swal({
+            title: title,
+            text: text,
+            showCancelButton: true,
+            closeOnConfirm: true,
+            confirmButtonText: confirm,
+            cancelButtonText: cancel
+        }, function() {
+            $.request(handler, {
+                data: {
+                    id: $li.data('id'),
+                },
+                complete: function() {
+                    $li.removeClass('pre-delete')
+                }
+            })
+        });
+
+        // Catch delete cancelations
+        $('.sweet-alert').on('click', '.cancel', function() {
+            $li.removeClass('pre-delete');
+        });
     }
 
     //

@@ -3,6 +3,7 @@
 use Backend\Classes\FormWidgetBase;
 use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Option;
+use Lang;
 use Flash;
 
 /**
@@ -25,12 +26,31 @@ class OptionsInventories extends FormWidgetBase
         return $this->makePartial('optionsinventories');
     }
 
+    public function renderPartials()
+    {
+        $this->prepareVars();
+
+        return [
+            '#formOptions' => $this->makePartial('options'),
+        ];
+    }
+
     /**
      * Prepares the form widget view data
      */
     public function prepareVars()
     {
-        $this->vars['options'] = Option::where('product_id', $this->model->id)->get();
+        // These language strings will be used by our javascript asset
+        $this->vars['lang'] = json_encode([
+            'relation.delete_confirm'   => Lang::get('backend::lang.relation.delete_confirm'),
+            'form.cancel'               => Lang::get('backend::lang.form.cancel'),
+            'form.confirm'              => Lang::get('backend::lang.form.confirm'),
+            'Option.delete_text'        => Lang::get('bedard.shop::lang.options.delete_text'),
+        ]);
+
+        // These variables will be used normally by partials
+        $this->vars['options']      = Option::where('product_id', $this->model->id)->get();
+        $this->vars['option_name']  = Lang::get('bedard.shop::lang.options.model');
     }
 
     /**
@@ -51,13 +71,12 @@ class OptionsInventories extends FormWidgetBase
     {
         $form = $this->makeConfig('$/bedard/shop/models/option/fields.yaml');
 
-        if ($id = input('id')) {
-            $form->model = Option::findOrNew($id);
-            $header = 'update';
-        } else {
-            $form->model = new Option;
-            $header = 'create';
-        }
+        $id = input('id');
+        $form->model = $id ? Option::findOrNew($id) : new Option;
+        $name = Lang::get('bedard.shop::lang.options.model');
+        $header = $form->model->id
+            ? Lang::get('backend::lang.relation.update_name', ['name' => $name])
+            : Lang::get('backend::lang.relation.create_name', ['name' => $name]);
 
         return $this->makePartial('form', [
             'header'        => $header,
@@ -81,11 +100,28 @@ class OptionsInventories extends FormWidgetBase
         $option->placeholder = input('placeholder');
         $option->save();
 
-        Flash::success('hooray, it worked');
-        $this->prepareVars();
+        $name = Lang::get('bedard.shop::lang.options.model');
+        Flash::success(Lang::get('backend::lang.form.delete_success', ['name' => $name]));
+        return $this->renderPartials();
+    }
 
-        return [
-            '#formOptions' => $this->makePartial('options')
-        ];
+    /**
+     * Deletes an option
+     */
+    public function onDeleteOption()
+    {
+        $success = false;
+        if ($option = Option::find(input('id'))) {
+            $success = $option->delete();
+        }
+
+        $name = Lang::get('bedard.shop::lang.options.model');
+        if ($success) {
+            Flash::success(Lang::get('backend::lang.form.delete_success', ['name' => $name]));
+        } else {
+            Flash::error(Lang::get('bedard.shop::lang.form.delete_failed_name', ['name' => $name]));
+        }
+
+        return $this->renderPartials();
     }
 }

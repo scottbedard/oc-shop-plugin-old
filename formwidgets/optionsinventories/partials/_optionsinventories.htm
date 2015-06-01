@@ -2,7 +2,7 @@
 
     <!-- Options subwidget -->
     <div class="form-group widget-field span-left">
-        <label>Options</label>
+        <label><?= e(trans('bedard.shop::lang.options.widget_label')) ?></label>
         <div id="formOptions">
             <?= $this->makePartial('options', ['options' => $options]) ?>
         </div>
@@ -15,3 +15,6 @@
     </div>
 
 </div>
+
+<!-- Pass language data to javascript -->
+<script type="text/javascript">var lang = <?= $lang ?></script>

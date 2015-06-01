@@ -5,7 +5,7 @@
 fields:
 
     name:
-        label: Name
+        label: bedard.shop::lang.common.name
 
     placeholder:
-        label: Placeholder
+        label: bedard.shop::lang.options.placeholder

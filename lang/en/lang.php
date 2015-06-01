@@ -22,7 +22,9 @@ return [
     // Form
     //
     'form' => [
+        'delete_confirm'        => 'Are you sure?',
         'delete_confirm_name'   => 'Do you really want to delete this :name?',
+        'delete_failed_name'    => 'Failed to delete :name.',
         'return_to_name_list'   => 'Return to :name list',
     ],
 
@@ -73,6 +75,15 @@ return [
         'status'                => 'Status',
         'status_normal'         => 'Normal',
         'status_disabled'       => 'Disabled',
+    ],
+
+    'options' => [
+        'delete_text'           => 'Related inventories will also be deleted.',
+        'model'                 => 'Option',
+        'placeholder'           => 'Placeholder',
+        'update_success'        => 'Successfully updated option!',
+        'update_failed'         => 'Failed to update option.',
+        'widget_label'          => 'Options',
     ],
 
 ];
