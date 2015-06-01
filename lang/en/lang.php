@@ -85,10 +85,13 @@ return [
         'update_success'        => 'Successfully updated option!',
         'update_failed'         => 'Failed to update option.',
         'values'                => 'Values',
+        'values_required'       => 'Options must have at least one value.',
         'widget_label'          => 'Options',
     ],
 
     'values' => [
         'delete_text'           => 'Related inventories will be deleted upon saving.',
+        'name_required'         => 'All option values must be named.',
+        'name_unique'           => 'Option value names must be unique.',
     ],
 ];

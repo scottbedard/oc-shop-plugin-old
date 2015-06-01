@@ -6,6 +6,7 @@ use Bedard\Shop\Models\Option;
 use Bedard\Shop\Models\Value;
 use Lang;
 use Flash;
+use October\Rain\Exception\ValidationException;
 
 /**
  * OptionsInventories Form Widget
@@ -99,18 +100,17 @@ class OptionsInventories extends FormWidgetBase
     public function onProcessOption()
     {
         $optionId = intval(input('model_id'));
-
         $option = Option::findOrNew($optionId);
         $option->name = input('name');
         $option->product_id = intval(input('product_id'));
         $option->placeholder = input('placeholder');
 
-        $model = Lang::get('bedard.shop::lang.options.model');
-        if ($option->save()) {
-            $ids = $savedIds = input('valueIds') ?: [];
-            $names = input('valueNames') ?: [];
+        $ids = $savedIds = input('valueIds') ?: [];
+        $names = input('valueNames') ?: [];
+        $this->validateValues($names);
 
-            // Create or update the values
+        if ($option->save()) {
+            $option->load('values');
             foreach ($ids as $i => $id) {
                 $value = Value::findOrNew($id);
                 $value->option_id = $option->id;
@@ -121,15 +121,13 @@ class OptionsInventories extends FormWidgetBase
                 $savedIds[] = $value->id;
             }
 
-
-            // Delete ones that weren't saved
-            $option->load('values');
             foreach ($option->values as $value) {
                 if (!in_array($value->id, $savedIds)) {
                     $value->delete();
                 }
             }
 
+            $model = Lang::get('bedard.shop::lang.options.model');
             if ($optionId) {
                 Flash::success(Lang::get('backend::lang.form.create_success', ['name' => $model]));
             } else {
@@ -158,6 +156,32 @@ class OptionsInventories extends FormWidgetBase
         }
 
         return $this->renderPartials();
+    }
+
+    /**
+     * Validate the array of value names
+     *
+     * @param   array   $values
+     */
+    protected function validateValues(array $values)
+    {
+        if (count($values) == 0) {
+            $message = Lang::get('bedard.shop::lang.options.values_required');
+            Flash::error($message);
+            throw new ValidationException($message);
+        }
+
+        if (in_array('', $values)) {
+            $message = Lang::get('bedard.shop::lang.values.name_required');
+            Flash::error($message);
+            throw new ValidationException($message);
+        }
+
+        if (count($values) != count(array_unique($values))) {
+            $message = Lang::get('bedard.shop::lang.values.name_unique');
+            Flash::error($message);
+            throw new ValidationException($message);
+        }
     }
 
     /**

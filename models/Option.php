@@ -1,12 +1,14 @@
 <?php namespace Bedard\Shop\Models;
 
 use Model;
+use October\Rain\Exception\ValidationException;
 
 /**
  * Option Model
  */
 class Option extends Model
 {
+    use \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string The database table used by the model.
@@ -36,6 +38,13 @@ class Option extends Model
         'product' => [
             'Bedard\Shop\Models\Product',
         ],
+    ];
+
+    /**
+     * Validation
+     */
+    public $rules = [
+        'name' => 'required',
     ];
 
     /**
