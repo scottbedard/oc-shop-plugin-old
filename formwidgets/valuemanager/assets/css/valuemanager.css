@@ -1,0 +1,41 @@
+#valuemanager ol {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+#valuemanager li {
+  cursor: text;
+  display: table;
+}
+#valuemanager li.flash {
+  border-color: #D35400 !important;
+}
+#valuemanager span {
+  display: table-cell;
+  vertical-align: middle;
+}
+#valuemanager span.handle,
+#valuemanager span.delete {
+  color: #A6A6A6;
+  font-size: 18px;
+  text-align: center;
+  width: 20px;
+}
+#valuemanager span.handle:hover {
+  cursor: move;
+  color: #616161;
+}
+#valuemanager span.delete:hover {
+  cursor: pointer;
+  color: #CC3300;
+}
+#valuemanager span.input {
+  padding: 0 10px;
+}
+#valuemanager span.input input {
+  border: 0;
+  height: 100%;
+  outline: none;
+  padding: 0;
+  width: 100%;
+}

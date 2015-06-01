@@ -83,6 +83,7 @@ return [
         'placeholder'           => 'Placeholder',
         'update_success'        => 'Successfully updated option!',
         'update_failed'         => 'Failed to update option.',
+        'values'                => 'Values',
         'widget_label'          => 'Options',
     ],
 

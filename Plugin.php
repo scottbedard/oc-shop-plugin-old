@@ -87,7 +87,11 @@ class Plugin extends PluginBase
         return [
             'Bedard\Shop\FormWidgets\OptionsInventories' => [
                 'label' => 'Options & Inventories',
-                'code'  => 'optionsinventories'
+                'code'  => 'optionsinventories',
+            ],
+            'Bedard\Shop\FormWidgets\ValueManager' => [
+                'label' => 'Value Manager',
+                'code'  => 'valuemanager',
             ],
         ];
     }

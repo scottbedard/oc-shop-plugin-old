@@ -9,3 +9,7 @@ fields:
 
     placeholder:
         label: bedard.shop::lang.options.placeholder
+
+    values:
+        label: bedard.shop::lang.options.values
+        type: valuemanager

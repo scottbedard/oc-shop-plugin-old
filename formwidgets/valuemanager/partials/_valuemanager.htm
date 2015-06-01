@@ -1,0 +1,18 @@
+<div id="valuemanager">
+    <ol>
+        <?= $this->makePartial('value', ['value' => 'One']) ?>
+        <?= $this->makePartial('value', ['value' => 'Two']) ?>
+        <?= $this->makePartial('value', ['value' => 'Three']) ?>
+    </ol>
+
+    <input
+        type="text"
+        class="form-control"
+        autocomplete="off"
+        data-control="add-value" />
+
+    <script type="text/template" data-control="template">
+        <?= $this->makePartial('value', ['value' => '']) ?>
+    </script>
+</div>
+
