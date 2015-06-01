@@ -1,9 +1,9 @@
 +function ($) { "use strict";
+
     var OptionsInventories = function ($el) {
         var self = this;
 
         this.$el = $el;
-        this.alias = 'formOptionsinventories';
 
         // Trigger the popup with a new item
         $('a[data-control="add"]').unbind().on('click', function() {
@@ -50,7 +50,7 @@
             extraData: {
                 id: $li.data('id') || null
             },
-            handler: this.alias + '::onDisplay' + $list.data('model')
+            handler: OptionsInventoriesAlias + '::onDisplay' + $list.data('model')
         });
     }
 
@@ -64,6 +64,7 @@
             $apply  = $popup.find('[data-control="apply-btn"]').first(),
             $loadingIndicator = $popup.find('div.loading-indicator');
 
+
         // Determine the option ID
         var modelId = typeof $li.data('id') != 'undefined'
             ? $li.data('id')
@@ -72,7 +73,7 @@
         // Submit the form on apply button click
         $apply.on('click', function() {
             $loadingIndicator.show();
-            $form.request(self.alias + '::onProcess' + $list.data('model'), {
+            $form.request(OptionsInventoriesAlias + '::onProcess' + $list.data('model'), {
                 success: function(data) {
                     this.success(data).done(function() {
                         $popup.trigger('close.oc.popup');
@@ -84,10 +85,10 @@
                 }
             });
             return false;
-        })
+        });
 
-        $form.find('select').select2()
-        $(document).trigger('render')
+        $form.find('select').select2();
+        $(document).trigger('render');
     }
 
     //
@@ -97,7 +98,7 @@
     {
         var self = this,
             model = $li.closest('ol').data('model'),
-            handler = this.alias + '::onDelete' + model,
+            handler = OptionsInventoriesAlias + '::onDelete' + model,
             title   = lang['relation.delete_confirm'] || 'Are you sure?',
             text    = lang[model + '.delete_text'] || false,
             confirm = lang['form.confirm'] || 'Yes',
@@ -119,7 +120,7 @@
                 complete: function() {
                     $li.removeClass('pre-delete')
                 }
-            })
+            });
         });
 
         // Catch delete cancelations
@@ -137,6 +138,13 @@
 
     $(document).on('render', function() {
         $('div#options-inventories').OptionsInventories();
+        $('div#options-inventories ol[data-model="Option"]')
+            .sortable()
+            .bind('sortupdate', function() {
+                $.request(OptionsInventoriesAlias + '::onReorderOptions', {
+
+                })
+            });;
     });
 
 }(window.jQuery);

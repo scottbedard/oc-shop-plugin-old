@@ -3,8 +3,7 @@
         <?php if ($options): ?>
             <?php foreach ($options as $option): ?>
                 <li data-id="<?= $option->id ?>">
-                    <input type="hidden" name="optionPosition[]" value="<?= $option->id ?>" />
-
+                    <input type="hidden" name="options[]" value="<?= $option->id ?>" />
                     <div class="table">
                         <div class="control icon"><i class="icon-plus"></i></div>
                         <div class="details">

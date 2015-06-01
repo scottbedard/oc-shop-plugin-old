@@ -49,7 +49,7 @@ class OptionsInventories extends FormWidgetBase
         ]);
 
         // These variables will be used normally by partials
-        $this->vars['options']      = Option::where('product_id', $this->model->id)->get();
+        $this->vars['options']      = $this->model->options;
         $this->vars['option_name']  = Lang::get('bedard.shop::lang.options.model');
     }
 
@@ -59,6 +59,7 @@ class OptionsInventories extends FormWidgetBase
     public function loadAssets()
     {
         $this->addCss('css/optionsinventories.css', 'Bedard.Shop');
+        $this->addJs('js/html.sortable.min.js', 'Bedard.Shop');
         $this->addJs('js/optionsinventories.js', 'Bedard.Shop');
     }
 
@@ -98,10 +99,12 @@ class OptionsInventories extends FormWidgetBase
         $option->name = input('name');
         $option->product_id = input('product_id');
         $option->placeholder = input('placeholder');
-        $option->save();
 
         $name = Lang::get('bedard.shop::lang.options.model');
-        Flash::success(Lang::get('backend::lang.form.delete_success', ['name' => $name]));
+        if ($option->save()) {
+            Flash::success(Lang::get('backend::lang.form.create_success', ['name' => $name]));
+        }
+
         return $this->renderPartials();
     }
 
@@ -123,5 +126,24 @@ class OptionsInventories extends FormWidgetBase
         }
 
         return $this->renderPartials();
+    }
+
+    public function onReorderOptions()
+    {
+        // echo 'hello';
+    }
+
+    /**
+     * Update option positions
+     */
+    public function getSaveValue($value)
+    {
+        if (!$options = input('options')) return;
+
+        foreach ($options as $position => $id) {
+            $option = Option::find($id);
+            $option->position = $position;
+            $option->save();
+        }
     }
 }

@@ -73,6 +73,10 @@
 #options-inventories ol li.pre-delete .delete {
   opacity: 0 !important;
 }
+#options-inventories ol li.sortable-placeholder {
+  background-color: #fcfcfc;
+  border: 1px dotted #58B6F7;
+}
 .options-inventories-modal .modal-body {
   padding-bottom: 20px;
 }

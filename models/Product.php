@@ -12,7 +12,8 @@ use Queue;
  */
 class Product extends Model
 {
-    use \October\Rain\Database\Traits\Validation;
+    use \October\Rain\Database\Traits\Purgeable,
+        \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string The database table used by the model.
@@ -37,12 +38,23 @@ class Product extends Model
     ];
 
     /**
+     * @var array Purgeable fields
+     */
+    protected $purgeable = ['optionsinventories'];
+
+    /**
      * @var array Relations
      */
     public $belongsToMany = [
         'categories' => [
             'Bedard\Shop\Models\Category',
             'table' => 'bedard_shop_category_product',
+        ],
+    ];
+    public $hasMany = [
+        'options' => [
+            'Bedard\Shop\Models\Option',
+            'order' => 'position asc',
         ],
     ];
 
