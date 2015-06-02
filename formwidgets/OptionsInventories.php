@@ -3,7 +3,6 @@
 use Backend\Classes\FormWidgetBase;
 use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Option;
-use Bedard\Shop\Models\Value;
 use Lang;
 use Flash;
 
@@ -103,35 +102,13 @@ class OptionsInventories extends FormWidgetBase
         $option->name = input('name');
         $option->product_id = intval(input('product_id'));
         $option->placeholder = input('placeholder');
+        $option->saveWithValues(input('valueIds'), input('valueNames'));
 
-        $ids = $savedIds = input('valueIds') ?: [];
-        $values = input('valueNames') ?: [];
-        $option->validateValues($values);
-
-        if ($option->save()) {
-            $option->load('values');
-            foreach ($ids as $i => $id) {
-                $value = Value::findOrNew($id);
-                $value->option_id = $option->id;
-                $value->position = $i;
-                $value->name = $values[$i];
-                $value->save();
-
-                $savedIds[] = $value->id;
-            }
-
-            foreach ($option->values as $value) {
-                if (!in_array($value->id, $savedIds)) {
-                    $value->delete();
-                }
-            }
-
-            $model = Lang::get('bedard.shop::lang.options.model');
-            if ($optionId) {
-                Flash::success(Lang::get('backend::lang.form.create_success', ['name' => $model]));
-            } else {
-                Flash::success(Lang::get('backend::lang.form.update_success', ['name' => $model]));
-            }
+        $model = Lang::get('bedard.shop::lang.options.model');
+        if ($optionId) {
+            Flash::success(Lang::get('backend::lang.form.update_success', ['name' => $model]));
+        } else {
+            Flash::success(Lang::get('backend::lang.form.create_success', ['name' => $model]));
         }
 
         return $this->renderPartials();

@@ -81,6 +81,7 @@ return [
     'options' => [
         'delete_text'           => 'Related inventories will be deleted.',
         'model'                 => 'Option',
+        'name_unique'           => 'Option names must be unique.',
         'placeholder'           => 'Placeholder',
         'update_success'        => 'Successfully updated option!',
         'update_failed'         => 'Failed to update option.',
@@ -92,7 +93,7 @@ return [
     'values' => [
         'delete_text'           => 'Related inventories will be deleted upon saving.',
         'name_required'         => 'All option values must be named.',
-        'name_unique'           => 'Option value names must be unique.',
+        'name_unique'           => 'Value names must be unique.',
         'placeholder'           => 'Type value and press "enter" or "tab"',
     ],
 ];
