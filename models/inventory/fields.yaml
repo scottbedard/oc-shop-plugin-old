@@ -3,6 +3,14 @@
 # ===================================
 
 fields:
-    id:
-        label: ID
-        disabled: true
+
+    inventory:
+        label: bedard.shop::lang.inventories.model
+        type: dropdown
+
+    sku:
+        label: bedard.shop::lang.inventories.sku
+
+    quantity:
+        label: bedard.shop::lang.inventories.quantity
+        placeholder: 0

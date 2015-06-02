@@ -58,6 +58,14 @@ return [
         'reorder_success'       => 'Categories have been successfully re-ordered!',
     ],
 
+    'inventories' => [
+        'default'               => 'Default Inventory',
+        'model'                 => 'Inventory',
+        'quantity'              => 'Quantity',
+        'sku'                   => 'Stock Keeping Unit',
+        'widget_label'          => 'Inventories',
+    ],
+
     'products' => [
         'base_price_min'        => 'The price must be greater than zero.',
         'base_price_numeric'    => 'The price must be a number.',

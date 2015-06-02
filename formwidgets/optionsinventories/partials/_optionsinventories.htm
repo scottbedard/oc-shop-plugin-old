@@ -10,8 +10,10 @@
 
     <!-- Inventory subwidget -->
     <div class="form-group widget-field span-right">
-        <label>Inventories</label>
-        World
+        <label><?= e(trans('bedard.shop::lang.inventories.widget_label')) ?></label>
+        <div id="formInventories">
+            <?= $this->makePartial('inventories', ['inventories' => $inventories]) ?>
+        </div>
     </div>
 
 </div>

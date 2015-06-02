@@ -52,6 +52,9 @@ class Product extends Model
         ],
     ];
     public $hasMany = [
+        'inventories' => [
+            'Bedard\Shop\Models\Inventory',
+        ],
         'options' => [
             'Bedard\Shop\Models\Option',
             'order' => 'position asc',

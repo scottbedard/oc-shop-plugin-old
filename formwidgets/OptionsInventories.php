@@ -50,9 +50,9 @@ class OptionsInventories extends FormWidgetBase
         ]);
 
         // These variables will be used normally by partials
-        $this->model->options->load('values');
+        $this->model->load('options.values', 'inventories.values');
+        $this->vars['inventories']  = $this->model->inventories;
         $this->vars['options']      = $this->model->options;
-        $this->vars['option_name']  = Lang::get('bedard.shop::lang.options.model');
     }
 
     /**
@@ -63,6 +63,28 @@ class OptionsInventories extends FormWidgetBase
         $this->addCss('css/optionsinventories.css', 'Bedard.Shop');
         $this->addJs('js/html.sortable.min.js', 'Bedard.Shop');
         $this->addJs('js/optionsinventories.js', 'Bedard.Shop');
+    }
+
+    public function onDisplayInventory()
+    {
+        $form = $this->makeConfig('$/bedard/shop/models/inventory/fields.yaml');
+
+        $id = input('id');
+        $form->model = $id ? Inventory::findOrNew($id) : new Inventory;
+        $form->model->product_id = $this->model->id;
+
+        $name = Lang::get('bedard.shop::lang.inventories.model');
+        $header = $form->model->id
+            ? Lang::get('backend::lang.relation.update_name', ['name' => $name])
+            : Lang::get('backend::lang.relation.create_name', ['name' => $name]);
+
+        return $this->makePartial('form', [
+            'header'        => $header,
+            'handler'       => 'onProcessInventory',
+            'model'         => $form->model,
+            'product_id'    => $this->model->id,
+            'form'          => $this->makeWidget('Backend\Widgets\Form', $form),
+        ]);
     }
 
     /**
@@ -76,6 +98,7 @@ class OptionsInventories extends FormWidgetBase
 
         $id = input('id');
         $form->model = $id ? Option::findOrNew($id) : new Option;
+
         $name = Lang::get('bedard.shop::lang.options.model');
         $header = $form->model->id
             ? Lang::get('backend::lang.relation.update_name', ['name' => $name])

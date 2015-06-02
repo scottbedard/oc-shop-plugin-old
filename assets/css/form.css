@@ -3,11 +3,14 @@
 }
 .bedard-shop.form .select2-chosen span.parent,
 .select2-results .select2-chosen span.parent,
+.modal .select2-chosen span.parent,
 .bedard-shop.form li:not(.select2-highlighted) span.parent,
-.select2-results li:not(.select2-highlighted) span.parent {
+.select2-results li:not(.select2-highlighted) span.parent,
+.modal li:not(.select2-highlighted) span.parent {
   color: #aaa;
 }
 .bedard-shop.form i.delimeter,
-.select2-results i.delimeter {
+.select2-results i.delimeter,
+.modal i.delimeter {
   padding: 0 5px;
 }

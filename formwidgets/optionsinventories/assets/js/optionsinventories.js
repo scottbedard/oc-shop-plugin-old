@@ -1,14 +1,13 @@
 +function ($) { "use strict";
 
     var OptionsInventories = function ($el) {
-        var self = this,
-            $list = $el.find('ol');
+        var self = this;
 
         // Trigger the popup with a new item
         $('a[data-control="add"]').unbind().on('click', function() {
+            var $list = $(this).parent().find('ol')
             $list.append('<li></li>');
             var $li = $list.find('li').last();
-
             self.triggerPopup($list, $li, true);
         });
 
@@ -17,6 +16,7 @@
             self.deleteItem($(this).closest('li'));
             return false;
         }).on('click', 'li', function() {
+            var $list = $(this).parent();
             self.triggerPopup($list, $(this), false);
             return false;
         });
