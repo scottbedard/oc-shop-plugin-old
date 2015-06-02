@@ -65,51 +65,58 @@ class OptionsInventories extends FormWidgetBase
         $this->addJs('js/optionsinventories.js', 'Bedard.Shop');
     }
 
+    /**
+     * Display the Inventory popup form
+     *
+     * @return  makePartial()
+     */
     public function onDisplayInventory()
     {
         $form = $this->makeConfig('$/bedard/shop/models/inventory/fields.yaml');
-
-        $id = input('id');
-        $form->model = $id ? Inventory::findOrNew($id) : new Inventory;
+        $form->model = Inventory::findOrNew(intval(input('id')));
         $form->model->product_id = $this->model->id;
 
-        $name = Lang::get('bedard.shop::lang.inventories.model');
-        $header = $form->model->id
-            ? Lang::get('backend::lang.relation.update_name', ['name' => $name])
-            : Lang::get('backend::lang.relation.create_name', ['name' => $name]);
-
-        return $this->makePartial('form', [
-            'header'        => $header,
-            'handler'       => 'onProcessInventory',
-            'model'         => $form->model,
-            'product_id'    => $this->model->id,
-            'form'          => $this->makeWidget('Backend\Widgets\Form', $form),
-        ]);
+        return $this->makeForm(
+            $form,
+            Lang::get('bedard.shop::lang.inventories.model'),
+            'onProcessInventory'
+        );
     }
 
     /**
-     * Display a form to create or update a product option
+     * Display the Option popup form
      *
      * @return  makePartial()
      */
     public function onDisplayOption()
     {
         $form = $this->makeConfig('$/bedard/shop/models/option/fields.yaml');
+        $form->model = Option::findOrNew(intval(input('id')));
+        $form->model->product_id = $this->model->id;
 
-        $id = input('id');
-        $form->model = $id ? Option::findOrNew($id) : new Option;
+        return $this->makeForm(
+            $form,
+            Lang::get('bedard.shop::lang.options.model'),
+            'onProcessOption'
+        );
+    }
 
-        $name = Lang::get('bedard.shop::lang.options.model');
+    /**
+     * Makes a popup form
+     *
+     * @return  makePartial()
+     */
+    protected function makeForm($form, $modelName, $handler)
+    {
         $header = $form->model->id
-            ? Lang::get('backend::lang.relation.update_name', ['name' => $name])
-            : Lang::get('backend::lang.relation.create_name', ['name' => $name]);
+            ? Lang::get('backend::lang.relation.update_name', ['name' => $modelName])
+            : Lang::get('backend::lang.relation.create_name', ['name' => $modelName]);
 
         return $this->makePartial('form', [
-            'header'        => $header,
-            'handler'       => 'onProcessOption',
-            'model'         => $form->model,
-            'product_id'    => $this->model->id,
-            'form'          => $this->makeWidget('Backend\Widgets\Form', $form),
+            'header'    => $header,
+            'handler'   => $handler,
+            'model'     => $form->model,
+            'form'      => $this->makeWidget('Backend\Widgets\Form', $form),
         ]);
     }
 

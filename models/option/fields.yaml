@@ -13,3 +13,4 @@ fields:
     values:
         label: bedard.shop::lang.options.values
         type: valuemanager
+        required: true

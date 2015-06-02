@@ -9,8 +9,10 @@
     <div class="modal-body form-container">
         <form
             data-handler="<?= $handler ?>"
-            data-request-data="model_id: '<?= $form->model->id ?>', product_id: <?= $product_id ?>"
-        >
+            data-request-data="
+                model_id: '<?= $form->model->id ?>',
+                product_id: <?= intval($form->model->product_id) ?>
+            ">
             <?= $form->render() ?>
         <form>
     </div>
