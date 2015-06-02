@@ -1,0 +1,23 @@
+<div>
+    <ol class="list" data-model="Inventory">
+        <?php if ($inventories): ?>
+            <?php foreach ($inventories as $inventory): ?>
+                <li data-id="<?= $inventory->id ?>">
+                    <div class="table">
+                        <div class="control icon"><i class="icon-plus"></i></div>
+                        <div class="details">
+                            <div class="name">Hello</div>
+                            <div class="data">4 in stock</div>
+                        </div>
+                        <div class="control delete"><i class="icon-trash"></i></div>
+                    </div>
+                </li>
+            <?php endforeach ?>
+        <?php endif ?>
+    </ol>
+
+    <a href="#" class="add-btn" data-control="add">
+        <i class="icon-plus"></i>
+        <?= e(trans('backend::lang.relation.create_name', ['name' => trans('bedard.shop::lang.inventories.model')])) ?>
+    </a>
+</div>

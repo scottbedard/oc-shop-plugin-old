@@ -1,4 +1,4 @@
-<?php namespace RainLab\Blog\Updates;
+<?php namespace Bedard\Shop\Updates;
 
 use Bedard\Shop\Tests\Fixtures\Generate;
 use October\Rain\Database\Updates\Seeder;

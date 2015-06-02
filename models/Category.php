@@ -152,8 +152,8 @@ class Category extends Model
             ->orderBy('position', 'asc')
             ->get();
 
+        $delimeter = '<i class="delimeter icon-angle-right"></i>';
         foreach ($categories as $category) {
-            $delimeter = '<i class="delimeter icon-angle-right"></i>';
             $branch = [];
             foreach ($category->getParents() as $parent) {
                 $branch[] = '<span class="parent">' . $parent->name . '</span>';
