@@ -31,6 +31,8 @@
         // Show popup
         $li.one('show.oc.popup', function(e) {
             self.showPopup(e, $list, $li, newItem);
+
+            self.setToolbarVisibility('hidden');
             return false;
         });
 
@@ -39,6 +41,8 @@
             if (newItem) {
                 $list.find('li').last().remove();
             }
+
+            self.setToolbarVisibility('visible');
             return false;
         })
 
@@ -73,6 +77,7 @@
             $form.request(OptionsInventoriesAlias + '::onProcess' + $list.data('model'), {
                 success: function(data) {
                     this.success(data).done(function() {
+                        self.setToolbarVisibility('visible');
                         $popup.trigger('close.oc.popup');
                     });
                 },
@@ -123,6 +128,16 @@
         $('.sweet-alert').on('click', '.cancel', function() {
             $li.removeClass('pre-delete');
         });
+    }
+
+    //
+    // Adjust the parent form's toolbar visibility. This is done to
+    // prevent hotkey conflicts. When a user hits "ctrl+s", we only
+    // want to save the popup and not the parent product.
+    //
+    OptionsInventories.prototype.setToolbarVisibility = function(visibility)
+    {
+        $('div.form-buttons').css('visibility', visibility);
     }
 
     //
