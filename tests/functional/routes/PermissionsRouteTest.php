@@ -34,7 +34,7 @@ class PermissionsRouteTest extends \OctoberPluginTestCase
 
         Auth::setPermissions($user, ['bedard.shop.access_products' => 1, 'bedard.shop.access_inventories' => 1]);
         $response = $this->call('GET', Backend::url('bedard/shop/products/update/' . $product->id));
-        $this->assertInternalType('int', strpos($response->getContent(), 'OPTIONSINVENTORIES_WIDGET'));
+        $this->assertInternalType('int', strpos($response->getContent(), '<div id="options-inventories">'));
     }
 
     public function test_category_permissions()
