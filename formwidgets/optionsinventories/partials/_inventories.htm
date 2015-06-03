@@ -4,12 +4,24 @@
             <?php foreach ($inventories as $inventory): ?>
                 <li data-id="<?= $inventory->id ?>">
                     <div class="table">
-                        <div class="control icon"><i class="icon-plus"></i></div>
+                        <div class="control icon"><i class="icon-cube"></i></div>
                         <div class="details">
-                            <div class="name">Hello</div>
-                            <div class="data">4 in stock</div>
+                            <div class="name">
+                                <?php if ($values = $inventory->getValueNames()): ?>
+                                    <?= implode('<i class="delimeter icon-angle-right"></i>', $values) ?>
+                                <?php else: ?>
+                                    <?= e(trans('bedard.shop::lang.inventories.default')) ?>
+                                <?php endif ?>
+                            </div>
+                            <div class="data">
+                                <?php if ($inventory->quantity > 0): ?>
+                                    <?= e(trans('bedard.shop::lang.inventories.quantity_in_stock', ['quantity' => $inventory->quantity])) ?>
+                                <?php else: ?>
+                                    <?= e(trans('bedard.shop::lang.inventories.out_of_stock')) ?>
+                                <?php endif ?>
+                            </div>
                         </div>
-                        <div class="control delete"><i class="icon-trash"></i></div>
+                        <div class="control delete"><i class="icon-trash-o"></i></div>
                     </div>
                 </li>
             <?php endforeach ?>

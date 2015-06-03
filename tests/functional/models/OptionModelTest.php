@@ -1,8 +1,6 @@
 <?php namespace Bedard\Shop\Tests\Functional\Models;
 
-use Bedard\Shop\Models\Option;
 use Bedard\Shop\Tests\Fixtures\Generate;
-use DB;
 
 class OptionModelTest extends \OctoberPluginTestCase
 {

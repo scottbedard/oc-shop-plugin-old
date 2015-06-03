@@ -1,8 +1,10 @@
 <?php namespace Bedard\Shop\Tests\Fixtures;
 
 use Bedard\Shop\Models\Category;
+use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Option;
 use Bedard\Shop\Models\Product;
+use Bedard\Shop\Models\Value;
 
 class Generate {
 
@@ -24,8 +26,27 @@ class Generate {
         }
 
         $category->save();
-
         return $category;
+    }
+
+    /**
+     * Generate an inventory for use in tests
+     *
+     * @param   Product     $product
+     * @param   array       $values
+     * @param   array       $data
+     */
+    public static function inventory(Product $product, $values = [], $data = [])
+    {
+        $inventory = new Inventory;
+        $inventory->product_id = $product->id;
+
+        foreach ($data as $key => $value) {
+            $inventory->$key = $value;
+        }
+
+        $inventory->saveWithValues($values);
+        return $inventory;
     }
 
     /**
@@ -66,7 +87,28 @@ class Generate {
         }
 
         $product->save();
-
         return $product;
+    }
+
+    /**
+     * Generate a value for use in tests
+     *
+     * @param   Option      $option
+     * @param   string      $name
+     * @param   array       $data
+     * @return  Value
+     */
+    public static function value(Option $option, $name, $data = [])
+    {
+        $value = new Value;
+        $value->option_id = $option->id;
+        $value->name = $name;
+
+        foreach ($data as $key => $v) {
+            $value->$key = $v;
+        }
+
+        $value->save();
+        return $value;
     }
 }

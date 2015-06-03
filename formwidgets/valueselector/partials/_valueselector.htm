@@ -1,0 +1,20 @@
+<?php foreach ($options as $option): ?>
+    <select name="valueIds[]" class="values-widget form-control custom-select">
+        <option value="" class="placeholder">
+            <?php if ($option->placeholder): ?>
+                <?= e($option->placeholder) ?>
+            <?php else: ?>
+                <?= e(trans('bedard.shop::lang.inventories.options_placeholder', ['name' => $option->name])) ?>
+            <?php endif ?>
+        </option>
+        <?php foreach ($option->values as $value): ?>
+            <option
+                <?php if ($inventory->values->find($value->id)): ?>
+                    selected
+                <?php endif ?>
+                value="<?= $value->id ?>">
+                <?= $value->name ?>
+            </option>
+        <?php endforeach ?>
+    </select>
+<?php endforeach ?>

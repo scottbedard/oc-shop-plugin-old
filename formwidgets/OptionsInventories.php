@@ -26,15 +26,6 @@ class OptionsInventories extends FormWidgetBase
         return $this->makePartial('optionsinventories');
     }
 
-    public function renderPartials()
-    {
-        $this->prepareVars();
-
-        return [
-            '#formOptions' => $this->makePartial('options'),
-        ];
-    }
-
     /**
      * Prepares the form widget view data
      */
@@ -53,6 +44,22 @@ class OptionsInventories extends FormWidgetBase
         $this->model->load('options.values', 'inventories.values');
         $this->vars['inventories']  = $this->model->inventories;
         $this->vars['options']      = $this->model->options;
+    }
+
+    /**
+     * Prepare widget variables and push updates to the Options
+     * and Inventoryies partials.
+     *
+     * @return  array
+     */
+    public function renderPartials()
+    {
+        $this->prepareVars();
+
+        return [
+            '#formInventories'  => $this->makePartial('inventories'),
+            '#formOptions'      => $this->makePartial('options'),
+        ];
     }
 
     /**
@@ -121,7 +128,32 @@ class OptionsInventories extends FormWidgetBase
     }
 
     /**
-     * Create or update a product option
+     * Create or update an inventory
+     *
+     * @return  array
+     */
+    public function onProcessInventory()
+    {
+        $inventoryId = intval(input('model_id'));
+        $inventory = Inventory::findOrNew($inventoryId);
+        $inventory->product_id = intval(input('product_id'));
+        $inventory->sku = input('sku');
+        $inventory->quantity = intval(input('quantity'));
+
+        $inventory->saveWithValues(input('valueIds'));
+
+        $model = Lang::get('bedard.shop::lang.inventories.model');
+        if ($inventoryId) {
+            Flash::success(Lang::get('backend::lang.form.update_success', ['name' => $model]));
+        } else {
+            Flash::success(Lang::get('backend::lang.form.create_success', ['name' => $model]));
+        }
+
+        return $this->renderPartials();
+    }
+
+    /**
+     * Create or update an option
      *
      * @return  array
      */
@@ -145,12 +177,36 @@ class OptionsInventories extends FormWidgetBase
     }
 
     /**
+     * Deletes an inventory
+     *
+     * @return  array
+     */
+    public function onDeleteInventory()
+    {
+        $success = false;
+        if ($inventory = Inventory::find(intval(input('id')))) {
+            $success = $inventory->delete();
+        }
+
+        $model = Lang::get('bedard.shop::lang.inventories.model');
+        if ($success) {
+            Flash::success(Lang::get('backend::lang.form.delete_success', ['name' => $model]));
+        } else {
+            Flash::error(Lang::get('bedard.shop::lang.form.delete_failed_name', ['name' => $model]));
+        }
+
+        return $this->renderPartials();
+    }
+
+    /**
      * Deletes an option
+     *
+     * @return  array
      */
     public function onDeleteOption()
     {
         $success = false;
-        if ($option = Option::find(input('id'))) {
+        if ($option = Option::find(intval(input('id')))) {
             $success = $option->delete();
         }
 

@@ -21,7 +21,7 @@
   padding: 15px 17px;
 }
 #options-inventories ol {
-  font-size: 13px;
+  font-size: 14px;
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -79,6 +79,9 @@
 }
 .options-inventories-modal .modal-body {
   padding-bottom: 20px;
+}
+.options-inventories-modal .modal-body .values-widget:not(:last-of-type) {
+  margin-bottom: 10px;
 }
 .options-inventories-modal .modal-footer .loading-indicator {
   display: none;

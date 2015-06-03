@@ -1,12 +1,16 @@
 <?php namespace Bedard\Shop\Models;
 
+use Flash;
+use Lang;
 use Model;
+use October\Rain\Exception\ValidationException;
 
 /**
  * Inventory Model
  */
 class Inventory extends Model
 {
+    use \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string The database table used by the model.
@@ -39,40 +43,82 @@ class Inventory extends Model
     ];
 
     /**
-     * Compile a list of possible inventory options
+     * Validation
+     */
+    public $rules = [
+        'product_id'    => 'required',
+        'sku'           => 'unique:bedard_shop_inventories',
+        'quantity'      => 'integer|min:0',
+        'modifier'      => 'numeric',
+    ];
+
+    /**
+     * Prevent duplicate SKUs by converting empty strings to null
+     *
+     * @param   string  $value
+     */
+    public function setSkuAttribute($value)
+    {
+        $this->attributes['sku'] = $value ?: null;
+    }
+
+    /**
+     * Filter form fields
+     */
+    public function filterFields($fields, $context = null)
+    {
+        $fields->values->hidden = $this->product->options->count() == 0;
+    }
+
+    /**
+     * Returns related value names in the correct order
      *
      * @return  array
      */
-    public function getInventoryOptions()
+    public function getValueNames()
     {
-        // Create a group of value arrays
         $values = [];
-        $this->load('product.options.values');
-        foreach ($this->product->options as $option) {
-            $values[] = $option->values->lists('name');
+        foreach ($this->values as $value) {
+            $values[$value->option->position] = $value->name;
         }
 
-        // Calculate the cartesian product of our values
-        $options = [[]];
-        foreach ($values as $key => $names) {
-            $append = [];
-            foreach($options as $product) {
-                foreach($names as $name) {
-                    $product[$key] = $name;
-                    $append[] = $product;
-                }
-            }
-            $options = $append;
-        }
+        ksort($values);
 
-        // Implode our options into user-friendly strings
-        $selections = [];
-        $delimeter  = '<i class="delimeter icon-angle-right"></i>';
-        foreach ($options as $option) {
-            $selections[] = implode($delimeter, $option);
-        }
-
-        return $selections;
+        return $values;
     }
 
+    /**
+     * Run validation to make sure the inventory is unique, and
+     * save it with it's related values.
+     *
+     * @param   array   $valueIds
+     */
+    public function saveWithValues($valueIds = [])
+    {
+        $this->validate();
+
+        $valueIds = is_array($valueIds)
+            ? array_filter($valueIds)
+            : [];
+
+        $inventory = Inventory::where('id', '<>', intval($this->id))
+            ->where('product_id', $this->product_id)
+            ->has('values', '=', count($valueIds));
+
+        foreach ($valueIds as $valueId) {
+            $inventory->whereHas('values', function($value) use ($valueId) {
+                $value->where('id', $valueId);
+            });
+        }
+
+        $exists = $inventory->count();
+        if ($exists > 0) {
+            $message = Lang::get('bedard.shop::lang.inventories.inventory_exists');
+            Flash::error($message);
+            throw new ValidationException($message);
+        }
+
+        $this->save();
+        $this->values()->sync($valueIds);
+    }
 }

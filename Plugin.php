@@ -97,6 +97,10 @@ class Plugin extends PluginBase
                 'label' => 'Value Manager',
                 'code'  => 'valuemanager',
             ],
+            'Bedard\Shop\FormWidgets\ValueSelector' => [
+                'label' => 'Value Selector',
+                'code'  => 'valueselector',
+            ],
         ];
     }
 }

@@ -4,9 +4,9 @@
 
 fields:
 
-    inventory:
-        label: bedard.shop::lang.inventories.model
-        type: dropdown
+    values:
+        label: bedard.shop::lang.inventories.options_label
+        type: valueselector
 
     sku:
         label: bedard.shop::lang.inventories.sku
@@ -14,3 +14,9 @@ fields:
     quantity:
         label: bedard.shop::lang.inventories.quantity
         placeholder: 0
+        span: left
+
+    modifier:
+        label: bedard.shop::lang.inventories.modifier
+        placeholder: "0.00"
+        span: right

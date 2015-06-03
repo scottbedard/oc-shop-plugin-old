@@ -15,7 +15,7 @@ class CreateInventoriesTable extends Migration
             $table->integer('product_id')->unsigned()->nullable()->index();
             $table->string('sku')->nullable()->unique();
             $table->integer('quantity')->unsigned()->default(0);
-            $table->boolean('is_default')->default(false);
+            $table->decimal('modifier', 10, 2)->default(0);
             $table->timestamps();
         });
     }

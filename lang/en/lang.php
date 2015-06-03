@@ -60,10 +60,16 @@ return [
 
     'inventories' => [
         'default'               => 'Default Inventory',
+        'inventory_exists'      => 'That inventory already exists.',
         'model'                 => 'Inventory',
+        'modifier'              => 'Price modifier',
+        'options_label'         => 'Options',
+        'options_placeholder'   => 'Select :name',
+        'out_of_stock'          => 'Out of stock',
         'quantity'              => 'Quantity',
-        'sku'                   => 'Stock Keeping Unit',
+        'sku'                   => 'Stock keeping unit',
         'widget_label'          => 'Inventories',
+        'quantity_in_stock'     => ':quantity in stock',
     ],
 
     'products' => [
