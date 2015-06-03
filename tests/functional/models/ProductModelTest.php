@@ -1,7 +1,6 @@
 <?php namespace Bedard\Shop\Tests\Functional\Models;
 
 use Bedard\Shop\Tests\Fixtures\Generate;
-use Bedard\Shop\Models\Category;
 use Bedard\Shop\Models\Product;
 use DB;
 
