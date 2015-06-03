@@ -1,7 +1,9 @@
 <?php namespace Bedard\Shop\Tests\Functional\Models;
 
 use Bedard\Shop\Tests\Fixtures\Generate;
+use Bedard\Shop\Models\Price;
 use Bedard\Shop\Models\Product;
+use Carbon\Carbon;
 use DB;
 
 class ProductModelTest extends \OctoberPluginTestCase
@@ -10,9 +12,8 @@ class ProductModelTest extends \OctoberPluginTestCase
     protected $refreshPlugins = ['Bedard.Shop'];
 
     /**
-     * Some databases won't accept an empty string as a decimal
-     * column, even if a default is specified. This makes sure
-     * that a zero value is inserted.
+     * Make sure that a default value is set. SQLite can get tripped
+     * up without these model events
      */
     public function test_empty_base_price()
     {
@@ -47,6 +48,15 @@ class ProductModelTest extends \OctoberPluginTestCase
         $this->assertNull(DB::table('bedard_shop_category_product')->where('product_id', $product->id)->first());
     }
 
+    public function test_prices_are_removed_deleted()
+    {
+        $product = Generate::product('Hello');
+        $this->assertEquals(1, Price::where('product_id', $product->id)->count());
+
+        $product->delete();
+        $this->assertEquals(0, Price::where('product_id', $product->id)->count());
+    }
+
     /**
      * Makes sure that the isActive() and isNotActive() scopes work
      */
@@ -60,5 +70,21 @@ class ProductModelTest extends \OctoberPluginTestCase
 
         $isNotActive = Product::isNotActive()->first();
         $this->assertEquals($disabled->id, $isNotActive->id);
+    }
+
+    /**
+     * Ensure that the correct price is being related to the product
+     */
+    public function test_price_relationship_is_working()
+    {
+        $product    = Generate::product('Hello', ['base_price' => 5]);
+        $this->assertEquals($product->price->price, 5);
+
+        $first      = Generate::price($product, 3, ['discount_id' => 1]);
+        $second     = Generate::price($product, 7, ['discount_id' => 2]);
+        $inactive   = Generate::price($product, 1, ['discount_id' => 3, 'start_at' => Carbon::tomorrow()]);
+
+        $product->load('price');
+        $this->assertEquals($product->price->price, $first->price);
     }
 }

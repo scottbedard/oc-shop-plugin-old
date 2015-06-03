@@ -47,6 +47,14 @@ class Products extends Controller
     }
 
     /**
+     * Extend the list query
+     */
+    public function listExtendQuery($query)
+    {
+        return $query->with('price');
+    }
+
+    /**
      * Delete selected rows
      */
     public function index_onDelete()

@@ -11,8 +11,8 @@ class CreateCategoryProductTables extends Migration
         Schema::create('bedard_shop_category_product', function($table)
         {
             $table->engine = 'InnoDB';
-            $table->integer('category_id')->unsigned()->default(0);
-            $table->integer('product_id')->unsigned()->default(0);
+            $table->integer('category_id')->unsigned()->nullable();
+            $table->integer('product_id')->unsigned()->nullable();
             $table->primary(['category_id', 'product_id']);
         });
     }

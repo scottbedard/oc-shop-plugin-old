@@ -3,6 +3,7 @@
 use Bedard\Shop\Models\Category;
 use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Option;
+use Bedard\Shop\Models\Price;
 use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Value;
 
@@ -70,6 +71,28 @@ class Generate {
     }
 
     /**
+     * Generates an price for use in tests
+     *
+     * @param   Product     $product
+     * @param   float       $price
+     * @param   array       $data
+     * @return  Price
+     */
+    public static function price(Product $product, $price, $data = [])
+    {
+        $model = new Price;
+        $model->product_id = $product->id;
+        $model->price = $price;
+
+        foreach ($data as $key => $value) {
+            $model->$key = $value;
+        }
+
+        $model->save();
+        return $model;
+    }
+
+    /**
      * Generate a product for use in tests
      *
      * @param   string      $name
@@ -87,6 +110,7 @@ class Generate {
         }
 
         $product->save();
+        $product->load('price');
         return $product;
     }
 

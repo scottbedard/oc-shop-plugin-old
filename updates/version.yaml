@@ -8,4 +8,5 @@
     - create_values_table.php
     - create_inventories_table.php
     - create_inventory_value_table.php
+    - create_prices_table.php
     - dev_seeds.php

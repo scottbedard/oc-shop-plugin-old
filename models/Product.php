@@ -1,6 +1,7 @@
 <?php namespace Bedard\Shop\Models;
 
 use Bedard\Shop\Models\Category;
+use Bedard\Shop\Models\Price;
 use DB;
 use Lang;
 use Markdown;
@@ -51,6 +52,7 @@ class Product extends Model
             'table' => 'bedard_shop_category_product',
         ],
     ];
+
     public $hasMany = [
         'inventories' => [
             'Bedard\Shop\Models\Inventory',
@@ -58,6 +60,14 @@ class Product extends Model
         'options' => [
             'Bedard\Shop\Models\Option',
             'order' => 'position asc',
+        ],
+    ];
+
+    public $hasOne = [
+        'price' => [
+            'Bedard\Shop\Models\Price',
+            'scope' => 'isActive',
+            'order' => 'price asc',
         ],
     ];
 
@@ -78,6 +88,19 @@ class Product extends Model
     /**
      * Model Events
      */
+    public function beforeSave()
+    {
+        // This exists to help sqlite handle a null base_price
+        $this->attributes['base_price'] = $this->base_price ?: 0;
+    }
+
+    public function afterSave()
+    {
+        // Ensure that the default price model matches to base_price
+        $price = Price::firstOrNew(['product_id' => $this->id, 'discount_id' => null]);
+        $price->price = $this->base_price;
+        $price->save();
+    }
 
     public function afterDelete()
     {
@@ -85,6 +108,9 @@ class Product extends Model
         DB::table($this->belongsToMany['categories']['table'])
             ->where('product_id', $this->attributes['id'])
             ->delete();
+
+        // Clean up prices
+        Price::where('product_id', $this->id)->delete();
     }
 
     /**
@@ -108,14 +134,6 @@ class Product extends Model
     public function getCategoriesOptions()
     {
         return Category::isNotFiltered()->lists('name', 'id');
-    }
-
-    public function setBasePriceAttribute($value)
-    {
-        // Some databases don't use the default value when a decimal
-        // column is filled with an empty string. This will ensure
-        // there is always a value entered for the base_price.
-        $this->attributes['base_price'] = $value ?: 0;
     }
 
     public function setDescriptionAttribute($value)
