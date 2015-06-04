@@ -11,6 +11,7 @@ class CreatePricesTable extends Migration
         Schema::create('bedard_shop_prices', function($table)
         {
             $table->engine = 'InnoDB';
+            $table->increments('id');
             $table->integer('product_id')->unsigned()->nullable();
             $table->integer('discount_id')->unsigned()->nullable();
             $table->decimal('price', 10, 2)->default(0);
