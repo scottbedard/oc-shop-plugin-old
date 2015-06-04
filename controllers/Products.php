@@ -3,6 +3,8 @@
 use BackendMenu;
 use Backend\Classes\Controller;
 use Bedard\Shop\Models\Product;
+use Flash;
+use Lang;
 
 /**
  * Products Back-end Controller
