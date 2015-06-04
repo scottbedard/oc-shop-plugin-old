@@ -16,7 +16,7 @@ class CreatePricesTable extends Migration
             $table->decimal('price', 10, 2)->default(0);
             $table->datetime('start_at')->nullable();
             $table->datetime('end_at')->nullable();
-            $table->primary(['product_id', 'discount_id']);
+            $table->unique(['product_id', 'discount_id']);
         });
     }
 

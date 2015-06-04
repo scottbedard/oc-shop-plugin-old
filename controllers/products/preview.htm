@@ -1,7 +1,7 @@
 <?php Block::put('breadcrumb') ?>
     <ul>
         <li><a href="<?= Backend::url('bedard/shop/products') ?>"><?= e(trans('bedard.shop::lang.products.controller')) ?></a></li>
-        <li><?= e(trans('backend::lang.form.preview_title', ['name' => e(trans('bedard.shop::lang.products.model'))])) ?></li>
+        <li><?= e(trans('backend::lang.form.preview_title', ['name' => trans('bedard.shop::lang.products.model')])) ?></li>
     </ul>
 <?php Block::endPut() ?>
 
@@ -16,7 +16,7 @@
     <p class="flash-message static error"><?= e($this->fatalError) ?></p>
     <p>
         <a href="<?= Backend::url('bedard/shop/categories') ?>" class="btn btn-default">
-            <?= e(trans('bedard.shop::lang.form.return_to_name_list', ['name' => e(trans('bedard.shop::lang.products.model'))])) ?>
+            <?= e(trans('bedard.shop::lang.form.return_to_name_list', ['name' => trans('bedard.shop::lang.products.model')])) ?>
         </a>
     </p>
 
