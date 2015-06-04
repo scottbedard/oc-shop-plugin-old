@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: bedard.shop::lang.discounts.model
+
+# Model Form Field configuration
+form: $/bedard/shop/models/discount/fields.yaml
+
+# Model Class name
+modelClass: Bedard\Shop\Models\Discount
+
+# Default redirect location
+defaultRedirect: bedard/shop/discounts
+
+# Create page
+create:
+    title: backend::lang.relation.create_name
+    redirect: bedard/shop/discounts/update/:id
+    redirectClose: bedard/shop/discounts
+
+# Update page
+update:
+    title: backend::lang.relation.update_name
+    redirect: bedard/shop/discounts
+    redirectClose: bedard/shop/discounts
+
+# Preview page
+preview:
+    title: backend::lang.relations.preview_name

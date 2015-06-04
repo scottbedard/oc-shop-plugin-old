@@ -53,6 +53,12 @@ class Plugin extends PluginBase
                         'url'           => Backend::url('bedard/shop/products'),
                         'permissions'   => ['bedard.shop.access_products'],
                     ],
+                    'discounts' => [
+                        'label'         => 'bedard.shop::lang.discounts.controller',
+                        'icon'          => 'icon-clock-o',
+                        'url'           => Backend::url('bedard/shop/discounts'),
+                        'permissions'   => ['bedard.shop.access_discounts'],
+                    ],
                 ],
             ],
         ];
@@ -78,6 +84,10 @@ class Plugin extends PluginBase
                 'tab'   => 'bedard.shop::lang.general.plugin',
                 'label' => 'bedard.shop::lang.permissions.access_inventories',
             ],
+            'bedard.shop.access_discounts' => [
+                'tab'   => 'bedard.shop::lang.general.plugin',
+                'label' => 'bedard.shop::lang.permissions.access_discounts',
+            ],
         ];
     }
 
@@ -100,6 +110,10 @@ class Plugin extends PluginBase
             'Bedard\Shop\FormWidgets\ValueSelector' => [
                 'label' => 'Value Selector',
                 'code'  => 'valueselector',
+            ],
+            'Owl\FormWidgets\Knob\Widget' => [
+                'label' => 'Knob',
+                'code'  => 'owl-knob'
             ],
         ];
     }

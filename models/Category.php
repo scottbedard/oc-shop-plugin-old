@@ -50,6 +50,7 @@ class Category extends Model
             'Bedard\Shop\Models\Category',
         ],
     ];
+
     public $belongsToMany = [
         'inherited' => [
             'Bedard\Shop\Models\Category',
@@ -60,6 +61,15 @@ class Category extends Model
         'products' => [
             'Bedard\Shop\Models\Product',
             'table'     => 'bedard_shop_category_product',
+        ],
+    ];
+
+    public $morphToMany = [
+        'discounts' => [
+            'Bedard\Shop\Models\Discount',
+            'table'         => 'bedard_shop_discountables',
+            'name'          => 'discountable',
+            'foreignKey'    => 'discount_id',
         ],
     ];
 

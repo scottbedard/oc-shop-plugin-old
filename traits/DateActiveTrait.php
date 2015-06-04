@@ -18,7 +18,7 @@ trait DateActiveTrait {
             })
             ->where(function($query) use ($now) {
                 $query->whereNull('end_at')
-                      ->orWhere('end_at', '>=', $now);
+                      ->orWhere('end_at', '>', $now);
             });
     }
 

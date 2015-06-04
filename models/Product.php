@@ -71,6 +71,15 @@ class Product extends Model
         ],
     ];
 
+    public $morphToMany = [
+        'discounts' => [
+            'Bedard\Shop\Models\Discount',
+            'table'         => 'bedard_shop_discountables',
+            'name'          => 'discountable',
+            'foreignKey'    => 'discount_id',
+        ],
+    ];
+
     /**
      * Validation
      */

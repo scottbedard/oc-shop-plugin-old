@@ -9,4 +9,6 @@
     - create_inventories_table.php
     - create_inventory_value_table.php
     - create_prices_table.php
+    - create_discounts_table.php
+    - create_discountables_table.php
     - dev_seeds.php

@@ -47,4 +47,15 @@ class PermissionsRouteTest extends \OctoberPluginTestCase
         $this->call('GET', Backend::url('bedard/shop/categories'));
         $this->assertResponseOk();
     }
+
+    public function test_discount_permissions()
+    {
+        $user = Auth::createUser(['bedard.shop.access_discounts' => -1]);
+        $this->call('GET', Backend::url('bedard/shop/discounts'));
+        $this->assertResponseStatus(403);
+
+        Auth::setPermissions($user, ['bedard.shop.access_discounts' => 1]);
+        $this->call('GET', Backend::url('bedard/shop/discounts'));
+        $this->assertResponseOk();
+    }
 }

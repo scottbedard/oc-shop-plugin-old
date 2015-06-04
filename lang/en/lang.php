@@ -6,8 +6,8 @@ return [
     // General
     //
     'general' => [
-        'plugin'                => 'Shop',
-        'description'           => 'A feature rich ecommerce platform.',
+        'plugin'                    => 'Shop',
+        'description'               => 'A feature rich ecommerce platform.',
     ],
 
     //
@@ -16,7 +16,8 @@ return [
     'permissions' => [
         'access_categories'         => 'Manage categories',
         'access_products'           => 'Manage products',
-        'access_inventories'        => 'Manage product options and inventories',
+        'access_inventories'        => 'Manage inventories',
+        'access_discounts'          => 'Manage discounts',
     ],
 
     //
@@ -56,6 +57,12 @@ return [
         'reorder'                   => 'Re-order Categories',
         'reorder_empty'             => 'There are no categories to re-order.',
         'reorder_success'           => 'Categories have been successfully re-ordered!',
+    ],
+
+    'discounts' => [
+        'controller'                => 'Discounts',
+        'list_title'                => 'Manage Discounts',
+        'model'                     => 'Discount',
     ],
 
     'inventories' => [

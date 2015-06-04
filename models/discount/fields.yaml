@@ -1,0 +1,56 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+
+    name:
+        label: bedard.shop::lang.common.name
+
+    start_at:
+        label: bedard.shop::lang.discounts.start_at
+        comment: bedard.shop::lang.discounts.no_start
+        type: datepicker
+        span: left
+
+    end_at:
+        label: bedard.shop::lang.discounts.end_at
+        comment: bedard.shop::lang.discounts.no_end
+        type: datepicker
+        span: right
+
+    amount_percentage:
+        dependsOn: is_percentage
+        knobLabel: Discount percentage
+        knobComment: The percentage to discount product prices by.
+        type: owl-knob
+        angleOffset: -125
+        angleArc: 250
+        fgColor: 8DA85E
+        inputColor: 666
+        width: 81
+        span: left
+
+    amount_exact:
+        dependsOn: is_percentage
+        label: bedard.shop::lang.discounts.amount_exact
+        placeholder: "0.00"
+        span: left
+
+    is_percentage:
+        label: bedard.shop::lang.discounts.method
+        type: radio
+        options:
+            1: bedard.shop::lang.discounts.method_percentage
+            0: bedard.shop::lang.discounts.method_exact
+        span: right
+
+    products:
+        label: bedard.shop::lang.products.controller
+        type: relation
+        span: right
+
+    categories:
+        label: bedard.shop::lang.categories.controller
+        type: relation
+        span: left
