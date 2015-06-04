@@ -25,6 +25,9 @@ class Price extends Model
     protected $fillable = [
         'product_id',
         'discount_id',
+        'price',
+        'start_at',
+        'end_at',
     ];
 
     /**
@@ -58,6 +61,12 @@ class Price extends Model
     {
         // This exists to help sqlite handle a null price value
         $this->attributes['price'] = $this->price ?: 0;
+    }
+
+    public function setPriceAttribute($value)
+    {
+        // Ensure that we never have a negative price
+        $this->attributes['price'] = $value > 0 ? $value : 0;
     }
 
 }
