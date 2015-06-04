@@ -60,9 +60,20 @@ return [
     ],
 
     'discounts' => [
+        'amount'                    => 'Discount Amount',
+        'amount_exact'              => 'The exact amount to reduce prices by.',
+        'amount_percentage'         => 'The percentage to reduce prices by.',
         'controller'                => 'Discounts',
+        'end_at'                    => 'End Date',
+        'end_at_invalid'            => 'The end date must be after the start date.',
         'list_title'                => 'Manage Discounts',
+        'method'                    => 'Discount Method',
+        'method_exact'              => 'Exact Amount',
+        'method_percentage'         => 'Percentage',
         'model'                     => 'Discount',
+        'no_end'                    => 'Leave blank to run indefinitely.',
+        'no_start'                  => 'Leave blank to start immediately.',
+        'start_at'                  => 'Start Date',
     ],
 
     'inventories' => [

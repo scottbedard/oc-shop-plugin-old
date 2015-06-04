@@ -21,11 +21,11 @@ fields:
 
     amount_percentage:
         dependsOn: is_percentage
-        knobLabel: Discount percentage
-        knobComment: The percentage to discount product prices by.
+        knobLabel: bedard.shop::lang.discounts.amount
+        knobComment: bedard.shop::lang.discounts.amount_percentage
         type: owl-knob
-        angleOffset: -125
-        angleArc: 250
+        angleOffset: -115
+        angleArc: 230
         fgColor: 8DA85E
         inputColor: 666
         width: 81
@@ -33,7 +33,8 @@ fields:
 
     amount_exact:
         dependsOn: is_percentage
-        label: bedard.shop::lang.discounts.amount_exact
+        label: bedard.shop::lang.discounts.amount
+        comment: bedard.shop::lang.discounts.amount_exact
         placeholder: "0.00"
         span: left
 
@@ -41,16 +42,16 @@ fields:
         label: bedard.shop::lang.discounts.method
         type: radio
         options:
-            1: bedard.shop::lang.discounts.method_percentage
             0: bedard.shop::lang.discounts.method_exact
-        span: right
-
-    products:
-        label: bedard.shop::lang.products.controller
-        type: relation
+            1: bedard.shop::lang.discounts.method_percentage
         span: right
 
     categories:
         label: bedard.shop::lang.categories.controller
         type: relation
         span: left
+
+    products:
+        label: bedard.shop::lang.products.controller
+        type: relation
+        span: right
