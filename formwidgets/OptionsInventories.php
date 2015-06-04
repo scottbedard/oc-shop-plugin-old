@@ -22,6 +22,10 @@ class OptionsInventories extends FormWidgetBase
      */
     public function render()
     {
+        if (!$this->model->id) {
+            return $this->makePartial('hint');
+        }
+
         $this->prepareVars();
         return $this->makePartial('optionsinventories');
     }

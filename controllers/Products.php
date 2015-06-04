@@ -40,7 +40,7 @@ class Products extends Controller
     {
         if ($this->user->hasAccess('bedard.shop.access_inventories')) {
             $form->addSecondaryTabFields([
-                'optionsinventories@update' => [
+                'optionsinventories' => [
                     'tab'   => 'bedard.shop::lang.products.options_inventories',
                     'type'  => 'optionsinventories',
                 ],
