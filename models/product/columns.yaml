@@ -9,6 +9,14 @@ columns:
 
     price:
         label: bedard.shop::lang.products.price
+        select: >
+            (
+                SELECT MIN(`bedard_shop_prices`.`price`)
+                FROM `bedard_shop_prices`
+                WHERE (`bedard_shop_prices`.`start_at` <= NOW() OR `bedard_shop_prices`.`start_at` IS NULL)
+                AND (`bedard_shop_prices`.`end_at` > NOW() OR `bedard_shop_prices`.`end_at` IS NULL)
+                AND `bedard_shop_prices`.`product_id` = `bedard_shop_products`.`id`
+            )
 
     status:
         label: bedard.shop::lang.products.status
