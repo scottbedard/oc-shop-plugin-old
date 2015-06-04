@@ -48,7 +48,10 @@ class ProductModelTest extends \OctoberPluginTestCase
         $this->assertNull(DB::table('bedard_shop_category_product')->where('product_id', $product->id)->first());
     }
 
-    public function test_prices_are_removed_deleted()
+    /**
+     * Keep the price table clean
+     */
+    public function test_prices_are_removed_after_delete()
     {
         $product = Generate::product('Hello');
         $this->assertEquals(1, Price::where('product_id', $product->id)->count());
@@ -86,5 +89,37 @@ class ProductModelTest extends \OctoberPluginTestCase
 
         $product->load('price');
         $this->assertEquals($product->price->price, $first->price);
+    }
+
+    /**
+     * Ensure that prices are updated after saving
+     */
+    public function test_price_models_are_updated()
+    {
+       $product     = Generate::product('Stuff', ['base_price' => 100]);
+       $discount    = Generate::discount('Cheap stuff', ['is_percentage' => false, 'amount_exact' => 25]);
+       $discount->products()->add($product);
+       $discount->load('products');
+       $discount->save();
+
+       // Verify that the correct price models exist to start with
+       $prices = Price::where('product_id', $product->id)->get();
+       $this->assertEquals(2, $prices->count());
+       $base = $prices->where('product_id', $product->id)->where('discount_id', null)->first();
+       $discounted = $prices->where('product_id', $product->id)->where('discount_id', $discount->id)->first();
+       $this->assertEquals(100, $product->base_price);
+       $this->assertEquals(75, $discounted->price);
+
+       // Change the product price
+       $product->base_price = 200;
+       $product->save();
+
+       // Verify that the price models have been updated
+       $prices = Price::where('product_id', $product->id)->get();
+       $this->assertEquals(2, $prices->count());
+       $base = $prices->where('product_id', $product->id)->where('discount_id', null)->first();
+       $discounted = $prices->where('product_id', $product->id)->where('discount_id', $discount->id)->first();
+       $this->assertEquals(200, $product->base_price);
+       $this->assertEquals(175, $discounted->price);
     }
 }

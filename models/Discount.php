@@ -126,8 +126,6 @@ class Discount extends Model
                 ? $product->base_price * ($this->amount_percentage / 100)
                 : $this->amount_exact;
 
-            // echo $discount
-
             Price::create([
                 'product_id'    => $product->id,
                 'discount_id'   => $this->id,

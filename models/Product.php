@@ -103,12 +103,24 @@ class Product extends Model
         $this->attributes['base_price'] = $this->base_price ?: 0;
     }
 
-    public function afterSave()
+    public function afterCreate()
     {
-        // Ensure that the default price model matches to base_price
-        $price = Price::firstOrNew(['product_id' => $this->id, 'discount_id' => null]);
+        // Create the default price model
+        $price = new Price;
+        $price->product_id = $this->id;
         $price->price = $this->base_price;
         $price->save();
+    }
+
+    public function afterSave()
+    {
+        // If the base_price has changed, we need to refresh the price models
+        if ($this->getOriginal('base_price') != $this->base_price) {
+            $prices = Price::with('product', 'discount')->where('product_id', $this->id)->get();
+            foreach ($prices as $price) {
+                $price->refresh();
+            }
+        }
     }
 
     public function afterDelete()
