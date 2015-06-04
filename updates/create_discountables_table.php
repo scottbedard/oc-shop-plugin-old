@@ -14,7 +14,7 @@ class CreateDiscountablesTable extends Migration
             $table->integer('discount_id')->unsigned()->nullable();
             $table->integer('discountable_id')->unsigned()->nullable();
             $table->string('discountable_type')->nullable();
-            $table->unique(['discount_id', 'discountable_id']);
+            $table->unique(['discount_id', 'discountable_id', 'discountable_type']);
         });
     }
 

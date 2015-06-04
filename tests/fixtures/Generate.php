@@ -1,6 +1,7 @@
 <?php namespace Bedard\Shop\Tests\Fixtures;
 
 use Bedard\Shop\Models\Category;
+use Bedard\Shop\Models\Discount;
 use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Option;
 use Bedard\Shop\Models\Price;
@@ -28,6 +29,26 @@ class Generate {
 
         $category->save();
         return $category;
+    }
+
+    /**
+     * Create a discount for use in tests
+     *
+     * @param   string  $name
+     * @param   array   $data
+     * @return  Discount
+     */
+    public static function discount($name, $data = [])
+    {
+        $discount = new Discount;
+        $discount->name = $name;
+
+        foreach ($data as $key => $value) {
+            $discount->$key = $value;
+        }
+
+        $discount->save();
+        return $discount;
     }
 
     /**
