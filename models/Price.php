@@ -52,15 +52,6 @@ class Price extends Model
         ],
     ];
 
-    /**
-     * Model Events
-     */
-    public function beforeSave()
-    {
-        // This exists to help sqlite handle a null price value
-        $this->attributes['price'] = $this->price ?: 0;
-    }
-
     public function setPriceAttribute($value)
     {
         // Ensure that we never have a negative price

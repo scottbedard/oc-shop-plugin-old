@@ -67,14 +67,14 @@ class DiscountModelTest extends \OctoberPluginTestCase
         $discount->load('products');
         $discount->save();
 
-        $product->load('price');
-        $this->assertEquals(9, $product->price->price);
+        $product->load('current_price');
+        $this->assertEquals(9, $product->current_price->price);
 
         $discount->is_percentage = false;
         $discount->amount_exact = 5;
         $discount->save();
 
-        $product->load('price');
-        $this->assertEquals(5, $product->price->price);
+        $product->load('current_price');
+        $this->assertEquals(5, $product->current_price->price);
     }
 }

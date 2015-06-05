@@ -53,7 +53,7 @@ class Products extends Controller
      */
     public function listExtendQuery($query)
     {
-        return $query->joinPrice();
+        return $query->joinPrice()->with('current_price');
     }
 
     /**

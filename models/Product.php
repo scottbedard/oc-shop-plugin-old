@@ -61,10 +61,13 @@ class Product extends Model
             'Bedard\Shop\Models\Option',
             'order' => 'position asc',
         ],
+        'prices' => [
+            'Bedard\Shop\Models\Price',
+        ],
     ];
 
     public $hasOne = [
-        'price' => [
+        'current_price' => [
             'Bedard\Shop\Models\Price',
             'scope' => 'isActive',
             'order' => 'price asc',
@@ -112,12 +115,11 @@ class Product extends Model
         $price->save();
     }
 
-    public function afterSave()
+    public function afterUpdate()
     {
         // If the base_price has changed, we need to refresh the price models
         if ($this->getOriginal('base_price') != $this->base_price) {
-            $prices = Price::with('product', 'discount')->where('product_id', $this->id)->get();
-            foreach ($prices as $price) {
+            foreach ($this->prices as $price) {
                 $price->refresh();
             }
         }
@@ -149,6 +151,10 @@ class Product extends Model
 
     public function scopeJoinPrice($query, $operator = false, $value = false)
     {
+        // This joins a price table to the product table. It is done this way
+        // to enable sorting the "price" column, and to avoid using MySQL's
+        // "now()" function which is unsupported by SQLite.
+
         $now = date('Y-m-d H:i:s');
         $subquery = "(
             SELECT `bedard_shop_prices`.`product_id`, MIN(`bedard_shop_prices`.`price`) AS `price`
@@ -173,10 +179,24 @@ class Product extends Model
         return Category::isNotFiltered()->lists('name', 'id');
     }
 
+    /**
+     * Cache the compiled markdown description
+     *
+     * @param   string  $value
+     */
     public function setDescriptionAttribute($value)
     {
-        // Cache the compiled markdown description
         $this->attributes['description'] = $value;
         $this->attributes['description_html'] = Markdown::parse(trim($value));
+    }
+
+    /**
+     * Determines if a product is discounted or not
+     *
+     * @return  boolean
+     */
+    public function isDiscounted()
+    {
+        return $this->current_price->price < $this->base_price;
     }
 }

@@ -81,14 +81,14 @@ class ProductModelTest extends \OctoberPluginTestCase
     public function test_price_relationship_is_working()
     {
         $product    = Generate::product('Hello', ['base_price' => 5]);
-        $this->assertEquals($product->price->price, 5);
+        $this->assertEquals($product->current_price->price, 5);
 
         $first      = Generate::price($product, 3, ['discount_id' => 1]);
         $second     = Generate::price($product, 7, ['discount_id' => 2]);
         $inactive   = Generate::price($product, 1, ['discount_id' => 3, 'start_at' => Carbon::tomorrow()]);
 
-        $product->load('price');
-        $this->assertEquals($product->price->price, $first->price);
+        $product->load('current_price');
+        $this->assertEquals($product->current_price->price, $first->price);
     }
 
     /**

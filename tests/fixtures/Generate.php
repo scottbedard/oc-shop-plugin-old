@@ -131,7 +131,7 @@ class Generate {
         }
 
         $product->save();
-        $product->load('price');
+        $product->load('current_price');
         return $product;
     }
 

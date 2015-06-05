@@ -14,7 +14,7 @@ class DateActiveTest extends \OctoberPluginTestCase
         $product = Generate::product('Foo', ['base_price' => 1]);
 
         // Active prices
-        $active_1 = $product->price;
+        $active_1 = $product->current_price;
         $active_2 = Generate::price($product, 2, [
             'discount_id'   => 2,
             'start_at'      => Carbon::yesterday()
