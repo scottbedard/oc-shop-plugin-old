@@ -1,0 +1,16 @@
+<?php if ($record->isDiscounted()): ?>
+
+    <a
+        href="javascript:;"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="<?= $record->base_price ?>"
+        class="green">
+        <?= $record->current_price->price ?>
+    </a>
+
+<?php else: ?>
+
+    <?= $record->current_price->price ?>
+
+<?php endif ?>
