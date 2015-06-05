@@ -92,34 +92,39 @@ class ProductModelTest extends \OctoberPluginTestCase
     }
 
     /**
-     * Ensure that prices are updated after saving
+     * Ensure that discount prices are synchronized
      */
-    public function test_price_models_are_updated()
+    public function test_sync_discounted_prices()
     {
-       $product     = Generate::product('Stuff', ['base_price' => 100]);
-       $discount    = Generate::discount('Cheap stuff', ['is_percentage' => false, 'amount_exact' => 25]);
-       $discount->products()->add($product);
-       $discount->load('products');
-       $discount->save();
+        $product    = Generate::product('Foo');
+        $parent     = Generate::category('Parent');
+        $child      = Generate::category('Child', ['parent_id' => $parent->id]);
 
-       // Verify that the correct price models exist to start with
-       $prices = Price::where('product_id', $product->id)->get();
-       $this->assertEquals(2, $prices->count());
-       $base = $prices->where('product_id', $product->id)->where('discount_id', null)->first();
-       $discounted = $prices->where('product_id', $product->id)->where('discount_id', $discount->id)->first();
-       $this->assertEquals(100, $product->base_price);
-       $this->assertEquals(75, $discounted->price);
+        // Create a discount and attach the product directly to it
+        $discount = Generate::discount('Discount', ['is_percentage' => false, 'amount_exact' => 25]);
+        $discount->products()->add($product);
+        $product->base_price = 100;
+        $product->save();
+        $product->load('current_price', 'discounted_prices');
+        $this->assertEquals(75, $product->current_price->price);
+        $this->assertEquals(1, $product->discounted_prices->count());
 
-       // Change the product price
-       $product->base_price = 200;
-       $product->save();
+        // Remove the product discount, and instead
+        $discount->products()->remove($product);
+        $product->changedCategories = true;
+        $product->save();
+        $product->load('current_price', 'discounted_prices');
+        $this->assertEquals(100, $product->current_price->price);
+        $this->assertEquals(0, $product->discounted_prices->count());
 
-       // Verify that the price models have been updated
-       $prices = Price::where('product_id', $product->id)->get();
-       $this->assertEquals(2, $prices->count());
-       $base = $prices->where('product_id', $product->id)->where('discount_id', null)->first();
-       $discounted = $prices->where('product_id', $product->id)->where('discount_id', $discount->id)->first();
-       $this->assertEquals(200, $product->base_price);
-       $this->assertEquals(175, $discounted->price);
+        // Attach a discount to parent, and make sure that product has picked it up
+        $discount->categories()->add($parent);
+        $product->categories()->add($child);
+        $product->load('categories');
+        $product->changedCategories = true;
+        $product->save();
+        $product->load('current_price', 'discounted_prices');
+        $this->assertEquals(75, $product->current_price->price);
+        $this->assertEquals(1, $product->discounted_prices->count());
     }
 }

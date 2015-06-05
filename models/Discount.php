@@ -1,8 +1,8 @@
 <?php namespace Bedard\Shop\Models;
 
 use Bedard\Shop\Models\Price;
+use Bedard\Shop\Models\Product;
 use DB;
-use Illuminate\Database\Eloquent\Collection;
 use Model;
 
 /**
@@ -10,7 +10,8 @@ use Model;
  */
 class Discount extends Model
 {
-    use \October\Rain\Database\Traits\Validation;
+    use \Bedard\Shop\Traits\DateActiveTrait,
+        \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string The database table used by the model.
@@ -105,35 +106,44 @@ class Discount extends Model
      */
     public function syncProducts()
     {
-        // Clear the current prices so they can be re-calculated
+        // First, grab all products within the scope of this discount
+        $products = Product::whereIn('id', $this->products->lists('id'))
+            ->orWhereHas('categories', function($categories) {
+                $ids = $this->categories->lists('id');
+                $categories->whereIn('id', $ids)
+                    ->orWhereHas('inherited', function($inherited) use ($ids) {
+                        $inherited->whereIn('parent_id', $ids);
+                    });
+            })
+            ->get();
+
+        // Next, reset all discounted price models
         $this->prices()->delete();
-
-        // Determine the scope of this discount. It should apply to all selected
-        // products, and the products of any categories or inherited categories.
-        $scope = $this->products;
-        $this->categories->load('products', 'inherited.products');
-        foreach ($this->categories as $category) {
-            $scope = $scope->merge($category->products);
-
-            foreach ($category->inherited as $inherited) {
-                $scope = $scope->merge($inherited->products);
-            }
-        }
-
-        // Create a price model for each product
-        foreach ($scope->unique() as $product) {
-            $discount = $this->is_percentage
-                ? $product->base_price * ($this->amount_percentage / 100)
-                : $this->amount_exact;
-
+        foreach ($products as $product) {
             Price::create([
                 'product_id'    => $product->id,
                 'discount_id'   => $this->id,
-                'price'         => $product->base_price - $discount,
+                'price'         => $this->calculate($product->base_price),
                 'start_at'      => $this->start_at,
-                'end_at'        => $this->end_at,
+                'end_at'        => $this->end_at
             ]);
         }
+    }
+
+    /**
+     * Calculates a discounted price
+     *
+     * @param   float   $base_price
+     * @return  float
+     */
+    public function calculate($base_price)
+    {
+        $discount = $this->is_percentage
+            ? $base_price * ($this->amount_percentage / 100)
+            : $this->amount_exact;
+
+        $price = round($base_price - $discount, 2);
+        return $price > 0 ? $price : 0;
     }
 
 }

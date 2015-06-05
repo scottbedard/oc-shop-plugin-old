@@ -49,6 +49,23 @@ class Products extends Controller
     }
 
     /**
+     * If the categories or base price have changed, we need to let
+     * the modelknow so prices can be re-calculated after saving.
+     *
+     * @param   Product $product
+     */
+    public function formBeforeSave(Product $product)
+    {
+        $newCategories = post('Product[categories]') ?: [];
+        $oldCategories = $product->categories->lists('id') ?: [];
+        if (!$product->id ||
+            array_diff($newCategories, $oldCategories) ||
+            array_diff($oldCategories, $newCategories)) {
+            $product->changedCategories = true;
+        }
+    }
+
+    /**
      * Extend the list query
      */
     public function listExtendQuery($query)

@@ -52,9 +52,26 @@ class Price extends Model
         ],
     ];
 
+    /**
+     * Query Scopes
+     */
+    public function scopeIsNotDiscounted($query)
+    {
+        return $query->whereNull('discount_id');
+    }
+
+    public function scopeIsDiscounted($query)
+    {
+        return $query->whereNotNull('discount_id');
+    }
+
+    /**
+     * Ensure that a discount never creates a negative price
+     *
+     * @param   float   $value
+     */
     public function setPriceAttribute($value)
     {
-        // Ensure that we never have a negative price
         $this->attributes['price'] = $value > 0 ? $value : 0;
     }
 

@@ -17,6 +17,7 @@ class DiscountModelTest extends \OctoberPluginTestCase
         $parent     = Generate::category('Parent');
         $child      = Generate::category('Child', ['parent_id' => $parent->id]);
         $unrelated  = Generate::category('Unrelated');
+
         $shirt      = Generate::product('Shirt');
         $pants      = Generate::product('Pants');
         $hat        = Generate::product('Hat');
@@ -25,31 +26,36 @@ class DiscountModelTest extends \OctoberPluginTestCase
         $shirt->categories()->add($parent);
         $pants->categories()->add($child);
         $hat->categories()->add($unrelated);
+        $shoes->categories()->add($unrelated);
 
-        $discount = Generate::discount('Shirt Pants and Shoes');
-        $discount->products()->add($shoes);
+        // Discount only the hat
+        $discount = Generate::discount('Hat only');
+        $discount->products()->add($hat);
+        $discount->load('products');
+        $discount->save();
+        $discount->load('prices');
+        $this->assertEquals(1, $discount->prices->count());
+        $this->assertEquals(1, $discount->prices->where('product_id', $hat->id)->count());
+
+        // Discount the unrelated category, shoes should be discounted
+        $discount->categories()->add($unrelated);
+        $discount->load('categories');
+        $discount->save();
+        $discount->load('prices');
+        $this->assertEquals(2, $discount->prices->count());
+        $this->assertEquals(1, $discount->prices->where('product_id', $hat->id)->count());
+        $this->assertEquals(1, $discount->prices->where('product_id', $shoes->id)->count());
+
+        // Discount the parent category, and everything should become discounted
         $discount->categories()->add($parent);
-        $discount->load('products', 'categories');
+        $discount->load('categories.inherited');
         $discount->save();
-
-        // There should have been prices made for $shirt, $pants, and $shoes
-        $prices = Price::where('discount_id', $discount->id)->get();
-        $this->assertEquals(3, $prices->count());
-        $this->assertEquals(1, $prices->where('product_id', $shirt->id)->count());
-        $this->assertEquals(1, $prices->where('product_id', $pants->id)->count());
-        $this->assertEquals(1, $prices->where('product_id', $shoes->id)->count());
-
-        // If we remove $child's parent_id, then $pants should no longer
-        // be within the scope of this discount.
-        $child->parent_id = null;
-        $child->save();
-        $discount->load('products', 'categories');
-        $discount->save();
-
-        $prices = Price::where('discount_id', $discount->id)->get();
-        $this->assertEquals(2, $prices->count());
-        $this->assertEquals(1, $prices->where('product_id', $shirt->id)->count());
-        $this->assertEquals(1, $prices->where('product_id', $shoes->id)->count());
+        $discount->load('prices');
+        $this->assertEquals(4, $discount->prices->count());
+        $this->assertEquals(1, $discount->prices->where('product_id', $hat->id)->count());
+        $this->assertEquals(1, $discount->prices->where('product_id', $shoes->id)->count());
+        $this->assertEquals(1, $discount->prices->where('product_id', $shirt->id)->count());
+        $this->assertEquals(1, $discount->prices->where('product_id', $pants->id)->count());
     }
 
     /**
@@ -76,5 +82,14 @@ class DiscountModelTest extends \OctoberPluginTestCase
 
         $product->load('current_price');
         $this->assertEquals(5, $product->current_price->price);
+    }
+
+    public function test_calculate_price()
+    {
+        $percentage = Generate::discount('Foo', ['is_percentage' => true, 'amount_percentage' => 25]);
+        $this->assertEquals(75, $percentage->calculate(100)); // 100 - 25% = 75
+
+        $exact = Generate::discount('Foo', ['is_percentage' => false, 'amount_exact' => 35]);
+        $this->assertEquals(65, $exact->calculate(100)); // 100 - 35 = 65
     }
 }

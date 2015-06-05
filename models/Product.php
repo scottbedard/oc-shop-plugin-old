@@ -1,6 +1,7 @@
 <?php namespace Bedard\Shop\Models;
 
 use Bedard\Shop\Models\Category;
+use Bedard\Shop\Models\Discount;
 use Bedard\Shop\Models\Price;
 use DB;
 use Lang;
@@ -61,8 +62,9 @@ class Product extends Model
             'Bedard\Shop\Models\Option',
             'order' => 'position asc',
         ],
-        'prices' => [
+        'discounted_prices' => [
             'Bedard\Shop\Models\Price',
+            'scope' => 'isDiscounted',
         ],
     ];
 
@@ -98,30 +100,34 @@ class Product extends Model
     ];
 
     /**
+     * @var boolean     These help determine when prices need to be calculated
+     */
+    public $changedCategories = false;
+    public $changedPrice = false;
+
+    /**
      * Model Events
      */
+    public function afterCreate()
+    {
+        $this->syncBasePrice();
+    }
+
     public function beforeSave()
     {
         // This exists to help sqlite handle a null base_price
         $this->attributes['base_price'] = $this->base_price ?: 0;
     }
 
-    public function afterCreate()
+    public function afterSave()
     {
-        // Create the default price model
-        $price = new Price;
-        $price->product_id = $this->id;
-        $price->price = $this->base_price;
-        $price->save();
-    }
+        // Sync Price models if the base_price or categories have changed
+        if ($this->changedPrice) {
+            $this->syncBasePrice();
+        }
 
-    public function afterUpdate()
-    {
-        // If the base_price has changed, we need to refresh the price models
-        if ($this->getOriginal('base_price') != $this->base_price) {
-            foreach ($this->prices as $price) {
-                $price->refresh();
-            }
+        if ($this->changedPrice || $this->changedCategories) {
+            $this->syncDiscountedPrices();
         }
     }
 
@@ -179,6 +185,16 @@ class Product extends Model
         return Category::isNotFiltered()->lists('name', 'id');
     }
 
+    public function setBasePriceAttribute($value)
+    {
+        // Keep track of when the price changes
+        if (!isset($this->attributes['base_price']) || $value != $this->attributes['base_price']) {
+            $this->changedPrice = true;
+        }
+
+        $this->attributes['base_price'] = $value > 0 ? $value : 0;
+    }
+
     /**
      * Cache the compiled markdown description
      *
@@ -198,5 +214,50 @@ class Product extends Model
     public function isDiscounted()
     {
         return $this->current_price->price < $this->base_price;
+    }
+
+    /**
+     * Synchronizes a Product with it's base Price model
+     */
+    protected function syncBasePrice()
+    {
+        $base = Price::firstOrNew(['product_id' => $this->id, 'discount_id' => null]);
+        $base->price = $this->base_price;
+        $base->save();
+    }
+
+    /**
+     * Synchronizes a Product with it's discounted Price models
+     */
+    protected function syncDiscountedPrices()
+    {
+        // First, figure out which discounts this product is in the scope of
+        $discounts = Discount::isActiveOrUpcoming()
+            ->where(function($query) {
+                $query
+                    ->whereHas('products', function($product) {
+                        $product->where('id', $this->id);
+                    })
+                    ->orWhereHas('categories', function($categories) {
+                        $ids = $this->categories->lists('id');
+                        $categories->whereIn('id', $ids)
+                            ->orWhereHas('inherited', function($inherited) use ($ids) {
+                                $inherited->whereIn('inherited_id', $ids);
+                            });
+                    });
+            })
+            ->get();
+
+        // Next, reset all discounted price models
+        $this->discounted_prices()->delete();
+        foreach ($discounts as $discount) {
+            Price::create([
+                'product_id'    => $this->id,
+                'discount_id'   => $discount->id,
+                'price'         => $discount->calculate($this->base_price),
+                'start_at'      => $discount->start_at,
+                'end_at'        => $discount->end_at,
+            ]);
+        }
     }
 }
