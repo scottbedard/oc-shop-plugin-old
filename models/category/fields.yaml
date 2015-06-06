@@ -18,7 +18,7 @@ fields:
 tabs:
     fields:
 
-        parent:
+        parent_id:
             tab: bedard.shop::lang.categories.relationships
             label: bedard.shop::lang.categories.parent_category
             type: dropdown

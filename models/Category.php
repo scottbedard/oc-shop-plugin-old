@@ -1,6 +1,6 @@
 <?php namespace Bedard\Shop\Models;
 
-use Bedard\Shop\Classes\CategoryFilters;
+use Bedard\Shop\Models\Discount;;
 use DB;
 use Flash;
 use Lang;
@@ -93,8 +93,20 @@ class Category extends Model
     public $syncAfterDelete = true;
 
     /**
+     * @var boolean     Determines if the nesting of the category has changed
+     */
+    public $changedNesting = false;
+
+    /**
      * Model Events
      */
+    public function afterCreate()
+    {
+        // Add the new category to it's parent's inherited categories
+        self::clearTreeCache();
+        $this->syncParents();
+    }
+
     public function beforeUpdate()
     {
         // Prevent categories from being nested in their own tree
@@ -106,20 +118,10 @@ class Category extends Model
         }
     }
 
-    public function afterCreate()
-    {
-        // Add the new category to it's parent's inherited categories
-        self::clearTreeCache();
-        $this->syncParents();
-    }
-
     public function afterUpdate()
     {
-        // If the nesting or inheritance has changed, synchronize all categories
-        $original = $this->getOriginal();
-        $parent_id = isset($original['parent_id']) ? $original['parent_id'] : null;
-        $is_inheriting = isset($original['is_inheriting']) ? $original['is_inheriting'] : true;
-        if ($parent_id != $this->parent_id || $is_inheriting != $this->is_inheriting) {
+        // If the nesting has changed, sync everything
+        if ($this->changedNesting) {
             self::syncAllCategories();
         }
     }
@@ -136,7 +138,10 @@ class Category extends Model
             ->where('category_id', $this->attributes['id'])
             ->delete();
 
-        if ($this->syncAfterDelete) self::syncAllCategories();
+        // Sync the categories
+        if ($this->syncAfterDelete) {
+            self::syncAllCategories();
+        }
     }
 
     /**
@@ -159,7 +164,7 @@ class Category extends Model
      *
      * @return  array
      */
-    public function getParentOptions()
+    public function getParentIdOptions()
     {
         $options = [Lang::get('bedard.shop::lang.categories.parent_empty')];
 
@@ -198,9 +203,12 @@ class Category extends Model
     public static function syncAllCategories()
     {
         self::clearTreeCache();
+
         DB::table(self::make()->belongsToMany['inherited']['table'])->truncate();
         foreach (self::all() as $category) {
             $category->syncParents();
         }
+
+        Discount::syncAllProducts();
     }
 }

@@ -1,7 +1,9 @@
 <?php namespace Bedard\Shop\Tests\Functional\Models;
 
+use Bedard\Shop\Models\Discount;
 use Bedard\Shop\Models\Price;
 use Bedard\Shop\Tests\Fixtures\Generate;
+use Carbon\Carbon;
 
 class DiscountModelTest extends \OctoberPluginTestCase
 {
@@ -85,6 +87,9 @@ class DiscountModelTest extends \OctoberPluginTestCase
         $this->assertEquals(5, $product->current_price->price);
     }
 
+    /**
+     * Make sure prices are being calculated correctly
+     */
     public function test_calculate_price()
     {
         $percentage = Generate::discount('Foo', ['is_percentage' => true, 'amount_percentage' => 25]);
@@ -92,5 +97,40 @@ class DiscountModelTest extends \OctoberPluginTestCase
 
         $exact = Generate::discount('Foo', ['is_percentage' => false, 'amount_exact' => 35]);
         $this->assertEquals(65, $exact->calculate(100)); // 100 - 35 = 65
+    }
+
+    /**
+     * Make sure syncAllProducts works
+     */
+    public function test_syncronizing_all_products()
+    {
+        $inactive = Generate::discount('Inactive', [
+            'end_at'        => Carbon::yesterday(),
+            'is_percentage' => false,
+            'amount_exact'  => 50,
+        ]);
+
+        $active = Generate::discount('Active', [
+            'is_percentage'  => false,
+            'amount_exact'  => 25,
+        ]);
+
+        $upcoming = Generate::discount('Upcoming', [
+            'start_at'      => Carbon::tomorrow(),
+            'is_percentage' => false,
+            'amount_exact'  => 10,
+        ]);
+
+        $product = Generate::product('Product', ['base_price' => 100]);
+        $product->discounts()->sync([$inactive->id, $active->id, $upcoming->id]);
+
+        $product->load('discounted_prices');
+        $this->assertEquals(0, $product->discounted_prices->count());
+
+        Discount::syncAllProducts();
+        $product->load('discounted_prices');
+        $this->assertEquals(2, $product->discounted_prices->count());
+        $this->assertEquals(1, $product->discounted_prices->where('discount_id', $active->id)->count());
+        $this->assertEquals(1, $product->discounted_prices->where('discount_id', $upcoming->id)->count());
     }
 }

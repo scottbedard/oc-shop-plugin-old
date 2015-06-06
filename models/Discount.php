@@ -4,6 +4,7 @@ use Bedard\Shop\Models\Price;
 use Bedard\Shop\Models\Product;
 use DB;
 use Model;
+use Queue;
 
 /**
  * Discount Model
@@ -145,4 +146,19 @@ class Discount extends Model
         return $price > 0 ? $price : 0;
     }
 
+    /**
+     * Synchronize the products of all active or upcoming discounts
+     */
+    public static function syncAllProducts()
+    {
+        $discounts = self::isActiveOrUpcoming()->get();
+        foreach ($discounts as $discount) {
+            $id = $discount->id;
+            Queue::push(function($job) use($id) {
+                $target = Discount::find($id);
+                $target->syncProducts();
+                $job->delete();
+            });
+        }
+    }
 }

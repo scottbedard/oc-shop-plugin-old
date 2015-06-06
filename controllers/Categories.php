@@ -3,6 +3,7 @@
 use BackendMenu;
 use Backend\Classes\Controller;
 use Bedard\Shop\Models\Category;
+use Bedard\Shop\Models\Discount;
 use DB;
 use Flash;
 use Lang;
@@ -37,6 +38,24 @@ class Categories extends Controller
         $treesort->header = Lang::get('bedard.shop::lang.categories.reorder');
         $treesort->empty = Lang::get('bedard.shop::lang.categories.reorder_empty');
         $treesort->bindToController();
+    }
+
+    /**
+     * Determine if the category nesting has changed, and if so
+     * re-sync the nesting and active/upcoming discounts.
+     *
+     * @param   Category    $category
+     */
+    public function formBeforeSave(Category $category)
+    {
+        // New categories cannot have any nesting implications
+        if (!$category->id) return;
+
+        // If nesting has changed, let the model
+        if (intval(post('Category[parent_id]')) != $category->parent_id ||
+            (bool) post('Category[is_inheriting]') != $category->is_inheriting) {
+            $category->changedNesting = true;
+        }
     }
 
     /**
@@ -75,6 +94,8 @@ class Categories extends Controller
         }
 
         Category::syncAllCategories();
+        Discount::syncAllProducts();
+
         return $this->listRefresh();
     }
 

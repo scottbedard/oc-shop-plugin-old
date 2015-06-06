@@ -97,6 +97,7 @@ class CategoryModelTest extends \OctoberPluginTestCase
 
         // Change Child's inheritance, and Parent should no longer have Grandchild
         $child->is_inheriting = false;
+        $child->changedNesting = true;
         $child->save();
         $parent->load('inherited');
         $this->assertTrue((bool) $parent->inherited->find($child->id));
@@ -106,5 +107,33 @@ class CategoryModelTest extends \OctoberPluginTestCase
         $child->delete();
         $parent->load('inherited');
         $this->assertEquals($parent->inherited->count(), 0);
+    }
+
+    public function test_category_nesting_changes_effect_discount_scope()
+    {
+        $parent     = Generate::category('Parent', ['is_inheriting' => true]);
+        $child      = Generate::category('Child', ['parent_id' => $parent->id, 'is_inheriting' => true]);
+        $grandchild = Generate::category('Grandchild', ['parent_id' => $child->id, 'is_inheriting' => true]);
+
+        $product = Generate::product('Product', ['base_price' => 100]);
+        $product->categories()->add($grandchild);
+
+        $discount = Generate::discount('Discount', ['is_percentage' => false, 'amount_exact' => 25]);
+        $discount->categories()->add($parent);
+        $discount->load('categories');
+        $discount->save();
+
+        // The product should be discounted because of Parent's inheritance of Grandchild
+        $product->load('current_price');
+        $this->assertEquals(75, $product->current_price->price);
+
+        // Break the link from Parent to Grandchild
+        $child->is_inheriting = false;
+        $child->changedNesting = true;
+        $child->save();
+
+        // The product should no longer be discounted because the inheritance was broken
+        $product->load('current_price');
+        $this->assertEquals(100, $product->current_price->price);
     }
 }
