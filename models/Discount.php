@@ -147,6 +147,37 @@ class Discount extends Model
     }
 
     /**
+     * Determines if the discount is expired
+     *
+     * @return  boolean
+     */
+    public function isExpired()
+    {
+        return $this->end_at && strtotime($this->end_at) <= time();
+    }
+
+    /**
+     * Determines if the discount is running
+     *
+     * @return  boolean
+     */
+    public function isRunning()
+    {
+        return (!$this->start_at || strtotime($this->start_at) <= time()) &&
+               (!$this->end_at || strtotime($this->end_at) > time());
+    }
+
+    /**
+     * Determiens if the discount is upcoming
+     *
+     * @return  boolean
+     */
+    public function isUpcoming()
+    {
+        return $this->start_at && strtotime($this->start_at) > time();
+    }
+
+    /**
      * Synchronize the products of all active or upcoming discounts
      */
     public static function syncAllProducts()
