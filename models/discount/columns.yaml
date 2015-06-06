@@ -3,6 +3,43 @@
 # ===================================
 
 columns:
-    id:
-        label: ID
-        searchable: true
+
+    name:
+        label: bedard.shop::lang.common.name
+
+    amount:
+        label: bedard.shop::lang.discounts.amount
+        type: partial
+        path: $/bedard/shop/models/discount/_amount.htm
+        select: >
+            (
+                CASE
+                    WHEN `bedard_shop_discounts`.`is_percentage` = 1 THEN `bedard_shop_discounts`.`amount_percentage`
+                    ELSE `bedard_shop_discounts`.`amount_exact`
+                END
+            )
+
+    start_at:
+        label: bedard.shop::lang.discounts.start_at
+
+    end_at:
+        label: bedard.shop::lang.discounts.end_at
+
+    status:
+        label: bedard.shop::lang.common.status
+        type: partial
+        path: $/bedard/shop/models/discount/_status.htm
+        select: >
+            (
+                CASE
+                    WHEN (
+                        `bedard_shop_discounts`.`end_at` IS NOT NULL AND
+                        `bedard_shop_discounts`.`end_at` < NOW()
+                    ) THEN 2
+                    WHEN (
+                        `bedard_shop_discounts`.`start_at` IS NOT NULL AND
+                        `bedard_shop_discounts`.`start_at` > NOW()
+                    ) THEN 1
+                    ELSE 0
+                END
+            )

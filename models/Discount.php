@@ -147,7 +147,7 @@ class Discount extends Model
     }
 
     /**
-     * Determines if the discount is expired
+     * Determines if the discount is complete
      *
      * @return  boolean
      */

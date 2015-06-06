@@ -23,5 +23,8 @@ class Discounts extends Controller
         parent::__construct();
 
         BackendMenu::setContext('Bedard.Shop', 'shop', 'discounts');
+
+        $this->addCss('/plugins/bedard/shop/assets/css/form.css');
+        $this->addCss('/plugins/bedard/shop/assets/css/list.css');
     }
 }

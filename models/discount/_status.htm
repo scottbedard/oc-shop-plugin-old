@@ -1,0 +1,13 @@
+<?php if ($record->isRunning()): ?>
+
+    <i class="list-icon icon-check green"></i><?= e(trans('bedard.shop::lang.discounts.status_running')) ?>
+
+<?php elseif ($record->isUpcoming()): ?>
+
+    <i class="list-icon icon-calendar"></i><?= e(trans('bedard.shop::lang.discounts.status_upcoming')) ?>
+
+<?php else: ?>
+
+    <i class="list-icon icon-times red"></i><?= e(trans('bedard.shop::lang.discounts.status_expired')) ?>
+
+<?php endif ?>

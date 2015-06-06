@@ -36,6 +36,7 @@ return [
     'common' => [
         'name'                      => 'Name',
         'slug'                      => 'Slug',
+        'status'                    => 'Status',
     ],
 
     //
@@ -60,7 +61,7 @@ return [
     ],
 
     'discounts' => [
-        'amount'                    => 'Discount Amount',
+        'amount'                    => 'Amount',
         'amount_exact'              => 'The exact amount to reduce prices by.',
         'amount_percentage'         => 'The percentage to reduce prices by.',
         'controller'                => 'Discounts',
@@ -74,6 +75,9 @@ return [
         'no_end'                    => 'Leave blank to run indefinitely.',
         'no_start'                  => 'Leave blank to start immediately.',
         'start_at'                  => 'Start Date',
+        'status_expired'            => 'Expired',
+        'status_running'            => 'Running',
+        'status_upcoming'           => 'Upcoming',
     ],
 
     'inventories' => [
@@ -106,7 +110,6 @@ return [
         'options_inventories_hint'  => 'Please save the product before creating options or inventories.',
         'price'                     => 'Price',
         'slug_placeholder'          => 'new-product-name',
-        'status'                    => 'Status',
         'status_normal'             => 'Normal',
         'status_disabled'           => 'Disabled',
     ],
