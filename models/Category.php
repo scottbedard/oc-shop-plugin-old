@@ -58,6 +58,12 @@ class Category extends Model
             'key'       => 'parent_id',
             'otherKey'  => 'inherited_id',
         ],
+        'inherited_by' => [
+            'Bedard\Shop\Models\Category',
+            'table'     => 'bedard_shop_category_inheritance',
+            'key'       => 'inherited_id',
+            'otherKey'  => 'parent_id',
+        ],
         'products' => [
             'Bedard\Shop\Models\Product',
             'table'     => 'bedard_shop_category_product',

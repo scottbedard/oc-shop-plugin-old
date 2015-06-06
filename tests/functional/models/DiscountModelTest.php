@@ -16,46 +16,47 @@ class DiscountModelTest extends \OctoberPluginTestCase
     {
         $parent     = Generate::category('Parent');
         $child      = Generate::category('Child', ['parent_id' => $parent->id]);
+        $grandchild = Generate::category('Grandchild', ['parent_id' => $child->id]);
         $unrelated  = Generate::category('Unrelated');
 
-        $shirt      = Generate::product('Shirt');
-        $pants      = Generate::product('Pants');
-        $hat        = Generate::product('Hat');
-        $shoes      = Generate::product('Shoes');
+        $first      = Generate::product('First');
+        $second     = Generate::product('Second');
+        $third      = Generate::product('Third');
+        $fourth     = Generate::product('Fourth');
 
-        $shirt->categories()->add($parent);
-        $pants->categories()->add($child);
-        $hat->categories()->add($unrelated);
-        $shoes->categories()->add($unrelated);
+        $first->categories()->add($parent);
+        $second->categories()->add($grandchild);
+        $third->categories()->add($unrelated);
+        $fourth->categories()->add($unrelated);
 
-        // Discount only the hat
+        // Discount only the third product
         $discount = Generate::discount('Hat only');
-        $discount->products()->add($hat);
+        $discount->products()->add($third);
         $discount->load('products');
         $discount->save();
         $discount->load('prices');
         $this->assertEquals(1, $discount->prices->count());
-        $this->assertEquals(1, $discount->prices->where('product_id', $hat->id)->count());
+        $this->assertEquals(1, $discount->prices->where('product_id', $third->id)->count());
 
         // Discount the unrelated category, shoes should be discounted
         $discount->categories()->add($unrelated);
-        $discount->load('categories');
+        $discount->load('categories.inherited', 'categories.inherited_by');
         $discount->save();
         $discount->load('prices');
         $this->assertEquals(2, $discount->prices->count());
-        $this->assertEquals(1, $discount->prices->where('product_id', $hat->id)->count());
-        $this->assertEquals(1, $discount->prices->where('product_id', $shoes->id)->count());
+        $this->assertEquals(1, $discount->prices->where('product_id', $third->id)->count());
+        $this->assertEquals(1, $discount->prices->where('product_id', $fourth->id)->count());
 
         // Discount the parent category, and everything should become discounted
         $discount->categories()->add($parent);
-        $discount->load('categories.inherited');
+        $discount->load('categories.inherited', 'categories.inherited_by');
         $discount->save();
         $discount->load('prices');
         $this->assertEquals(4, $discount->prices->count());
-        $this->assertEquals(1, $discount->prices->where('product_id', $hat->id)->count());
-        $this->assertEquals(1, $discount->prices->where('product_id', $shoes->id)->count());
-        $this->assertEquals(1, $discount->prices->where('product_id', $shirt->id)->count());
-        $this->assertEquals(1, $discount->prices->where('product_id', $pants->id)->count());
+        $this->assertEquals(1, $discount->prices->where('product_id', $third->id)->count());
+        $this->assertEquals(1, $discount->prices->where('product_id', $fourth->id)->count());
+        $this->assertEquals(1, $discount->prices->where('product_id', $first->id)->count());
+        $this->assertEquals(1, $discount->prices->where('product_id', $second->id)->count());
     }
 
     /**

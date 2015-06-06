@@ -108,11 +108,10 @@ class Discount extends Model
     {
         // First, grab all products within the scope of this discount
         $products = Product::whereIn('id', $this->products->lists('id'))
-            ->orWhereHas('categories', function($categories) {
-                $ids = $this->categories->lists('id');
-                $categories->whereIn('id', $ids)
-                    ->orWhereHas('inherited', function($inherited) use ($ids) {
-                        $inherited->whereIn('parent_id', $ids);
+            ->orWhereHas('categories', function($category) {
+                $category->whereIn('id', $this->categories->lists('id'))
+                    ->orWhereHas('inherited_by', function($inherited_by) {
+                        $inherited_by->whereIn('parent_id', $this->categories->lists('id'));
                     });
             })
             ->get();
