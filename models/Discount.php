@@ -86,6 +86,41 @@ class Discount extends Model
         $this->syncProducts();
     }
 
+    /**
+     * Query Scopes
+     */
+    public function scopeSelectExtras($query)
+    {
+        // This joins the discount's amount and status. It is done this
+        // way to enable sorting the two column, and to avoid using MySQL's
+        // "now()" function which is unsupported by SQLite.
+
+        $now = date('Y-m-d H:i:s');
+
+        $status = "(
+            CASE
+                WHEN (
+                    `bedard_shop_discounts`.`end_at` IS NOT NULL AND
+                    `bedard_shop_discounts`.`end_at` < '$now'
+                ) THEN 2
+                WHEN (
+                    `bedard_shop_discounts`.`start_at` IS NOT NULL AND
+                    `bedard_shop_discounts`.`start_at` > '$now'
+                ) THEN 1
+                ELSE 0
+            END
+        ) as `status`";
+
+        $amount = "(
+            CASE
+                WHEN `bedard_shop_discounts`.`is_percentage` = 1 THEN `bedard_shop_discounts`.`amount_percentage`
+                ELSE `bedard_shop_discounts`.`amount_exact`
+            END
+        ) as `amount`";
+
+        return $query->select(DB::raw("*, $status, $amount"));
+    }
+
     public function filterFields($fields, $context = null)
     {
         $fields->amount_exact->hidden = $this->is_percentage;
