@@ -15,24 +15,32 @@ class Discount extends Model
         \October\Rain\Database\Traits\Validation;
 
     /**
-     * @var string The database table used by the model.
+     * @var string  The database table used by the model.
      */
     public $table = 'bedard_shop_discounts';
 
     /**
-     * @var array Guarded fields
+     * @var array   Guarded fields
      */
     protected $guarded = ['*'];
 
     /**
-     * @var array Fillable fields
+     * @var array   Fillable fields
      */
     protected $fillable = [
         'is_percentage',
     ];
 
     /**
-     * @var array Relations
+     * @var array   Date columns
+     */
+    protected $dates = [
+        'start_at',
+        'end_at'
+    ];
+
+    /**
+     * @var array   Relations
      */
     public $hasMany = [
         'prices' => [
