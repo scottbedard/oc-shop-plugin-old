@@ -50,8 +50,8 @@ class Products extends Controller
     }
 
     /**
-     * If the categories or base price have changed, we need to let
-     * the modelknow so prices can be re-calculated after saving.
+     * If the categories or base price has changed, we need to let
+     * the model know so prices can be re-calculated after saving.
      *
      * @param   Product $product
      */
@@ -91,6 +91,14 @@ class Products extends Controller
 
         // Also eager load the normal product relationships
         return $query->with('current_price');
+    }
+
+    /**
+     * Remove smart categories from the available filters
+     */
+    public function listFilterExtendQuery($query, $scope)
+    {
+        $query->isNotFiltered();
     }
 
     /**
