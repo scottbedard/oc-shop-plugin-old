@@ -3,6 +3,7 @@
 use BackendMenu;
 use Backend\Classes\Controller;
 use Bedard\Shop\Models\Product;
+use DB;
 use Flash;
 use Lang;
 
@@ -66,11 +67,30 @@ class Products extends Controller
     }
 
     /**
-     * Extend the list query
+     * This joins a price table to the product table. It is done here instead
+     * of from the YAML file to avoid using "now()", which is unsupported
+     * by SQLite.
      */
     public function listExtendQuery($query)
     {
-        return $query->joinPrice()->with('current_price');
+        $now = date('Y-m-d H:i:s');
+
+        $price_table = "(
+            SELECT `bedard_shop_prices`.`product_id`, MIN(`bedard_shop_prices`.`price`) AS `price`
+            FROM `bedard_shop_prices`
+            WHERE (`bedard_shop_prices`.`start_at` IS NULL OR `bedard_shop_prices`.`start_at` <= '$now')
+            AND (`bedard_shop_prices`.`end_at` IS NULL OR `bedard_shop_prices`.`end_at` > '$now')
+            GROUP BY `bedard_shop_prices`.`product_id`
+        ) AS `price`";
+
+        $query
+            ->select('*')
+            ->join(DB::raw($price_table), function($join) {
+                $join->on('product_id', '=', 'bedard_shop_products.id');
+            });
+
+        // Also eager load the normal product relationships
+        return $query->with('current_price');
     }
 
     /**

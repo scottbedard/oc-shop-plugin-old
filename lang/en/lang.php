@@ -67,6 +67,7 @@ return [
         'controller'                => 'Discounts',
         'end_at'                    => 'End Date',
         'end_at_invalid'            => 'The end date must be after the start date.',
+        'hide_expired'              => 'Hide expired',
         'list_title'                => 'Manage Discounts',
         'method'                    => 'Discount Method',
         'method_exact'              => 'Exact Amount',

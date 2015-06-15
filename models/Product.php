@@ -155,23 +155,11 @@ class Product extends Model
         return $query->where('is_active', false);
     }
 
-    public function scopeJoinPrice($query, $operator = false, $value = false)
+    public function scopeFilterByCategory($query, $filter)
     {
-        // This joins a price table to the product table. It is done this way
-        // to enable sorting the "price" column, and to avoid using MySQL's
-        // "now()" function which is unsupported by SQLite.
-
-        $now = date('Y-m-d H:i:s');
-        $subquery = "(
-            SELECT `bedard_shop_prices`.`product_id`, MIN(`bedard_shop_prices`.`price`) AS `price`
-            FROM `bedard_shop_prices`
-            WHERE (`bedard_shop_prices`.`start_at` IS NULL OR `bedard_shop_prices`.`start_at` <= '$now')
-            AND (`bedard_shop_prices`.`end_at` IS NULL OR `bedard_shop_prices`.`end_at` > '$now')
-            GROUP BY `bedard_shop_prices`.`product_id`
-        ) AS `price`";
-
-        return $query->select('*')->join(DB::raw($subquery), function($join) {
-            $join->on('product_id', '=', 'bedard_shop_products.id');
+        // Allows filtering for specifc categories
+        return $query->whereHas('categories', function($category) use ($filter) {
+            $category->whereIn('id', $filter);
         });
     }
 
