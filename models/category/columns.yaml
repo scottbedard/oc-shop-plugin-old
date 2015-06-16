@@ -10,8 +10,7 @@ columns:
     slug:
         label: bedard.shop::lang.common.slug
 
-    product_count:
-        label: Total Products
+    sort_order:
+        label: bedard.shop::lang.categories.sort_order
         type: partial
-        path: $/bedard/shop/models/category/_product_count.htm
-        sortable: false
+        path: $/bedard/shop/models/category/_sort_order.htm

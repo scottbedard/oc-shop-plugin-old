@@ -19,13 +19,13 @@ tabs:
     fields:
 
         parent_id:
-            tab: bedard.shop::lang.categories.relationships
+            tab: bedard.shop::lang.categories.relationships_tab
             label: bedard.shop::lang.categories.parent_category
             type: dropdown
             span: left
 
         is_inheriting:
-            tab: bedard.shop::lang.categories.relationships
+            tab: bedard.shop::lang.categories.relationships_tab
             label: bedard.shop::lang.categories.inherit_children
             type: radio
             options:
@@ -33,3 +33,33 @@ tabs:
                 0: bedard.shop::lang.categories.inherit_children_off
             default: 1
             span: right
+
+        sort_order:
+            tab: bedard.shop::lang.categories.display_tab
+            label: bedard.shop::lang.categories.sort_order
+            type: dropdown
+            options:
+                DATE_ASC: bedard.shop::lang.categories.sort_date_asc
+                DATE_DESC: bedard.shop::lang.categories.sort_date_desc
+                NAME_ASC: bedard.shop::lang.categories.sort_name_asc
+                NAME_DESC: bedard.shop::lang.categories.sort_name_desc
+                PRICE_ASC: bedard.shop::lang.categories.sort_price_asc
+                PRICE_DESC: bedard.shop::lang.categories.sort_price_desc
+                CUSTOM: bedard.shop::lang.categories.sort_custom
+
+        rows:
+            tab: bedard.shop::lang.categories.display_tab
+            label: bedard.shop::lang.categories.rows
+            comment: bedard.shop::lang.categories.rows_comment
+            span: left
+
+        columns:
+            tab: bedard.shop::lang.categories.display_tab
+            label: bedard.shop::lang.categories.columns
+            span: right
+
+        hide_out_of_stock:
+            tab: bedard.shop::lang.categories.display_tab
+            label: bedard.shop::lang.categories.hide_out_of_stock
+            type: switch
+            default: false

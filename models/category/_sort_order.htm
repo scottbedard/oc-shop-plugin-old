@@ -1,0 +1,36 @@
+<?php if ($record->sort_order == 'NAME_ASC'): ?>
+
+    <i class="list-icon icon-sort-alpha-asc"></i>
+    <?= e(trans('bedard.shop::lang.categories.sort_name_asc')) ?>
+
+<?php elseif ($record->sort_order == 'NAME_DESC'): ?>
+
+    <i class="list-icon icon-sort-alpha-desc"></i>
+    <?= e(trans('bedard.shop::lang.categories.sort_name_desc')) ?>
+
+<?php elseif ($record->sort_order == 'DATE_ASC'): ?>
+
+    <i class="list-icon icon-sort-amount-desc"></i>
+    <?= e(trans('bedard.shop::lang.categories.sort_date_asc')) ?>
+
+<?php elseif ($record->sort_order == 'DATE_DESC'): ?>
+
+    <i class="list-icon icon-sort-amount-asc"></i>
+    <?= e(trans('bedard.shop::lang.categories.sort_date_desc')) ?>
+
+<?php elseif ($record->sort_order == 'PRICE_ASC'): ?>
+
+    <i class="list-icon icon-sort-numeric-asc"></i>
+    <?= e(trans('bedard.shop::lang.categories.sort_price_asc')) ?>
+
+<?php elseif ($record->sort_order == 'PRICE_DESC'): ?>
+
+    <i class="list-icon icon-sort-numeric-desc"></i>
+    <?= e(trans('bedard.shop::lang.categories.sort_price_desc')) ?>
+
+<?php elseif ($record->sort_order == 'CUSTOM'): ?>
+
+    <i class="list-icon icon-th"></i>
+    <?= e(trans('bedard.shop::lang.categories.sort_custom')) ?>
+
+<?php endif ?>

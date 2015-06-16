@@ -46,6 +46,8 @@ return [
     'categories' => [
         'children'                  => 'Children',
         'controller'                => 'Categories',
+        'display_tab'               => 'Display',
+        'hide_out_of_stock'         => 'Hide out of stock products',
         'inherit_children'          => 'Product Inheritance',
         'inherit_children_off'      => 'Do not inherit child products',
         'inherit_children_on'       => 'Inherit child products',
@@ -55,10 +57,18 @@ return [
         'parent'                    => 'Parent',
         'parent_category'           => 'Parent Category',
         'parent_empty'              => '<i>None</i>',
-        'relationships'             => 'Relationships',
+        'relationships_tab'         => 'Relationships',
         'reorder'                   => 'Re-order Categories',
         'reorder_empty'             => 'There are no categories to re-order.',
         'reorder_success'           => 'Categories have been successfully re-ordered!',
+        'sort_order'                => 'Product Order',
+        'sort_date_asc'             => 'Date added (Oldest first)',
+        'sort_date_desc'            => 'Date added (Newest first)',
+        'sort_name_asc'             => 'Alphabetically (A-Z)',
+        'sort_name_desc'            => 'Alphabetically (Z-A)',
+        'sort_price_asc'            => 'Price (Lowest to highest)',
+        'sort_price_desc'           => 'Price (Highest to lowest)',
+        'sort_custom'               => 'Custom',
     ],
 
     'currency' => [
