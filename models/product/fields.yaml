@@ -58,3 +58,15 @@ secondaryTabs:
             tab: bedard.shop::lang.categories.controller
             label: bedard.shop::lang.categories.controller
             type: checkboxlist
+
+        thumbnails:
+            tab: bedard.shop::lang.products.images_tab
+            label: bedard.shop::lang.products.thumbnails
+            type: fileupload
+            mode: image
+
+        images:
+            tab: bedard.shop::lang.products.images_tab
+            label: bedard.shop::lang.products.images
+            type: fileupload
+            mode: image

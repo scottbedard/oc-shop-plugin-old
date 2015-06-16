@@ -47,6 +47,17 @@ class Product extends Model
     /**
      * @var array Relations
      */
+    public $attachMany = [
+        'images' => [
+            'System\Models\File',
+            'order' => 'sort_order'
+        ],
+        'thumbnails' => [
+            'System\Models\File',
+            'order' => 'sort_order'
+        ],
+    ];
+
     public $belongsToMany = [
         'categories' => [
             'Bedard\Shop\Models\Category',

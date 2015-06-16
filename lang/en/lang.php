@@ -117,6 +117,8 @@ return [
         'details_tab'               => 'Details',
         'discount_ends'             => 'Discount ends :date',
         'discount_indefinite'       => 'Discount runs indefinitely',
+        'images'                    => 'Images',
+        'images_tab'                => 'Images',
         'is_active'                 => 'Product is active',
         'list_title'                => 'Manage Products',
         'markdown_allowed'          => 'You may use markdown syntax.',
@@ -128,6 +130,7 @@ return [
         'slug_placeholder'          => 'new-product-name',
         'status_normal'             => 'Normal',
         'status_disabled'           => 'Disabled',
+        'thumbnails'                => 'Thumbnails',
     ],
 
     'options' => [
