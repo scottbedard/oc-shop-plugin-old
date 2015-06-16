@@ -14,6 +14,7 @@ class DevSeeds extends Seeder
 
         $this->seedCategories();
         $this->seedProducts();
+        $this->seedDiscounts();
     }
 
     public function seedCategories()
@@ -45,5 +46,17 @@ class DevSeeds extends Seeder
             $jacket = Generate::product(ucfirst($adjective).' jacket', ['base_price' => rand(5, 15)]);
             $hat->categories()->sync([11]);
         }
+    }
+
+    public function seedDiscounts()
+    {
+        $discount = Generate::discount('Shirt Discount', [
+            'amount_percentage' => 25,
+            'is_percentage'     => true,
+        ]);
+
+        $discount->categories()->sync([5]);
+        $discount->load('categories');
+        $discount->syncProducts();
     }
 }
