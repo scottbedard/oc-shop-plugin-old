@@ -162,6 +162,13 @@ class Product extends Model
         });
     }
 
+    public function scopeOutOfStock($query)
+    {
+        $query->whereDoesntHave('inventories', function($inventory) {
+            $inventory->where('quantity', '>', 0);
+        });
+    }
+
     public function scopeIsActive($query)
     {
         return $query->where('is_active', true);
@@ -172,17 +179,28 @@ class Product extends Model
         return $query->where('is_active', false);
     }
 
+    public function scopeIsDiscounted($query)
+    {
+        return $query->whereHas('current_price', function($price) {
+            $price
+                ->isActive()
+                ->whereRaw('`bedard_shop_prices`.`price` < `bedard_shop_products`.`base_price`');
+        });
+    }
+
+    public function scopeIsNotDiscounted($query)
+    {
+        return $query->whereDoesntHave('current_price', function($price) {
+            $price
+                ->isActive()
+                ->whereRaw('`bedard_shop_prices`.`price` < `bedard_shop_products`.`base_price`');
+        });
+    }
+
     public function scopeFilterByCategory($query, $filter)
     {
         return $query->whereHas('categories', function($category) use ($filter) {
             $category->whereIn('id', $filter);
-        });
-    }
-
-    public function scopeOutOfStock($query)
-    {
-        $query->whereDoesntHave('inventories', function($inventory) {
-            $inventory->where('quantity', '>', 0);
         });
     }
 
@@ -222,7 +240,7 @@ class Product extends Model
      *
      * @return  boolean
      */
-    public function isDiscounted()
+    public function getIsDiscountedAttribute()
     {
         return $this->current_price->price < $this->base_price;
     }

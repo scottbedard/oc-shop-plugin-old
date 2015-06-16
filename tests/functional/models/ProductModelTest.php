@@ -145,6 +145,23 @@ class ProductModelTest extends \OctoberPluginTestCase
         $outofstock = Product::outOfStock()->get();
         $this->assertEquals(1, $outofstock->count());
         $this->assertEquals(1, $outofstock->where('id', $second->id)->count());
+    }
 
+    /**
+     * Make sure discount scopes work
+     */
+    public function test_discount_scopes()
+    {
+        $normal     = Generate::product('Normal', ['base_price' => 10]);
+        $discounted = Generate::product('Discounted', ['base_price' => 10]);
+        $discount   = Generate::price($discounted, 5);
+
+        $fullprice = Product::isNotDiscounted()->with('current_price')->get();
+        $this->assertEquals(1, $fullprice->count());
+        $this->assertEquals(1, $fullprice->where('id', $normal->id)->count());
+
+        $onsale = Product::isDiscounted()->get();
+        $this->assertEquals(1, $onsale->count());
+        $this->assertEquals(1, $onsale->where('id', $discounted->id)->count());
     }
 }
