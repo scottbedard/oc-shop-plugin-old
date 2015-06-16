@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Tests\Functional\Models;
 
+use Bedard\Shop\Models\Value;
 use Bedard\Shop\Tests\Fixtures\Generate;
 
 class OptionModelTest extends \OctoberPluginTestCase
@@ -64,6 +65,20 @@ class OptionModelTest extends \OctoberPluginTestCase
 
         $this->assertTrue((bool) $foo);
         $this->assertFalse((bool) $world);
+    }
+
+    public function test_values_are_deleted()
+    {
+        $option = Generate::option('Size');
+        $option->saveWithValues([0,0,0], ['Small', 'Medium', 'Large']);
+        $option->load('values');
+
+        $values = Value::where('option_id', $option->id)->get();
+        $this->assertEquals(3, $values->count());
+
+        $option->delete();
+        $values = Value::where('option_id', $option->id)->get();
+        $this->assertEquals(0, $values->count());
     }
 
 }

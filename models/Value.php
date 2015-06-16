@@ -31,7 +31,12 @@ class Value extends Model
             'Bedard\Shop\Models\Option',
         ],
     ];
+
     public $belongsToMany = [
+        'inventories' => [
+            'Bedard\Shop\Models\Inventory',
+            'table' => 'bedard_shop_inventory_value',
+        ],
         'products' => [
             'Bedard\Shop\Models\Product',
             'table' => 'bedard_shop_inventory_value',
@@ -43,6 +48,8 @@ class Value extends Model
      */
     public function afterDelete()
     {
-        // todo: delete associated inventories
+        foreach ($this->inventories as $inventory) {
+            $inventory->delete();
+        }
     }
 }

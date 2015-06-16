@@ -69,7 +69,9 @@ class Option extends Model
 
     public function afterDelete()
     {
-        // todo: delete associated inventories
+        foreach ($this->values as $value) {
+            $value->delete();
+        }
     }
 
     /**
