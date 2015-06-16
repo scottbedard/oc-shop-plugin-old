@@ -1,0 +1,39 @@
+<div class="product scoreboard">
+    <div data-control="toolbar">
+
+        <div class="scoreboard-item control-chart" data-control="chart-pie">
+            <ul>
+                <li data-color="#95b753">
+                    <?= e(trans('bedard.shop::lang.products.scoreboard_normal')) ?>
+                    <span><?= $normal ?></span>
+                </li>
+                <li data-color="#0071AE">
+                    <?= e(trans('bedard.shop::lang.products.scoreboard_discounted')) ?>
+                    <span><?= $discounted ?></span>
+                </li>
+                <li data-color="#CC3300">
+                    <?= e(trans('bedard.shop::lang.products.scoreboard_disabled')) ?>
+                    <span><?= $disabled ?></span>
+                </li>
+            </ul>
+        </div>
+
+        <?php $meter = round($instock / $total * 100); ?>
+        <div class="scoreboard-item title-value" data-control="goal-meter" data-size="90" data-value="<?= $meter ?>">
+            <h4><?= e(trans('bedard.shop::lang.products.scoreboard_stock')) ?></h4>
+            <p><?= $meter ?>%</p>
+            <p class="description">
+                <?= e(trans('bedard.shop::lang.products.scoreboard_stock_comment', [
+                    'instock' => $instock,
+                    'total' => $total,
+                ])) ?>
+            </p>
+        </div>
+
+        <div class="scoreboard-item title-value">
+            <h4><?= e(trans('bedard.shop::lang.products.scoreboard_total')) ?></h4>
+            <p><?= $total ?></p>
+        </div>
+
+    </div>
+</div>

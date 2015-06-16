@@ -2,7 +2,7 @@
 
     <i class="list-icon icon-times red"></i><?= e(trans('bedard.shop::lang.products.status_disabled')) ?>
 
-<?php elseif ($record->isDiscounted()):
+<?php elseif ($record->isDiscounted):
 
     $title = $record->current_price->discount->end_at
         ? trans('bedard.shop::lang.products.discount_ends', ['date' => $record->current_price->discount->end_at->diffForHumans()])

@@ -35,6 +35,43 @@ class Products extends Controller
     }
 
     /**
+     * Load scoreboard data
+     */
+    public function prepareVars()
+    {
+        $this->vars['total']        = Product::count();
+        $this->vars['normal']       = Product::isActive()->isNotDiscounted()->count();
+        $this->vars['discounted']   = Product::isActive()->isDiscounted()->count();
+        $this->vars['disabled']     = Product::isNotActive()->count();
+        $this->vars['instock']      = Product::inStock()->count();
+    }
+
+    /**
+     * Refreshes the list and scoreboard
+     *
+     * @return  array
+     */
+    private function refreshListAndScoreboard()
+    {
+        $this->prepareVars();
+        $this->asExtension('ListController')->index();
+
+        $array = $this->listRefresh();
+        $array['#products-scoreboard'] = $this->makePartial('list_scoreboard');
+
+        return $array;
+    }
+
+    /**
+     * List index
+     */
+    public function index($userId = null)
+    {
+        $this->prepareVars();
+        $this->asExtension('ListController')->index();
+    }
+
+    /**
      * Extend the form fields
      */
     public function formExtendFields($form)
@@ -67,21 +104,32 @@ class Products extends Controller
     }
 
     /**
-     * This joins a price table to the product table. It is done here instead
-     * of from the YAML file to avoid using "now()", which is unsupported by
-     * SQLite. The product's status is also selected to enable column sorting.
+     * Extend the list query
+     *
+     * @param   October\Rain\Database\Builder   $query
+     * @return  October\Rain\Database\Builder
      */
     public function listExtendQuery($query)
     {
         $now = date('Y-m-d H:i:s');
 
         $price_table = "(
-            SELECT `bedard_shop_prices`.`product_id`, MIN(`bedard_shop_prices`.`price`) AS `price`
+            SELECT
+                `bedard_shop_prices`.`product_id` as `price_product_id`,
+                MIN(`bedard_shop_prices`.`price`) AS `price`
             FROM `bedard_shop_prices`
             WHERE (`bedard_shop_prices`.`start_at` IS NULL OR `bedard_shop_prices`.`start_at` <= '$now')
             AND (`bedard_shop_prices`.`end_at` IS NULL OR `bedard_shop_prices`.`end_at` > '$now')
             GROUP BY `bedard_shop_prices`.`product_id`
         ) AS `price`";
+
+        $inventory_table = "(
+            SELECT
+                `bedard_shop_inventories`.`product_id` as `inventory_product_id`,
+                SUM(`bedard_shop_inventories`.`quantity`) as `inventory`
+            FROM `bedard_shop_inventories`
+            GROUP BY `bedard_shop_inventories`.`product_id`
+        ) as `inventory`";
 
         $status = "(
             CASE
@@ -94,7 +142,10 @@ class Products extends Controller
         $query
             ->select(DB::raw("*, $status"))
             ->join(DB::raw($price_table), function($join) {
-                $join->on('product_id', '=', 'bedard_shop_products.id');
+                $join->on('price_product_id', '=', 'bedard_shop_products.id');
+            })
+            ->join(DB::raw($inventory_table), function($join) {
+                $join->on('inventory_product_id', '=', 'bedard_shop_products.id');
             });
 
         // Also eager load the normal relationships
@@ -111,6 +162,8 @@ class Products extends Controller
 
     /**
      * Delete selected rows
+     *
+     * @return  array
      */
     public function index_onDelete()
     {
@@ -122,6 +175,7 @@ class Products extends Controller
             }
             Flash::success(Lang::get('backend::lang.list.delete_selected_success'));
         }
-        return $this->listRefresh();
+
+        return $this->refreshListAndScoreboard();
     }
 }
