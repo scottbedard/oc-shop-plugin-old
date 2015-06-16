@@ -6,6 +6,7 @@ columns:
 
     name:
         label: bedard.shop::lang.common.name
+        searchable: true
 
     price:
         label: bedard.shop::lang.products.price
