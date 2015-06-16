@@ -2,7 +2,10 @@
 
 use BackendMenu;
 use Backend\Classes\Controller;
+use Bedard\Shop\Models\Discount;
 use DB;
+use Flash;
+use Lang;
 
 /**
  * Discounts Back-end Controller
@@ -60,5 +63,21 @@ class Discounts extends Controller
         ) as `amount`";
 
         return $query->select(DB::raw("*, $status, $amount"));
+    }
+
+    /**
+     * Delete selected rows
+     */
+    public function index_onDelete()
+    {
+        if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
+            foreach ($checkedIds as $postId) {
+                if ($model = Discount::find($postId)) {
+                    $model->delete();
+                }
+            }
+            Flash::success(Lang::get('backend::lang.list.delete_selected_success'));
+        }
+        return $this->listRefresh();
     }
 }
