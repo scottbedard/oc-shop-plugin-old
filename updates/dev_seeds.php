@@ -37,14 +37,36 @@ class DevSeeds extends Seeder
         $adjectives = ['awesome', 'crappy', 'average', 'red', 'blue', 'green', 'white'];
 
         foreach ($adjectives as $adjective) {
-            $shirt = Generate::product(ucfirst($adjective).' shirt', ['base_price' => rand(5, 15)]);
+            $shirt = Generate::product(ucfirst($adjective).' shirt', ['is_active' => (bool) rand(0, 8), 'base_price' => rand(5, 15)]);
             $shirt->categories()->sync([rand(5, 7)]);
+            $this->seedInventories($shirt);
 
-            $hat = Generate::product(ucfirst($adjective).' hat', ['base_price' => rand(5, 15)]);
+            $hat = Generate::product(ucfirst($adjective).' hat', ['is_active' => (bool) rand(0, 8), 'base_price' => rand(5, 15)]);
             $hat->categories()->sync([10]);
+            $this->seedInventories($hat);
 
-            $jacket = Generate::product(ucfirst($adjective).' jacket', ['base_price' => rand(5, 15)]);
+            $jacket = Generate::product(ucfirst($adjective).' jacket', ['is_active' => (bool) rand(0, 8), 'base_price' => rand(5, 15)]);
             $hat->categories()->sync([11]);
+            $this->seedInventories($jacket);
+        }
+    }
+
+    public function seedInventories($product)
+    {
+        // Generate options and inventories
+        if (rand(0,1)) {
+            $size   = Generate::option('Size', ['product_id' => $product->id]);
+            $small  = Generate::value($size, 'Small', ['position' => 0]);
+            $medium = Generate::value($size, 'Medium', ['position' => 1]);
+            $large  = Generate::value($size, 'Large', ['position' => 2]);
+            $inv1   = Generate::inventory($product, [$small->id], ['quantity' => rand(0, 2)]);
+            $inv2   = Generate::inventory($product, [$medium->id], ['quantity' => rand(0, 2)]);
+            $inv3   = Generate::inventory($product, [$large->id], ['quantity' => rand(0, 2)]);
+        }
+
+        // Generate inventory for the default option
+        else {
+            $inv    = Generate::inventory($product, [], ['quantity' => rand(0, 2)]);
         }
     }
 
