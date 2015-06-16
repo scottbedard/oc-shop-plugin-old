@@ -18,6 +18,7 @@ return [
         'access_products'           => 'Manage products',
         'access_inventories'        => 'Manage inventories',
         'access_discounts'          => 'Manage discounts',
+        'access_settings'           => 'Manage shop settings',
     ],
 
     //

@@ -85,6 +85,7 @@ class Plugin extends PluginBase
                 'description'   => 'bedard.shop::lang.currency.description',
                 'category'      => 'bedard.shop::lang.general.plugin',
                 'class'         => 'Bedard\Shop\Models\Currency',
+                'permissions'   => ['bedard.shop.access_settings'],
                 'icon'          => $currencyIcon,
             ]
         ];
@@ -113,6 +114,10 @@ class Plugin extends PluginBase
             'bedard.shop.access_discounts' => [
                 'tab'   => 'bedard.shop::lang.general.plugin',
                 'label' => 'bedard.shop::lang.permissions.access_discounts',
+            ],
+            'bedard.shop.access_settings' => [
+                'tab'   => 'bedard.shop::lang.general.plugin',
+                'label' => 'bedard.shop::lang.permissions.access_settings',
             ],
         ];
     }

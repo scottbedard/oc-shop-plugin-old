@@ -47,7 +47,7 @@ class Currency extends Model
      */
     public static function getThousands()
     {
-        return Currency::get('thousands', '');
+        return Currency::get('thousands', false);
     }
 
     /**
