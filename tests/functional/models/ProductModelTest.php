@@ -127,4 +127,24 @@ class ProductModelTest extends \OctoberPluginTestCase
         $this->assertEquals(75, $product->current_price->price);
         $this->assertEquals(1, $product->discounted_prices->count());
     }
+
+    /**
+     * Make sure the inventory scopes work
+     */
+    public function test_inventory_scopes()
+    {
+        $first  = Generate::product('First');
+        $second = Generate::product('Second');
+        $inv1   = Generate::inventory($first, [], ['quantity' => 1]);
+        $inv2   = Generate::inventory($second, [], ['quantity' => 0]);
+
+        $instock = Product::inStock()->get();
+        $this->assertEquals(1, $instock->count());
+        $this->assertEquals(1, $instock->where('id', $first->id)->count());
+
+        $outofstock = Product::outOfStock()->get();
+        $this->assertEquals(1, $outofstock->count());
+        $this->assertEquals(1, $outofstock->where('id', $second->id)->count());
+
+    }
 }

@@ -7,7 +7,6 @@ use DB;
 use Lang;
 use Markdown;
 use Model;
-use Queue;
 
 /**
  * Product Model
@@ -156,6 +155,13 @@ class Product extends Model
     /**
      * Query Scopes
      */
+    public function scopeInStock($query)
+    {
+        return $query->whereHas('inventories', function($inventory) {
+            $inventory->where('quantity', '>', 0);
+        });
+    }
+
     public function scopeIsActive($query)
     {
         return $query->where('is_active', true);
@@ -168,9 +174,15 @@ class Product extends Model
 
     public function scopeFilterByCategory($query, $filter)
     {
-        // Allows filtering for specifc categories
         return $query->whereHas('categories', function($category) use ($filter) {
             $category->whereIn('id', $filter);
+        });
+    }
+
+    public function scopeOutOfStock($query)
+    {
+        $query->whereDoesntHave('inventories', function($inventory) {
+            $inventory->where('quantity', '>', 0);
         });
     }
 
