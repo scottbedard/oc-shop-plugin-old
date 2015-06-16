@@ -16,10 +16,13 @@ before_script:
   - git clone https://github.com/octobercms/october.git
   - mkdir -p ./october/plugins/bedard/shop
   - mv !(october) october/plugins/bedard/shop
-  - cd october && composer install
+  - cd october
+  - composer install
   - cp config/cms.php config/cms.php.testing
   - mv config/cms.php.testing config/testing/cms.php
   - cd plugins/bedard/shop
   - composer update
+
+after_success: coveralls
 
 script: php vendor/bin/phpunit
