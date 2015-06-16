@@ -93,6 +93,14 @@ class Discount extends Model
         $this->syncProducts();
     }
 
+    public function afterDelete()
+    {
+        // Delete discount prices
+        foreach ($this->prices as $price) {
+            $price->delete();
+        }
+    }
+
     public function filterFields($fields, $context = null)
     {
         $fields->amount_exact->hidden = $this->is_percentage;
@@ -117,10 +125,13 @@ class Discount extends Model
         // First, grab all products within the scope of this discount
         $products = Product::whereIn('id', $this->products->lists('id'))
             ->orWhereHas('categories', function($category) {
-                $category->whereIn('id', $this->categories->lists('id'))
-                    ->orWhereHas('inherited_by', function($inherited_by) {
-                        $inherited_by->whereIn('parent_id', $this->categories->lists('id'));
-                    });
+                $category->where(function($query) {
+                    $query
+                        ->whereIn('id', $this->categories->lists('id'))
+                        ->orWhereHas('inherited_by', function($inherited_by) {
+                            $inherited_by->whereIn('parent_id', $this->categories->lists('id'));
+                        });
+                });
             })
             ->get();
 

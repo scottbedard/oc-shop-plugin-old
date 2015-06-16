@@ -59,6 +59,13 @@ class DiscountModelTest extends \OctoberPluginTestCase
         $this->assertEquals(1, $discount->prices->where('product_id', $fourth->id)->count());
         $this->assertEquals(1, $discount->prices->where('product_id', $first->id)->count());
         $this->assertEquals(1, $discount->prices->where('product_id', $second->id)->count());
+
+        // Remove the unrelated category discount
+        $discount->categories()->remove($unrelated);
+        $discount->load('categories.inherited', 'categories.inherited_by');
+        $discount->save();
+        $discount->load('prices');
+        $this->assertEquals(0, $discount->prices->where('product_id', $fourth->id)->count());
     }
 
     /**
@@ -161,6 +168,23 @@ class DiscountModelTest extends \OctoberPluginTestCase
         $this->assertFalse($discount->isRunning());
         $this->assertFalse($discount->isExpired());
         $this->assertTrue($discount->isUpcoming());
+    }
 
+    public function test_prices_are_deleted()
+    {
+        $product = Generate::product('Hello');
+        $discount = Generate::discount('World');
+
+        $discount->products()->add($product);
+        $discount->load('products');
+        $discount->save();
+
+        $prices = Price::where('discount_id', $discount->id);
+        $this->assertEquals(1, $prices->count());
+
+        $discount->delete();
+
+        $prices = Price::where('discount', $discount->id);
+        $this->assertEquals(0, $prices->count());
     }
 }
