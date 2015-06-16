@@ -1,0 +1,26 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+
+    symbol:
+        label: bedard.shop::lang.currency.symbol
+        placeholder: bedard.shop::lang.currency.symbol_placeholder
+        span: left
+
+    code:
+        label: bedard.shop::lang.currency.code
+        placeholder: bedard.shop::lang.currency.code_placeholder
+        span: right
+
+    thousands:
+        label: bedard.shop::lang.currency.thousands
+        placeholder: bedard.shop::lang.currency.thousands_placeholder
+        span: left
+
+    decimal:
+        label: bedard.shop::lang.currency.decimal
+        placeholder: bedard.shop::lang.currency.decimal_placeholder
+        default: "."
+        span: right

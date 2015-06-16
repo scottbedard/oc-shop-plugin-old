@@ -1,6 +1,7 @@
 <?php namespace Bedard\Shop;
 
 use Backend;
+use Bedard\Shop\Models\Currency;
 use Lang;
 use System\Classes\PluginBase;
 
@@ -61,6 +62,31 @@ class Plugin extends PluginBase
                     ],
                 ],
             ],
+        ];
+    }
+
+    /**
+     * Register settings pages
+     *
+     * @return  array
+     */
+    public function registerSettings()
+    {
+        // If the currency is in the font-awesome stack, use it as the currency settings icon.
+        $code = Currency::getCode();
+        $fontAwesome = ['BTC', 'ILS', 'KRW', 'TRY', 'EUR', 'INR', 'USD', 'GBP', 'JPY', 'RUB'];
+        $currencyIcon = $code && in_array($code, $fontAwesome)
+            ? 'icon-'.strtolower($code)
+            : 'icon-money';
+
+        return [
+            'currency' => [
+                'label'         => 'bedard.shop::lang.currency.model',
+                'description'   => 'bedard.shop::lang.currency.description',
+                'category'      => 'bedard.shop::lang.general.plugin',
+                'class'         => 'Bedard\Shop\Models\Currency',
+                'icon'          => $currencyIcon,
+            ]
         ];
     }
 

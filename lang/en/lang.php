@@ -60,6 +60,19 @@ return [
         'reorder_success'           => 'Categories have been successfully re-ordered!',
     ],
 
+    'currency' => [
+        'code'                      => 'Code',
+        'code_placeholder'          => 'Enter currency code (USD, EUR, GBP, etc...)',
+        'decimal'                   => 'Decimal Character',
+        'decimal_placeholder'       => '',
+        'description'               => 'Manage currency and formatting.',
+        'model'                     => 'Currency',
+        'symbol'                    => 'Symbol',
+        'symbol_placeholder'        => 'Enter currency symbol ($, €, £, etc...)',
+        'thousands'                 => 'Thousands Seperator',
+        'thousands_placeholder'     => '',
+    ],
+
     'discounts' => [
         'amount'                    => 'Amount',
         'amount_exact'              => 'The exact amount to reduce prices by.',
