@@ -23,9 +23,4 @@ before_script:
   - cd plugins/bedard/shop
   - composer update
 
-script:
-  - mkdir -p build/logs
-  - php vendor/bin/phpunit -c phpunit.xml.dist
-
-after_script:
-  - php vendor/bin/coveralls -v
+script: php vendor/bin/phpunit
