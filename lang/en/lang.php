@@ -118,6 +118,8 @@ return [
         'details_tab'               => 'Details',
         'discount_ends'             => 'Discount ends :date',
         'discount_indefinite'       => 'Discount runs indefinitely',
+        'filter_disabled'           => 'Hide disabled',
+        'filter_out_of_stock'       => 'Hide out of stock',
         'images'                    => 'Images',
         'images_tab'                => 'Images',
         'in_stock'                  => ':quantity in stock',
