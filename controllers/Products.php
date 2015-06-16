@@ -68,8 +68,8 @@ class Products extends Controller
 
     /**
      * This joins a price table to the product table. It is done here instead
-     * of from the YAML file to avoid using "now()", which is unsupported
-     * by SQLite.
+     * of from the YAML file to avoid using "now()", which is unsupported by
+     * SQLite. The product's status is also selected to enable column sorting.
      */
     public function listExtendQuery($query)
     {
@@ -83,14 +83,22 @@ class Products extends Controller
             GROUP BY `bedard_shop_prices`.`product_id`
         ) AS `price`";
 
+        $status = "(
+            CASE
+                WHEN (`bedard_shop_products`.`is_active` = 0) THEN 0
+                WHEN (`price` < `bedard_shop_products`.`base_price`) THEN 2
+                ELSE 1
+            END
+        ) as `status`";
+
         $query
-            ->select('*')
+            ->select(DB::raw("*, $status"))
             ->join(DB::raw($price_table), function($join) {
                 $join->on('product_id', '=', 'bedard_shop_products.id');
             });
 
-        // Also eager load the normal product relationships
-        return $query->with('current_price');
+        // Also eager load the normal relationships
+        return $query->with('current_price.discount');
     }
 
     /**

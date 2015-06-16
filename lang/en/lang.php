@@ -115,6 +115,8 @@ return [
         'controller'                => 'Products',
         'description'               => 'Description',
         'details_tab'               => 'Details',
+        'discount_ends'             => 'Discount ends :date',
+        'discount_indefinite'       => 'Discount runs indefinitely',
         'is_active'                 => 'Product is active',
         'list_title'                => 'Manage Products',
         'markdown_allowed'          => 'You may use markdown syntax.',

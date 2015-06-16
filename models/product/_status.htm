@@ -2,6 +2,22 @@
 
     <i class="list-icon icon-times red"></i><?= e(trans('bedard.shop::lang.products.status_disabled')) ?>
 
+<?php elseif ($record->isDiscounted()):
+
+    $title = $record->current_price->discount->end_at
+        ? trans('bedard.shop::lang.products.discount_ends', ['date' => $record->current_price->discount->end_at->diffForHumans()])
+        : trans('bedard.shop::lang.products.discount_indefinite');
+
+    ?>
+
+    <a
+        href="javascript:;"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="<?= e($title) ?>">
+        <i class="list-icon icon-clock-o blue"></i><?= e($record->current_price->discount->name) ?>
+    </a>
+
 <?php else: ?>
 
     <i class="list-icon icon-check green"></i><?= e(trans('bedard.shop::lang.products.status_normal')) ?>
