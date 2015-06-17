@@ -1,6 +1,7 @@
 <?php namespace Bedard\Shop\Models;
 
-use Bedard\Shop\Models\Discount;;
+use Bedard\Shop\Models\Discount;
+use Bedard\Shop\Models\Product;
 use DB;
 use Flash;
 use Lang;
@@ -184,6 +185,31 @@ class Category extends Model
         }
 
         return $options;
+    }
+
+    /**
+     * Builds a query to select a category's products
+     *
+     * @return  \October\Rain\Database\Builder
+     */
+    public function queryProducts()
+    {
+        // Start the product query by excluding disabled products
+        $query = Product::isActive();
+
+        // If this is not a filtered category, load the products that are
+        // directly related, or are inherited from a child category.
+        if (!$this->filter) {
+            $query->whereHas('categories', function($category) {
+                $category->where('id', $this->id)
+                    ->orWhereHas('inherited_by', function($inherited_by) {
+                        $inherited_by->where('parent_id', $this->id);
+                    });
+            });
+        }
+
+        // Return the results
+        return $query;
     }
 
     /**

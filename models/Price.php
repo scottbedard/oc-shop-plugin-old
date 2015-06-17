@@ -75,6 +75,13 @@ class Price extends Model
         $this->attributes['price'] = $value > 0 ? $value : 0;
     }
 
+    public function getPriceAttribute()
+    {
+        return isset($this->attributes['price'])
+            ? floatval($this->attributes['price'])
+            : 0;
+    }
+
     /**
      * Recalculates a price
      */

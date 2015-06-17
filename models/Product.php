@@ -154,6 +154,9 @@ class Product extends Model
 
     /**
      * Query Scopes
+     *
+     * @param   October\Rain\Database\Builder   $query
+     * @return  October\Rain\Database\Builder
      */
     public function scopeInStock($query)
     {
@@ -212,6 +215,11 @@ class Product extends Model
     public function getCategoriesOptions()
     {
         return Category::isNotFiltered()->lists('name', 'id');
+    }
+
+    public function getPriceAttribute()
+    {
+        return $this->current_price->price;
     }
 
     public function setBasePriceAttribute($value)

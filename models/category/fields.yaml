@@ -39,24 +39,29 @@ tabs:
             label: bedard.shop::lang.categories.sort_order
             type: dropdown
             options:
-                DATE_ASC: bedard.shop::lang.categories.sort_date_asc
-                DATE_DESC: bedard.shop::lang.categories.sort_date_desc
-                NAME_ASC: bedard.shop::lang.categories.sort_name_asc
-                NAME_DESC: bedard.shop::lang.categories.sort_name_desc
-                PRICE_ASC: bedard.shop::lang.categories.sort_price_asc
-                PRICE_DESC: bedard.shop::lang.categories.sort_price_desc
-                CUSTOM: bedard.shop::lang.categories.sort_custom
+                created_at-asc: bedard.shop::lang.categories.sort_date_asc
+                created_at-desc: bedard.shop::lang.categories.sort_date_desc
+                name-asc: bedard.shop::lang.categories.sort_name_asc
+                name-desc: bedard.shop::lang.categories.sort_name_desc
+                price-asc: bedard.shop::lang.categories.sort_price_asc
+                price-desc: bedard.shop::lang.categories.sort_price_desc
+                # custom: bedard.shop::lang.categories.sort_custom
 
         rows:
             tab: bedard.shop::lang.categories.display_tab
             label: bedard.shop::lang.categories.rows
             comment: bedard.shop::lang.categories.rows_comment
+            attributes:
+                v-model: rows
             span: left
 
         columns:
             tab: bedard.shop::lang.categories.display_tab
             label: bedard.shop::lang.categories.columns
+            attributes:
+                v-model: columns
             span: right
+
 
         hide_out_of_stock:
             tab: bedard.shop::lang.categories.display_tab
