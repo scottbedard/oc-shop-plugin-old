@@ -41,6 +41,7 @@ class Category extends Model
         'parent_id',
         'filter',
         'is_inheriting',
+        'is_hidden',
     ];
 
     /**
@@ -89,6 +90,8 @@ class Category extends Model
         'rows'              => 'integer|min:0',
         'columns'           => 'integer|min:1',
         'hide_out_of_stock' => 'boolean',
+        'is_hidden'         => 'boolean',
+        'filter_value'      => 'numeric|min:0'
     ];
 
     /**
@@ -161,6 +164,26 @@ class Category extends Model
     {
         // Returns non-filtered categories
         return $query->whereNull('filter');
+    }
+
+    /**
+     * Accessors and Mutators
+     */
+    public function getFilterValueAttribute()
+    {
+        // Floor the value if it's not a price filter
+        $value = isset($this->attributes['filter_value'])
+            ? $this->attributes['filter_value']
+            : 0;
+
+        return $this->filter != 'price_less' && $this->filter != 'price_greater'
+            ? floor($value)
+            : $value;
+    }
+
+    public function setFilterValueAttribute($value)
+    {
+        $this->attributes['filter_value'] = $value ?: 0;
     }
 
     /**

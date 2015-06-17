@@ -86,8 +86,34 @@ tabs:
                 12: 12
             span: right
 
+        is_hidden:
+            tab: bedard.shop::lang.categories.display_tab
+            label: bedard.shop::lang.categories.is_hidden
+            type: switch
+            default: false
+
         hide_out_of_stock:
             tab: bedard.shop::lang.categories.display_tab
             label: bedard.shop::lang.categories.hide_out_of_stock
             type: switch
             default: false
+
+        filter:
+            tab: bedard.shop::lang.categories.filter_tab
+            label: bedard.shop::lang.categories.filter
+            comment: bedard.shop::lang.categories.filter_comment
+            type: dropdown
+            options:
+                all: bedard.shop::lang.categories.filter_all
+                discounted: bedard.shop::lang.categories.filter_discounted
+                created_less: bedard.shop::lang.categories.filter_created_less
+                created_greater: bedard.shop::lang.categories.filter_created_greater
+                price_less: bedard.shop::lang.categories.filter_price_less
+                price_greater: bedard.shop::lang.categories.filter_price_greater
+            span: left
+
+        filter_value:
+            tab: bedard.shop::lang.categories.filter_tab
+            label: bedard.shop::lang.categories.filter_value
+            span: right
+

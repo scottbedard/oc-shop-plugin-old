@@ -101,12 +101,9 @@ class Discount extends Model
         }
     }
 
-    public function filterFields($fields, $context = null)
-    {
-        $fields->amount_exact->hidden = $this->is_percentage;
-        $fields->amount_percentage->hidden = !$this->is_percentage;
-    }
-
+    /**
+     * Accessors and Mutators
+     */
     public function setAmountExactAttribute($value)
     {
         $this->attributes['amount_exact'] = $value ?: 0;
@@ -115,6 +112,15 @@ class Discount extends Model
     public function setAmountPercentageAttribute($value)
     {
         $this->attributes['amount_percentage'] = $value ?: 0;
+    }
+
+    /**
+     * Filter form fields
+     */
+    public function filterFields($fields, $context = null)
+    {
+        $fields->amount_exact->hidden = $this->is_percentage;
+        $fields->amount_percentage->hidden = !$this->is_percentage;
     }
 
     /**

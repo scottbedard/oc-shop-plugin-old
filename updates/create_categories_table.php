@@ -21,8 +21,10 @@ class CreateCategoriesTable extends Migration
             $table->tinyInteger('columns')->unsigned()->default(4);
             $table->tinyInteger('rows')->unsigned()->default(3);
             $table->string('filter')->nullable();
+            $table->decimal('filter_value', 10, 2)->default(0);
             $table->boolean('hide_out_of_stock')->default(false);
             $table->boolean('is_inheriting')->default(true);
+            $table->boolean('is_hidden')->default(false);
             $table->timestamps();
         });
     }
