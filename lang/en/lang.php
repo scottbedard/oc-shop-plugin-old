@@ -63,7 +63,7 @@ return [
         'reorder_empty'             => 'There are no categories to re-order.',
         'reorder_success'           => 'Categories have been successfully re-ordered!',
         'rows'                      => 'Rows',
-        'rows_comment'              => 'Leave blank to display all rows.',
+        'rows_display_all'          => 'Display all rows',
         'sort_order'                => 'Product Order',
         'sort_date_asc'             => 'Date added (Oldest first)',
         'sort_date_desc'            => 'Date added (Newest first)',

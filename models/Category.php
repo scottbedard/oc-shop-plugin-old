@@ -84,8 +84,11 @@ class Category extends Model
      * Validation
      */
     public $rules = [
-        'name'  => 'required',
-        'slug'  => 'required|between:3,64|unique:bedard_shop_categories',
+        'name'              => 'required',
+        'slug'              => 'required|between:3,64|unique:bedard_shop_categories',
+        'rows'              => 'integer|min:0',
+        'columns'           => 'integer|min:1',
+        'hide_out_of_stock' => 'boolean',
     ];
 
     /**
@@ -196,6 +199,11 @@ class Category extends Model
     {
         // Start the product query by excluding disabled products
         $query = Product::isActive();
+
+        // Hide out of stock products if needed
+        if ($this->hide_out_of_stock) {
+            $query->inStock();
+        }
 
         // If this is not a filtered category, load the products that are
         // directly related, or are inherited from a child category.
