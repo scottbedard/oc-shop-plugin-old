@@ -123,12 +123,10 @@ class Products extends Controller
             GROUP BY `bedard_shop_prices`.`product_id`
         ) AS `price`";
 
-        $inventory_table = "(
-            SELECT
-                `bedard_shop_inventories`.`product_id` as `inventory_product_id`,
-                SUM(`bedard_shop_inventories`.`quantity`) as `inventory`
+        $inventory = "(
+            SELECT SUM(`bedard_shop_inventories`.`quantity`)
             FROM `bedard_shop_inventories`
-            GROUP BY `bedard_shop_inventories`.`product_id`
+            WHERE `bedard_shop_inventories`.`product_id` = `bedard_shop_products`.`id`
         ) as `inventory`";
 
         $status = "(
@@ -140,12 +138,9 @@ class Products extends Controller
         ) as `status`";
 
         $query
-            ->select(DB::raw("*, $status"))
+            ->select(DB::raw("*, $inventory, $status"))
             ->join(DB::raw($price_table), function($join) {
                 $join->on('price_product_id', '=', 'bedard_shop_products.id');
-            })
-            ->join(DB::raw($inventory_table), function($join) {
-                $join->on('inventory_product_id', '=', 'bedard_shop_products.id');
             });
 
         // Also eager load the normal relationships
