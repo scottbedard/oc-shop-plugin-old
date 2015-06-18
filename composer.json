@@ -22,6 +22,6 @@
     "require": {
         "php": ">=5.4.0",
         "owl/knob": "~1.0@dev",
-        "owl/treesort": "~1.0@dev",
+        "owl/treesort": "~1.0@dev"
     }
 }
