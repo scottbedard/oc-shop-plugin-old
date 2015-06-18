@@ -181,6 +181,11 @@ class Category extends Model
             : $value;
     }
 
+    public function setFilterAttribute($value)
+    {
+        $this->attributes['filter'] = $value ?: null;
+    }
+
     public function setFilterValueAttribute($value)
     {
         $this->attributes['filter_value'] = $value ?: 0;
@@ -193,7 +198,7 @@ class Category extends Model
      */
     public function getParentIdOptions()
     {
-        $options = [Lang::get('bedard.shop::lang.categories.parent_empty')];
+        $options = [Lang::get('bedard.shop::lang.categories.none')];
 
         $categories = Category::whereNotIn('id', $this->getAllChildren()->lists('id'))
             ->where('id', '<>', $this->id ?: 0)

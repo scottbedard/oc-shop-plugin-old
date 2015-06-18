@@ -11,6 +11,14 @@ return [
     ],
 
     //
+    // Components
+    //
+    'components' => [
+        'category'                  => 'Category',
+        'category_description'      => 'Displays products belonging to a given category.',
+    ],
+
+    //
     // Permissions
     //
     'permissions' => [
@@ -44,6 +52,7 @@ return [
     // Resources
     //
     'categories' => [
+        'behavior_tab'              => 'Behavior',
         'children'                  => 'Children',
         'columns'                   => 'Columns',
         'controller'                => 'Categories',
@@ -66,10 +75,9 @@ return [
         'is_hidden'                 => 'Hide category from navigation',
         'list_title'                => 'Manage Categories',
         'model'                     => 'Category',
+        'none'                      => '<i>None</i>',
         'parent'                    => 'Parent',
         'parent_category'           => 'Parent Category',
-        'parent_empty'              => '<i>None</i>',
-        'relationships_tab'         => 'Relationships',
         'reorder'                   => 'Re-order Categories',
         'reorder_empty'             => 'There are no categories to re-order.',
         'reorder_success'           => 'Categories have been successfully re-ordered!',
