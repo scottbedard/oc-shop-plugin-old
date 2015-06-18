@@ -49,7 +49,7 @@ class Discounts extends Controller
                 ) THEN 2
                 WHEN (
                     `bedard_shop_discounts`.`start_at` IS NOT NULL AND
-                    `bedard_shop_discounts`.`start_at` > '$now'
+                    `bedard_shop_discounts`.`start_at` >= '$now'
                 ) THEN 1
                 ELSE 0
             END

@@ -111,40 +111,9 @@ class Products extends Controller
      */
     public function listExtendQuery($query)
     {
-        $now = date('Y-m-d H:i:s');
-
-        $price_table = "(
-            SELECT
-                `bedard_shop_prices`.`product_id` as `price_product_id`,
-                MIN(`bedard_shop_prices`.`price`) AS `price`
-            FROM `bedard_shop_prices`
-            WHERE (`bedard_shop_prices`.`start_at` IS NULL OR `bedard_shop_prices`.`start_at` <= '$now')
-            AND (`bedard_shop_prices`.`end_at` IS NULL OR `bedard_shop_prices`.`end_at` > '$now')
-            GROUP BY `bedard_shop_prices`.`product_id`
-        ) AS `price`";
-
-        $inventory = "(
-            SELECT SUM(`bedard_shop_inventories`.`quantity`)
-            FROM `bedard_shop_inventories`
-            WHERE `bedard_shop_inventories`.`product_id` = `bedard_shop_products`.`id`
-        ) as `inventory`";
-
-        $status = "(
-            CASE
-                WHEN (`bedard_shop_products`.`is_active` = 0) THEN 0
-                WHEN (`price` < `bedard_shop_products`.`base_price`) THEN 2
-                ELSE 1
-            END
-        ) as `status`";
-
         $query
-            ->select(DB::raw("*, $inventory, $status"))
-            ->join(DB::raw($price_table), function($join) {
-                $join->on('price_product_id', '=', 'bedard_shop_products.id');
-            });
-
-        // Also eager load the normal relationships
-        return $query->with('current_price.discount');
+            ->joinPrices()
+            ->with('current_price.discount');
     }
 
     /**

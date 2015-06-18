@@ -17,8 +17,22 @@ columns:
         label: bedard.shop::lang.inventories.model
         type: partial
         path: $/bedard/shop/models/product/_inventory.htm
+        select: >
+            (
+                SELECT SUM(`bedard_shop_inventories`.`quantity`)
+                FROM `bedard_shop_inventories`
+                WHERE `bedard_shop_inventories`.`product_id` = `bedard_shop_products`.`id`
+            )
 
     status:
         label: bedard.shop::lang.common.status
         type: partial
         path: $/bedard/shop/models/product/_status.htm
+        select: >
+            (
+                CASE
+                    WHEN (`bedard_shop_products`.`is_active` = 0) THEN 0
+                    WHEN (`price` < `bedard_shop_products`.`base_price`) THEN 2
+                    ELSE 1
+                END
+            )

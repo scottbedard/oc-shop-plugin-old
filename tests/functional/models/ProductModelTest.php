@@ -164,4 +164,17 @@ class ProductModelTest extends \OctoberPluginTestCase
         $this->assertEquals(1, $onsale->count());
         $this->assertEquals(1, $onsale->where('id', $discounted->id)->count());
     }
+
+    /**
+     * Make sure that joining the price table works
+     */
+    public function test_join_prices_scope()
+    {
+        $product = Generate::product('Product', ['base_price' => 10]);
+        $query = Product::joinPrices()->where('id', $product->id)->first();
+
+        // Make sure we're joining the price, and not getting it from the relationship
+        $this->assertEquals(10, $query->price);
+        $this->assertFalse(isset($query->toArray()['current_price']));
+    }
 }

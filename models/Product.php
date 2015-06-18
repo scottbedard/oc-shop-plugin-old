@@ -158,6 +158,13 @@ class Product extends Model
      * @param   October\Rain\Database\Builder   $query
      * @return  October\Rain\Database\Builder
      */
+    public function scopeFilterByCategory($query, $filter)
+    {
+        return $query->whereHas('categories', function($category) use ($filter) {
+            $category->whereIn('id', $filter);
+        });
+    }
+
     public function scopeInStock($query)
     {
         return $query->whereHas('inventories', function($inventory) {
@@ -200,10 +207,22 @@ class Product extends Model
         });
     }
 
-    public function scopeFilterByCategory($query, $filter)
+    public function scopeJoinPrices($query)
     {
-        return $query->whereHas('categories', function($category) use ($filter) {
-            $category->whereIn('id', $filter);
+        // Joins a price table
+        $now = date('Y-m-d H:i:s');
+        $prices = "(
+            SELECT
+                `bedard_shop_prices`.`product_id`,
+                MIN(`bedard_shop_prices`.`price`) AS `price`
+            FROM `bedard_shop_prices`
+            WHERE (`bedard_shop_prices`.`start_at` IS NULL OR `bedard_shop_prices`.`start_at` <= '$now')
+            AND (`bedard_shop_prices`.`end_at` IS NULL OR `bedard_shop_prices`.`end_at` > '$now')
+            GROUP BY `bedard_shop_prices`.`product_id`
+        ) AS `prices`";
+
+        $query->join(DB::raw($prices), function($join) {
+            $join->on('prices.product_id', '=', 'bedard_shop_products.id');
         });
     }
 
@@ -219,7 +238,11 @@ class Product extends Model
 
     public function getPriceAttribute()
     {
-        return $this->current_price->price;
+        // If the price has been joined to the query, return it. Otherwise grab
+        // the price from the current_price relationship.
+        return isset($this->attributes['price'])
+            ? $this->attributes['price']
+            : $this->current_price->price;
     }
 
     public function setBasePriceAttribute($value)
