@@ -16,11 +16,12 @@
     },
     "require-dev": {
         "phpunit/phpunit": "4.7.*@dev",
+        "fzaninotto/faker": "~1.5",
         "keios/oc-plugin-testsuite": "dev-master"
     },
     "require": {
         "php": ">=5.4.0",
         "owl/knob": "~1.0@dev",
-        "owl/treesort": "~1.0@dev"
+        "owl/treesort": "~1.0@dev",
     }
 }
