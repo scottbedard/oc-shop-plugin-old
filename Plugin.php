@@ -123,7 +123,7 @@ class Plugin extends PluginBase
     }
 
     /**
-     *  Register form widgets
+     * Register form widgets
      *
      * @return  array
      */
@@ -146,6 +146,18 @@ class Plugin extends PluginBase
                 'label' => 'Knob',
                 'code'  => 'owl-knob'
             ],
+        ];
+    }
+
+    /**
+     * Register components
+     *
+     * @return  array
+     */
+    public function registerComponents()
+    {
+        return [
+            'Bedard\Shop\Components\Category' => 'shopCategory',
         ];
     }
 }

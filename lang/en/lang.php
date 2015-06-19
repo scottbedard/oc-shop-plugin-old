@@ -14,8 +14,19 @@ return [
     // Components
     //
     'components' => [
-        'category'                  => 'Category',
-        'category_description'      => 'Displays products belonging to a given category.',
+        'category' => [
+            'notfound'              => 'Return 404 when not found',
+            'notfound_description'  => 'Returns a 404 (page not found) response when the requested category does not exist.',
+            'default'               => 'Default',
+            'default_description'   => 'Default category to display when none is selected.',
+            'description'           => 'Displays a category and it\'s products.',
+            'name'                  => 'Category',
+            'page'                  => 'Page number',
+            'page_description'      => 'The page number to display. If the page doesn\'t exist, the closest existing page will be displayed.',
+            'page_invalid'          => 'The page number must be a whole number greater than zero.',
+            'slug'                  => 'Category',
+            'slug_description'      => 'Select a category or enter a slug parameter.',
+        ],
     ],
 
     //
