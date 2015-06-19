@@ -28,6 +28,11 @@
     <i class="list-icon icon-sort-numeric-desc"></i>
     <?= e(trans('bedard.shop::lang.categories.sort_price_desc')) ?>
 
+<?php elseif ($record->sort == 'random'): ?>
+
+    <i class="list-icon icon-random"></i>
+    <?= e(trans('bedard.shop::lang.categories.sort_random')) ?>
+
 <?php elseif ($record->sort == 'custom'): ?>
 
     <i class="list-icon icon-th"></i>

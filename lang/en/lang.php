@@ -95,12 +95,14 @@ return [
         'rows'                      => 'Rows',
         'rows_display_all'          => 'Display all rows',
         'sort'                      => 'Product Order',
+        'sort_comment'              => 'Pagination is not available for randomly sorted categories.',
         'sort_date_asc'             => 'Date created (Oldest first)',
         'sort_date_desc'            => 'Date created (Newest first)',
         'sort_name_asc'             => 'Alphabetically (A-Z)',
         'sort_name_desc'            => 'Alphabetically (Z-A)',
         'sort_price_asc'            => 'Price (Lowest to highest)',
         'sort_price_desc'           => 'Price (Highest to lowest)',
+        'sort_random'               => 'Random',
         'sort_custom'               => 'Custom',
     ],
 
@@ -199,6 +201,15 @@ return [
         'values'                    => 'Values',
         'values_required'           => 'Options must have at least one value.',
         'widget_label'              => 'Options',
+    ],
+
+    'settings' => [
+        'backend_tab'               => 'Backend',
+        'description'               => 'Manage general shop settings.',
+        'editor'                    => 'Editor',
+        'editor_code'               => 'Code editor + markdown',
+        'editor_richeditor'         => 'Rich text editor',
+        'model'                     => 'Settings',
     ],
 
     'values' => [

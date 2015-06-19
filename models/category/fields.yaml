@@ -57,6 +57,7 @@ tabs:
         sort:
             tab: bedard.shop::lang.categories.display_tab
             label: bedard.shop::lang.categories.sort
+            comment: bedard.shop::lang.categories.sort_comment
             type: dropdown
             options:
                 created_at-asc: bedard.shop::lang.categories.sort_date_asc
@@ -65,6 +66,7 @@ tabs:
                 name-desc: bedard.shop::lang.categories.sort_name_desc
                 price-asc: bedard.shop::lang.categories.sort_price_asc
                 price-desc: bedard.shop::lang.categories.sort_price_desc
+                random: bedard.shop::lang.categories.sort_random
                 # custom: bedard.shop::lang.categories.sort_custom
 
         rows:

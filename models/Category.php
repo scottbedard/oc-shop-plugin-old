@@ -184,7 +184,9 @@ class Category extends Model
 
     public function getSortAttribute()
     {
-        return $this->sort_key . '-' . $this->sort_order;
+        return $this->sort_order != 'random'
+            ? $this->sort_key . '-' . $this->sort_order
+            : 'random';
     }
 
     public function setFilterAttribute($value)
@@ -199,9 +201,14 @@ class Category extends Model
 
     public function setSortAttribute($value)
     {
-        $parts = explode('-', $value);
-        $this->attributes['sort_key'] = $parts[0];
-        $this->attributes['sort_order'] = $parts[1];
+        if ($value == 'random') {
+            $this->attributes['sort_order'] = 'random';
+            $this->attributes['sort_key'] = null;
+        } else {
+            $parts = explode('-', $value);
+            $this->attributes['sort_key'] = $parts[0];
+            $this->attributes['sort_order'] = $parts[1];
+        }
     }
 
     /**
@@ -263,18 +270,12 @@ class Category extends Model
     public function queryProducts($page = 1)
     {
         // Start the product query by excluding disabled products
-        $query = Product::isActive();
+        // and joining the prices table
+        $query = Product::isActive()->joinPrices();
 
         // Hide out of stock products if needed
         if ($this->hide_out_of_stock) {
             $query->inStock();
-        }
-
-        // Join product pricing if needed
-        if ($this->sort_key == 'price' ||
-            $this->filter == 'discounted' ||
-            substr($this->filter, 0, 5) == 'price') {
-            $query->joinPrices();
         }
 
         // If this is not a filtered category, load the products that are
@@ -309,7 +310,12 @@ class Category extends Model
 
         // Sort and paginate the results if needed
         if ($page !== false) {
-            $query->orderBy($this->sort_key, $this->sort_order);
+            if ($this->sort_order == 'random') {
+                $query->orderBy(DB::raw('RAND()')); // todo: use a better random sort query
+                $page = 1;
+            } elseif ($this->sort_key && $this->sort_order) {
+                $query->orderBy($this->sort_key, $this->sort_order);
+            }
             if ($this->rows > 0) {
                 $perpage = $this->rows * $this->columns;
                 $query
