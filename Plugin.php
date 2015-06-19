@@ -160,4 +160,29 @@ class Plugin extends PluginBase
             'Bedard\Shop\Components\Category' => 'shopCategory',
         ];
     }
+
+    /**
+     * Register Twig extensions
+     *
+     * @return  array
+     */
+    public function registerMarkupTags()
+    {
+        return [
+             'filters' => [
+                'moneyFormat' => [$this, 'moneyFormat']
+            ],
+        ];
+    }
+
+    /**
+     * MoneyFormat twig extension
+     *
+     * @param   string  $text
+     * @return  string
+     */
+    public function moneyFormat($text)
+    {
+        return Currency::format($text);
+    }
 }

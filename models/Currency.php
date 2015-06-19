@@ -31,6 +31,16 @@ class Currency extends Model
     }
 
     /**
+     * Returns a boolean to hide double zeros
+     *
+     * @return  boolean
+     */
+    public static function getHideDoubleZeros()
+    {
+        return Currency::get('hide_double_zeros', false);
+    }
+
+    /**
      * Returns the currency symbol
      *
      * @return  string
@@ -58,11 +68,15 @@ class Currency extends Model
      */
     public static function format($amount = 0)
     {
+        if (!is_numeric($amount)) return false;
+
         $decimal = Currency::getDecimal();
         $thousands = Currency::getThousands();
 
-        return is_numeric($amount)
-            ? e(Currency::getSymbol().number_format($amount, 2, $decimal, $thousands))
-            : false;
+        $formatted = e(Currency::getSymbol().number_format($amount, 2, $decimal, $thousands));
+
+        return Currency::getHideDoubleZeros()
+            ? str_replace('.00', '', $formatted)
+            : $formatted;
     }
 }

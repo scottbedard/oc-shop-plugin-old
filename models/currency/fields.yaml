@@ -24,3 +24,9 @@ fields:
         placeholder: bedard.shop::lang.currency.decimal_placeholder
         default: "."
         span: right
+
+    hide_double_zeros:
+        label: bedard.shop::lang.currency.hide_double_zeros
+        comment: bedard.shop::lang.currency.hide_double_zeros_comment
+        default: false
+        type: switch

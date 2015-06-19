@@ -236,13 +236,14 @@ class Product extends Model
     }
 
     /**
-     * Returns a list of all non-filtered categories
-     *
-     * @return  array
+     * Accessors & Mutators
      */
-    public function getCategoriesOptions()
+    public function getBasePriceAttribute()
     {
-        return Category::isNotFiltered()->lists('name', 'id');
+        // Helper to allow basePrice and base_price to work
+        return isset($this->attributes['base_price'])
+            ? $this->attributes['base_price']
+            : 0;
     }
 
     public function getPriceAttribute()
@@ -262,6 +263,16 @@ class Product extends Model
         }
 
         $this->attributes['base_price'] = $value > 0 ? $value : 0;
+    }
+
+    /**
+     * Returns a list of all non-filtered categories
+     *
+     * @return  array
+     */
+    public function getCategoriesOptions()
+    {
+        return Category::isNotFiltered()->lists('name', 'id');
     }
 
     /**

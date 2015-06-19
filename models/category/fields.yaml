@@ -56,7 +56,7 @@ tabs:
 
         sort:
             tab: bedard.shop::lang.categories.display_tab
-            label: bedard.shop::lang.categories.sort_order
+            label: bedard.shop::lang.categories.sort
             type: dropdown
             options:
                 created_at-asc: bedard.shop::lang.categories.sort_date_asc

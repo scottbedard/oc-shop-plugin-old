@@ -8,7 +8,13 @@
         <div class="row">
             {% for product in row %}
                 <div class="col span-{{ __SELF__.columns }}">
-                    {{ product.name }}
+                    <h4>{{ product.name }}</h4>
+                    {% if product.isDiscounted %}
+                        <s>{{ product.basePrice|moneyFormat }}</s>
+                        <span class="text-success">{{ product.price|moneyFormat }}</span>
+                    {% else %}
+                        {{ product.price|moneyFormat }}
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>
