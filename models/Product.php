@@ -226,6 +226,15 @@ class Product extends Model
         });
     }
 
+    public function scopeWherePrice($query, $operator, $amount)
+    {
+        $amount = $amount == 'base_price'
+            ? '`bedard_shop_products`.`base_price`'
+            : floatval($amount);
+
+        return $query->where('price', $operator, DB::raw($amount));
+    }
+
     /**
      * Returns a list of all non-filtered categories
      *

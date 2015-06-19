@@ -2,6 +2,7 @@
 
 use Bedard\Shop\Models\Discount;
 use Bedard\Shop\Models\Product;
+use Carbon\Carbon;
 use DB;
 use Flash;
 use Lang;
@@ -231,11 +232,35 @@ class Category extends Model
     }
 
     /**
+     * Counts the number of products in a category
+     *
+     * @return  integer
+     */
+    public function countProducts()
+    {
+        return $this->queryProducts(false)->count();
+    }
+
+    /**
+     * Loads a category's products with their thumbnail images
+     *
+     * @param   integer     $page
+     * @return  Collection
+     */
+    public function getProducts($page = 1)
+    {
+        return $this->queryProducts($page)
+            ->with('thumbnails')
+            ->get();
+    }
+
+    /**
      * Builds a query to select a category's products
      *
+     * @param   integer     $page
      * @return  \October\Rain\Database\Builder
      */
-    public function queryProducts()
+    public function queryProducts($page = 1)
     {
         // Start the product query by excluding disabled products
         $query = Product::isActive();
@@ -245,18 +270,55 @@ class Category extends Model
             $query->inStock();
         }
 
+        // Join product pricing if needed
+        if ($this->sort_key == 'price' ||
+            $this->filter == 'discounted' ||
+            substr($this->filter, 0, 5) == 'price') {
+            $query->joinPrices();
+        }
+
         // If this is not a filtered category, load the products that are
         // directly related, or are inherited from a child category.
         if (!$this->filter) {
             $query->whereHas('categories', function($category) {
-                $category->where('id', $this->id)
-                    ->orWhereHas('inherited_by', function($inherited_by) {
-                        $inherited_by->where('parent_id', $this->id);
-                    });
+                $category->where(function($condition) {
+                    $condition
+                        ->where('id', $this->id)
+                        ->orWhereHas('inherited_by', function($inherited_by) {
+                            $inherited_by->where('parent_id', $this->id);
+                        });
+                });
             });
         }
 
-        // Return the results
+        // Otherwise, add the filter logic to the query
+        else {
+            // For the "all" filter, do nothing
+            if ($this->filter == 'discounted') {
+                $query->wherePrice('<', 'base_price');
+            } elseif ($this->filter == 'created_less') {
+                $query->where('created_at', '>', Carbon::now()->subDay($this->filter_value));
+            } elseif ($this->filter == 'created_greater') {
+                $query->where('created_at', '<', Carbon::now()->subDay($this->filter_value));
+            } elseif ($this->filter == 'price_less') {
+                $query->wherePrice('<', $this->filter_value);
+            } elseif ($this->filter == 'price_greater') {
+                $query->wherePrice('>', $this->filter_value);
+            }
+        }
+
+        // Sort and paginate the results if needed
+        if ($page !== false) {
+            $query->orderBy($this->sort_key, $this->sort_order);
+            if ($this->rows > 0) {
+                $perpage = $this->rows * $this->columns;
+                $query
+                    ->skip(($perpage * $page) - $perpage)
+                    ->take($perpage);
+            }
+        }
+
+        // Return the query
         return $query;
     }
 
