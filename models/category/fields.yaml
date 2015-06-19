@@ -54,7 +54,7 @@ tabs:
             default: 1
             span: right
 
-        sort_order:
+        sort:
             tab: bedard.shop::lang.categories.display_tab
             label: bedard.shop::lang.categories.sort_order
             type: dropdown

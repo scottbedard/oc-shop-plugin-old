@@ -10,7 +10,7 @@ columns:
     slug:
         label: bedard.shop::lang.common.slug
 
-    sort_order:
-        label: bedard.shop::lang.categories.sort_order
+    sort:
+        label: bedard.shop::lang.categories.sort
         type: partial
-        path: $/bedard/shop/models/category/_sort_order.htm
+        path: $/bedard/shop/models/category/_sort.htm

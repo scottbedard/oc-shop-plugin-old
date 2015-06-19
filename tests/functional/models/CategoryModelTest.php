@@ -136,4 +136,12 @@ class CategoryModelTest extends \OctoberPluginTestCase
         $product->load('current_price');
         $this->assertEquals(100, $product->current_price->price);
     }
+
+    public function test_sort_accessor_and_mutator()
+    {
+        $category = Generate::category('Foo', ['sort' => 'price-asc']);
+        $this->assertEquals('price-asc', $category->sort);
+        $this->assertEquals('price', $category->sort_key);
+        $this->assertEquals('asc', $category->sort_order);
+    }
 }

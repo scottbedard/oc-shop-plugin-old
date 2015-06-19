@@ -16,7 +16,8 @@ class CreateCategoriesTable extends Migration
             $table->integer('position')->unsigned()->nullable();
             $table->string('name')->nullable();
             $table->string('slug')->nullable()->unique();
-            $table->string('sort_order')->default('created_at-desc');
+            $table->string('sort_key')->default('created_at');
+            $table->string('sort_order')->default('desc');
             // $table->text('sort_custom')->nullable();
             $table->tinyInteger('columns')->unsigned()->default(4);
             $table->tinyInteger('rows')->unsigned()->default(3);

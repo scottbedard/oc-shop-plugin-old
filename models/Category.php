@@ -181,6 +181,11 @@ class Category extends Model
             : $value;
     }
 
+    public function getSortAttribute()
+    {
+        return $this->sort_key . '-' . $this->sort_order;
+    }
+
     public function setFilterAttribute($value)
     {
         $this->attributes['filter'] = $value ?: null;
@@ -189,6 +194,13 @@ class Category extends Model
     public function setFilterValueAttribute($value)
     {
         $this->attributes['filter_value'] = $value ?: 0;
+    }
+
+    public function setSortAttribute($value)
+    {
+        $parts = explode('-', $value);
+        $this->attributes['sort_key'] = $parts[0];
+        $this->attributes['sort_order'] = $parts[1];
     }
 
     /**
