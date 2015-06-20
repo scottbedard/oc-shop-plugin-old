@@ -17,12 +17,6 @@ class Category extends Model
     use \October\Rain\Database\Traits\SimpleTree,
         \October\Rain\Database\Traits\Validation;
 
-    function __construct()
-    {
-        parent::__construct();
-        $this->setTreeOrderBy('position', 'asc');
-    }
-
     /**
      * @var string The database table used by the model.
      */
@@ -43,6 +37,10 @@ class Category extends Model
         'filter',
         'is_inheriting',
         'is_hidden',
+        'sort_key',
+        'sort_order',
+        'rows',
+        'columns',
     ];
 
     /**
@@ -258,6 +256,7 @@ class Category extends Model
     {
         return $this->queryProducts($page)
             ->with('thumbnails')
+            ->with('inventories')
             ->get();
     }
 

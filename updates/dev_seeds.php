@@ -43,6 +43,7 @@ class DevSeeds extends Seeder
             ['name' => 'Laptops', 'parent' => 'computers'],
             ['name' => '$50 and under', 'filter' => 'price_less', 'filter_value' => 50],
             ['name' => 'On Sale', 'filter' => 'discounted'],
+            ['name' => 'Featured', 'filter' => 'all', 'sort' => 'random', 'rows' => 1, 'columns' => 3],
         ];
 
         foreach ($categories as $i => $category) {
@@ -56,6 +57,9 @@ class DevSeeds extends Seeder
                 'position'      => $i,
                 'filter'        => isset($category['filter']) ? $category['filter'] : null,
                 'filter_value'  => isset($category['filter_value']) ? $category['filter_value'] : 0,
+                'rows'          => isset($category['rows']) ? $category['rows'] : 3,
+                'columns'       => isset($category['columns']) ? $category['columns'] : 4,
+                'sort'          => isset($category['sort']) ? $category['sort'] : 'created_at-desc',
             ]);
         }
     }
