@@ -243,6 +243,7 @@ class Category extends Model
      */
     public function countProducts()
     {
+        // Count the non-paginated category
         return $this->queryProducts(false)->count();
     }
 
@@ -250,14 +251,20 @@ class Category extends Model
      * Loads a category's products with their thumbnail images
      *
      * @param   integer     $page
+     * @param   boolean     $thumbnails
+     * @param   boolean     $images
+     * @param   boolean     $inventories
      * @return  Collection
      */
-    public function getProducts($page = 1)
+    public function getProducts($page = 1, $thumbnails = false, $images = false, $inventories = false)
     {
-        return $this->queryProducts($page)
-            ->with('thumbnails')
-            ->with('inventories')
-            ->get();
+        $products = $this->queryProducts(intval($page));
+
+        if ($thumbnails) $products->with('thumbnails');
+        if ($images) $products->with('images');
+        if ($inventories) $products->with('inventories');
+
+        return $products->get();
     }
 
     /**

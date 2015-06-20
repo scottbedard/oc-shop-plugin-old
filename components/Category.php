@@ -28,17 +28,17 @@ class Category extends ComponentBase
     public function defineProperties()
     {
         return [
-            'default' => [
-                'title'             => 'bedard.shop::lang.components.category.default',
-                'description'       => 'bedard.shop::lang.components.category.default_description',
-                'type'              => 'dropdown',
-                'showExternalParam' => false,
-            ],
             'slug' => [
                 'title'             => 'bedard.shop::lang.components.category.slug',
                 'description'       => 'bedard.shop::lang.components.category.slug_description',
                 'default'           => '{{ :slug }}',
                 'type'              => 'dropdown',
+            ],
+            'default' => [
+                'title'             => 'bedard.shop::lang.components.category.default',
+                'description'       => 'bedard.shop::lang.components.category.default_description',
+                'type'              => 'dropdown',
+                'showExternalParam' => false,
             ],
             'page' => [
                 'title'             => 'bedard.shop::lang.components.category.page',
@@ -51,6 +51,30 @@ class Category extends ComponentBase
             'notfound' => [
                 'title'             => 'bedard.shop::lang.components.category.notfound',
                 'description'       => 'bedard.shop::lang.components.category.notfound_description',
+                'type'              => 'checkbox',
+                'default'           => true,
+                'showExternalParam' => false,
+            ],
+            'thumbnails' => [
+                'group'             => 'bedard.shop::lang.components.category.eager_loading',
+                'title'             => 'bedard.shop::lang.components.category.thumbnails',
+                'description'       => 'bedard.shop::lang.components.category.thumbnails_description',
+                'type'              => 'checkbox',
+                'default'           => true,
+                'showExternalParam' => false,
+            ],
+            'gallery' => [
+                'group'             => 'bedard.shop::lang.components.category.eager_loading',
+                'title'             => 'bedard.shop::lang.components.category.gallery',
+                'description'       => 'bedard.shop::lang.components.category.gallery_description',
+                'type'              => 'checkbox',
+                'default'           => false,
+                'showExternalParam' => false,
+            ],
+            'inventories' => [
+                'group'             => 'bedard.shop::lang.components.category.eager_loading',
+                'title'             => 'bedard.shop::lang.components.category.inventories',
+                'description'       => 'bedard.shop::lang.components.category.inventories_description',
                 'type'              => 'checkbox',
                 'default'           => true,
                 'showExternalParam' => false,
@@ -103,6 +127,11 @@ class Category extends ComponentBase
         $this->filter_value = $category->filter_value;
 
         // Load the products
-        $this->products = $category->getProducts(intval($this->property('page')));
+        $this->products = $category->getProducts(
+            $this->property('page'),
+            $this->property('thumbnails'),
+            $this->property('gallery'),
+            $this->property('inventories')
+        );
     }
 }
