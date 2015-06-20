@@ -3,7 +3,6 @@
 use Bedard\Shop\Models\Category as CategoryModel;
 use Cms\Classes\ComponentBase;
 use Lang;
-use Response;
 
 class Category extends ComponentBase
 {
@@ -29,15 +28,15 @@ class Category extends ComponentBase
     public function defineProperties()
     {
         return [
-            'slug' => [
-                'title'             => 'bedard.shop::lang.components.category.slug',
-                'description'       => 'bedard.shop::lang.components.category.slug_description',
-                'default'           => '{{ :slug }}',
-                'type'              => 'dropdown',
-            ],
             'default' => [
                 'title'             => 'bedard.shop::lang.components.category.default',
                 'description'       => 'bedard.shop::lang.components.category.default_description',
+                'type'              => 'dropdown',
+                'showExternalParam' => false,
+            ],
+            'slug' => [
+                'title'             => 'bedard.shop::lang.components.category.slug',
+                'description'       => 'bedard.shop::lang.components.category.slug_description',
                 'default'           => '{{ :slug }}',
                 'type'              => 'dropdown',
             ],
@@ -60,11 +59,23 @@ class Category extends ComponentBase
     }
 
     /**
-     * Loads all categories and their slug
+     * Loads the available categories
+     *
+     * @return  array
      */
-    public function getSlugOptions()
+    public function getCategorySlugs()
     {
         return CategoryModel::orderBy('name', 'asc')->lists('name', 'slug');
+    }
+
+    public function getDefaultOptions()
+    {
+        return $this->getCategorySlugs();
+    }
+
+    public function getSlugOptions()
+    {
+        return $this->getCategorySlugs();
     }
 
     /**
@@ -72,10 +83,11 @@ class Category extends ComponentBase
      */
     public function onRun()
     {
-        // Load the requested category, and return if it's not found
-        if (!$category = CategoryModel::where('slug', $this->property('slug'))->first()) {
+        // Query the selected category
+        $slug = $this->property('slug') ?: $this->property('default');
+        if (!$category = CategoryModel::where('slug', $slug)->first()) {
             return $this->property('notfound')
-                ? Response::make($this->controller->run('404'), 404)
+                ? $this->controller->run('404')
                 : false;
         }
 
@@ -91,6 +103,6 @@ class Category extends ComponentBase
         $this->filter_value = $category->filter_value;
 
         // Load the products
-        $this->products = $category->getProducts(1);
+        $this->products = $category->getProducts(intval($this->property('page')));
     }
 }

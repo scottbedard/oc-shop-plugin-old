@@ -8,13 +8,30 @@
         <div class="row">
             {% for product in row %}
                 <div class="col span-{{ __SELF__.columns }}">
-                    <h4>{{ product.name }}</h4>
-                    {% if product.isDiscounted %}
-                        <s>{{ product.basePrice|moneyFormat }}</s>
-                        <span class="text-success">{{ product.price|moneyFormat }}</span>
-                    {% else %}
-                        {{ product.price|moneyFormat }}
-                    {% endif %}
+                    <div class="inner">
+                        <h4>{{ product.name }}</h4>
+                        {% if product.isDiscounted %}
+                            <s>{{ product.basePrice|moneyFormat }}</s>
+                            <span class="text-success">{{ product.price|moneyFormat }}</span>
+                        {% else %}
+                            {{ product.price|moneyFormat }}
+                        {% endif %}
+                        <div class="buttons">
+                            {% if product.isInStock %}
+                                <a
+                                    href="{{ 'product'|page({ slug: product.slug }) }}"
+                                    class="btn btn-primary">
+                                    Details
+                                </a>
+                            {% else %}
+                                <a
+                                    href="{{ 'product'|page({ slug: product.slug }) }}"
+                                    class="btn btn-default">
+                                    Out Of Stock
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             {% endfor %}
         </div>
