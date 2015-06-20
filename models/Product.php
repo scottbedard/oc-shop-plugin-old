@@ -265,6 +265,13 @@ class Product extends Model
         $this->attributes['base_price'] = $value > 0 ? $value : 0;
     }
 
+    public function setDescriptionAttribute($value)
+    {
+        // Parse code description
+        $this->attributes['description'] = $value;
+        $this->attributes['description_html'] = Markdown::parse(trim($value));
+    }
+
     /**
      * Returns a list of all non-filtered categories
      *
@@ -276,24 +283,13 @@ class Product extends Model
     }
 
     /**
-     * Cache the compiled markdown description
-     *
-     * @param   string  $value
-     */
-    public function setDescriptionAttribute($value)
-    {
-        $this->attributes['description'] = $value;
-        $this->attributes['description_html'] = Markdown::parse(trim($value));
-    }
-
-    /**
      * Determines if a product is discounted or not
      *
      * @return  boolean
      */
     public function getIsDiscountedAttribute()
     {
-        return $this->current_price->price < $this->base_price;
+        return $this->price < $this->base_price;
     }
 
     /**

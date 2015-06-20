@@ -3,6 +3,7 @@
 use BackendMenu;
 use Backend\Classes\Controller;
 use Bedard\Shop\Models\Product;
+use Bedard\Shop\Models\Settings;
 use DB;
 use Flash;
 use Lang;
@@ -76,6 +77,7 @@ class Products extends Controller
      */
     public function formExtendFields($form)
     {
+        // Add the inventories widget if the user has access
         if ($this->user->hasAccess('bedard.shop.access_inventories')) {
             $form->addSecondaryTabFields([
                 'optionsinventories' => [
@@ -84,6 +86,13 @@ class Products extends Controller
                 ],
             ]);
         }
+
+        // Only show one type of editor
+        $remove = Settings::getEditor() == 'code'
+            ? 'description_html'
+            : 'description';
+
+        $form->removeField($remove);
     }
 
     /**

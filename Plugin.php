@@ -80,6 +80,15 @@ class Plugin extends PluginBase
             : 'icon-money';
 
         return [
+            'settings' => [
+                'label'         => 'bedard.shop::lang.settings.model',
+                'description'   => 'bedard.shop::lang.settings.description',
+                'category'      => 'bedard.shop::lang.general.plugin',
+                'class'         => 'Bedard\Shop\Models\Settings',
+                'permissions'   => ['bedard.shop.access_settings'],
+                'icon'          => 'icon-cog',
+                'order'         => 100,
+            ],
             'currency' => [
                 'label'         => 'bedard.shop::lang.currency.model',
                 'description'   => 'bedard.shop::lang.currency.description',
@@ -87,7 +96,8 @@ class Plugin extends PluginBase
                 'class'         => 'Bedard\Shop\Models\Currency',
                 'permissions'   => ['bedard.shop.access_settings'],
                 'icon'          => $currencyIcon,
-            ]
+                'order'         => 200,
+            ],
         ];
     }
 

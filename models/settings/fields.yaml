@@ -1,0 +1,16 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+tabs:
+    fields:
+
+        editor:
+            tab: bedard.shop::lang.settings.backend_tab
+            label: bedard.shop::lang.settings.editor
+            type: radio
+            options:
+                richeditor: bedard.shop::lang.settings.editor_richeditor
+                code: bedard.shop::lang.settings.editor_code
+            default: richeditor
+
