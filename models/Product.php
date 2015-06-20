@@ -246,6 +246,21 @@ class Product extends Model
             : 0;
     }
 
+    public function getIsDiscountedAttribute()
+    {
+        return $this->price < $this->base_price;
+    }
+
+    public function getIsInStockAttribute()
+    {
+        return $this->inventories->sum('quantity') > 0;
+    }
+
+    public function getIsOutOfStockAttribute()
+    {
+        return $this->inventories->sum('quantity') <= 0;
+    }
+
     public function getPriceAttribute()
     {
         // If the price has been joined to the query, return it. Otherwise grab
@@ -280,16 +295,6 @@ class Product extends Model
     public function getCategoriesOptions()
     {
         return Category::isNotFiltered()->lists('name', 'id');
-    }
-
-    /**
-     * Determines if a product is discounted or not
-     *
-     * @return  boolean
-     */
-    public function getIsDiscountedAttribute()
-    {
-        return $this->price < $this->base_price;
     }
 
     /**
