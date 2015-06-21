@@ -244,25 +244,28 @@ class Category extends Model
     public function countProducts()
     {
         // Count the non-paginated category
-        return $this->queryProducts(false)->count();
+        return $this->queryProducts(false, false)->count();
     }
 
     /**
      * Loads a category's products with their thumbnail images
      *
      * @param   integer     $page
-     * @param   boolean     $thumbnails
-     * @param   boolean     $images
-     * @param   boolean     $inventories
+     * @param   array       $relationships
      * @return  Collection
      */
-    public function getProducts($page = 1, $thumbnails = false, $images = false, $inventories = false)
+    public function getProducts($page = 1, $relationships = [])
     {
         $products = $this->queryProducts(intval($page));
 
-        if ($thumbnails) $products->with('thumbnails');
-        if ($images) $products->with('images');
-        if ($inventories) $products->with('inventories');
+        // Only select the data we actually need
+        $products->select('id', 'name', 'slug', 'base_price', 'price');
+
+        // Eager load selected relationships
+        $products->with($relationships);
+        // if ($thumbnails) $products->with('thumbnails');
+        // if ($images) $products->with('images');
+        // if ($inventories) $products->with('inventories');
 
         return $products->get();
     }
@@ -271,13 +274,18 @@ class Category extends Model
      * Builds a query to select a category's products
      *
      * @param   integer     $page
+     * @param   boolean     $joinPrices
      * @return  \October\Rain\Database\Builder
      */
-    public function queryProducts($page = 1)
+    public function queryProducts($page = 1, $joinPrices = true)
     {
         // Start the product query by excluding disabled products
-        // and joining the prices table
-        $query = Product::isActive()->joinPrices();
+        $query = Product::isActive();
+
+        // Join the price table if needed
+        if ($joinPrices) {
+            $query->joinPrices();
+        }
 
         // Hide out of stock products if needed
         if ($this->hide_out_of_stock) {

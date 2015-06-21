@@ -8,6 +8,21 @@ class Category extends ComponentBase
 {
 
     /**
+     * @var CategoryModel   The category being viewed
+     */
+    public $category;
+
+    /**
+     * @var Collection      The category's products
+     */
+    public $products;
+
+    /**
+     * @var array           Pagination data
+     */
+    public $page = [];
+
+    /**
      * Component details
      *
      * @return  array
@@ -126,12 +141,56 @@ class Category extends ComponentBase
         $this->filter       = $category->filter;
         $this->filter_value = $category->filter_value;
 
+        // Load the pagination
+        $this->loadPagination();
+
         // Load the products
-        $this->products = $category->getProducts(
-            $this->property('page'),
-            $this->property('thumbnails'),
-            $this->property('gallery'),
-            $this->property('inventories')
-        );
+        $relationships = [];
+        if ($this->property('gallery')) $relationships[] = 'images';
+        if ($this->property('thumbnails')) $relationships[] = 'thumbnails';
+        if ($this->property('inventories')) $relationships[] = 'inventories';
+
+        $this->products = $category->getProducts($this->page['current'], $relationships);
+
+        // If the category isn't paginated, we can use one less query and just count the results
+        if ($this->category->rows == 0) {
+            $this->totalProducts = $this->products->count();
+        }
+    }
+
+    /**
+     * Loads a category's pagination data
+     */
+    protected function loadPagination()
+    {
+        // Non-paginated categories
+        if ($this->category->rows == 0) {
+            $this->page = [
+                'first'     => 1,
+                'last'      => 1,
+                'current'   => 1,
+                'next'      => false,
+                'previous'  => false,
+            ];
+        }
+
+        // Paginated categories
+        else {
+            $this->totalProducts = $this->category->countProducts();
+
+            $perPage    = $this->category->rows * $this->category->columns;
+            $last       = ceil($this->totalProducts / $perPage);
+            $current    = intval($this->property('page'));
+            if ($current > $last) $current = $last;
+            if ($current < 1) $current = 1;
+
+            $this->page = [
+                'first'     => 1,
+                'last'      => ceil($this->totalProducts / $perPage),
+                'current'   => $current,
+                'next'      => $current < $last ? $current + 1 : false,
+                'previous'  => $current > 1 ? $current - 1 : false,
+            ];
+        }
     }
 }

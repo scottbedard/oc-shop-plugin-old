@@ -1,0 +1,25 @@
+{% if __SELF__.page.last > 1 %}
+    <nav>
+        <ul class="pagination">
+            <li{% if __SELF__.page.current == 1 %} class="disabled"{% endif %}>
+                <a href="{{ 'category'|page({ slug: __SELF__.slug, page: __SELF__.page.previous }) }}" aria-label="Previous">
+                    <span aria-hidden="true">«</span>
+                </a>
+            </li>
+
+            {% for i in 1..__SELF__.page.last %}
+                <li{% if __SELF__.page.current == i %} class="active"{% endif %}>
+                    <a href="{{ 'category'|page({ slug: __SELF__.slug, page: i }) }}">
+                        {{ i }}
+                    </a>
+                </li>
+            {% endfor %}
+
+            <li>
+                <a href="{{ 'category'|page({ slug: __SELF__.slug, page: __SELF__.page.next }) }}" aria-label="Next">
+                    <span aria-hidden="true">»</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endif %}
