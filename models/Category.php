@@ -244,7 +244,9 @@ class Category extends Model
     public function countProducts()
     {
         // Count the non-paginated category
-        return $this->queryProducts(false, false)->count();
+        $joinPrices = $this->filter == 'discounted' || $this->filter == 'price_less' || $this->filter == 'price_greater';
+
+        return $this->queryProducts(false, $joinPrices)->count();
     }
 
     /**
@@ -263,9 +265,6 @@ class Category extends Model
 
         // Eager load selected relationships
         $products->with($relationships);
-        // if ($thumbnails) $products->with('thumbnails');
-        // if ($images) $products->with('images');
-        // if ($inventories) $products->with('inventories');
 
         return $products->get();
     }
