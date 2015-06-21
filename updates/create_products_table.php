@@ -17,6 +17,8 @@ class CreateProductsTable extends Migration
             $table->decimal('base_price', 10, 2)->default(0);
             $table->text('description')->nullable();
             $table->text('description_html')->nullable();
+            $table->text('snippet')->nullable();
+            $table->text('snippet_html')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

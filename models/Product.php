@@ -287,6 +287,13 @@ class Product extends Model
         $this->attributes['description_html'] = Markdown::parse(trim($value));
     }
 
+    public function setSnippetAttribute($value)
+    {
+        // Parse the code snippet
+        $this->attributes['snippet'] = $value;
+        $this->attributes['snippet_html'] = Markdown::parse(trim($value));
+    }
+
     /**
      * Returns a list of all non-filtered categories
      *

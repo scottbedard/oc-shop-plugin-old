@@ -70,8 +70,24 @@ class Category extends ComponentBase
                 'default'           => true,
                 'showExternalParam' => false,
             ],
+            'descriptions' => [
+                'group'             => 'bedard.shop::lang.components.category.data',
+                'title'             => 'bedard.shop::lang.components.category.load_description',
+                'description'       => 'bedard.shop::lang.components.category.load_description_info',
+                'type'              => 'checkbox',
+                'default'           => false,
+                'showExternalParam' => false,
+            ],
+            'snippets' => [
+                'group'             => 'bedard.shop::lang.components.category.data',
+                'title'             => 'bedard.shop::lang.components.category.load_snippet',
+                'description'       => 'bedard.shop::lang.components.category.load_snippet_info',
+                'type'              => 'checkbox',
+                'default'           => false,
+                'showExternalParam' => false,
+            ],
             'thumbnails' => [
-                'group'             => 'bedard.shop::lang.components.category.eager_loading',
+                'group'             => 'bedard.shop::lang.components.category.data',
                 'title'             => 'bedard.shop::lang.components.category.thumbnails',
                 'description'       => 'bedard.shop::lang.components.category.thumbnails_description',
                 'type'              => 'checkbox',
@@ -79,7 +95,7 @@ class Category extends ComponentBase
                 'showExternalParam' => false,
             ],
             'gallery' => [
-                'group'             => 'bedard.shop::lang.components.category.eager_loading',
+                'group'             => 'bedard.shop::lang.components.category.data',
                 'title'             => 'bedard.shop::lang.components.category.gallery',
                 'description'       => 'bedard.shop::lang.components.category.gallery_description',
                 'type'              => 'checkbox',
@@ -87,7 +103,7 @@ class Category extends ComponentBase
                 'showExternalParam' => false,
             ],
             'inventories' => [
-                'group'             => 'bedard.shop::lang.components.category.eager_loading',
+                'group'             => 'bedard.shop::lang.components.category.data',
                 'title'             => 'bedard.shop::lang.components.category.inventories',
                 'description'       => 'bedard.shop::lang.components.category.inventories_description',
                 'type'              => 'checkbox',
@@ -144,13 +160,19 @@ class Category extends ComponentBase
         // Load the pagination
         $this->loadPagination();
 
-        // Load the products
+        // Determine if descriptions should be selected
+        $select = [];
+        if ($this->property('snippets')) $select[] = 'snippet_html';
+        if ($this->property('descriptions')) $select[] = 'description_html';
+
+        // Determine which relationships to load
         $relationships = [];
         if ($this->property('gallery')) $relationships[] = 'images';
         if ($this->property('thumbnails')) $relationships[] = 'thumbnails';
         if ($this->property('inventories')) $relationships[] = 'inventories';
 
-        $this->products = $category->getProducts($this->page['current'], $relationships);
+        // Execute the product query
+        $this->products = $category->getProducts($this->page['current'], $select, $relationships);
 
         // If the category isn't paginated, we can use one less query and just count the results
         if ($this->category->rows == 0) {

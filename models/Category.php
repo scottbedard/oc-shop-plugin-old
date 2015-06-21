@@ -256,17 +256,14 @@ class Category extends Model
      * @param   array       $relationships
      * @return  Collection
      */
-    public function getProducts($page = 1, $relationships = [])
+    public function getProducts($page = 1, $select = [], $relationships = [])
     {
-        $products = $this->queryProducts(intval($page));
+        $select = array_merge($select, ['id', 'name', 'base_price', 'price']);
 
-        // Only select the data we actually need
-        $products->select('id', 'name', 'slug', 'base_price', 'price');
-
-        // Eager load selected relationships
-        $products->with($relationships);
-
-        return $products->get();
+        return $this->queryProducts($page)
+            ->select($select)
+            ->with($relationships)
+            ->get();
     }
 
     /**

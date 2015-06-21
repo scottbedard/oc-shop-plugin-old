@@ -28,8 +28,12 @@ class ProductModelTest extends \OctoberPluginTestCase
      */
     public function test_caching_description_markdown()
     {
-        $product = Generate::product('Bar', ['description' => '# Hello']);
+        $product = Generate::product('Bar', [
+            'description'   => '# Hello',
+            'snippet'       => '# Hello',
+        ]);
         $this->assertEquals('<h1>Hello</h1>', $product->description_html);
+        $this->assertEquals('<h1>Hello</h1>', $product->snippet_html);
     }
 
     /**

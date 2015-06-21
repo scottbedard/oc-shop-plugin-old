@@ -88,11 +88,13 @@ class Products extends Controller
         }
 
         // Only show one type of editor
-        $remove = Settings::getEditor() == 'code'
-            ? 'description_html'
-            : 'description';
-
-        $form->removeField($remove);
+        if (Settings::getEditor() == 'code') {
+            $form->removeField('description_html');
+            $form->removeField('snippet_html');
+        } else {
+            $form->removeField('description');
+            $form->removeField('snippet');
+        }
     }
 
     /**

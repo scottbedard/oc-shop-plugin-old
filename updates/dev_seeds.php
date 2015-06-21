@@ -89,9 +89,10 @@ class DevSeeds extends Seeder
         ];
         foreach ($shirts as $shirt) {
             $seed = Generate::product($shirt['name'], [
-                'base_price' => $shirt['base_price'],
-                'description' => $faker->paragraph(10),
-                'is_active' => (bool) rand(0, $is_active),
+                'base_price'    => $shirt['base_price'],
+                'description'   => $faker->paragraph(10),
+                'snippet'       => $faker->paragraph(2),
+                'is_active'     => (bool) rand(0, $is_active),
             ]);
 
             $seed->categories()->sync(Category::whereIn('slug', $shirt['categories'])->lists('id'));
@@ -121,9 +122,10 @@ class DevSeeds extends Seeder
         ];
         foreach ($tvs as $tv) {
             $seed = Generate::product($tv['name'], [
-                'base_price' => $tv['base_price'],
-                'description' => $faker->paragraph(10),
-                'is_active' => (bool) rand(0, $is_active),
+                'base_price'    => $tv['base_price'],
+                'description'   => $faker->paragraph(10),
+                'snippet'       => $faker->paragraph(2),
+                'is_active'     => (bool) rand(0, $is_active),
             ]);
             $seed->categories()->sync(Category::whereIn('slug', $tv['categories'])->lists('id'));
 
