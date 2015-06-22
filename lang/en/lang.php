@@ -42,6 +42,14 @@ return [
             'description'           => 'Displays a the category tree.',
             'name'                  => 'Navigation',
         ],
+        'product' => [
+            'description'           => 'Details for a shop product.',
+            'inventory_script'      => 'Use default inventory script',
+            'inventory_script_info' => 'Includes the default inventory selection script. This enables a series of dropdowns to select a product\'s various options.',
+            'name'                  => 'Product',
+            'slug'                  => 'Product',
+            'slug_description'      => 'Select a product or enter a slug parameter.',
+        ],
     ],
 
     //

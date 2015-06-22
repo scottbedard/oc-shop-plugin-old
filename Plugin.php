@@ -169,6 +169,7 @@ class Plugin extends PluginBase
         return [
             'Bedard\Shop\Components\Category'   => 'shopCategory',
             'Bedard\Shop\Components\Navigation' => 'shopNavigation',
+            'Bedard\Shop\Components\Product'    => 'shopProduct',
         ];
     }
 
