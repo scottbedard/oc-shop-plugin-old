@@ -38,6 +38,10 @@ return [
             'slug'                  => 'Category',
             'slug_description'      => 'Select a category or enter a slug parameter.',
         ],
+        'navigation' => [
+            'description'           => 'Displays a the category tree.',
+            'name'                  => 'Navigation',
+        ],
     ],
 
     //

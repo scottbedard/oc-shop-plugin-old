@@ -1,0 +1,13 @@
+<a href="{{ 'category'|page({ slug: category.slug, page: false }) }}">
+    {{ category.name }}
+</a>
+
+{% if category.hasChildren %}
+    <ul>
+        {% for child in category.children %}
+            <li>
+                 {% partial __SELF__ ~ '::branch' category=child %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

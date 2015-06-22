@@ -17,6 +17,12 @@ class Category extends Model
     use \October\Rain\Database\Traits\SimpleTree,
         \October\Rain\Database\Traits\Validation;
 
+    function __construct()
+    {
+        parent::__construct();
+        $this->setTreeOrderBy('position', 'asc');
+    }
+
     /**
      * @var string The database table used by the model.
      */
@@ -197,6 +203,11 @@ class Category extends Model
         $this->attributes['filter_value'] = $value ?: 0;
     }
 
+    public function setParentIdAttribute($value)
+    {
+        $this->attributes['parent_id'] = $value ?: null;
+    }
+
     public function setSortAttribute($value)
     {
         if ($value == 'random') {
@@ -207,6 +218,28 @@ class Category extends Model
             $this->attributes['sort_key'] = $parts[0];
             $this->attributes['sort_order'] = $parts[1];
         }
+    }
+
+    /**
+     * Return the category's children in the correct order
+     *
+     * @return  Collection
+     */
+    public function children()
+    {
+        return $this
+            ->getChildren()
+            ->where('is_hidden', 0);
+    }
+
+    /**
+     * Determines if the category has children or not
+     *
+     * @return  boolean
+     */
+    public function hasChildren()
+    {
+        return $this->children()->count() > 0;
     }
 
     /**

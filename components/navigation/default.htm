@@ -1,0 +1,11 @@
+<div class="page-header">
+    <h2>Navigation</h2>
+</div>
+
+<ul>
+    {% for category in __SELF__.categories %}
+        <li>
+            {% partial __SELF__ ~ '::branch' category=category %}
+        </li>
+    {% endfor %}
+</ul>

@@ -167,7 +167,8 @@ class Plugin extends PluginBase
     public function registerComponents()
     {
         return [
-            'Bedard\Shop\Components\Category' => 'shopCategory',
+            'Bedard\Shop\Components\Category'   => 'shopCategory',
+            'Bedard\Shop\Components\Navigation' => 'shopNavigation',
         ];
     }
 
