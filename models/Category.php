@@ -258,7 +258,7 @@ class Category extends Model
      */
     public function getProducts($page = 1, $select = [], $relationships = [])
     {
-        $select = array_merge($select, ['id', 'name', 'base_price', 'price']);
+        $select = array_merge($select, ['id', 'name', 'slug', 'base_price', 'price']);
 
         return $this->queryProducts($page)
             ->select($select)

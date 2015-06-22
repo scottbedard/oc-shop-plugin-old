@@ -141,9 +141,10 @@ class DevSeeds extends Seeder
         ];
         foreach ($computers as $computer) {
             $seed = Generate::product($computer['name'], [
-                'base_price' => $computer['base_price'],
-                'description' => $faker->paragraph(10),
-                'is_active' => (bool) rand(0, $is_active),
+                'base_price'    => $computer['base_price'],
+                'description'   => $faker->paragraph(10),
+                'snippet'       => $faker->paragraph(2),
+                'is_active'     => (bool) rand(0, $is_active),
             ]);
             $seed->categories()->sync(Category::whereIn('slug', $computer['categories'])->lists('id'));
 
