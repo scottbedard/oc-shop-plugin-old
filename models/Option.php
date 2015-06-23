@@ -67,10 +67,31 @@ class Option extends Model
         }
     }
 
+    public function beforeCreate()
+    {
+        // Prevent options from having the same position
+        $this->position = Option::where('product_id', $this->product_id)->count() + 1;
+    }
+
     public function afterDelete()
     {
+        // Delete associated values
         foreach ($this->values as $value) {
             $value->delete();
+        }
+
+        // Keep the positions updated
+        $options = Option::where('product_id', $this->product_id)
+            ->orderBy('position', 'asc')
+            ->get();
+
+        $position = 1;
+        foreach ($options as $option) {
+            if ($option->position != $position) {
+                $option->position = $position;
+                $option->save();
+            }
+            $position++;
         }
     }
 
@@ -104,7 +125,7 @@ class Option extends Model
             $value = Value::findOrNew($ids[$i]);
             $value->option_id   = $this->id;
             $value->name        = $names[$i];
-            $value->position    = $i;
+            $value->position    = $i + 1;
             $value->save();
 
             $savedIds[] = $value->id;

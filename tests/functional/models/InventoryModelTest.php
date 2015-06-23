@@ -67,22 +67,4 @@ class InventoryModelTest extends \OctoberPluginTestCase
 
         // todo: make sku's case-insensetive
     }
-
-    /**
-     * getValueNames() should return values in the correct order
-     */
-    public function test_value_names_are_ordered_correctly()
-    {
-        $product    = Generate::product('Baz');
-        $size       = Generate::option('Size', ['position' => 2]);
-        $small      = Generate::value($size, 'Small');
-        $color      = Generate::option('Color', ['position' => 1]);
-        $red        = Generate::value($color, 'Red');
-
-        $inventory  = Generate::inventory($product, [$small->id, $red->id]);
-
-        $names = $inventory->getValueNames();
-        $this->assertEquals($names[1], 'Red');
-        $this->assertEquals($names[2], 'Small');
-    }
 }

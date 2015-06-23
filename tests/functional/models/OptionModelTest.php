@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Tests\Functional\Models;
 
+use Bedard\Shop\Models\Option;
 use Bedard\Shop\Models\Value;
 use Bedard\Shop\Tests\Fixtures\Generate;
 
@@ -81,4 +82,16 @@ class OptionModelTest extends \OctoberPluginTestCase
         $this->assertEquals(0, $values->count());
     }
 
+    public function test_positions_are_correct()
+    {
+        $first = Generate::option('First', ['product_id' => 1]);
+        $this->assertEquals(1, $first->position);
+
+        $second = Generate::option('Second', ['product_id' => 1]);
+        $this->assertEquals(2, $second->position);
+
+        $first->delete();
+        $second = Option::find($second->id);
+        $this->assertEquals(1, $second->position);
+    }
 }
