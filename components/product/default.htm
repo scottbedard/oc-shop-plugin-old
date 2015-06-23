@@ -16,7 +16,10 @@
                 {{ __SELF__.product.price|moneyFormat }}
             {% endif %}
         </h3>
+
         {{ __SELF__.product.description_html|raw }}
+
+        {% partial __SELF__ ~ '::inventory-selector' options=__SELF__.product.options %}
 
     </div>
 </div>

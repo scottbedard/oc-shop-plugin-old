@@ -80,24 +80,24 @@ class Product extends ComponentBase
 
         // Include the inventory selection script
         if ($this->property('use_selector')) {
-            $this->addJs('assets/js/inventory-selector.js');
+            $this->addJs('assets/js/inventory-selector.min.js');
         }
     }
 
+    /**
+     * Returns arrays of values cooresponding to in-stock inventories
+     *
+     * @return  array
+     */
     public function getAvailableInventories()
     {
-        // $inventories = [];
+        $inventories = [];
+        foreach ($this->product->inventories as $inventory) {
+            if ($inventory->quantity > 0) {
+                $inventories[] = $inventory->values->lists('id');
+            }
+        }
 
-        // if ($this->product->inventories->count() > 0) {
-        //     foreach ($this->product->inventories as $inventory) {
-        //         $inventories[] = [
-        //             'id'        => $inventory->id,
-        //             'values'    => $inventory->values->sortBy('id')->lists('id'),
-        //             'available' => $inventory->quantity > 0
-        //         ];
-        //     }
-        // }
-
-        // var_dump ($inventories);
+        return $inventories;
     }
 }
