@@ -1,11 +1,11 @@
 <div class="page-header">
-    <h2>{{ __SELF__.name }}</h2>
+    <h2>{{ __SELF__.category.name }}</h2>
 </div>
 
-{% for row in __SELF__.products|batch(__SELF__.columns) %}
+{% for row in __SELF__.products|batch(__SELF__.category.columns) %}
     <div class="row">
         {% for product in row %}
-            <div class="col span-{{ __SELF__.columns }}">
+            <div class="col span-{{ __SELF__.category.columns }}">
                 <div class="inner">
                     <h4>{{ product.name }}</h4>
                     {% if product.isDiscounted %}

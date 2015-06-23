@@ -18,9 +18,9 @@ class Category extends ComponentBase
     public $products;
 
     /**
-     * @var array           Pagination data
+     * @var array           Pagination data (keys: first, last, current, previous, next)
      */
-    public $page = [];
+    public $pagination = [];
 
     /**
      * Component details
@@ -140,22 +140,11 @@ class Category extends ComponentBase
     {
         // Query the selected category
         $slug = $this->property('slug') ?: $this->property('default');
-        if (!$category = CategoryModel::where('slug', $slug)->first()) {
+        if (!$this->category = CategoryModel::where('slug', $slug)->first()) {
             return $this->property('notfound')
                 ? $this->controller->run('404')
                 : false;
         }
-
-        // Save the category and alias it's properties for easier Twig access
-        $this->category     = $category;
-        $this->name         = $category->name;
-        $this->slug         = $category->slug;
-        $this->rows         = $category->rows;
-        $this->columns      = $category->columns;
-        $this->sort_key     = $category->sort_key;
-        $this->sort_order   = $category->sort_order;
-        $this->filter       = $category->filter;
-        $this->filter_value = $category->filter_value;
 
         // Load the pagination
         $this->loadPagination();
@@ -172,10 +161,8 @@ class Category extends ComponentBase
         if ($this->property('inventories')) $relationships[] = 'inventories';
 
         // Execute the product query
-        $this->products = $category->getProducts($this->page['current'], $select, $relationships);
-
-        // If the category isn't paginated, we can use one less query and just count the results
-        if ($this->category->rows == 0) {
+        $this->products = $this->category->getProducts($this->pagination['current'], $select, $relationships);
+        if ($this->rows == 0) {
             $this->totalProducts = $this->products->count();
         }
     }
@@ -187,7 +174,7 @@ class Category extends ComponentBase
     {
         // Non-paginated categories
         if ($this->category->rows == 0) {
-            $this->page = [
+            $this->pagination = [
                 'first'     => 1,
                 'last'      => 1,
                 'current'   => 1,
@@ -206,7 +193,7 @@ class Category extends ComponentBase
             if ($current > $last) $current = $last;
             if ($current < 1) $current = 1;
 
-            $this->page = [
+            $this->pagination = [
                 'first'     => 1,
                 'last'      => ceil($this->totalProducts / $perPage),
                 'current'   => $current,

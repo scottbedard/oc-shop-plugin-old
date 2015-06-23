@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h2>{{ __SELF__.name }}</h2>
+    <h2>{{ __SELF__.product.name }}</h2>
 </div>
 
 <div class="row">
@@ -9,14 +9,14 @@
     <div class="col-md-4">
 
         <h3>
-            {% if __SELF__.isDiscounted %}
-                <s>{{ __SELF__.base_price|moneyFormat }}</s>
-                <span class="text-success">{{ __SELF__.price|moneyFormat }}</span>
+            {% if __SELF__.product.isDiscounted %}
+                <s>{{ __SELF__.product.base_price|moneyFormat }}</s>
+                <span class="text-success">{{ __SELF__.product.price|moneyFormat }}</span>
             {% else %}
-                {{ __SELF__.price|moneyFormat }}
+                {{ __SELF__.product.price|moneyFormat }}
             {% endif %}
         </h3>
-        {{ __SELF__.description_html|raw }}
+        {{ __SELF__.product.description_html|raw }}
 
     </div>
 </div>

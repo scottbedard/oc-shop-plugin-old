@@ -38,9 +38,9 @@ class Product extends ComponentBase
                 'default'           => '{{ :slug }}',
                 'type'              => 'dropdown',
             ],
-            'inventory_script' => [
-                'title'             => 'bedard.shop::lang.components.product.inventory_script',
-                'description'       => 'bedard.shop::lang.components.product.inventory_script_info',
+            'use_selector' => [
+                'title'             => 'bedard.shop::lang.components.product.use_selector',
+                'description'       => 'bedard.shop::lang.components.product.use_selector_info',
                 'type'              => 'checkbox',
                 'type'              => 'checkbox',
                 'default'           => true,
@@ -65,7 +65,7 @@ class Product extends ComponentBase
     public function onRun()
     {
         // Load the selected product
-        $product = ProductModel::isActive()
+        $this->product = ProductModel::isActive()
             ->where('slug', $this->property('slug'))
             ->with('current_price.discount')
             ->with('options.values')
@@ -74,22 +74,30 @@ class Product extends ComponentBase
             ->first();
 
         // Return a 404 if the product doesn't exist
-        if (!$product) {
+        if (!$this->product) {
             return $this->controller->run('404');
         }
 
-        // Save the Product and alias it's properties for easier Twig access
-        $this->product          = $product;
-        $this->base_price       = $product->base_price;
-        $this->description_html = $product->description_html;
-        $this->inventories      = $product->inventories;
-        $this->isDiscounted     = $product->isDiscounted;
-        $this->isInStock        = $product->isInStock;
-        $this->isOutOfStock     = $product->isOutOfStock;
-        $this->name             = $product->name;
-        $this->options          = $product->options;
-        $this->price            = $product->price;
-        $this->slug             = $product->slug;
-        $this->snippet_html     = $product->snippet_html;
+        // Include the inventory selection script
+        if ($this->property('use_selector')) {
+            $this->addJs('assets/js/inventory-selector.js');
+        }
+    }
+
+    public function getAvailableInventories()
+    {
+        // $inventories = [];
+
+        // if ($this->product->inventories->count() > 0) {
+        //     foreach ($this->product->inventories as $inventory) {
+        //         $inventories[] = [
+        //             'id'        => $inventory->id,
+        //             'values'    => $inventory->values->sortBy('id')->lists('id'),
+        //             'available' => $inventory->quantity > 0
+        //         ];
+        //     }
+        // }
+
+        // var_dump ($inventories);
     }
 }
