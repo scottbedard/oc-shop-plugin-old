@@ -3,8 +3,8 @@
  *
  * The inventory selector is a convenient way to prevent users from attempting
  * to add out-of-stock or invalid inventories to their cart, without having to
- * make validating ajax requests. For usage and markup examples, please see
- * the demonstration partial (inventory-selector.htm).
+ * make validating ajax requests. For a usage example, please see the demo
+ * partial (inventory-selector.htm).
  */
 +function($) { 'use strict';
     var InventorySelector = function(el) {
@@ -12,7 +12,6 @@
 
         self.$container     = $(el);
         self.$options       = self.$container.find('select');
-        self.$clear         = self.$container.find('[data-clear]');
         self.available      = self.$container.data('available');
         self.disabledMsg    = self.$container.data('disabled') || 'Out of stock';
 
@@ -24,7 +23,7 @@
         });
 
         // Allow the user to clear out a selection
-        self.$clear.on('click', function() {
+        self.$container.find('[data-clear]').on('click', function() {
             self.clearSelection($(this).data('clear'));
             self.updateAvailable();
         });
@@ -50,18 +49,29 @@
                 }
             });
 
-            // Loop through this option's values and see what is available
+            // Loop through this option's values and check their availability
             $values.each(function() {
                 var valueId = parseInt($(this).val());
-                if (!valueId) return true;
+
+                // Ignore options with no value
+                if (!valueId) {
+                    return true;
+                }
 
                 // Push this value onto the selection being checked
                 var selection = otherOptions.slice();
                 selection.push(valueId);
 
-                // Enable or disable the option based on availability, and add
-                // the out-of-stock label if needed
-                var isDisabled = !self.isAvailable(selection)
+                // Loop through the available inventories until we find a match
+                var isDisabled = !(function(selection) {
+                    for (var i = 0, stop = self.available.length; i < stop; i++) {
+                        if (self.arrayMatch(selection, self.available[i], false)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }(selection));
+
                 $(this).prop('disabled', isDisabled);
 
                 if (isDisabled) {
@@ -71,34 +81,29 @@
                 }
             });
         });
+
+        // Lastly update our button and trigger an event for the theme to hook into
+        self.updateButton();
+        $(document).trigger('bedard.shop::inventory.selected');
     }
 
     /*
-     * Checks if a selected inventory is available or not
+     * Checks if the first array values are present in the second array. If strict
+     * mode is enabled, the length of the two arrays must also match.
      *
-     * @param   array       selection
+     * @param   array       first
+     * @param   array       second
+     * @param   boolean     strict
      * @return  boolean
      */
-    InventorySelector.prototype.isAvailable = function(selection) {
-        var self = this,
-            selectionLength = selection.length;
-
-        // Loop through the available inventories
-        for (var i = 0, iStop = self.available.length; i < iStop; i++) {
-
-            // The selection is available only if all values are present in the inventory
-            var isAvailable = (function(needles, haystack) {
-                for (var j = 0, jStop = needles.length; j < jStop; j++) {
-                    if($.inArray(needles[j], haystack) == -1) return false;
-                }
-                return true;
-            }(selection, self.available[i]));
-
-            // Once we find a match, go ahead and return true
-            if (isAvailable) return true;
+    InventorySelector.prototype.arrayMatch = function(first, second, strict) {
+        for (var i = 0, stop = first.length; i < stop; i++) {
+            if ($.inArray(first[i], second) == -1) {
+                return false;
+            }
         }
 
-        return false;
+        return !strict || first.length == second.length;
     }
 
     /*
@@ -107,7 +112,7 @@
      * @param   string      optionId
      */
     InventorySelector.prototype.clearSelection = function(optionId) {
-        var self = this,
+        var self    = this,
             $select = self.$container.find('select[data-option="' + optionId + '"]');
 
         // Reset the select to it's default value
@@ -116,6 +121,33 @@
         });
 
         $select.blur();
+    }
+
+    /**
+     * Enables and disables the add to cart button
+     */
+    InventorySelector.prototype.updateButton = function() {
+        var self        = this,
+            $button     = self.$container.find('[data-control="cart-add"]'),
+            isDisabled  = true,
+            selected    = [];
+
+        // First, create an array of the selected inventories
+        self.$options.each(function() {
+            if ($(this).val()) {
+                selected.push(parseInt($(this).val()));
+            }
+        });
+
+        // Loop through the available inventories and look for an exact match
+        for (var i = 0, stop = self.available.length; i < stop; i++) {
+            if (self.arrayMatch(selected, self.available[i], true)) {
+                isDisabled = false;
+            }
+        }
+
+        // Lastly, enable or disable the button
+        $button.prop('disabled', isDisabled);
     }
 
     /*

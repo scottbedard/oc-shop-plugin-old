@@ -1,31 +1,44 @@
-<div
-    data-control="inventory-selector"
-    data-available="{{ __SELF__.getAvailableInventories|json_encode() }}"
-    data-disabled="Out Of Stock">
-    {% for option in options %}
-        <div class="form-group">
-            <label>{{ option.name }}</label>
+{{ form_ajax('onAddToCart') }}
+    <div
+        data-control="inventory-selector"
+        data-available="{{ __SELF__.getAvailableInventories|json_encode() }}"
+        data-disabled="Out Of Stock">
+        {% for option in options %}
+            <div class="form-group">
+                <label>{{ option.name }}</label>
 
-            <select
-                data-option="{{ option.id }}"
-                name="option[{{ option.name }}]"
-                class="form-control">
-                {% if option.placeholder %}
-                    <option selected disabled>{{ option.placeholder }}</option>
-                {% else %}
-                    <option selected disabled>-- select {{ option.name|lower }} --</option>
-                {% endif %}
-                {% for value in option.values %}
-                    <option
-                        data-name="{{ value.name }}"
-                        value="{{ value.id }}">
-                        {{ value.name }}
-                    </option>
-                {% endfor %}
-            </select>
+                <select
+                    data-option="{{ option.id }}"
+                    name="option[{{ option.name }}]"
+                    class="form-control"
+                    required>
+                    {% if option.placeholder %}
+                        <option selected disabled>{{ option.placeholder }}</option>
+                    {% else %}
+                        <option selected disabled>-- select {{ option.name|lower }} --</option>
+                    {% endif %}
+                    {% for value in option.values %}
+                        <option
+                            data-name="{{ value.name }}"
+                            value="{{ value.id }}">
+                            {{ value.name }}
+                        </option>
+                    {% endfor %}
+                </select>
 
-            <a href="javascript:;" data-clear="{{ option.id }}">Clear</a>
+                <a href="javascript:;" data-clear="{{ option.id }}">Clear</a>
 
-        </div>
-    {% endfor %}
-</div>
+            </div>
+        {% endfor %}
+
+        <button
+            type="submit"
+            data-control="cart-add"
+            data-request="shopCart::onAddToCart"
+            class="btn btn-primary"
+            disabled>
+            Add To Cart
+        </button>
+
+    </div>
+{{ form_close() }}

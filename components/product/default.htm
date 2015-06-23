@@ -19,7 +19,15 @@
 
         {{ __SELF__.product.description_html|raw }}
 
-        {% partial __SELF__ ~ '::inventory-selector' options=__SELF__.product.options %}
+        {% if __SELF__.product.isInStock %}
+            {% partial __SELF__ ~ '::inventory-selector' options=__SELF__.product.options %}
+        {% else %}
+            <button
+                class="btn btn-disabled"
+                disabled>
+                Out Of Stock
+            </button>
+        {% endif %}
 
     </div>
 </div>
