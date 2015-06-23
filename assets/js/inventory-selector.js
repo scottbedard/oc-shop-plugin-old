@@ -14,6 +14,7 @@
         self.$options       = self.$container.find('select');
         self.$clear         = self.$container.find('[data-clear]');
         self.available      = self.$container.data('available');
+        self.disabledMsg    = self.$container.data('disabled') || 'Out of stock';
 
         self.updateAvailable();
 
@@ -33,8 +34,7 @@
      * Update the available inventories
      */
     InventorySelector.prototype.updateAvailable = function() {
-        var self = this,
-            disabledMsg = self.$container.data('disabled') || 'Out of stock';
+        var self = this;
 
         // Loop through the options, and check each of it's value's availability
         self.$options.each(function() {
@@ -65,7 +65,7 @@
                 $(this).prop('disabled', isDisabled);
 
                 if (isDisabled) {
-                    $(this).html($(this).data('name') + ' - ' + disabledMsg)
+                    $(this).html($(this).data('name') + ' - ' + self.disabledMsg)
                 } else {
                     $(this).html($(this).data('name'));
                 }
