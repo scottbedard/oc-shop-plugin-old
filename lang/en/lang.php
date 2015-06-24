@@ -14,6 +14,10 @@ return [
     // Components
     //
     'components' => [
+        'cart' => [
+            'description'           => 'Provides shopping cart functionality.',
+            'name'                  => 'Cart',
+        ],
         'category' => [
             'notfound'              => 'Return 404 when not found',
             'notfound_description'  => 'Returns a 404 (page not found) response when the requested category does not exist.',
@@ -204,14 +208,14 @@ return [
         'price'                     => 'Price',
         'scoreboard_disabled'       => 'Disabled',
         'scoreboard_discounted'     => 'Discounted',
+        'scoreboard_normal'         => 'Normal',
         'scoreboard_stock'          => 'In Stock',
         'scoreboard_stock_comment'  => ':instock of :total are in stock',
-        'scoreboard_normal'         => 'Normal',
         'scoreboard_total'          => 'Total Products',
         'slug_placeholder'          => 'new-product-name',
         'snippet'                   => 'Short Description',
-        'status_normal'             => 'Normal',
         'status_disabled'           => 'Disabled',
+        'status_normal'             => 'Normal',
         'thumbnails'                => 'Thumbnails',
     ],
 
@@ -228,11 +232,24 @@ return [
     ],
 
     'settings' => [
-        'backend_tab'               => 'Backend',
+        'backend' => [
+            'editor'                => 'Editor',
+            'editor_code'           => 'Code editor / markdown',
+            'editor_rich'           => 'Rich text editor',
+            'tab'                   => 'Backend',
+        ],
+        'cart' => [
+            'life'                  => 'Time to live',
+            'life_description'      => 'This defines how long a cart should "stay alive" after the user leaves the page.',
+            'life_half_day'         => '12 hours',
+            'life_day'              => '1 day',
+            'life_week'             => '1 week',
+            'life_two_weeks'        => '2 weeks',
+            'life_month'            => '1 month',
+            'life_forever'          => 'Forever',
+            'tab'                   => 'Shopping Carts',
+        ],
         'description'               => 'Manage general shop settings.',
-        'editor'                    => 'Editor',
-        'editor_code'               => 'Code editor + markdown',
-        'editor_richeditor'         => 'Rich text editor',
         'model'                     => 'Settings',
     ],
 

@@ -1,4 +1,7 @@
 {{ form_ajax('onAddToCart') }}
+
+    <input type="hidden" name="product" value="{{ __SELF__.product.id }}" />
+
     <div
         data-control="inventory-selector"
         data-available="{{ __SELF__.getAvailableInventories|json_encode() }}"
@@ -9,7 +12,7 @@
 
                 <select
                     data-option="{{ option.id }}"
-                    name="option[{{ option.name }}]"
+                    name="values[]"
                     class="form-control"
                     required>
                     {% if option.placeholder %}
