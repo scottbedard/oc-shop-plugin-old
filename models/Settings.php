@@ -13,10 +13,13 @@ class Settings extends Model
     /**
      * Return the editor type ("richeditor" or "code")
      *
-     * @return  string
+     * @return  string (default: richeditor)
      */
     public static function getEditor()
     {
-        return Settings::get('editor', 'richeditor');
+        $backend = Settings::get('backend');
+        return isset($backend['editor'])
+            ? $backend['editor']
+            : 'richeditor';
     }
 }

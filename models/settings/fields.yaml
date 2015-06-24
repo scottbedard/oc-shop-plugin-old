@@ -5,12 +5,11 @@
 tabs:
     fields:
 
-        editor:
-            tab: bedard.shop::lang.settings.backend_tab
-            label: bedard.shop::lang.settings.editor
+        backend[editor]:
+            tab: bedard.shop::lang.settings.backend.tab
+            label: bedard.shop::lang.settings.backend.editor
             type: radio
             options:
-                richeditor: bedard.shop::lang.settings.editor_richeditor
-                code: bedard.shop::lang.settings.editor_code
+                richeditor: bedard.shop::lang.settings.backend.editor_rich
+                code: bedard.shop::lang.settings.backend.editor_code
             default: richeditor
-
