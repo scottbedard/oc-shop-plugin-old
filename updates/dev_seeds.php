@@ -19,9 +19,6 @@ class DevSeeds extends Seeder
         $this->seedDiscounts();
     }
 
-    /**
-     * Seed demo categories
-     */
     public function seedCategories()
     {
         $categories = [
@@ -64,9 +61,6 @@ class DevSeeds extends Seeder
         }
     }
 
-    /**
-     * Seed demo products, options, values, and inventories
-     */
     public function seedProducts()
     {
         $faker = \Faker\Factory::create();
