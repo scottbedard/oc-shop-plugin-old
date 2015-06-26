@@ -44,8 +44,28 @@ class Cart extends ComponentBase
      */
     protected function prepareVars()
     {
-        $this->itemCount    = $this->cart->itemCount();
+        $this->itemCount    = $this->cart->getItemCount();
         $this->isEmpty      = $this->itemCount == 0;
+    }
+
+    /**
+     * Returns the cart items
+     *
+     * @return  Illuminate\Database\Eloquent\Collection
+     */
+    public function items()
+    {
+        return $this->cart->getItems();
+    }
+
+    /**
+     * Returns the sum of item prices, not taking promotions into consideration
+     *
+     * @return  float
+     */
+    public function subtotal()
+    {
+        return $this->cart->getSubtotal();
     }
 
     /**
@@ -64,16 +84,6 @@ class Cart extends ComponentBase
         }
 
         $this->prepareVars();
-    }
-
-    /**
-     * Returns the cart items
-     *
-     * @return  Illuminate\Database\Eloquent\Collection
-     */
-    public function items()
-    {
-        return $this->cart->getItems();
     }
 
     /**

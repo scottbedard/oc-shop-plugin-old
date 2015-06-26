@@ -125,7 +125,7 @@ class CartManager {
      *
      * @return  integer
      */
-    public function itemCount()
+    public function getItemCount()
     {
         $this->loadItems();
         return $this->cart
@@ -144,6 +144,19 @@ class CartManager {
         return $this->cart
             ? $this->cart->items
             : false;
+    }
+
+    /**
+     * Returns the sum of item prices, not taking promotions into consideration
+     *
+     * @return  float
+     */
+    public function getSubtotal()
+    {
+        $this->loadExtras();
+        return $this->cart
+            ? $this->cart->items->sum('subtotal')
+            : 0;
     }
 
     /**

@@ -81,4 +81,9 @@ class CartItem extends Model
     {
         return $this->inventory->product->slug;
     }
+
+    public function getSubtotalAttribute()
+    {
+        return $this->price * $this->quantity;
+    }
 }

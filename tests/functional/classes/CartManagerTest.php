@@ -13,7 +13,7 @@ class CartManagerTest extends \OctoberPluginTestCase
     {
         $cart = new CartManager;
 
-        $this->assertEquals(0, $cart->itemCount());
+        $this->assertEquals(0, $cart->getItemCount());
         $this->assertNull($cart->cart);
 
         $product1   = Generate::product('Foo');
@@ -23,7 +23,7 @@ class CartManagerTest extends \OctoberPluginTestCase
 
         $cart->add($product1->id, [], 1);
         $cart->add($product2->id, [], 2);
-        $this->assertEquals(3, $cart->itemCount());
+        $this->assertEquals(3, $cart->getItemCount());
     }
 
     public function test_cart_prevents_over_adding()
@@ -34,7 +34,7 @@ class CartManagerTest extends \OctoberPluginTestCase
         $inventory  = Generate::inventory($product, [], ['quantity' => 5]);
 
         $cart->add($product->id, [], 10);
-        $this->assertEquals(5, $cart->itemCount());
+        $this->assertEquals(5, $cart->getItemCount());
     }
 
     public function test_adding_and_updating_items()
@@ -79,5 +79,24 @@ class CartManagerTest extends \OctoberPluginTestCase
         // Remove the last two items together
         $cart->remove([$product2->id, $product3->id]);
         $this->assertEquals(0, CartItem::where('cart_id', $cart->cart->id)->count());
+    }
+
+    public function test_get_subtotal()
+    {
+        $product1   = Generate::product('Foo', ['base_price' => 10]);
+        $inventory1 = Generate::inventory($product1, [], ['quantity' => 5]);
+
+        $product2   = Generate::product('Bar', ['base_price' => 5]);
+        $inventory2 = Generate::inventory($product2, [], ['quantity' => 5]);
+
+        $cart = new CartManager;
+        $this->assertEquals(0, $cart->getSubtotal());
+
+        $cart->add($product1->id, [], 2);
+        $cart->add($product2->id, [], 1);
+
+        $this->assertEquals(25, $cart->getSubtotal());
+
+        // todo: make sure promotion value isn't factored in
     }
 }

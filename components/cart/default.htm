@@ -13,32 +13,12 @@
                 <td>Remove</td>
             </tr>
         </thead>
-        <tbody>
-            {% for item in __SELF__.items %}
-                <tr>
-                    <td>
-                        <a href="{{ 'product'|page({ slug: item.slug }) }}">{{ item.name }}</a>
-                        {% if item.options %}
-                            <small>
-                                {% for name, value in item.options %}
-                                    <div>{{ name }}: {{ value }}</div>
-                                {% endfor %}
-                            </small>
-                        {% endif %}
-                    </td>
-                    <td>{{ item.quantity }}</td>
-                    <td>{{ item.price|moneyFormat }}</td>
-                    <td>
-                        <a
-                            href="javascript:;"
-                            data-request="{{ __SELF__ ~ '::onRemoveFromCart' }}"
-                            data-request-data="item: {{ item.id }}">
-                            Remove
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
+        <tbody class="items">
+            {% partial __SELF__ ~ '::items' %}
         </tbody>
+        <tfoot class="totals">
+            {% partial __SELF__ ~ '::totals' %}
+        </tfoot>
     </table>
 
 {% endif %}
