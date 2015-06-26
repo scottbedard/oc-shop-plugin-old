@@ -2,6 +2,8 @@
 
 use Bedard\Shop\Classes\CartManager;
 use Cms\Classes\ComponentBase;
+use Exception;
+use October\Rain\Exception\AjaxException;
 
 class Cart extends ComponentBase
 {
@@ -50,11 +52,17 @@ class Cart extends ComponentBase
      */
     public function onAddToCart()
     {
-        $productId  = intval(input('product'));
-        $valueIds   = array_map('intval', input('values'));
-        $quantity   = input('quantity') ? intval(input('quantity')) : 1;
+        try {
+            $productId  = intval(input('product'));
+            $valueIds   = array_map('intval', input('values') ?: []);
+            $quantity   = input('quantity') ? intval(input('quantity')) : 1;
 
-        $this->cart->add($productId, $valueIds, $quantity);
+            $this->cart->add($productId, $valueIds, $quantity);
+        } catch (Exception $e) {
+            throw new AjaxException($e->getMessage());
+        }
+
+        $this->prepareVars();
     }
 
 }
