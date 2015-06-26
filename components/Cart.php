@@ -44,7 +44,8 @@ class Cart extends ComponentBase
      */
     protected function prepareVars()
     {
-        $this->itemCount = $this->cart->itemCount();
+        $this->itemCount    = $this->cart->itemCount();
+        $this->isEmpty      = $this->itemCount == 0;
     }
 
     /**
@@ -58,6 +59,30 @@ class Cart extends ComponentBase
             $quantity   = input('quantity') ? intval(input('quantity')) : 1;
 
             $this->cart->add($productId, $valueIds, $quantity);
+        } catch (Exception $e) {
+            throw new AjaxException($e->getMessage());
+        }
+
+        $this->prepareVars();
+    }
+
+    /**
+     * Returns the cart items
+     *
+     * @return  Illuminate\Database\Eloquent\Collection
+     */
+    public function items()
+    {
+        return $this->cart->getItems();
+    }
+
+    /**
+     * Removes an item from the cart
+     */
+    public function onRemoveFromCart()
+    {
+        try {
+            $this->cart->remove(input('item'));
         } catch (Exception $e) {
             throw new AjaxException($e->getMessage());
         }

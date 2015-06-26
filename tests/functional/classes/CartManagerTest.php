@@ -1,6 +1,7 @@
 <?php namespace Bedard\Shop\Tests\Functional\Models;
 
 use Bedard\Shop\Classes\CartManager;
+use Bedard\Shop\Models\CartItem;
 use Bedard\Shop\Tests\Fixtures\Generate;
 
 class CartManagerTest extends \OctoberPluginTestCase
@@ -47,5 +48,36 @@ class CartManagerTest extends \OctoberPluginTestCase
 
         $items = $cart->getItems();
         $this->assertEquals(1, $items->where('product_id', $product->id)->count());
+
+        // todo: update the item
+    }
+
+    public function test_removing_items()
+    {
+        $product1   = Generate::product('Foo');
+        $inventory1 = Generate::inventory($product1, [], ['quantity' => 5]);
+
+        $product2   = Generate::product('Bar');
+        $inventory2 = Generate::inventory($product2, [], ['quantity' => 5]);
+
+        $product3   = Generate::product('Baz');
+        $inventory3 = Generate::inventory($product3, [], ['quantity' => 5]);
+
+        $cart = new CartManager;
+        $cart->add($product1->id, [], 1);
+        $cart->add($product2->id, [], 1);
+        $cart->add($product3->id, [], 1);
+
+        $this->assertEquals(3, CartItem::where('cart_id', $cart->cart->id)->count());
+
+        // Remove the first item by itself
+        $cart->remove($product1->id);
+        $this->assertEquals(1, CartItem::where('cart_id', $cart->cart->id)->where('id', $product2->id)->count());
+        $this->assertEquals(1, CartItem::where('cart_id', $cart->cart->id)->where('id', $product3->id)->count());
+        $this->assertEquals(2, CartItem::where('cart_id', $cart->cart->id)->count());
+
+        // Remove the last two items together
+        $cart->remove([$product2->id, $product3->id]);
+        $this->assertEquals(0, CartItem::where('cart_id', $cart->cart->id)->count());
     }
 }

@@ -53,12 +53,21 @@ class Inventory extends Model
     ];
 
     /**
-     * Prevent duplicate SKUs by converting empty strings to null
-     *
-     * @param   string  $value
+     * Accessors and Mutators
      */
+    public function getBasePriceAttribute()
+    {
+        return $this->product->base_price + $this->modifier;
+    }
+
+    public function getPriceAttribute()
+    {
+        return $this->product->price + $this->modifier;
+    }
+
     public function setSkuAttribute($value)
     {
+        // Prevent duplicate SKUs by converting empty strings to null
         $this->attributes['sku'] = $value ?: null;
     }
 

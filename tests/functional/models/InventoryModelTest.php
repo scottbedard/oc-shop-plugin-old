@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Tests\Functional\Models;
 
+use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Tests\Fixtures\Generate;
 
 class InventoryModelTest extends \OctoberPluginTestCase
@@ -66,5 +67,23 @@ class InventoryModelTest extends \OctoberPluginTestCase
         $second->save();
 
         // todo: make sku's case-insensetive
+    }
+
+    /**
+     * Make sure price modifiers work
+     */
+    public function test_price_modifiers()
+    {
+        $product = Generate::product('Modified', ['base_price' => 10]);
+        $inventory = Generate::inventory($product, [], ['modifier' => 5]);
+
+        $discount = Generate::discount('Some discount', ['is_percentage' => true, 'amount_percentage' => 25]);
+        $discount->products()->add($product);
+        $discount->load('products');
+        $discount->save();
+
+        $inventory = Inventory::find($inventory->id);
+        $this->assertEquals(15, $inventory->base_price);
+        $this->assertEquals(12.5, $inventory->price);
     }
 }

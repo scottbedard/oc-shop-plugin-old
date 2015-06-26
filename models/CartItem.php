@@ -49,4 +49,36 @@ class CartItem extends Model
         ],
     ];
 
+    /**
+     * Accessors and Mutators
+     */
+    public function getBasePriceAttribute()
+    {
+        return $this->inventory->base_price;
+    }
+
+    public function getIsDiscountedAttribute()
+    {
+        return $this->price < $this->base_price;
+    }
+
+    public function getNameAttribute()
+    {
+        return $this->inventory->product->name;
+    }
+
+    public function getOptionsAttribute()
+    {
+        return $this->inventory->values->lists('name', 'option.name');
+    }
+
+    public function getPriceAttribute()
+    {
+        return $this->inventory->price;
+    }
+
+    public function getSlugAttribute()
+    {
+        return $this->inventory->product->slug;
+    }
 }

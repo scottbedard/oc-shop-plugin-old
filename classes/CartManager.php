@@ -20,6 +20,13 @@ class CartManager {
     public $cart;
 
     /**
+     * @var boolean     These ensure that cart relationships aren't loaded multiple times
+     */
+    protected $itemsLoaded  = false;
+    protected $extrasLoaded = false;
+    protected $pricesLoaded = false;
+
+    /**
      * Initialize the cart session if there is one
      */
     public function __construct()
@@ -27,6 +34,47 @@ class CartManager {
         if ($session = Session::get(self::SESSION_KEY)) {
             $this->cart = Cart::where('key', $session['key'])
                 ->find($session['id']);
+        }
+    }
+
+    /**
+     * Create a new cart session
+     */
+    protected function createCart()
+    {
+        $this->cart = Cart::create([
+            'key' => str_random(40),
+        ]);
+
+        Session::put(self::SESSION_KEY, [
+            'id'    => $this->cart->id,
+            'key'   => $this->cart->key,
+        ]);
+    }
+
+    /**
+     * Loads cart items
+     */
+    protected function loadItems()
+    {
+        if (!$this->itemsLoaded && $this->cart) {
+            $this->cart->load('items');
+            $this->itemsLoaded = true;
+        }
+    }
+
+    /**
+     * Loads additional cart information
+     */
+    protected function loadExtras()
+    {
+        if (!$this->extrasLoaded && $this->cart) {
+            $this->cart->items->load([
+                'inventory.product.current_price',
+                'inventory.product.thumbnails',
+                'inventory.values.option',
+            ]);
+            $this->extrasLoaded = true;
         }
     }
 
@@ -73,27 +121,13 @@ class CartManager {
     }
 
     /**
-     * Create a new cart session
-     */
-    protected function createCart()
-    {
-        $this->cart = Cart::create([
-            'key' => str_random(40),
-        ]);
-
-        Session::put(self::SESSION_KEY, [
-            'id'    => $this->cart->id,
-            'key'   => $this->cart->key,
-        ]);
-    }
-
-    /**
      * Counts the items in the cart
      *
      * @return  integer
      */
     public function itemCount()
     {
+        $this->loadItems();
         return $this->cart
             ? $this->cart->items->sum('quantity')
             : 0;
@@ -102,13 +136,42 @@ class CartManager {
     /**
      * Returns the items in the cart
      *
-     * @return  Collection | boolean (false)
+     * @return  Illuminate\Database\Eloquent\Collection | boolean (false)
      */
     public function getItems()
     {
+        $this->loadExtras();
         return $this->cart
             ? $this->cart->items
             : false;
+    }
+
+    /**
+     * Removes one or more items from the cart
+     *
+     * @param   integer|array   $items  The IDs of items to be removed
+     */
+    public function remove($items)
+    {
+        if (!$this->cart) {
+            return;
+        }
+
+        if (!is_array($items)) {
+            $items = [$items];
+        }
+
+        $deleted = CartItem::where('cart_id', $this->cart->id)
+            ->where(function($query) use ($items) {
+                foreach ($items as $item) {
+                    $query->orWhere('id', intval($item));
+                }
+            })
+            ->delete();
+
+        if (!$deleted) {
+            throw new CartException('Failed to delete items from cart.');
+        }
     }
 
     /**

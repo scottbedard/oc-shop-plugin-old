@@ -1,3 +1,44 @@
-<p>This is the default markup for component Cart</p>
+{% if __SELF__.isEmpty %}
 
-<small>You can delete this file if you want</small>
+    <p>Your cart is empty!</p>
+
+{% else %}
+
+    <table>
+        <thead>
+            <tr>
+                <td>Product</td>
+                <td>Quantity</td>
+                <td>Price</td>
+                <td>Remove</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in __SELF__.items %}
+                <tr>
+                    <td>
+                        <a href="{{ 'product'|page({ slug: item.slug }) }}">{{ item.name }}</a>
+                        {% if item.options %}
+                            <small>
+                                {% for name, value in item.options %}
+                                    <div>{{ name }}: {{ value }}</div>
+                                {% endfor %}
+                            </small>
+                        {% endif %}
+                    </td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.price|moneyFormat }}</td>
+                    <td>
+                        <a
+                            href="javascript:;"
+                            data-request="{{ __SELF__ ~ '::onRemoveFromCart' }}"
+                            data-request-data="item: {{ item.id }}">
+                            Remove
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endif %}
