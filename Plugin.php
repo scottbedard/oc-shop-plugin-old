@@ -60,6 +60,12 @@ class Plugin extends PluginBase
                         'url'           => Backend::url('bedard/shop/discounts'),
                         'permissions'   => ['bedard.shop.access_discounts'],
                     ],
+                    'promotions' => [
+                        'label'         => 'bedard.shop::lang.promotions.controller',
+                        'icon'          => 'icon-star',
+                        'url'           => Backend::url('bedard/shop/promotions'),
+                        'permissions'   => ['bedard.shop.access_promotions'],
+                    ],
                 ],
             ],
         ];
@@ -124,6 +130,10 @@ class Plugin extends PluginBase
             'bedard.shop.access_discounts' => [
                 'tab'   => 'bedard.shop::lang.general.plugin',
                 'label' => 'bedard.shop::lang.permissions.access_discounts',
+            ],
+            'bedard.shop.access_promotions' => [
+                'tab'   => 'bedard.shop::lang.general.plugin',
+                'label' => 'bedard.shop::lang.permissions.access_promotions',
             ],
             'bedard.shop.access_settings' => [
                 'tab'   => 'bedard.shop::lang.general.plugin',

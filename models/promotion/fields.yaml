@@ -1,0 +1,71 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+
+    code:
+        label: bedard.shop::lang.promotions.code
+        span: left
+
+    message:
+        label: bedard.shop::lang.promotions.message
+        span: right
+
+    cart_percentage:
+        dependsOn: is_cart_percentage
+        knobLabel: bedard.shop::lang.promotions.cart_amount
+        knobComment: bedard.shop::lang.promotions.cart_percentage_comment
+        type: owl-knob
+        angleOffset: -115
+        angleArc: 230
+        fgColor: 8DA85E
+        inputColor: 666
+        width: 81
+        span: left
+
+    cart_exact:
+        dependsOn: is_cart_percentage
+        label: bedard.shop::lang.promotions.cart_amount
+        comment: bedard.shop::lang.promotions.cart_exact_comment
+        placeholder: "0.00"
+        span: left
+
+    is_cart_percentage:
+        label: bedard.shop::lang.promotions.cart_method
+        type: radio
+        options:
+            0: bedard.shop::lang.common.exact_amount
+            1: bedard.shop::lang.common.percentage
+        span: right
+
+    shipping_percentage:
+        dependsOn: is_shipping_percentage
+        knobLabel: bedard.shop::lang.promotions.shipping_amount
+        knobComment: bedard.shop::lang.promotions.shipping_percentage_comment
+        type: owl-knob
+        angleOffset: -115
+        angleArc: 230
+        fgColor: 8DA85E
+        inputColor: 666
+        width: 81
+        span: left
+
+    shipping_exact:
+        dependsOn: is_shipping_percentage
+        label: bedard.shop::lang.promotions.shipping_amount
+        comment: bedard.shop::lang.promotions.shipping_exact_comment
+        placeholder: "0.00"
+        span: left
+
+    is_shipping_percentage:
+        label: bedard.shop::lang.promotions.shipping_method
+        type: radio
+        options:
+            0: bedard.shop::lang.common.exact_amount
+            1: bedard.shop::lang.common.percentage
+        span: right
+
+    products:
+        label: bedard.shop::lang.promotions.required_products
+        type: relation

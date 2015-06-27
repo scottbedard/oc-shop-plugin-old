@@ -42,8 +42,8 @@ fields:
         label: bedard.shop::lang.discounts.method
         type: radio
         options:
-            0: bedard.shop::lang.discounts.method_exact
-            1: bedard.shop::lang.discounts.method_percentage
+            0: bedard.shop::lang.common.exact_amount
+            1: bedard.shop::lang.common.percentage
         span: right
 
     categories:

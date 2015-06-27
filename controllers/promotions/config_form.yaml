@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: bedard.shop::lang.promotions.model
+
+# Model Form Field configuration
+form: $/bedard/shop/models/promotion/fields.yaml
+
+# Model Class name
+modelClass: Bedard\Shop\Models\Promotion
+
+# Default redirect location
+defaultRedirect: bedard/shop/promotions
+
+# Create page
+create:
+    title: backend::lang.relation.create_name
+    redirect: bedard/shop/promotions/update/:id
+    redirectClose: bedard/shop/promotions
+
+# Update page
+update:
+    title: backend::lang.relation.update_name
+    redirect: bedard/shop/promotions
+    redirectClose: bedard/shop/promotions
+
+# Preview page
+preview:
+    title: backend::lang.relations.preview_name

@@ -1,0 +1,23 @@
+<?php Block::put('breadcrumb') ?>
+    <ul>
+        <li><a href="<?= Backend::url('bedard/shop/promotions') ?>"><?= e(trans('bedard.shop::lang.promotions.controller')) ?></a></li>
+        <li><?= e(trans('backend::lang.form.preview_title', ['name' => e(trans('bedard.shop::lang.promotions.model'))])) ?></li>
+    </ul>
+<?php Block::endPut() ?>
+
+<?php if (!$this->fatalError): ?>
+
+    <div class="form-preview">
+        <?= $this->formRenderPreview() ?>
+    </div>
+
+<?php else: ?>
+
+    <p class="flash-message static error"><?= e($this->fatalError) ?></p>
+    <p>
+        <a href="<?= Backend::url('bedard/shop/promotions') ?>" class="btn btn-default">
+            <?= e(trans('bedard.shop::lang.form.return_to_name_list', ['name' => e(trans('bedard.shop::lang.promotions.model'))])) ?>
+        </a>
+    </p>
+
+<?php endif ?>

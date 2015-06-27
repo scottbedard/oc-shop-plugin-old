@@ -62,6 +62,10 @@ class Product extends Model
             'Bedard\Shop\Models\Category',
             'table' => 'bedard_shop_category_product',
         ],
+        'promotions' => [
+            'Bedard\Shop\Models\Promotion',
+            'table' => 'bedard_shop_product_promotion',
+        ],
     ];
 
     public $hasMany = [
