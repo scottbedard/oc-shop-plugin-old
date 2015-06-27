@@ -10,7 +10,8 @@
     - create_inventory_value_table.php
     - create_prices_table.php
     - create_discounts_table.php
-    - create_discountables_table.php
+    - create_discount_category_table.php
+    - create_discount_product_table.php
     - create_carts_table.php
     - create_cart_items_table.php
     - create_promotions_table.php

@@ -47,18 +47,14 @@ class Discount extends Model
         ],
     ];
 
-    public $morphedByMany = [
+    public $belongsToMany = [
         'products' => [
             'Bedard\Shop\Models\Product',
-            'table'         => 'bedard_shop_discountables',
-            'name'          => 'discountable',
-            'foreignKey'    => 'discountable_id',
+            'table'         => 'bedard_shop_discount_product',
         ],
         'categories' => [
             'Bedard\Shop\Models\Category',
-            'table'         => 'bedard_shop_discountables',
-            'name'          => 'discountable',
-            'foreignKey'    => 'discountable_id',
+            'table'         => 'bedard_shop_discount_category',
         ]
     ];
 

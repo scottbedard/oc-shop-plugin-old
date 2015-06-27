@@ -66,6 +66,10 @@ class Product extends Model
             'Bedard\Shop\Models\Promotion',
             'table' => 'bedard_shop_product_promotion',
         ],
+        'discounts' => [
+            'Bedard\Shop\Models\Discount',
+            'table'         => 'bedard_shop_discount_product',
+        ],
     ];
 
     public $hasMany = [
@@ -87,15 +91,6 @@ class Product extends Model
             'Bedard\Shop\Models\Price',
             'scope' => 'isActive',
             'order' => 'price asc',
-        ],
-    ];
-
-    public $morphToMany = [
-        'discounts' => [
-            'Bedard\Shop\Models\Discount',
-            'table'         => 'bedard_shop_discountables',
-            'name'          => 'discountable',
-            'foreignKey'    => 'discount_id',
         ],
     ];
 
