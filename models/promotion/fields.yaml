@@ -68,4 +68,6 @@ fields:
 
     products:
         label: bedard.shop::lang.promotions.required_products
-        type: relation
+        type: partial
+        path: $/plugins/bedard/shop/models/promotion/_products.htm
+

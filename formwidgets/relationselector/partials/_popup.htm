@@ -1,0 +1,49 @@
+<div class="relationselector-modal" data-selected="[]">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="popup">&times;</button>
+        <h4 class="modal-title">
+            <?= isset($popupHeader) ? e(trans($popupHeader)) : 'Select Attachments' ?>
+        </h4>
+    </div>
+
+    <div class="search">
+        <input
+            type="search"
+            name="search"
+            placeholder="<?= e(trans($popupPlaceholder)) ?>"
+            data-request="<?= $this->alias ?>::onSearch"
+            data-request-complete="$('#<?= $this->alias ?>').trigger('syncSelected');"
+            data-request-loading=".search-indicator"
+            data-track-input="300">
+        <i class="icon-search"></i>
+        <div class="search-indicator loading-indicator-container">
+            <div class="loading-indicator size-small"><span></span></div>
+        </div>
+    </div>
+
+    <div class="results">
+        <?= $this->makePartial('search') ?>
+    </div>
+
+    <div class="modal-footer">
+        <div class="loading-indicator-container">
+            <div class="loading-indicator">
+                <div><?= e(trans('backend::lang.form.saving')) ?></div>
+                <span></span>
+            </div>
+            <button
+                type="button"
+                class="btn btn-primary"
+                data-action="apply">
+                <?= e(trans('backend::lang.form.apply')) ?>
+            </button>
+            <button
+                type="button"
+                class="btn btn-default"
+                data-dismiss="popup"
+                data-hotkey="esc">
+                <?= e(trans('backend::lang.form.cancel')) ?>
+            </button>
+        </div>
+    </div>
+</div>

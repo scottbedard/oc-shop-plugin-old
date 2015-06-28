@@ -1,0 +1,75 @@
+.relationselector {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+}
+.relationselector .toolbar {
+  padding: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+.relationselector .input {
+  display: none;
+}
+.relationselector .default-partial ul {
+  margin: 10px 0;
+}
+.relationselector-modal .search {
+  position: relative;
+}
+.relationselector-modal .search input[type="search"] {
+  border: 0;
+  height: 40px;
+  line-height: 40px;
+  outline: none;
+  padding: 0 15px;
+  width: 100%;
+}
+.relationselector-modal .search input[type="search"]::-ms-clear {
+  display: none;
+}
+.relationselector-modal .search i {
+  color: #aaa;
+  font-size: 18px;
+  height: 40px;
+  line-height: 40px;
+  position: absolute;
+  right: 15px;
+  top: 0;
+}
+.relationselector-modal .search .loading-indicator-container {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 35px;
+}
+.relationselector-modal .search .loading-indicator-container .loading-indicator {
+  background: #fff;
+  padding: 0 !important;
+  width: 25px;
+}
+.relationselector-modal table {
+  margin-bottom: 0;
+}
+.relationselector-modal table thead tr {
+  background-color: #F5F5F5;
+  border-top: 0;
+}
+.relationselector-modal table tfoot * {
+  background-color: #f9f9f9 !important;
+}
+.relationselector-modal .modal-footer .loading-indicator {
+  display: none;
+  padding: 0;
+}
+.relationselector-modal .modal-footer .loading-indicator div,
+.relationselector-modal .modal-footer .loading-indicator span {
+  float: right;
+  margin-left: 15px;
+  position: relative;
+}
+.relationselector .empty-message,
+.relationselector-modal .empty-message {
+  color: #666;
+  margin: 20px;
+  text-align: center;
+}

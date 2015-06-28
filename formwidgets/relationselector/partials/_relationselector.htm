@@ -1,0 +1,30 @@
+<div
+    id="<?= $alias ?>"
+    class="relationselector"
+    data-attached="<?= json_encode($models->lists('id')) ?>">
+
+    <div class="input">
+        <?= $this->makePartial('input') ?>
+    </div>
+
+    <div class="toolbar">
+        <a href="javascript:;"
+            data-control="add"
+            class="btn btn-sm btn-primary oc-icon-plus">
+            <?= e(trans($buttonText)) ?>
+        </a>
+    </div>
+
+    <div class="attached">
+        <?= $this->makePartial('attached') ?>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        $('#<?= $alias ?>').relationSelector({
+            alias: '<?= $alias ?>',
+        });
+    });
+</script>

@@ -48,10 +48,21 @@ fields:
 
     categories:
         label: bedard.shop::lang.categories.controller
-        type: relation
+        type: relationselector
+        scope: isNotFiltered
+        class: Bedard\Shop\Models\Category
+        key: name
+        buttonText: Add / Remove
+        popupPlaceholder: Enter category name...
+        popupHeader: Select Categories
+        popupEmpty: There are no categories to display.
+        selectionEmpty: No categories are selected.
+        # partial: $/bedard/shop/models/discount/_selected_categories.htm
         span: left
 
     products:
         label: bedard.shop::lang.products.controller
-        type: relation
+        type: relationselector
+        class: Bedard\Shop\Models\Product
+        key: name
         span: right

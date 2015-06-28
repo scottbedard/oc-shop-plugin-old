@@ -1,0 +1,11 @@
+<?php if ($results->count() == 0): ?>
+
+    <p class="empty-message">
+        <?= isset($popupEmpty) ? e(trans($popupEmpty)) : 'There are no results to display.' ?>
+    </p>
+
+<?php else: ?>
+
+    <?= $this->makePartial('table_search') ?>
+
+<?php endif ?>

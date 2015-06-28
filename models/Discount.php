@@ -55,6 +55,7 @@ class Discount extends Model
         'categories' => [
             'Bedard\Shop\Models\Category',
             'table'         => 'bedard_shop_discount_category',
+            'scope'         => 'isNotFiltered',
         ]
     ];
 

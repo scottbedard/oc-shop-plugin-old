@@ -1,0 +1,11 @@
+<?php if (!isset($models) || $models->count() == 0): ?>
+
+    <p class="empty-message">
+        <?= e(trans($selectionEmpty)) ?>
+    </p>
+
+<?php else: ?>
+
+    <?= $this->makePartial($partial) ?>
+
+<?php endif ?>
