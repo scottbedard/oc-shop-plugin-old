@@ -132,8 +132,18 @@
         });
     }
 
+    /*
+     * Non-conflicting jquery plugin
+     */
+    var old = $.fn.relationSelector;
+
     $.fn.relationSelector = function (config) {
         new RelationSelector(this, config);
+    }
+
+    $.fn.relationSelector.noConflict = function () {
+        $.fn.relationSelector = old;
+        return this;
     }
 
 }(window.jQuery);
