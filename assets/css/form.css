@@ -1,6 +1,57 @@
 .bedard-shop.form .fancy-layout.padded div.tab-pane {
   padding: 15px 20px;
 }
+.bedard-shop.form .relationselector-partial ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.bedard-shop.form .relationselector-partial li {
+  color: #444;
+}
+.bedard-shop.form .relationselector-partial li:nth-of-type(even) {
+  background-color: #fefefe;
+}
+.bedard-shop.form .relationselector-partial li:nth-of-type(odd) {
+  background-color: #fcfcfc;
+}
+.bedard-shop.form .relationselector-partial.categories .tooltip-inner {
+  text-align: center;
+  width: 180px;
+}
+.bedard-shop.form .relationselector-partial.categories li {
+  height: 40px;
+  line-height: 40px;
+  padding: 10px 15px;
+  position: relative;
+}
+.bedard-shop.form .relationselector-partial.categories li:not(:last-of-type) {
+  border-bottom: 1px solid #e0e0e0;
+}
+.bedard-shop.form .relationselector-partial.categories li span {
+  display: inline-block;
+  position: absolute;
+}
+.bedard-shop.form .relationselector-partial.categories li a {
+  display: block;
+  color: #fff;
+}
+.bedard-shop.form .relationselector-partial.categories li .name {
+  left: 15px;
+  top: 0;
+}
+.bedard-shop.form .relationselector-partial.categories li .products {
+  cursor: pointer;
+  color: #fff;
+  right: 15px;
+  background-color: #34495E;
+  border-radius: 3px;
+  top: 8px;
+  height: 22px;
+  line-height: 20px;
+  text-align: center;
+  min-width: 40px;
+}
 .bedard-shop.form .select2-chosen span.parent,
 .select2-results .select2-chosen span.parent,
 .modal .select2-chosen span.parent,

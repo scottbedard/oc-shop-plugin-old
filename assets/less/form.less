@@ -4,20 +4,72 @@
 .bedard-shop.form {
 
     // Enables "padded" fancy-layout forms
-    .fancy-layout.padded div.tab-pane {
-        padding: 15px 20px;
+    .fancy-layout.padded div.tab-pane { padding: 15px 20px; }
+
+    // Relationselector Partials
+    .relationselector-partial {
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            color: #444;
+            &:nth-of-type(even) { background-color: #fefefe; }
+            &:nth-of-type(odd) { background-color: #fcfcfc; }
+        }
+
+        &.categories {
+            .tooltip-inner {
+                text-align: center;
+                width: 180px;
+            }
+            li {
+                &:not(:last-of-type) { border-bottom: 1px solid #e0e0e0; }
+
+                height: 40px;
+                line-height: 40px;
+                padding: 10px 15px;
+                position: relative;
+
+                span {
+                    display: inline-block;
+                    position: absolute;
+                }
+
+                a {
+                    display: block;
+                    color: #fff;
+                }
+
+                .name {
+                    left: 15px;
+                    top: 0;
+                }
+
+                .products {
+                    cursor: pointer;
+                    color: #fff;
+                    right: 15px;
+                    background-color: #34495E;
+                    border-radius: 3px;
+                    top: 8px;
+                    height: 22px;
+                    line-height: 20px;
+                    text-align: center;
+                    min-width: 40px;
+                }
+            }
+        }
     }
 
 }
 
 .bedard-shop.form, .select2-results, .modal {
     .select2-chosen, li:not(.select2-highlighted) {
-        span.parent {
-            color: #aaa;
-        }
+        span.parent { color: #aaa; }
     }
 
-    i.delimeter {
-        padding: 0 5px;
-    }
+    i.delimeter { padding: 0 5px; }
 }

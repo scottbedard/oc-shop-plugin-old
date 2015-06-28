@@ -1,1 +1,22 @@
-Hello world
+<?php $models->load('products', 'inherited.products'); ?>
+<div class="relationselector-partial categories">
+    <ul>
+        <?php foreach ($models as $category): ?>
+            <li>
+                <span class="name"><?= $category->name ?></span>
+                <?php
+                $inherited = $category->inherited->count();
+                if ($inherited > 0): ?>
+                    <span class="products"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="<?= e(trans('bedard.shop::lang.discounts.count_inherited', [
+                            'inherited' => $inherited,
+                        ])) ?>">
+                        +<?= $inherited ?>
+                    </span>
+                <?php endif ?>
+            </li>
+        <?php endforeach ?>
+    </ul>
+</div>

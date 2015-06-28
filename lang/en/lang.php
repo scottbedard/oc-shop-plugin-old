@@ -82,6 +82,7 @@ return [
     // Common strings
     //
     'common' => [
+        'add_or_remove'                 => 'Add or Remove',
         'exact_amount'                  => 'Exact amount',
         'name'                          => 'Name',
         'percentage'                    => 'Percentage',
@@ -155,7 +156,12 @@ return [
         'amount'                        => 'Amount',
         'amount_exact'                  => 'The exact amount to reduce prices by.',
         'amount_percentage'             => 'The percentage to reduce prices by.',
+        'categories_search'             => 'Enter category name...',
+        'categories_no_results'         => 'No categories were found.',
+        'categories_none_selected'      => 'No categories are selected.',
+        'categories_select'             => 'Select Categories',
         'controller'                    => 'Discounts',
+        'count_inherited'               => ':inherited inherited categories', # :count = :direct + :inherited
         'end_at'                        => 'End Date',
         'end_at_invalid'                => 'The end date must be after the start date.',
         'hide_expired'                  => 'Hide expired',

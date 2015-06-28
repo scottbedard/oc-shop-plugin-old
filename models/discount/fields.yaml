@@ -51,13 +51,14 @@ fields:
         type: relationselector
         scope: isNotFiltered
         class: Bedard\Shop\Models\Category
+        icon: icon-folder
         key: name
-        buttonText: Add / Remove
-        popupPlaceholder: Enter category name...
-        popupHeader: Select Categories
-        popupEmpty: There are no categories to display.
-        selectionEmpty: No categories are selected.
-        # partial: $/bedard/shop/models/discount/_selected_categories.htm
+        partial: $/bedard/shop/models/discount/_selected_categories.htm
+        buttonText: bedard.shop::lang.common.add_or_remove
+        popupPlaceholder: bedard.shop::lang.discounts.categories_search
+        popupHeader: bedard.shop::lang.discounts.categories_select
+        popupEmpty: bedard.shop::lang.discounts.categories_no_results
+        selectionEmpty: bedard.shop::lang.discounts.categories_none_selected
         span: left
 
     products:

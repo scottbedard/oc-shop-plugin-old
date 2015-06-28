@@ -19,7 +19,7 @@ class RelationSelector extends FormWidgetBase
     public function render()
     {
         $relationship = $this->formField->fieldName;
-        $models = $this->model->$relationship;
+        $models = $this->model->$relationship->sortBy($this->config->key);
 
         $this->vars['models'] = $models;
         $this->vars['input'] = $models->lists('id');
@@ -53,6 +53,10 @@ class RelationSelector extends FormWidgetBase
         $this->vars['buttonText'] = isset($this->config->buttonText)
             ? $this->config->buttonText
             : 'backend::lang.relation.add';
+
+        $this->vars['icon'] = isset($this->config->icon)
+            ? 'oc-'.$this->config->icon
+            : '';
 
         $this->vars['popupHeader'] = isset($this->config->popupHeader)
             ? $this->config->popupHeader
@@ -165,10 +169,8 @@ class RelationSelector extends FormWidgetBase
 
         $relation = new $this->config->class;
         $key = $this->config->key;
-        $limit = 10;
 
         $this->vars['models'] = $relation::whereIn('id', $attached)
-            ->limit($limit)
             ->orderBy($key, 'asc')
             ->get();
 
