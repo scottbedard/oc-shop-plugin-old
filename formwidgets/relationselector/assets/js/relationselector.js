@@ -8,6 +8,10 @@
             self.openPopup();
         });
 
+        self.$container.find('a[data-control="remove"]').on('click', function() {
+            self.removeSelected();
+        });
+
         self.$container.on('syncSelected', function() {
             self.syncSelected();
         });
@@ -129,6 +133,30 @@
             } else {
                 $(this).removeClass('active');
             }
+        });
+    }
+
+    /*
+     * Remove selected items from the widget
+     */
+    RelationSelector.prototype.removeSelected = function() {
+        var self        = this,
+            attached    = self.$container.data('attached');
+
+        self.$container.find('input[type="checkbox"][data-remove]').each(function() {
+            if (!$(this).prop('checked')) return true;
+
+            var index = attached.indexOf($(this).data('remove'));
+            if (index != -1) {
+                attached.splice(index, 1);
+            }
+        });
+
+        self.$container.request(self.alias + '::onUpdateAttached', {
+            data: { attached: attached },
+            complete: function() {
+                self.$container.data('attached', attached);
+            },
         });
     }
 

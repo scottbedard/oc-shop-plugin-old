@@ -1,22 +1,43 @@
-<?php $models->load('products', 'inherited.products'); ?>
-<div class="relationselector-partial categories">
-    <ul>
-        <?php foreach ($models as $category): ?>
-            <li>
-                <span class="name"><?= $category->name ?></span>
-                <?php
-                $inherited = $category->inherited->count();
-                if ($inherited > 0): ?>
-                    <span class="products"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="<?= e(trans('bedard.shop::lang.discounts.count_inherited', [
-                            'inherited' => $inherited,
-                        ])) ?>">
-                        +<?= $inherited ?>
-                    </span>
+<?php
+// After this number of results, the scrollbar will be enabled
+$scroll = 7;
+
+// Lazy load the inherited categories, ordered alphabetically
+$models->load([
+    'inherited' => function($inherited) {
+        $inherited->orderBy('name', 'asc');
+    }
+]);
+?>
+<div class="relationselector-partial categories field-checkboxlist">
+
+    <?php if ($models->count() > $scroll): ?>
+        <div class="scrollbar-wrapper">
+            <div class="control-scrollbar" data-control="scrollbar">
                 <?php endif ?>
-            </li>
-        <?php endforeach ?>
-    </ul>
+
+                <ul>
+                    <?php foreach ($models as $category): ?>
+                        <li>
+                            <input type="checkbox" data-remove="<?= $category->id ?>">
+                            <div class="left"><?= $category->name ?></div>
+                            <div class="right">
+                                <?php if ($category->inherited->count() > 0): ?>
+                                    <span class="inherited"
+                                        data-toggle="tooltip"
+                                        data-placement="left"
+                                        title="<?= implode(', ', $category->inherited->lists('name')) ?>">
+                                        +<?= $category->inherited->count() ?>
+                                    </span>
+                                <?php endif ?>
+                            </div>
+                        </li>
+                    <?php endforeach ?>
+                </ul>
+
+                <?php if ($models->count() > $scroll): ?>
+            </div>
+        </div>
+    <?php endif ?>
+
 </div>

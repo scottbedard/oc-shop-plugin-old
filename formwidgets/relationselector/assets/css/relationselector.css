@@ -13,6 +13,9 @@
 .relationselector .default-partial ul {
   margin: 10px 0;
 }
+.relationselector p {
+  font-size: 12px;
+}
 .relationselector-modal .search {
   position: relative;
 }

@@ -30,6 +30,7 @@ class Discounts extends Controller
 
         $this->addCss('/plugins/bedard/shop/assets/css/form.css');
         $this->addCss('/plugins/bedard/shop/assets/css/list.css');
+        $this->addJs('/plugins/bedard/shop/assets/js/discount-form.js');
     }
 
     /**

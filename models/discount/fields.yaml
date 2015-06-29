@@ -49,12 +49,13 @@ fields:
     categories:
         label: bedard.shop::lang.categories.controller
         type: relationselector
-        scope: isNotFiltered
         class: Bedard\Shop\Models\Category
-        icon: icon-folder
+        scope: isNotFiltered
         key: name
         partial: $/bedard/shop/models/discount/_selected_categories.htm
-        buttonText: bedard.shop::lang.common.add_or_remove
+        addText: bedard.shop::lang.discounts.categories_select
+        addIcon: icon-folder
+        removeIcon: icon-times
         popupPlaceholder: bedard.shop::lang.discounts.categories_search
         popupHeader: bedard.shop::lang.discounts.categories_select
         popupEmpty: bedard.shop::lang.discounts.categories_no_results

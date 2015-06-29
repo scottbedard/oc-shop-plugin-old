@@ -50,12 +50,20 @@ class RelationSelector extends FormWidgetBase
             ? $this->config->partial
             : 'default';
 
-        $this->vars['buttonText'] = isset($this->config->buttonText)
-            ? $this->config->buttonText
+        $this->vars['addText'] = isset($this->config->addText)
+            ? $this->config->addText
             : 'backend::lang.relation.add';
 
-        $this->vars['icon'] = isset($this->config->icon)
-            ? 'oc-'.$this->config->icon
+        $this->vars['removeText'] = isset($this->config->removeText)
+            ? $this->config->removeText
+            : 'backend::lang.relation.remove';
+
+        $this->vars['addIcon'] = isset($this->config->addIcon)
+            ? 'oc-'.$this->config->addIcon
+            : '';
+
+        $this->vars['removeIcon'] = isset($this->config->removeIcon)
+            ? 'oc-'.$this->config->removeIcon
             : '';
 
         $this->vars['popupHeader'] = isset($this->config->popupHeader)

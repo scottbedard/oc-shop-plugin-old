@@ -2,6 +2,7 @@
     <ul>
         <?php foreach ($models as $model): ?>
             <li>
+                <input type="checkbox" data-remove="<?= $model->id ?>" />
                 <?= $model->$key ?>
             </li>
         <?php endforeach ?>
