@@ -36,6 +36,10 @@ class Promotion extends Model
      * @var array   Relations
      */
     public $belongsToMany = [
+        'countries' => [
+            'RainLab\Location\Models\Country',
+            'table' => 'bedard_shop_country_promotion',
+        ],
         'products' => [
             'Bedard\Shop\Models\Product',
             'table' => 'bedard_shop_product_promotion',

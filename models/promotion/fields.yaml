@@ -81,3 +81,19 @@ fields:
         popupEmpty: bedard.shop::lang.common.products_no_results
         selectionEmpty: bedard.shop::lang.common.products_none_selected
         span: left
+
+    countries:
+        label: bedard.shop::lang.promotions.shipping_countries
+        comment: bedard.shop::lang.promotions.shipping_countries_comment
+        type: relationselector
+        class: RainLab\Location\Models\Country
+        key: name
+        partial: $/bedard/shop/models/promotion/_selected_countries.htm
+        addText: bedard.shop::lang.promotions.countries_select
+        addIcon: icon-globe
+        removeIcon: icon-times
+        popupPlaceholder: bedard.shop::lang.promotions.countries_search
+        popupHeader: bedard.shop::lang.promotions.countries_select
+        popupEmpty: bedard.shop::lang.promotions.countries_no_results
+        selectionEmpty: bedard.shop::lang.promotions.countries_none_selected
+        span: right

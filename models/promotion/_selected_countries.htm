@@ -1,0 +1,27 @@
+<?php
+// After this number of results, the scrollbar will be enabled
+$scroll = 7;
+?>
+<div class="relationselector-partial countries field-checkboxlist">
+
+    <?php if ($models->count() > $scroll): ?>
+        <div class="scrollbar-wrapper">
+            <div class="control-scrollbar" data-control="scrollbar">
+                <?php endif ?>
+
+                <ul>
+                    <?php foreach ($models as $country): ?>
+                        <li>
+                            <input type="checkbox" data-remove="<?= $country->id ?>">
+                            <div class="left"><?= $country->name ?></div>
+                            <div class="right"><i class="flag-<?= strtolower($country->code) ?>"></i></div>
+                        </li>
+                    <?php endforeach ?>
+                </ul>
+
+                <?php if ($models->count() > $scroll): ?>
+            </div>
+        </div>
+    <?php endif ?>
+
+</div>

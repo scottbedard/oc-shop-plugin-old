@@ -12,6 +12,11 @@ class Plugin extends PluginBase
 {
 
     /**
+     * @var array Plugin dependencies
+     */
+    public $require = ['RainLab.Location'];
+
+    /**
      * Returns information about this plugin.
      *
      * @return  array
