@@ -7,4 +7,4 @@ scopes:
     status:
         label: bedard.shop::lang.discounts.hide_expired
         type: checkbox
-        scope: isActiveOrUpcoming
+        scope: isRunningOrUpcoming

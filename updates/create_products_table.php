@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->text('description_html')->nullable();
             $table->text('snippet')->nullable();
             $table->text('snippet_html')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_enabled')->default(true);
             $table->timestamps();
         });
     }

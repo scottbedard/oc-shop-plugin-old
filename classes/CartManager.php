@@ -91,7 +91,7 @@ class CartManager {
         if (!$this->cart) $this->createCart();
 
         // Select the product being added
-        if (!$product = Product::isActive()->find($productId)) {
+        if (!$product = Product::isEnabled()->find($productId)) {
             throw new CartException('The product was not found or is not active.');
         }
 

@@ -65,7 +65,7 @@ class Product extends ComponentBase
     public function onRun()
     {
         // Load the selected product
-        $this->product = ProductModel::isActive()
+        $this->product = ProductModel::isEnabled()
             ->where('slug', $this->property('slug'))
             ->with('current_price.discount')
             ->with('options.values')

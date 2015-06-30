@@ -65,18 +65,18 @@ class ProductModelTest extends \OctoberPluginTestCase
     }
 
     /**
-     * Makes sure that the isActive() and isNotActive() scopes work
+     * Makes sure that the isEnabled() and isDisabled() scopes work
      */
-    public function test_isActive_and_isNotActive_scopes()
+    public function test_isEnabled_and_isDisabled_scopes()
     {
         $active     = Generate::product('Active');
-        $disabled   = Generate::product('Disabled', ['is_active' => false]);
+        $disabled   = Generate::product('Disabled', ['is_enabled' => false]);
 
-        $isActive = Product::isActive()->first();
-        $this->assertEquals($active->id, $isActive->id);
+        $isEnabled = Product::isEnabled()->first();
+        $this->assertEquals($active->id, $isEnabled->id);
 
-        $isNotActive = Product::isNotActive()->first();
-        $this->assertEquals($disabled->id, $isNotActive->id);
+        $isDisabled = Product::isDisabled()->first();
+        $this->assertEquals($disabled->id, $isDisabled->id);
     }
 
     /**

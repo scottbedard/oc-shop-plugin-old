@@ -13,7 +13,7 @@ scopes:
     is_active:
         label: bedard.shop::lang.products.filter_disabled
         type: checkbox
-        scope: isActive
+        scope: isEnabled
 
     in_stock:
         label: bedard.shop::lang.products.filter_out_of_stock

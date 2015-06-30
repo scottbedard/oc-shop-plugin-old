@@ -41,9 +41,9 @@ class Products extends Controller
     public function prepareVars()
     {
         $this->vars['total']        = Product::count();
-        $this->vars['normal']       = Product::isActive()->isNotDiscounted()->count();
-        $this->vars['discounted']   = Product::isActive()->isDiscounted()->count();
-        $this->vars['disabled']     = Product::isNotActive()->count();
+        $this->vars['normal']       = Product::isEnabled()->isNotDiscounted()->count();
+        $this->vars['discounted']   = Product::isEnabled()->isDiscounted()->count();
+        $this->vars['disabled']     = Product::isDisabled()->count();
         $this->vars['instock']      = Product::inStock()->count();
     }
 

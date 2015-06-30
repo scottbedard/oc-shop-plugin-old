@@ -35,7 +35,7 @@ class Product extends Model
         'base_price',
         'description',
         'description_html',
-        'is_active',
+        'is_enabled',
     ];
 
     /**
@@ -178,14 +178,14 @@ class Product extends Model
         });
     }
 
-    public function scopeIsActive($query)
+    public function scopeIsEnabled($query)
     {
-        return $query->where('is_active', true);
+        return $query->where('is_enabled', true);
     }
 
-    public function scopeIsNotActive($query)
+    public function scopeIsDisabled($query)
     {
-        return $query->where('is_active', false);
+        return $query->where('is_enabled', false);
     }
 
     public function scopeIsDiscounted($query)

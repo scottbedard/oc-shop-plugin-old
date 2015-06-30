@@ -304,7 +304,7 @@ class Category extends Model
     public function queryProducts($page = 1, $joinPrices = true)
     {
         // Start the product query by excluding disabled products
-        $query = Product::isActive();
+        $query = Product::isEnabled();
 
         // Join the price table if needed
         if ($joinPrices) {
