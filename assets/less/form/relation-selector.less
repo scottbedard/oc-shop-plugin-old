@@ -1,0 +1,63 @@
+//
+// Custom RelationSelector partials
+//
+.relationselector .relationselector-partial {
+    .scrollbar-wrapper {
+        display: block;
+        height: 300px;
+    }
+
+    input[type="checkbox"] { display: none }
+
+    .tooltip-inner {
+        text-align: center;
+        width: 180px;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+            border-bottom: 1px solid #e0e0e0;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+            font-size: 12px;
+            overflow: hidden;
+            padding: 10px 15px 10px 12px;
+
+            &:last-of-type { border-bottom: 0 }
+            &.delete { border-left: 3px solid #FF9933 }
+            &:hover {
+                background-color: #39A4F3;
+                color: #fff !important;
+            }
+        }
+
+        div {
+            display: inline-block;
+
+            &.left { float: left }
+            &.right { float: right; margin-top: -2px }
+        }
+
+        span.inherited {
+            background-color: #34495E;
+            border-radius: 3px;
+            color: #fff;
+            display: inline-block;
+            min-width: 35px;
+            padding: 2px 5px;
+            text-align: center;
+        }
+
+        span.base-price {
+            &.discounted { text-decoration: line-through }
+        }
+
+        span.discounted-price {
+            color: green;
+        }
+    }
+}

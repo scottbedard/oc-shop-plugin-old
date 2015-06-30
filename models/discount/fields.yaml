@@ -68,11 +68,11 @@ fields:
         class: Bedard\Shop\Models\Product
         key: name
         partial: $/bedard/shop/models/discount/_selected_products.htm
-        addText: bedard.shop::lang.discounts.products_select
-        addIcon: icon-cube
+        addText: bedard.shop::lang.common.products_select
+        addIcon: icon-cubes
         removeIcon: icon-times
-        popupPlaceholder: bedard.shop::lang.discounts.products_search
-        popupHeader: bedard.shop::lang.discounts.products_select
-        popupEmpty: bedard.shop::lang.discounts.products_no_results
-        selectionEmpty: bedard.shop::lang.discounts.products_none_selected
+        popupPlaceholder: bedard.shop::lang.common.products_search
+        popupHeader: bedard.shop::lang.common.products_select
+        popupEmpty: bedard.shop::lang.common.products_no_results
+        selectionEmpty: bedard.shop::lang.common.products_none_selected
         span: right

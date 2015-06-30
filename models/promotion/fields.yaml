@@ -68,6 +68,16 @@ fields:
 
     products:
         label: bedard.shop::lang.promotions.required_products
-        type: partial
-        path: $/plugins/bedard/shop/models/promotion/_products.htm
-
+        comment: bedard.shop::lang.promotions.required_products_comment
+        type: relationselector
+        class: Bedard\Shop\Models\Product
+        key: name
+        partial: $/bedard/shop/models/promotion/_selected_products.htm
+        addText: bedard.shop::lang.common.products_select
+        addIcon: icon-cubes
+        removeIcon: icon-times
+        popupPlaceholder: bedard.shop::lang.common.products_search
+        popupHeader: bedard.shop::lang.common.products_select
+        popupEmpty: bedard.shop::lang.common.products_no_results
+        selectionEmpty: bedard.shop::lang.common.products_none_selected
+        span: left

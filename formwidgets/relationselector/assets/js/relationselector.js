@@ -69,6 +69,7 @@
                 data: { attached: $popup.data('selected') },
                 complete: function() {
                     self.$container.data('attached', $popup.data('selected'));
+                    self.$container.trigger('updated');
                     $popup.trigger('close.oc.popup');
                 },
             });

@@ -4,15 +4,10 @@
 
         self.$form = $(el);
 
-        // Highlight the relationselector rows when clicked
-        self.$form.on('click', '.relationselector-partial li', function() {
-            self.highlightRelationSelection($(this));
-        });
-
         // Calculate the prices when the document is ready, and when an
         // ajax request is completed.
         self.calculatePrices();
-        self.$form.on('ajaxComplete', function() {
+        self.$form.on('ajaxComplete updated', function() {
             self.calculatePrices();
         });
 
@@ -26,18 +21,6 @@
             value = typeof value != 'undefined' ? value : parseInt($(this).val());
             self.calculatePercentagePrices(Math.round(value));
         });
-    }
-
-    /*
-     * Highlight / Unhighlight the selected row for deletion
-     */
-    DiscountForm.prototype.highlightRelationSelection = function($li) {
-        var self = this,
-            $checkbox = $li.find('input[type="checkbox"]'),
-            checked = !$checkbox.prop('checked');
-
-        $checkbox.prop('checked', checked);
-        $li.toggleClass('delete');
     }
 
     /*

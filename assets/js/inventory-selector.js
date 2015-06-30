@@ -151,10 +151,17 @@
     }
 
     /*
-     * Bind InventorySelector as a jQuery plugin
+     * Non-conflicting jquery plugin
      */
+    var old = $.fn.inventorySelector;
+
     $.fn.inventorySelector = function () {
         new InventorySelector(this);
+    }
+
+    $.fn.inventorySelector.noConflict = function () {
+        $.fn.inventorySelector = old;
+        return this;
     }
 
     $(document).ready(function() {

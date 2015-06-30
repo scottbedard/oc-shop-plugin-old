@@ -18,7 +18,7 @@
             </ul>
         </div>
 
-        <?php $meter = round($instock / $total * 100); ?>
+        <?php $meter = $total > 0 ? round($instock / $total * 100) : 0; ?>
         <div class="scoreboard-item title-value" data-control="goal-meter" data-size="90" data-value="<?= $meter ?>">
             <h4><?= e(trans('bedard.shop::lang.products.scoreboard_stock')) ?></h4>
             <p><?= $meter ?>%</p>

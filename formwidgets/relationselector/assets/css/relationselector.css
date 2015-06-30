@@ -7,6 +7,9 @@
   padding: 15px;
   border-bottom: 1px solid #e0e0e0;
 }
+.relationselector .toolbar a {
+  margin-right: 5px;
+}
 .relationselector .input {
   display: none;
 }

@@ -1,0 +1,38 @@
+<?php
+use Bedard\Shop\Models\Currency;
+
+// After this number of results, the scrollbar will be enabled
+$scroll = 7;
+
+$models->load('current_price');
+?>
+<div class="relationselector-partial products field-checkboxlist">
+
+    <?php if ($models->count() > $scroll): ?>
+        <div class="scrollbar-wrapper">
+            <div class="control-scrollbar" data-control="scrollbar">
+                <?php endif ?>
+
+                <ul>
+                    <?php foreach ($models as $product): ?>
+                        <li>
+                            <input type="checkbox" data-remove="<?= $product->id ?>">
+                            <div class="left"><?= $product->name ?></div>
+                            <div class="right">
+                                <?php if ($product->isDiscounted): ?>
+                                    <span><?= Currency::format($product->price) ?></span>
+                                <?php else: ?>
+                                    <span class="base-price discounted"><?= Currency::format($product->base_price) ?></span>
+                                    <span class="discounted-price"><?= Currency::format($product->price) ?></span>
+                                <?php endif ?>
+                            </div>
+                        </li>
+                    <?php endforeach ?>
+                </ul>
+
+                <?php if ($models->count() > $scroll): ?>
+            </div>
+        </div>
+    <?php endif ?>
+
+</div>

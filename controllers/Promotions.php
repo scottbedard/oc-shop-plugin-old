@@ -23,5 +23,9 @@ class Promotions extends Controller
         parent::__construct();
 
         BackendMenu::setContext('Bedard.Shop', 'shop', 'promotions');
+
+        $this->addCss('/plugins/bedard/shop/assets/css/form.css');
+        $this->addCss('/plugins/bedard/shop/assets/css/list.css');
+        $this->addJs('/plugins/bedard/shop/assets/js/relation-selector-form.js');
     }
 }

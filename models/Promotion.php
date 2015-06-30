@@ -7,7 +7,8 @@ use Model;
  */
 class Promotion extends Model
 {
-    use \Bedard\Shop\Traits\DateActiveTrait;
+    use \Bedard\Shop\Traits\DateActiveTrait,
+        \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string  The database table used by the model.
@@ -41,6 +42,40 @@ class Promotion extends Model
             'order' => 'name asc',
         ],
     ];
+
+    /**
+     * Validation
+     */
+    public $rules = [
+        'code'                  => 'required|unique:bedard_shop_promotions',
+        'cart_exact'            => 'numeric|min:0',
+        'cart_percentage'       => 'integer|min:0|max:100',
+        'shipping_exact'        => 'numeric|min:0',
+        'shipping_percentage'   => 'integer|min:0|max:100',
+    ];
+
+    /**
+     * Accessors and Mutators
+     */
+    public function setCartExactAttribute($value)
+    {
+        $this->attributes['cart_exact'] = $value ?: 0;
+    }
+
+    public function setShippingExactAttribute($value)
+    {
+        $this->attributes['shipping_exact'] = $value ?: 0;
+    }
+
+    public function setCartPercentageAttribute($value)
+    {
+        $this->attributes['cart_percentage'] = $value ?: 0;
+    }
+
+    public function setShippingPercentageAttribute($value)
+    {
+        $this->attributes['shipping_percentage'] = $value ?: 0;
+    }
 
     /**
      * Filter form fields
