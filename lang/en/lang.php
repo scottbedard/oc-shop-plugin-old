@@ -218,7 +218,7 @@ return [
         'images'                        => 'Images',
         'images_tab'                    => 'Images',
         'in_stock'                      => ':quantity in stock',
-        'is_active'                     => 'Product is active',
+        'is_enabled'                     => 'Product is enabled',
         'list_title'                    => 'Manage Products',
         'markdown_allowed'              => 'You may use markdown syntax.',
         'model'                         => 'Product',

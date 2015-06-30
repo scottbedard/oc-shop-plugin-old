@@ -64,7 +64,7 @@ class DevSeeds extends Seeder
     public function seedProducts()
     {
         $faker = \Faker\Factory::create();
-        $is_active = 6;
+        $is_enabled = 6;
 
         // Create some clothing...
         $shirts = [
@@ -86,7 +86,7 @@ class DevSeeds extends Seeder
                 'base_price'    => $shirt['base_price'],
                 'description'   => $faker->paragraph(10),
                 'snippet'       => $faker->paragraph(2),
-                'is_active'     => (bool) rand(0, $is_active),
+                'is_enabled'    => (bool) rand(0, $is_enabled),
             ]);
 
             $seed->categories()->sync(Category::whereIn('slug', $shirt['categories'])->lists('id'));
@@ -119,7 +119,7 @@ class DevSeeds extends Seeder
                 'base_price'    => $tv['base_price'],
                 'description'   => $faker->paragraph(10),
                 'snippet'       => $faker->paragraph(2),
-                'is_active'     => (bool) rand(0, $is_active),
+                'is_enabled'     => (bool) rand(0, $is_enabled),
             ]);
             $seed->categories()->sync(Category::whereIn('slug', $tv['categories'])->lists('id'));
 
@@ -138,7 +138,7 @@ class DevSeeds extends Seeder
                 'base_price'    => $computer['base_price'],
                 'description'   => $faker->paragraph(10),
                 'snippet'       => $faker->paragraph(2),
-                'is_active'     => (bool) rand(0, $is_active),
+                'is_enabled'     => (bool) rand(0, $is_enabled),
             ]);
             $seed->categories()->sync(Category::whereIn('slug', $computer['categories'])->lists('id'));
 

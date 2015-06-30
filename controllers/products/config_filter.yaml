@@ -10,7 +10,7 @@ scopes:
         nameFrom: name
         scope: filterByCategory
 
-    is_active:
+    is_enabled:
         label: bedard.shop::lang.products.filter_disabled
         type: checkbox
         scope: isEnabled

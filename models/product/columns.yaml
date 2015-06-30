@@ -31,7 +31,7 @@ columns:
         select: >
             (
                 CASE
-                    WHEN (`bedard_shop_products`.`is_active` = 0) THEN 0
+                    WHEN (`bedard_shop_products`.`is_enabled` = 0) THEN 0
                     WHEN (`price` < `bedard_shop_products`.`base_price`) THEN 2
                     ELSE 1
                 END

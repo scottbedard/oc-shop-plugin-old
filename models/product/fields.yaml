@@ -50,9 +50,9 @@ secondaryTabs:
             placeholder: '0.00'
             span: right
 
-        is_active:
+        is_enabled:
             tab: bedard.shop::lang.products.details_tab
-            label: bedard.shop::lang.products.is_active
+            label: bedard.shop::lang.products.is_enabled
             type: switch
             default: true
             span: right
