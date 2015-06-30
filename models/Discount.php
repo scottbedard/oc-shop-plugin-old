@@ -10,13 +10,17 @@ use Queue;
  */
 class Discount extends Model
 {
-    use \Bedard\Shop\Traits\DateActiveTrait,
-        \October\Rain\Database\Traits\Validation;
+    use \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string  The database table used by the model.
      */
     public $table = 'bedard_shop_discounts';
+
+    /**
+     * @var array   Implemented behaviors
+     */
+    public $implement = ['Bedard.Shop.Behaviors.TimeSensitiveModel'];
 
     /**
      * @var array   Guarded fields
@@ -28,14 +32,6 @@ class Discount extends Model
      */
     protected $fillable = [
         'is_percentage',
-    ];
-
-    /**
-     * @var array   Date columns
-     */
-    protected $dates = [
-        'start_at',
-        'end_at'
     ];
 
     /**
@@ -66,24 +62,15 @@ class Discount extends Model
         'name'              => 'required',
         'amount_exact'      => 'numeric|min:0',
         'amount_percentage' => 'integer|min:0|max:100',
-        'start_at'          => 'date',
-        'end_at'            => 'date',
     ];
 
     public $customMessages = [
-        'end_at.after'      => 'bedard.shop::lang.discounts.end_at_invalid',
+        'end_at.after'      => 'bedard.shop::lang.common.end_at_invalid',
     ];
 
     /**
      * Model Events
      */
-    public function beforeValidate()
-    {
-        if ($this->start_at && $this->end_at) {
-            $this->rules['end_at'] = 'after:start_at';
-        }
-    }
-
     public function afterSave()
     {
         // Synchronize product prices
@@ -168,42 +155,11 @@ class Discount extends Model
     }
 
     /**
-     * Determines if the discount is complete
-     *
-     * @return  boolean
-     */
-    public function isExpired()
-    {
-        return $this->end_at && strtotime($this->end_at) <= time();
-    }
-
-    /**
-     * Determines if the discount is running
-     *
-     * @return  boolean
-     */
-    public function isRunning()
-    {
-        return (!$this->start_at || strtotime($this->start_at) <= time()) &&
-               (!$this->end_at || strtotime($this->end_at) > time());
-    }
-
-    /**
-     * Determiens if the discount is upcoming
-     *
-     * @return  boolean
-     */
-    public function isUpcoming()
-    {
-        return $this->start_at && strtotime($this->start_at) > time();
-    }
-
-    /**
      * Synchronize the products of all active or upcoming discounts
      */
     public static function syncAllProducts()
     {
-        $discounts = self::isActiveOrUpcoming()->get();
+        $discounts = self::isRunningOrUpcoming()->get();
         foreach ($discounts as $discount) {
             $id = $discount->id;
             Queue::push(function($job) use($id) {

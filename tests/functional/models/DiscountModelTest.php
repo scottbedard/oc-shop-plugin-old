@@ -141,35 +141,6 @@ class DiscountModelTest extends \OctoberPluginTestCase
         $this->assertEquals(1, $product->discounted_prices->where('discount_id', $upcoming->id)->count());
     }
 
-    public function test_discount_status_methods()
-    {
-        $discount = Generate::discount('Discount');
-        $this->assertTrue($discount->isRunning());
-        $this->assertFalse($discount->isExpired());
-        $this->assertFalse($discount->isUpcoming());
-
-        $discount->start_at = Carbon::yesterday();
-        $this->assertTrue($discount->isRunning());
-        $this->assertFalse($discount->isExpired());
-        $this->assertFalse($discount->isUpcoming());
-
-        $discount->end_at = Carbon::tomorrow();
-        $this->assertTrue($discount->isRunning());
-        $this->assertFalse($discount->isExpired());
-        $this->assertFalse($discount->isUpcoming());
-
-        $discount->start_at = Carbon::tomorrow();
-        $discount->end_at = null;
-        $this->assertFalse($discount->isRunning());
-        $this->assertFalse($discount->isExpired());
-        $this->assertTrue($discount->isUpcoming());
-
-        $discount->end_at = Carbon::tomorrow()->addDay(1);
-        $this->assertFalse($discount->isRunning());
-        $this->assertFalse($discount->isExpired());
-        $this->assertTrue($discount->isUpcoming());
-    }
-
     public function test_prices_are_deleted()
     {
         $product = Generate::product('Hello');

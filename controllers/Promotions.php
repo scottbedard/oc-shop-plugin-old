@@ -2,6 +2,9 @@
 
 use BackendMenu;
 use Backend\Classes\Controller;
+use Bedard\Shop\Models\Promotion;
+use Flash;
+use Lang;
 
 /**
  * Promotions Back-end Controller
@@ -27,5 +30,21 @@ class Promotions extends Controller
         $this->addCss('/plugins/bedard/shop/assets/css/form.css');
         $this->addCss('/plugins/bedard/shop/assets/css/list.css');
         $this->addJs('/plugins/bedard/shop/assets/js/relation-selector-form.js');
+    }
+
+    /**
+     * Delete selected rows
+     */
+    public function index_onDelete()
+    {
+        if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
+            foreach ($checkedIds as $postId) {
+                if ($model = Promotion::find($postId)) {
+                    $model->delete();
+                }
+            }
+            Flash::success(Lang::get('backend::lang.list.delete_selected_success'));
+        }
+        return $this->listRefresh();
     }
 }

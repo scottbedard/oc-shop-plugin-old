@@ -12,6 +12,18 @@ fields:
         label: bedard.shop::lang.promotions.message
         span: right
 
+    start_at:
+        label: bedard.shop::lang.common.start_at
+        comment: bedard.shop::lang.common.start_at_immediate
+        type: datepicker
+        span: left
+
+    end_at:
+        label: bedard.shop::lang.common.end_at
+        comment: bedard.shop::lang.common.end_at_never
+        type: datepicker
+        span: right
+
     cart_percentage:
         dependsOn: is_cart_percentage
         knobLabel: bedard.shop::lang.promotions.cart_amount
@@ -88,6 +100,7 @@ fields:
         type: relationselector
         class: RainLab\Location\Models\Country
         key: name
+        scope: isEnabled
         partial: $/bedard/shop/models/promotion/_selected_countries.htm
         addText: bedard.shop::lang.promotions.countries_select
         addIcon: icon-globe

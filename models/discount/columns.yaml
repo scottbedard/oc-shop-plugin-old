@@ -13,11 +13,11 @@ columns:
         path: $/bedard/shop/models/discount/_amount.htm
 
     start_at:
-        label: bedard.shop::lang.discounts.start_at
+        label: bedard.shop::lang.common.start_at
         type: date
 
     end_at:
-        label: bedard.shop::lang.discounts.end_at
+        label: bedard.shop::lang.common.end_at
         type: date
 
     status:

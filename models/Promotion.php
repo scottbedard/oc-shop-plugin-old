@@ -7,13 +7,17 @@ use Model;
  */
 class Promotion extends Model
 {
-    use \Bedard\Shop\Traits\DateActiveTrait,
-        \October\Rain\Database\Traits\Validation;
+    use \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string  The database table used by the model.
      */
     public $table = 'bedard_shop_promotions';
+
+    /**
+     * @var array   Implemented behaviors
+     */
+    public $implement = ['Bedard.Shop.Behaviors.TimeSensitiveModel'];
 
     /**
      * @var array   Guarded fields
@@ -39,6 +43,7 @@ class Promotion extends Model
         'countries' => [
             'RainLab\Location\Models\Country',
             'table' => 'bedard_shop_country_promotion',
+            'scope' => 'isEnabled',
         ],
         'products' => [
             'Bedard\Shop\Models\Product',
@@ -56,6 +61,10 @@ class Promotion extends Model
         'cart_percentage'       => 'integer|min:0|max:100',
         'shipping_exact'        => 'numeric|min:0',
         'shipping_percentage'   => 'integer|min:0|max:100',
+    ];
+
+    public $customMessages = [
+        'end_at.after'      => 'bedard.shop::lang.common.end_at_invalid',
     ];
 
     /**

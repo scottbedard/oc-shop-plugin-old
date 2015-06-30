@@ -89,7 +89,7 @@ class Product extends Model
     public $hasOne = [
         'current_price' => [
             'Bedard\Shop\Models\Price',
-            'scope' => 'isActive',
+            'scope' => 'isRunning',
             'order' => 'price asc',
         ],
     ];
@@ -192,7 +192,7 @@ class Product extends Model
     {
         return $query->whereHas('current_price', function($price) {
             $price
-                ->isActive()
+                ->isRunning()
                 ->whereRaw('`bedard_shop_prices`.`price` < `bedard_shop_products`.`base_price`');
         });
     }
@@ -201,7 +201,7 @@ class Product extends Model
     {
         return $query->whereDoesntHave('current_price', function($price) {
             $price
-                ->isActive()
+                ->isRunning()
                 ->whereRaw('`bedard_shop_prices`.`price` < `bedard_shop_products`.`base_price`');
         });
     }
@@ -319,7 +319,7 @@ class Product extends Model
     protected function syncDiscountedPrices()
     {
         // First, figure out which discounts this product is in the scope of
-        $discounts = Discount::isActiveOrUpcoming()
+        $discounts = Discount::isRunningOrUpcoming()
             ->where(function($query) {
                 $query
                     ->whereHas('products', function($product) {

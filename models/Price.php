@@ -7,12 +7,15 @@ use Model;
  */
 class Price extends Model
 {
-    use \Bedard\Shop\Traits\DateActiveTrait;
-
     /**
      * @var string  The database table used by the model.
      */
     public $table = 'bedard_shop_prices';
+
+    /**
+     * @var array   Implemented behaviors
+     */
+    public $implement = ['Bedard.Shop.Behaviors.TimeSensitiveModel'];
 
     /**
      * @var array   Guarded fields
@@ -26,19 +29,12 @@ class Price extends Model
         'product_id',
         'discount_id',
         'price',
-        'start_at',
-        'end_at',
     ];
 
     /**
      * @var boolean Disable default timestamps
      */
     public $timestamps = false;
-
-    /**
-     * @var array   Configure start and end dates
-     */
-    protected $dates = ['start_at', 'end_at'];
 
     /**
      * @var array   Relations

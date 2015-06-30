@@ -8,14 +8,14 @@ fields:
         label: bedard.shop::lang.common.name
 
     start_at:
-        label: bedard.shop::lang.discounts.start_at
-        comment: bedard.shop::lang.discounts.no_start
+        label: bedard.shop::lang.common.start_at
+        comment: bedard.shop::lang.common.start_at_immediate
         type: datepicker
         span: left
 
     end_at:
-        label: bedard.shop::lang.discounts.end_at
-        comment: bedard.shop::lang.discounts.no_end
+        label: bedard.shop::lang.common.end_at
+        comment: bedard.shop::lang.common.end_at_never
         type: datepicker
         span: right
 
