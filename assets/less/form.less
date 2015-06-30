@@ -21,7 +21,7 @@
 
             input[type="checkbox"] { display: none }
 
-            &.categories {
+            &.categories, &.products {
                 .tooltip-inner {
                     text-align: center;
                     width: 180px;
@@ -44,7 +44,7 @@
                         &.delete { border-left: 3px solid #FF9933 }
                         &:hover {
                             background-color: #39A4F3;
-                            color: #fff;
+                            color: #fff !important;
                         }
                     }
 
@@ -63,6 +63,14 @@
                         min-width: 35px;
                         padding: 2px 5px;
                         text-align: center;
+                    }
+
+                    span.base-price {
+                        &.discounted { text-decoration: line-through }
+                    }
+
+                    span.discounted-price {
+                        color: green;
                     }
                 }
             }

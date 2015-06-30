@@ -1,0 +1,37 @@
+<?php
+// After this number of results, the scrollbar will be enabled
+$scroll = 7;
+
+// // Lazy load the inherited categories, ordered alphabetically
+// $models->load([
+//     'inherited' => function($inherited) {
+//         $inherited->orderBy('name', 'asc');
+//     }
+// ]);
+?>
+<div class="relationselector-partial products field-checkboxlist">
+
+    <?php if ($models->count() > $scroll): ?>
+        <div class="scrollbar-wrapper">
+            <div class="control-scrollbar" data-control="scrollbar">
+                <?php endif ?>
+
+                <ul>
+                    <?php foreach ($models as $product): ?>
+                        <li>
+                            <input type="checkbox" data-remove="<?= $product->id ?>">
+                            <div class="left"><?= $product->name ?></div>
+                            <div class="right">
+                                <span class="base-price" data-base-price="<?= $product->base_price ?>"><?= $product->base_price ?></span>
+                                <span class="discounted-price"></span>
+                            </div>
+                        </li>
+                    <?php endforeach ?>
+                </ul>
+
+                <?php if ($models->count() > $scroll): ?>
+            </div>
+        </div>
+    <?php endif ?>
+
+</div>

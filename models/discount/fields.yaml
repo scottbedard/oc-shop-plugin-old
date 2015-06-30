@@ -67,4 +67,12 @@ fields:
         type: relationselector
         class: Bedard\Shop\Models\Product
         key: name
+        partial: $/bedard/shop/models/discount/_selected_products.htm
+        addText: bedard.shop::lang.discounts.products_select
+        addIcon: icon-cube
+        removeIcon: icon-times
+        popupPlaceholder: bedard.shop::lang.discounts.products_search
+        popupHeader: bedard.shop::lang.discounts.products_select
+        popupEmpty: bedard.shop::lang.discounts.products_no_results
+        selectionEmpty: bedard.shop::lang.discounts.products_none_selected
         span: right
