@@ -1,6 +1,7 @@
 <?php namespace Bedard\Shop;
 
 use Backend;
+use Bedard\Shop\Classes\CurrencyHelper;
 use Bedard\Shop\Models\Currency;
 use Lang;
 use System\Classes\PluginBase;
@@ -215,6 +216,6 @@ class Plugin extends PluginBase
      */
     public function moneyFormat($text)
     {
-        return Currency::format($text);
+        return CurrencyHelper::format($text);
     }
 }

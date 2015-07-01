@@ -1,0 +1,13 @@
+<?php
+
+use Bedard\Shop\Classes\CurrencyHelper;
+
+if ($record->is_cart_percentage): ?>
+
+    <?= $record->cart_percentage ?>%
+
+<?php else: ?>
+
+    <?= CurrencyHelper::format($record->cart_exact) ?>
+
+<?php endif ?>

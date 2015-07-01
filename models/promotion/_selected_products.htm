@@ -1,5 +1,5 @@
 <?php
-use Bedard\Shop\Models\Currency;
+use Bedard\Shop\Classes\CurrencyHelper;
 
 // After this number of results, the scrollbar will be enabled
 $scroll = 7;
@@ -20,10 +20,10 @@ $models->load('current_price');
                             <div class="left"><?= $product->name ?></div>
                             <div class="right">
                                 <?php if ($product->isDiscounted): ?>
-                                    <span><?= Currency::format($product->price) ?></span>
+                                    <span><?= CurrencyHelper::format($product->price) ?></span>
                                 <?php else: ?>
-                                    <span class="base-price discounted"><?= Currency::format($product->base_price) ?></span>
-                                    <span class="discounted-price"><?= Currency::format($product->price) ?></span>
+                                    <span class="base-price discounted"><?= CurrencyHelper::format($product->base_price) ?></span>
+                                    <span class="discounted-price"><?= CurrencyHelper::format($product->price) ?></span>
                                 <?php endif ?>
                             </div>
                         </li>

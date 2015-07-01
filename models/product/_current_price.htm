@@ -1,6 +1,6 @@
 <?php
 
-use Bedard\Shop\Models\Currency;
+use Bedard\Shop\Classes\CurrencyHelper;
 
 if ($record->isDiscounted): ?>
 
@@ -8,13 +8,13 @@ if ($record->isDiscounted): ?>
         href="javascript:;"
         data-toggle="tooltip"
         data-placement="top"
-        title="<?= Currency::format($record->base_price) ?>"
+        title="<?= CurrencyHelper::format($record->base_price) ?>"
         class="green">
-        <?= Currency::format($record->current_price->price) ?>
+        <?= CurrencyHelper::format($record->current_price->price) ?>
     </a>
 
 <?php else: ?>
 
-    <?= Currency::format($record->current_price->price) ?>
+    <?= CurrencyHelper::format($record->current_price->price) ?>
 
 <?php endif ?>
