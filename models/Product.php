@@ -122,12 +122,6 @@ class Product extends Model
         $this->syncBasePrice();
     }
 
-    public function beforeSave()
-    {
-        // This exists to help sqlite handle a null base_price
-        $this->attributes['base_price'] = $this->base_price ?: 0;
-    }
-
     public function afterSave()
     {
         // Sync Price models if the base_price or categories have changed
