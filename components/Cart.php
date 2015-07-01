@@ -100,4 +100,21 @@ class Cart extends ComponentBase
         $this->prepareVars();
     }
 
+    /**
+     * Updates items in the cart, and applies a promotion code if submitted
+     */
+    public function onUpdateCart()
+    {
+        try {
+            $quantities = array_map('intval', input('quantity') ?: []);
+            $promotion  = input('promotion') ?: false;
+
+            $this->cart->update($quantities, $promotion);
+        } catch (Exception $e) {
+            throw new AjaxException($e->getMessage());
+        }
+
+        $this->prepareVars();
+    }
+
 }

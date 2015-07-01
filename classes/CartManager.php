@@ -5,6 +5,7 @@ use Bedard\Shop\Models\Cart;
 use Bedard\Shop\Models\CartItem;
 use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Product;
+use Bedard\Shop\Models\Promotion;
 use Session;
 
 class CartManager {
@@ -121,6 +122,24 @@ class CartManager {
     }
 
     /**
+     * Applies a promotion code
+     *
+     * @param   string  $code
+     */
+    public function applyPromotion($code)
+    {
+        if (!$this->cart) $this->createCart();
+
+        $promotion = Promotion::where('code', $code)->isRunning()->first();
+        if (!$promotion = Promotion::where('code', $code)->isRunning()->first()) {
+            throw new CartException('Promotion not found.');
+        }
+
+        $this->cart->promotion_id = $promotion->id;
+        $this->cart->save();
+    }
+
+    /**
      * Counts the items in the cart
      *
      * @return  integer
@@ -188,6 +207,34 @@ class CartManager {
     }
 
     /**
+     * Updates multiple cart items, and applies a promotion code if provided
+     *
+     * @param   array   $items      Key/Value array of item ID/Quantity
+     * @param   string  $promotion  Code of promotion to apply
+     */
+    public function update($quantities, $promotion = false)
+    {
+        if (!$this->cart) {
+            return;
+        }
+
+        $this->cart->load('items.inventory');
+        foreach ($this->cart->items as $item) {
+            $quantity = isset($quantities[$item->id])
+                ? $quantities[$item->id]
+                : false;
+
+            if ($quantity === false || $quantity == $item->quantity) {
+                continue;
+            }
+
+            $this->updateQuantity($item, $quantity);
+        }
+
+        // todo: apply promotion code
+    }
+
+    /**
      * Updates the quantity of an item
      *
      * @param   CartItem    $item       The item being updated
@@ -202,9 +249,7 @@ class CartManager {
 
         if ($quantity < 0) {
             $quantity = 0;
-        }
-
-        if ($quantity > $inventory->quantity) {
+        } elseif ($quantity > $inventory->quantity) {
             $quantity = $inventory->quantity;
         }
 

@@ -4,21 +4,28 @@
 
 {% else %}
 
-    <table>
-        <thead>
-            <tr>
-                <td>Product</td>
-                <td>Quantity</td>
-                <td>Price</td>
-                <td>Remove</td>
-            </tr>
-        </thead>
-        <tbody class="items">
-            {% partial __SELF__ ~ '::items' %}
-        </tbody>
-        <tfoot class="totals">
-            {% partial __SELF__ ~ '::totals' %}
-        </tfoot>
-    </table>
+    <form
+        data-request="{{ __SELF__ ~ '::onUpdateCart' }}"
+        data-request-update="
+            '{{ __SELF__ ~ '::items' }}': '.items',
+            '{{ __SELF__ ~ '::totals' }}': '.totals',
+        ">
+        <table>
+            <thead>
+                <tr>
+                    <td>Product</td>
+                    <td>Quantity</td>
+                    <td>Price</td>
+                    <td>Remove</td>
+                </tr>
+            </thead>
+            <tbody class="items">
+                {% partial __SELF__ ~ '::items' %}
+            </tbody>
+            <tfoot class="totals">
+                {% partial __SELF__ ~ '::totals' %}
+            </tfoot>
+        </table>
+    </form>
 
 {% endif %}

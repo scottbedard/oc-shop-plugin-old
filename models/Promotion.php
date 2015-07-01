@@ -52,6 +52,13 @@ class Promotion extends Model
         ],
     ];
 
+    public $hasMany = [
+        'carts' => [
+            'Bedard\Shop\Models\Cart',
+            // todo: 'scope' => 'isComplete'
+        ],
+    ];
+
     /**
      * Validation
      */

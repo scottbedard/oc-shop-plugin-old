@@ -10,7 +10,13 @@
                 </small>
             {% endif %}
         </td>
-        <td>{{ item.quantity }}</td>
+        <td>
+            <input
+                type="number"
+                name="quantity[{{ item.id }}]"
+                style="text-align: center; width: 50px;"
+                value="{{ item.quantity }}" />
+        </td>
         <td>{{ item.price|moneyFormat }}</td>
         <td>
             <a

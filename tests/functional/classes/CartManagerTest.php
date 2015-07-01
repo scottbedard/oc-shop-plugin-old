@@ -99,4 +99,48 @@ class CartManagerTest extends \OctoberPluginTestCase
 
         // todo: make sure promotion value isn't factored in
     }
+
+    public function test_updating_multiple_items()
+    {
+        $product1   = Generate::product('Foo');
+        $inventory1 = Generate::inventory($product1, [], ['quantity' => 5]);
+
+        $product2   = Generate::product('Bar');
+        $inventory2 = Generate::inventory($product2, [], ['quantity' => 5]);
+
+        $cart = new CartManager;
+        $cart->add($product1->id, [], 1);
+        $cart->add($product2->id, [], 1);
+
+        $item1 = CartItem::where('inventory_id', $inventory1->id)->first();
+        $item2 = CartItem::where('inventory_id', $inventory2->id)->first();
+
+        $cart->update([
+            $item1->id => 3,
+            $item2->id => 10,
+        ]);
+
+        $first = CartItem::find($item1->id);
+        $second = CartItem::find($item2->id);
+
+        $this->assertEquals(3, $first->quantity);
+        $this->assertEquals(5, $second->quantity);
+    }
+
+    public function test_invalid_promo_code_throws_exception()
+    {
+        $cart = new CartManager;
+        $this->setExpectedException('Bedard\Shop\Classes\CartException');
+        $cart->applyPromotion('Bar');
+    }
+
+    public function test_applying_a_valid_promotion()
+    {
+        $promotion = Generate::promotion('Foo', ['is_cart_percentage' => true, 'cart_percentage' => 10]);
+
+        $cart = new CartManager;
+        $cart->applyPromotion('Foo');
+
+        $this->assertEquals($promotion->id, $cart->cart->promotion_id);
+    }
 }

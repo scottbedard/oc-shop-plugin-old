@@ -68,7 +68,7 @@ class Product extends Model
         ],
         'discounts' => [
             'Bedard\Shop\Models\Discount',
-            'table'         => 'bedard_shop_discount_product',
+            'table' => 'bedard_shop_discount_product',
         ],
     ];
 

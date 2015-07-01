@@ -28,6 +28,11 @@ class Cart extends Model
     /**
      * @var array Relations
      */
+    public $belongsTo = [
+        'promotion' => [
+            'Bedard\Shop\Models\Promotion',
+        ],
+    ];
     public $hasMany = [
         'items' => [
             'Bedard\Shop\Models\CartItem',
