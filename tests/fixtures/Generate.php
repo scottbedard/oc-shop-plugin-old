@@ -6,6 +6,7 @@ use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Option;
 use Bedard\Shop\Models\Price;
 use Bedard\Shop\Models\Product;
+use Bedard\Shop\Models\Promotion;
 use Bedard\Shop\Models\Value;
 
 class Generate {
@@ -133,6 +134,26 @@ class Generate {
         $product->save();
         $product->load('current_price');
         return $product;
+    }
+
+    /**
+     * Generate a promotion for use in tests
+     *
+     * @param   string      $code
+     * @param   array       $data
+     * @return  Promotion
+     */
+    public static function promotion($code, $data = [])
+    {
+        $promotion = new Promotion;
+        $promotion->code = $code;
+
+        foreach ($data as $key => $value) {
+            $promotion->$key = $value;
+        }
+
+        $promotion->save();
+        return $promotion;
     }
 
     /**

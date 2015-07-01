@@ -1,7 +1,9 @@
 <?php namespace Bedard\Shop\Updates;
 
 use Bedard\Shop\Models\Category;
+use Bedard\Shop\Models\Product;
 use Bedard\Shop\Tests\Fixtures\Generate;
+use RainLab\Location\Models\Country;
 use Carbon\Carbon;
 use October\Rain\Database\Updates\Seeder;
 
@@ -17,6 +19,7 @@ class DevSeeds extends Seeder
         $this->seedCategories();
         $this->seedProducts();
         $this->seedDiscounts();
+        $this->seedPromotions();
     }
 
     public function seedCategories()
@@ -183,5 +186,15 @@ class DevSeeds extends Seeder
         $discount->categories()->add($clothing);
         $discount->load('categories');
         $discount->syncProducts();
+    }
+
+    public function seedPromotions()
+    {
+        $promotion  = Generate::promotion('Hello', ['cart_percentage' => 15, 'is_cart_percentage' => true]);
+        $product    = Product::first();
+        $country    = Country::isEnabled()->first();
+
+        $promotion->products()->attach($product);
+        $promotion->countries()->attach($country);
     }
 }
