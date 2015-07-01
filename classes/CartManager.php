@@ -94,7 +94,7 @@ class CartManager {
     }
 
     /**
-     * Applies a promotion code
+     * Applies a promotion
      *
      * @param   string  $code
      */
@@ -134,6 +134,18 @@ class CartManager {
     }
 
     /**
+     * Removes a promotion
+     */
+    public function removePromotion()
+    {
+        if (!$this->cart)
+            throw new AjaxException('The cart is not loaded.', 1);
+
+        $this->cart->promotion_id = null;
+        $this->cart->save();
+    }
+
+    /**
      * Updates an item in the cart
      *
      * @param   array   $items
@@ -143,7 +155,20 @@ class CartManager {
         if (!$this->cart)
             throw new AjaxException('The cart is not loaded.', 1);
 
-        $this->cart->load('items.inventory');
+        // Determine if anything has actually changed
+        $this->cart->load('items');
+        $updated = false;
+        foreach ($this->cart->items as $cartItem) {
+            if (!array_key_exists($cartItem->id, $items))
+                continue;
+            if ($cartItem->quantity != $items[$cartItem->id])
+                $updated = true;
+        }
+
+        if (!$updated) return;
+
+        // Update the new values
+        $this->cart->items->load('inventory');
         foreach ($this->cart->items as $cartItem) {
             if (!array_key_exists($cartItem->id, $items))
                 continue;

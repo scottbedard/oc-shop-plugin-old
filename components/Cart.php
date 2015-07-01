@@ -49,6 +49,9 @@ class Cart extends ComponentBase
         if ($this->cart = $cart) {
             $this->itemCount    = CartItem::where('cart_id', $cart->id)->sum('quantity');
             $this->isEmpty      = $this->itemCount == 0;
+
+            // Reset the cart loaded property
+            $this->cart->isLoaded = false;
         }
     }
 
@@ -59,14 +62,10 @@ class Cart extends ComponentBase
      */
     public function getItems()
     {
-        if (!$this->cart) return [];
+        if (!$this->cart)
+            return [];
 
-        $this->cart->load([
-            'items.inventory.product.current_price',
-            'items.inventory.product.thumbnails',
-            'items.inventory.values.option'
-        ]);
-
+        $this->cart->loadRelationships();
         return $this->cart->items;
     }
 
@@ -91,6 +90,16 @@ class Cart extends ComponentBase
     {
         $manager = CartManager::openOrCreate();
         $manager->remove(intval(input('remove')));
+        $this->prepareVars($manager->cart);
+    }
+
+    /**
+     * Remove a promotion from the cart
+     */
+    public function onRemovePromotion()
+    {
+        $manager = CartManager::openOrCreate();
+        $manager->removePromotion();
         $this->prepareVars($manager->cart);
     }
 

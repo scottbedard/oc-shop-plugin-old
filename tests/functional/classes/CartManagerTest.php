@@ -99,4 +99,18 @@ class CartManagerTest extends \OctoberPluginTestCase
         $manager->cart->load('items');
         $this->assertEquals(0, $manager->cart->items->count());
     }
+
+    public function test_applying_and_removing_a_promotion()
+    {
+        $promotion = Generate::promotion('Foo');
+
+        $manager = CartManager::openOrCreate();
+        $this->assertEquals(null, $manager->cart->promotion_id);
+
+        $manager->applyPromotion('Foo');
+        $this->assertEquals($promotion->id, $manager->cart->promotion_id);
+
+        $manager->removePromotion();
+        $this->assertEquals(null, $manager->cart->promotion_id);
+    }
 }
