@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Tests\Fixtures;
 
+use Bedard\Shop\Models\Cart;
 use Bedard\Shop\Models\Category;
 use Bedard\Shop\Models\Discount;
 use Bedard\Shop\Models\Inventory;
@@ -10,6 +11,16 @@ use Bedard\Shop\Models\Promotion;
 use Bedard\Shop\Models\Value;
 
 class Generate {
+
+    /**
+     * Create a cart for use in tests
+     *
+     * @return  Cart
+     */
+    public static function cart()
+    {
+        return Cart::create(['key' => str_random(40)]);
+    }
 
     /**
      * Creates a category for use in tests

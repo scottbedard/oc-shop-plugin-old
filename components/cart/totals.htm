@@ -1,6 +1,33 @@
 <tr>
     <td>
-        <input type="text" placeholder="Enter promo code..." name="promotion" />
+        {% if __SELF__.cart.promotion %}
+            <div>
+                {% if __SELF__.cart.isUsingPromotion %}
+                    Using promo code {{ __SELF__.cart.promotion.code }}
+                {% else %}
+                    {% if not __SELF__.cart.isPromotionRunning %}
+                        Promotion has expired
+                    {% elseif not __SELF__.cart.isPromotionMinimumReached %}
+                        This promotion requires a cart balance of {{ __SELF__.cart.promotion.cart_minimum|moneyFormat }}
+                    {% elseif not __SELF__.cart.hasPromotionProducts %}
+                        Required products are missing.
+                    {% endif %}
+                {% endif %}
+            </div>
+            <small>
+                <a
+                    href="javascript:;"
+                    data-request="{{ __SELF__ ~ '::onRemovePromotion' }}"
+                    data-request-update="
+                        '{{ __SELF__ ~ '::items' }}': '.items',
+                        '{{ __SELF__ ~ '::totals' }}': '.totals',
+                    ">
+                    Remove promotion
+                </a>
+            </small>
+        {% else %}
+            <input type="text" placeholder="Enter promo code..." name="promotion" />
+        {% endif %}
     </td>
     <td>
         <input type="submit" class="btn" value="Update" />

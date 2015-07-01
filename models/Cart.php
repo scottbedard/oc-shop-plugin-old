@@ -47,9 +47,44 @@ class Cart extends Model
     /**
      * Accessors and Mutators
      */
+    public function getHasPromotionProductsAttribute()
+    {
+        if (!$this->promotion) return false;
+
+        $this->loadRelationships();
+        $cart = $this->items->lists('product_id');
+        $required = $this->promotion->products->lists('id');
+
+        return empty($required) || (bool) array_intersect($cart, $required);
+    }
+
     public function getIsDiscountedAttribute()
     {
         return $this->baseSubtotal < $this->subtotal;
+    }
+
+    public function getIsPromotionMinimumReachedAttribute()
+    {
+        if (!$this->promotion) return false;
+
+        return $this->promotion->cart_minimum > 0
+            ? $this->subtotal >= $this->promotion->cart_minimum
+            : true;
+    }
+
+    public function getIsPromotionRunningAttribute()
+    {
+        return $this->promotion
+            ? $this->promotion->isRunning
+            : false;
+    }
+
+    public function getIsUsingPromotionAttribute()
+    {
+        return $this->promotion &&
+            $this->isPromotionRunning &&
+            $this->isPromotionMinimumReached &&
+            $this->hasPromotionProducts;
     }
 
     public function getBaseSubtotalAttribute()
@@ -72,7 +107,6 @@ class Cart extends Model
         if (!$this->isLoaded) {
             $this->load([
                 'items.inventory.product.current_price',
-                'items.inventory.product.thumbnails',
                 'items.inventory.values.option',
             ]);
 
