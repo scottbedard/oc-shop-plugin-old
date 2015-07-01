@@ -7,6 +7,11 @@ columns:
     code:
         label: bedard.shop::lang.promotions.code
 
+    cart_minimum:
+        label: bedard.shop::lang.promotions.cart_minimum
+        type: partial
+        path: $/bedard/shop/models/promotion/_cart_minimum.htm
+
     cart_amount:
         label: bedard.shop::lang.promotions.cart_amount
         type: partial

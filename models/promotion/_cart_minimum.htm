@@ -1,0 +1,9 @@
+<?php
+
+use Bedard\Shop\Classes\CurrencyHelper;
+
+if ($record->cart_minimum > 0): ?>
+
+    <?= CurrencyHelper::format($record->cart_minimum) ?>
+
+<?php endif ?>

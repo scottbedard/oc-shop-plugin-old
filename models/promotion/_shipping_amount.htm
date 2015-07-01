@@ -2,13 +2,19 @@
 
 use Bedard\Shop\Classes\CurrencyHelper;
 
-if ($record->is_shipping_percentage): ?>
+if ($record->is_shipping_percentage && $record->shipping_percentage > 0): ?>
 
-    <?= $record->shipping_percentage == 100
-        ? e(trans('bedard.shop::lang.promotions.free_shipping'))
-        : $record->shipping_percentage.'%'; ?>
+    <?php if ($record->shipping_percentage == 100): ?>
 
-<?php else: ?>
+        <?= e(trans('bedard.shop::lang.promotions.free_shipping')) ?>
+
+    <?php else: ?>
+
+        <?= $record->shipping_percentage.'%' ?>
+
+    <?php endif ?>
+
+<?php elseif (!$record->is_shipping_percentage && $record->shipping_exact > 0): ?>
 
     <?= CurrencyHelper::format($record->shipping_exact) ?>
 

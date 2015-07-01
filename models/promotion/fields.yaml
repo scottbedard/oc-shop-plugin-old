@@ -78,6 +78,12 @@ fields:
             1: bedard.shop::lang.common.percentage
         span: right
 
+    cart_minimum:
+        label: bedard.shop::lang.promotions.cart_minimum
+        comment: bedard.shop::lang.promotions.cart_minimum_comment
+        placeholder: "0.00"
+        span: left
+
     products:
         label: bedard.shop::lang.promotions.required_products
         comment: bedard.shop::lang.promotions.required_products_comment

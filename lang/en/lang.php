@@ -245,6 +245,8 @@ return [
     'promotions' => [
         'cart_amount'                   => 'Cart discount',
         'cart_exact_comment'            => 'The exact amount to reduce the cart total by.',
+        'cart_minimum'                  => 'Cart minimum',
+        'cart_minimum_comment'          => 'Minimum cart balance required for promotion to apply.',
         'cart_method'                   => 'Cart discount method',
         'cart_percentage_comment'       => 'The percentage to reduce the cart total by.',
         'code'                          => 'Code',

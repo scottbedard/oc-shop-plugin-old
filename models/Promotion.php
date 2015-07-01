@@ -61,6 +61,7 @@ class Promotion extends Model
         'cart_percentage'       => 'integer|min:0|max:100',
         'shipping_exact'        => 'numeric|min:0',
         'shipping_percentage'   => 'integer|min:0|max:100',
+        'cart_minimum'          => 'numeric|min:0',
     ];
 
     public $customMessages = [
@@ -88,6 +89,11 @@ class Promotion extends Model
     public function setShippingPercentageAttribute($value)
     {
         $this->attributes['shipping_percentage'] = $value ?: 0;
+    }
+
+    public function setCartMinimumAttribute($value)
+    {
+        $this->attributes['cart_minimum'] = $value ?: 0;
     }
 
     /**

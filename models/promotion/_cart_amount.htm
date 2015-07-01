@@ -2,11 +2,11 @@
 
 use Bedard\Shop\Classes\CurrencyHelper;
 
-if ($record->is_cart_percentage): ?>
+if ($record->is_cart_percentage && $record->cart_percentage > 0): ?>
 
-    <?= $record->cart_percentage ?>%
+    <?= $record->cart_percentage.'%' ?>
 
-<?php else: ?>
+<?php elseif (!$record->is_cart_percentage && $record->cart_exact > 0): ?>
 
     <?= CurrencyHelper::format($record->cart_exact) ?>
 
