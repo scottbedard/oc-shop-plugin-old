@@ -1,11 +1,11 @@
 <?php namespace Bedard\Shop\Classes;
 
-use Bedard\Shop\Classes\CartException;
 use Bedard\Shop\Models\Cart;
 use Bedard\Shop\Models\CartItem;
 use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Promotion;
+use October\Rain\Exception\AjaxException;
 use Session;
 
 class CartManager {
@@ -16,109 +16,81 @@ class CartManager {
     const SESSION_KEY = 'bedard.shop.cart';
 
     /**
-     * @var Cart        Cart model
+     * @var Cart        The user's shopping cart model
      */
     public $cart;
 
     /**
-     * @var boolean     These ensure that cart relationships aren't loaded multiple times
-     */
-    protected $itemsLoaded  = false;
-    protected $extrasLoaded = false;
-    protected $pricesLoaded = false;
-
-    /**
-     * Initialize the cart session if there is one
-     */
-    public function __construct()
-    {
-        if ($session = Session::get(self::SESSION_KEY)) {
-            $this->cart = Cart::where('key', $session['key'])
-                ->find($session['id']);
-        }
-    }
-
-    /**
-     * Create a new cart session
-     */
-    protected function createCart()
-    {
-        $this->cart = Cart::create([
-            'key' => str_random(40),
-        ]);
-
-        Session::put(self::SESSION_KEY, [
-            'id'    => $this->cart->id,
-            'key'   => $this->cart->key,
-        ]);
-    }
-
-    /**
-     * Loads cart items
-     */
-    protected function loadItems()
-    {
-        if (!$this->itemsLoaded && $this->cart) {
-            $this->cart->load('items');
-            $this->itemsLoaded = true;
-        }
-    }
-
-    /**
-     * Loads additional cart information
-     */
-    protected function loadExtras()
-    {
-        if (!$this->extrasLoaded && $this->cart) {
-            $this->cart->items->load([
-                'inventory.product.current_price',
-                'inventory.product.thumbnails',
-                'inventory.values.option',
-            ]);
-            $this->extrasLoaded = true;
-        }
-    }
-
-    /**
-     * Finds or creates a CartItem, and passes to updateQuantity()
+     * Instantiate a new CartManager, and open the existing cart
      *
-     * @param   integer     $productId      The product being added
-     * @param   array       $valueIds       Collection of values to identify the inventory
-     * @param   integer     $quantity       The number of items to add to the cart item
+     * @return  CartManager
      */
-    public function add($productId, $valueIds, $quantity = 1)
+    public static function open()
     {
-        // Create the cart if it isn't already loaded
-        if (!$this->cart) $this->createCart();
+        $cartSession = new self();
 
-        // Select the product being added
-        if (!$product = Product::isEnabled()->find($productId)) {
-            throw new CartException('The product was not found or is not active.');
+        if ($session = Session::get(self::SESSION_KEY)) {
+            $cartSession->cart = Cart::where('key', $session['key'])
+                ->find($session['id']);
+                // todo: make sure cart is open
         }
 
-        // Select the inventory being added
-        $valueIds = $valueIds ?: [];
-        $query = Inventory::where('product_id', $product->id);
-        foreach ($valueIds as $valueId) {
-            $query->whereHas('values', function($value) use ($valueId) {
-                $value->where('id', $valueId);
-            });
-        }
-        $query->has('values', '=', count($valueIds));
+        return $cartSession;
+    }
 
-        if (!$inventory = $query->first()) {
-            throw new CartException('The inventory was not found.');
+    /**
+     * Instantiates a new CartManager, and opens the existing cart,
+     * or creates a new one of none exists.
+     *
+     * @return  CartManager
+     */
+    public static function openOrCreate()
+    {
+        $cartSession = self::open();
+
+        if (!$cartSession->cart) {
+            $newCart = Cart::create(['key' => str_random(40)]);
+            Session::put(self::SESSION_KEY, [
+                'id' => $newCart->id,
+                'key' => $newCart->key
+            ]);
+
+            $cartSession->cart = $newCart;
         }
 
-        // Create and update the cart item
+        return $cartSession;
+    }
+
+    /**
+     * Adds a product to the cart
+     *
+     * @param   integer     $productId
+     * @param   array       $valueIds
+     * @param   integer     $quantity
+     */
+    public function add($productId, $valueIds = [], $quantity = 1)
+    {
+        if (!$this->cart)
+            throw new AjaxException('The cart is not loaded.', 1);
+
+        if (!$product = Product::isEnabled()->find($productId))
+            throw new AjaxException('The requested product was not found, or is not enabled.', 2);
+
+        if (!$inventory = Inventory::where('product_id', $product->id)->findByValues($valueIds))
+            throw new AjaxException('The requested inventory was not found.', 3);
+
         $cartItem = CartItem::firstOrNew([
             'cart_id'       => $this->cart->id,
             'product_id'    => $product->id,
             'inventory_id'  => $inventory->id,
         ]);
 
-        $quantity += $cartItem->quantity;
-        $this->updateQuantity($cartItem, $quantity, $inventory);
+        $cartItem->quantity += $quantity;
+        if ($cartItem->quantity > $inventory->quantity)
+            $cartItem->quantity = $inventory->quantity;
+
+        $cartItem->save();
+        $this->cart->touch();
     }
 
     /**
@@ -128,132 +100,61 @@ class CartManager {
      */
     public function applyPromotion($code)
     {
-        if (!$this->cart) $this->createCart();
+        if (!$this->cart)
+            throw new AjaxException('The cart is not loaded.', 1);
 
-        $promotion = Promotion::where('code', $code)->isRunning()->first();
-        if (!$promotion = Promotion::where('code', $code)->isRunning()->first()) {
-            throw new CartException('Promotion not found.');
-        }
+        if (!$promotion = Promotion::isRunning()->where('code', $code)->first())
+            throw new AjaxException('Invalid or expired promotion code.', 4);
 
         $this->cart->promotion_id = $promotion->id;
         $this->cart->save();
     }
 
     /**
-     * Counts the items in the cart
-     *
-     * @return  integer
-     */
-    public function getItemCount()
-    {
-        $this->loadItems();
-        return $this->cart
-            ? $this->cart->items->sum('quantity')
-            : 0;
-    }
-
-    /**
-     * Returns the items in the cart
-     *
-     * @return  Illuminate\Database\Eloquent\Collection | boolean (false)
-     */
-    public function getItems()
-    {
-        $this->loadExtras();
-        return $this->cart
-            ? $this->cart->items
-            : false;
-    }
-
-    /**
-     * Returns the sum of item prices, not taking promotions into consideration
-     *
-     * @return  float
-     */
-    public function getSubtotal()
-    {
-        $this->loadExtras();
-        return $this->cart
-            ? $this->cart->items->sum('subtotal')
-            : 0;
-    }
-
-    /**
      * Removes one or more items from the cart
      *
-     * @param   integer|array   $items  The IDs of items to be removed
+     * @param   integer|array   $itemIds
      */
-    public function remove($items)
+    public function remove($itemIds)
     {
-        if (!$this->cart) {
-            return;
-        }
+        if (!$this->cart)
+            throw new AjaxException('The cart is not loaded.', 1);
 
-        if (!is_array($items)) {
-            $items = [$items];
-        }
-
-        $deleted = CartItem::where('cart_id', $this->cart->id)
-            ->where(function($query) use ($items) {
-                foreach ($items as $item) {
-                    $query->orWhere('id', intval($item));
+        CartItem::where('cart_id', $this->cart->id)
+            ->where(function($query) use ($itemIds) {
+                if (is_array($itemIds)) {
+                    $query->whereIn('id', $itemIds);
+                } else {
+                    $query->where('id', $itemIds);
                 }
             })
             ->delete();
 
-        if (!$deleted) {
-            throw new CartException('Failed to delete items from cart.');
-        }
+        $this->cart->touch();
     }
 
     /**
-     * Updates multiple cart items, and applies a promotion code if provided
+     * Updates an item in the cart
      *
-     * @param   array   $items      Key/Value array of item ID/Quantity
-     * @param   string  $promotion  Code of promotion to apply
+     * @param   array   $items
      */
-    public function update($quantities, $promotion = false)
+    public function update($items = [])
     {
-        if (!$this->cart) {
-            return;
-        }
+        if (!$this->cart)
+            throw new AjaxException('The cart is not loaded.', 1);
 
         $this->cart->load('items.inventory');
-        foreach ($this->cart->items as $item) {
-            $quantity = isset($quantities[$item->id])
-                ? $quantities[$item->id]
-                : false;
-
-            if ($quantity === false || $quantity == $item->quantity) {
+        foreach ($this->cart->items as $cartItem) {
+            if (!array_key_exists($cartItem->id, $items))
                 continue;
-            }
 
-            $this->updateQuantity($item, $quantity);
+            $cartItem->quantity = $items[$cartItem->id];
+            if ($cartItem->quantity > $cartItem->inventory->quantity)
+                $cartItem->quantity = $cartItem->inventory->quantity;
+
+            $cartItem->save();
         }
 
-        // todo: apply promotion code
-    }
-
-    /**
-     * Updates the quantity of an item
-     *
-     * @param   CartItem    $item       The item being updated
-     * @param   integer     $quantity   The new quantity of the item
-     * @param   Inventory   $inventory  The inventory of the item (if it was already queried)
-     */
-    public function updateQuantity(CartItem $item, $quantity, $inventory = false)
-    {
-        if (!$inventory) {
-            $inventory = $item->inventory;
-        }
-
-        if ($quantity < 0) {
-            $quantity = 0;
-        } elseif ($quantity > $inventory->quantity) {
-            $quantity = $inventory->quantity;
-        }
-
-        $item->quantity = $quantity;
-        $item->save();
+        $this->cart->touch();
     }
 }

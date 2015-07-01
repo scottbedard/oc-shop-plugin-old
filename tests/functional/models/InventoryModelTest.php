@@ -86,4 +86,33 @@ class InventoryModelTest extends \OctoberPluginTestCase
         $this->assertEquals(15, $inventory->base_price);
         $this->assertEquals(12.5, $inventory->price);
     }
+
+    public function test_finding_an_inventory_by_values()
+    {
+        $product = Generate::product('Foo');
+
+        $size       = Generate::option('Size');
+        $small      = Generate::value($size, 'Small');
+
+        $color      = Generate::option('Color');
+        $blue       = Generate::value($color, 'Blue');
+        $red        = Generate::value($color, 'Red');
+
+        $inventory1 = Generate::inventory($product);
+        $inventory2 = Generate::inventory($product, [$small->id]);
+        $inventory3 = Generate::inventory($product, [$small->id, $blue->id]);
+        $inventory4 = Generate::inventory($product, [$small->id, $red->id]);
+
+        // First try finding the default inventory
+        $one = Inventory::where('product_id', $product->id)->findByValues();
+        $this->assertEquals(1, $one->id);
+
+        // Next ask for just one set of values
+        $two = Inventory::where('product_id', $product->id)->findByValues([$small->id]);
+        $this->assertEquals(2, $two->id);
+
+        // Next ask for multiple values
+        $four = Inventory::where('product_id', $product->id)->findByValues([$small->id, $red->id]);
+        $this->assertEquals(4, $four->id);
+    }
 }

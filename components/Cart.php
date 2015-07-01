@@ -1,17 +1,16 @@
 <?php namespace Bedard\Shop\Components;
 
 use Bedard\Shop\Classes\CartManager;
+use Bedard\Shop\Models\CartItem;
 use Cms\Classes\ComponentBase;
-use Exception;
-use October\Rain\Exception\AjaxException;
 
 class Cart extends ComponentBase
 {
 
     /**
-     * @var integer     The number of items in the cart
+     * @var CartModel   The user's shopping cart
      */
-    public $itemCount = 0;
+    public $cart;
 
     /**
      * Component details
@@ -27,94 +26,86 @@ class Cart extends ComponentBase
     }
 
     /**
-     * Initialize the cart session
+     * Initialize the user's shopping cart
      */
-    public function init()
-    {
-        $this->cart = new CartManager;
-    }
-
     public function onRun()
     {
-        $this->prepareVars();
+        $manager = CartManager::open();
+        $this->prepareVars($manager->cart);
     }
 
     /**
      * Set up component variables
+     *
+     * @param   Bedard\Shop\Models\Cart     $cart
      */
-    protected function prepareVars()
+    protected function prepareVars($cart)
     {
-        $this->itemCount    = $this->cart->getItemCount();
-        $this->isEmpty      = $this->itemCount == 0;
+        // Default cart data
+        $this->itemCount    = 0;
+        $this->isEmpty      = true;
+
+        // If we have a cart, replace the defaults
+        if ($this->cart = $cart) {
+            $this->itemCount    = CartItem::where('cart_id', $cart->id)->sum('quantity');
+            $this->isEmpty      = $this->itemCount == 0;
+        }
     }
 
     /**
-     * Returns the cart items
+     * Returns all items in the cart, and loads relationships
      *
      * @return  Illuminate\Database\Eloquent\Collection
      */
-    public function items()
+    public function getItems()
     {
-        return $this->cart->getItems();
+        if (!$this->cart) return [];
+
+        $this->cart->load([
+            'items.inventory.product.current_price',
+            'items.inventory.product.thumbnails',
+            'items.inventory.values.option'
+        ]);
+
+        return $this->cart->items;
     }
 
     /**
-     * Returns the sum of item prices, not taking promotions into consideration
-     *
-     * @return  float
-     */
-    public function subtotal()
-    {
-        return $this->cart->getSubtotal();
-    }
-
-    /**
-     * Add a product to the cart
+     * Add an item to the cart
      */
     public function onAddToCart()
     {
-        try {
-            $productId  = intval(input('product'));
-            $valueIds   = array_map('intval', input('values') ?: []);
-            $quantity   = input('quantity') ? intval(input('quantity')) : 1;
+        $productId  = intval(input('product'));
+        $valueIds   = array_map('intval', input('options') ?: []);
+        $quantity   = intval(input('quantity')) ?: 1;
 
-            $this->cart->add($productId, $valueIds, $quantity);
-        } catch (Exception $e) {
-            throw new AjaxException($e->getMessage());
-        }
-
-        $this->prepareVars();
+        $manager = CartManager::openOrCreate();
+        $manager->add($productId, $valueIds, $quantity);
+        $this->prepareVars($manager->cart);
     }
 
     /**
-     * Removes an item from the cart
+     * Remove items from the cart
      */
     public function onRemoveFromCart()
     {
-        try {
-            $this->cart->remove(input('item'));
-        } catch (Exception $e) {
-            throw new AjaxException($e->getMessage());
-        }
-
-        $this->prepareVars();
+        $manager = CartManager::openOrCreate();
+        $manager->remove(intval(input('remove')));
+        $this->prepareVars($manager->cart);
     }
 
     /**
-     * Updates items in the cart, and applies a promotion code if submitted
+     * Update the cart items
      */
     public function onUpdateCart()
     {
-        try {
-            $quantities = array_map('intval', input('quantity') ?: []);
-            $promotion  = input('promotion') ?: false;
+        $manager = CartManager::openOrCreate();
+        $manager->update(array_map('intval', input('items') ?: []));
 
-            $this->cart->update($quantities, $promotion);
-        } catch (Exception $e) {
-            throw new AjaxException($e->getMessage());
-        }
+        if ($promotion = input('promotion'))
+            $manager->applyPromotion($promotion);
 
-        $this->prepareVars();
+        $this->prepareVars($manager->cart);
     }
 
 }

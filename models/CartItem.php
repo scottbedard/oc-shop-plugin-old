@@ -57,6 +57,11 @@ class CartItem extends Model
         return $this->inventory->base_price;
     }
 
+    public function getBaseSubtotalAttribute()
+    {
+        return $this->base_price * $this->quantity;
+    }
+
     public function getIsDiscountedAttribute()
     {
         return $this->price < $this->base_price;
@@ -85,5 +90,10 @@ class CartItem extends Model
     public function getSubtotalAttribute()
     {
         return $this->price * $this->quantity;
+    }
+
+    public function setQuantityAttribute($value)
+    {
+        $this->attributes['quantity'] = $value > 0 ? $value : 0;
     }
 }

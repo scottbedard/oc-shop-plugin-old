@@ -39,4 +39,21 @@ class Cart extends Model
         ],
     ];
 
+    /**
+     * Accessors and Mutators
+     */
+    public function getIsDiscountedAttribute()
+    {
+        return $this->baseSubtotal < $this->subtotal;
+    }
+
+    public function getBaseSubtotalAttribute()
+    {
+        return $this->items->sum('baseSubtotal');
+    }
+
+    public function getSubtotalAttribute()
+    {
+        return $this->items->sum('subtotal');
+    }
 }

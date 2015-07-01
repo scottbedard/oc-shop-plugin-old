@@ -1,4 +1,4 @@
-{% for item in __SELF__.items %}
+{% for item in __SELF__.getItems() %}
     <tr>
         <td>
             <a href="{{ 'product'|page({ slug: item.slug }) }}">{{ item.name }}</a>
@@ -13,7 +13,7 @@
         <td>
             <input
                 type="number"
-                name="quantity[{{ item.id }}]"
+                name="items[{{ item.id }}]"
                 style="text-align: center; width: 50px;"
                 value="{{ item.quantity }}" />
         </td>
@@ -22,7 +22,7 @@
             <a
                 href="javascript:;"
                 data-request="{{ __SELF__ ~ '::onRemoveFromCart' }}"
-                data-request-data="item: {{ item.id }}"
+                data-request-data="remove: {{ item.id }}"
                 data-request-update="
                     '{{ __SELF__ ~ '::items' }}': '.items',
                     '{{ __SELF__ ~ '::totals' }}': '.totals'

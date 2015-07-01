@@ -53,6 +53,23 @@ class Inventory extends Model
     ];
 
     /**
+     * Query Scopes
+     */
+    public function scopeFindByValues($query, $values = [])
+    {
+        // Selects an inventory by it's associated values
+        return $query->has('values', '=', count($values))
+            ->where(function($inventory) use ($values) {
+                foreach ($values as $id) {
+                    $inventory->whereHas('values', function($value) use ($id) {
+                        $value->where('id', $id);
+                    });
+                }
+            })
+            ->first();
+    }
+
+    /**
      * Accessors and Mutators
      */
     public function getBasePriceAttribute()

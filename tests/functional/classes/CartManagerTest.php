@@ -9,50 +9,66 @@ class CartManagerTest extends \OctoberPluginTestCase
 
     protected $refreshPlugins = ['Bedard.Shop'];
 
-    public function test_count_items()
+    public function test_initializing_and_opening_a_new_cart()
     {
-        $cart = new CartManager;
+        $first = CartManager::open();
+        $this->assertNull($first->cart);
 
-        $this->assertEquals(0, $cart->getItemCount());
-        $this->assertNull($cart->cart);
+        $second = CartManager::openOrCreate();
+        $this->assertInstanceOf('Bedard\Shop\Models\Cart', $second->cart);
 
-        $product1   = Generate::product('Foo');
-        $product2   = Generate::product('Bar');
-        $inventory1 = Generate::inventory($product1, [], ['quantity' => 5]);
-        $inventory2 = Generate::inventory($product2, [], ['quantity' => 5]);
-
-        $cart->add($product1->id, [], 1);
-        $cart->add($product2->id, [], 2);
-        $this->assertEquals(3, $cart->getItemCount());
+        $third = CartManager::open();
+        $this->assertInstanceOf('Bedard\Shop\Models\Cart', $third->cart);
+        $this->assertEquals($second->cart->id, $third->cart->id);
     }
 
-    public function test_cart_prevents_over_adding()
+    public function test_adding_a_product()
     {
-        $cart = new CartManager;
-
         $product    = Generate::product('Foo');
         $inventory  = Generate::inventory($product, [], ['quantity' => 5]);
 
-        $cart->add($product->id, [], 10);
-        $this->assertEquals(5, $cart->getItemCount());
+        $manager = CartManager::openOrCreate();
+        $manager->add($inventory->id);
+
+        $manager->cart->load('items');
+        $this->assertEquals(1, $manager->cart->items->count());
+        $this->assertEquals(1, $manager->cart->items->where('inventory_id', $inventory->id)->first()->quantity);
+
+        $manager->add($inventory->id, [], 10);
+        $manager->cart->load('items');
+        $this->assertEquals(1, $manager->cart->items->count());
+        $this->assertEquals(5, $manager->cart->items->where('inventory_id', $inventory->id)->first()->quantity);
     }
 
-    public function test_adding_and_updating_items()
+    public function test_updating_cart_items()
     {
-        $product = Generate::product('Foo');
-        $inventory = Generate::inventory($product, [], ['quantity' => 5]);
+        $product1   = Generate::product('Foo');
+        $inventory1 = Generate::inventory($product1, [], ['quantity' => 5]);
 
-        $cart = new CartManager;
-        $cart->add($product->id, [], 1);
-        $cart->add($product->id, [], 1);
+        $product2   = Generate::product('Bar');
+        $inventory2 = Generate::inventory($product2, [], ['quantity' => 5]);
 
-        $items = $cart->getItems();
-        $this->assertEquals(1, $items->where('product_id', $product->id)->count());
+        $manager = CartManager::openOrCreate();
+        $manager->add($inventory1->id);
+        $manager->add($inventory2->id);
 
-        // todo: update the item
+        $manager->cart->load('items');
+        $this->assertEquals(2, $manager->cart->items->count());
+        $one = $manager->cart->items->where('inventory_id', $inventory1->id)->first();
+        $two = $manager->cart->items->where('inventory_id', $inventory2->id)->first();
+
+        $manager->update([
+            $one->id => 3,
+            $two->id => 10,
+        ]);
+
+        $manager->cart->load('items');
+        $this->assertEquals(2, $manager->cart->items->count());
+        $this->assertEquals(3, $manager->cart->items->where('id', $one->id)->first()->quantity);
+        $this->assertEquals(5, $manager->cart->items->where('id', $two->id)->first()->quantity);
     }
 
-    public function test_removing_items()
+    public function test_removing_cart_items()
     {
         $product1   = Generate::product('Foo');
         $inventory1 = Generate::inventory($product1, [], ['quantity' => 5]);
@@ -63,84 +79,24 @@ class CartManagerTest extends \OctoberPluginTestCase
         $product3   = Generate::product('Baz');
         $inventory3 = Generate::inventory($product3, [], ['quantity' => 5]);
 
-        $cart = new CartManager;
-        $cart->add($product1->id, [], 1);
-        $cart->add($product2->id, [], 1);
-        $cart->add($product3->id, [], 1);
+        $manager = CartManager::openOrCreate();
+        $manager->add($inventory1->id);
+        $manager->add($inventory2->id);
+        $manager->add($inventory3->id);
 
-        $this->assertEquals(3, CartItem::where('cart_id', $cart->cart->id)->count());
+        $manager->cart->load('items');
+        $this->assertEquals(3, $manager->cart->items->count());
+        $one    = $manager->cart->items->where('inventory_id', $inventory1->id)->first();
+        $two    = $manager->cart->items->where('inventory_id', $inventory2->id)->first();
+        $three  = $manager->cart->items->where('inventory_id', $inventory3->id)->first();
 
-        // Remove the first item by itself
-        $cart->remove($product1->id);
-        $this->assertEquals(1, CartItem::where('cart_id', $cart->cart->id)->where('id', $product2->id)->count());
-        $this->assertEquals(1, CartItem::where('cart_id', $cart->cart->id)->where('id', $product3->id)->count());
-        $this->assertEquals(2, CartItem::where('cart_id', $cart->cart->id)->count());
+        $manager->remove($one->id);
+        $manager->cart->load('items');
+        $this->assertEquals(2, $manager->cart->items->count());
+        $this->assertEquals(0, $manager->cart->items->where('id', $one->id)->count());
 
-        // Remove the last two items together
-        $cart->remove([$product2->id, $product3->id]);
-        $this->assertEquals(0, CartItem::where('cart_id', $cart->cart->id)->count());
-    }
-
-    public function test_get_subtotal()
-    {
-        $product1   = Generate::product('Foo', ['base_price' => 10]);
-        $inventory1 = Generate::inventory($product1, [], ['quantity' => 5]);
-
-        $product2   = Generate::product('Bar', ['base_price' => 5]);
-        $inventory2 = Generate::inventory($product2, [], ['quantity' => 5]);
-
-        $cart = new CartManager;
-        $this->assertEquals(0, $cart->getSubtotal());
-
-        $cart->add($product1->id, [], 2);
-        $cart->add($product2->id, [], 1);
-
-        $this->assertEquals(25, $cart->getSubtotal());
-
-        // todo: make sure promotion value isn't factored in
-    }
-
-    public function test_updating_multiple_items()
-    {
-        $product1   = Generate::product('Foo');
-        $inventory1 = Generate::inventory($product1, [], ['quantity' => 5]);
-
-        $product2   = Generate::product('Bar');
-        $inventory2 = Generate::inventory($product2, [], ['quantity' => 5]);
-
-        $cart = new CartManager;
-        $cart->add($product1->id, [], 1);
-        $cart->add($product2->id, [], 1);
-
-        $item1 = CartItem::where('inventory_id', $inventory1->id)->first();
-        $item2 = CartItem::where('inventory_id', $inventory2->id)->first();
-
-        $cart->update([
-            $item1->id => 3,
-            $item2->id => 10,
-        ]);
-
-        $first = CartItem::find($item1->id);
-        $second = CartItem::find($item2->id);
-
-        $this->assertEquals(3, $first->quantity);
-        $this->assertEquals(5, $second->quantity);
-    }
-
-    public function test_invalid_promo_code_throws_exception()
-    {
-        $cart = new CartManager;
-        $this->setExpectedException('Bedard\Shop\Classes\CartException');
-        $cart->applyPromotion('Bar');
-    }
-
-    public function test_applying_a_valid_promotion()
-    {
-        $promotion = Generate::promotion('Foo', ['is_cart_percentage' => true, 'cart_percentage' => 10]);
-
-        $cart = new CartManager;
-        $cart->applyPromotion('Foo');
-
-        $this->assertEquals($promotion->id, $cart->cart->promotion_id);
+        $manager->remove([$two->id, $three->id]);
+        $manager->cart->load('items');
+        $this->assertEquals(0, $manager->cart->items->count());
     }
 }
