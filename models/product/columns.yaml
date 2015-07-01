@@ -36,3 +36,13 @@ columns:
                     ELSE 1
                 END
             )
+
+    created_at:
+        label: bedard.shop::lang.common.created_at
+        type: date
+        invisible: true
+
+    updated_at:
+        label: bedard.shop::lang.common.updated_at
+        type: timesince
+        invisible: true

@@ -82,6 +82,7 @@ return [
     // Common strings
     //
     'common' => [
+        'created_at'                    => 'Created Date',
         'end_at'                        => 'End Date',
         'end_at_invalid'                => 'The end date must be after the start date.',
         'end_at_never'                  => 'Leave blank to run indefinitely.',
@@ -96,6 +97,7 @@ return [
         'start_at'                      => 'Start Date',
         'start_at_immediate'            => 'Leave blank to start immediately.',
         'status'                        => 'Status',
+        'updated_at'                    => 'Last Updated',
     ],
 
     //
