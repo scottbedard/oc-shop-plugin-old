@@ -253,6 +253,7 @@ return [
         'countries_none_selected'       => 'No countries are selected.',
         'countries_search'              => 'Enter country name...',
         'countries_select'              => 'Select Countries',
+        'free_shipping'                 => 'Free Shipping',
         'list_title'                    => 'Manage Promotions',
         'message'                       => 'Message',
         'model'                         => 'Promotion',

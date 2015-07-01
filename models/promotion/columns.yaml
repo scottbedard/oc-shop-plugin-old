@@ -7,6 +7,16 @@ columns:
     code:
         label: bedard.shop::lang.promotions.code
 
+    cart_amount:
+        label: bedard.shop::lang.promotions.cart_amount
+        type: partial
+        path: $/bedard/shop/models/promotion/_cart_amount.htm
+
+    shipping_amount:
+        label: bedard.shop::lang.promotions.shipping_amount
+        type: partial
+        path: $/bedard/shop/models/promotion/_shipping_amount.htm
+
     start_at:
         label: bedard.shop::lang.common.start_at
         type: date

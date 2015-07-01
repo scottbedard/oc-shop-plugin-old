@@ -1,0 +1,15 @@
+<?php
+
+use Bedard\Shop\Classes\CurrencyHelper;
+
+if ($record->is_shipping_percentage): ?>
+
+    <?= $record->shipping_percentage == 100
+        ? e(trans('bedard.shop::lang.promotions.free_shipping'))
+        : $record->shipping_percentage.'%'; ?>
+
+<?php else: ?>
+
+    <?= CurrencyHelper::format($record->shipping_exact) ?>
+
+<?php endif ?>
