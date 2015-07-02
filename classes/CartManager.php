@@ -5,7 +5,10 @@ use Bedard\Shop\Models\CartItem;
 use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Promotion;
+use Bedard\Shop\Models\Settings;
+use Cookie;
 use October\Rain\Exception\AjaxException;
+use Request;
 use Session;
 
 class CartManager {
@@ -13,7 +16,7 @@ class CartManager {
     /**
      * @var string      The session key
      */
-    const SESSION_KEY = 'bedard.shop.cart';
+    const SESSION_KEY = 'bedard_shop_cart';
 
     /**
      * @var Cart        The user's shopping cart model
@@ -27,15 +30,23 @@ class CartManager {
      */
     public static function open()
     {
-        $cartSession = new self();
+        $manager = new self();
 
+        // First, attempt to load the cart from the user's session
         if ($session = Session::get(self::SESSION_KEY)) {
-            $cartSession->cart = Cart::where('key', $session['key'])
+            $manager->cart = Cart::where('key', $session['key'])
                 ->find($session['id']);
                 // todo: make sure cart is open
         }
 
-        return $cartSession;
+        // If that fails, check if we have the cart data saved in a cookie
+        elseif (Settings::getCartLife() && $cookie = Request::cookie(self::SESSION_KEY)) {
+            $manager->cart = Cart::where('key', $cookie['key'])
+                ->find($cookie['id']);
+                // todo: make sure cart is open
+        }
+
+        return $manager;
     }
 
     /**
@@ -46,19 +57,28 @@ class CartManager {
      */
     public static function openOrCreate()
     {
-        $cartSession = self::open();
+        $manager = self::open();
 
-        if (!$cartSession->cart) {
-            $newCart = Cart::create(['key' => str_random(40)]);
+        // Create a new cart
+        if (!$manager->cart) {
+            $cart = Cart::create(['key' => str_random(40)]);
             Session::put(self::SESSION_KEY, [
-                'id' => $newCart->id,
-                'key' => $newCart->key
+                'id'    => $cart->id,
+                'key'   => $cart->key
             ]);
 
-            $cartSession->cart = $newCart;
+            $manager->cart = $cart;
         }
 
-        return $cartSession;
+        // Create a cart cookie
+        if ($life = Settings::getCartLife()) {
+            Cookie::queue(self::SESSION_KEY, [
+                'id'    => $manager->cart->id,
+                'key'   => $manager->cart->key,
+            ], $life);
+        }
+
+        return $manager;
     }
 
     /**
@@ -111,6 +131,18 @@ class CartManager {
     }
 
     /**
+     * Deletes all items in the cart
+     */
+    public function clear()
+    {
+        if (!$this->cart)
+            throw new AjaxException('The cart is not loaded.', 1);
+
+        CartItem::where('cart_id', $this->cart->id)->delete();
+        $this->cart->touch();
+    }
+
+    /**
      * Removes one or more items from the cart
      *
      * @param   integer|array   $itemIds
@@ -146,9 +178,10 @@ class CartManager {
     }
 
     /**
-     * Updates an item in the cart
+     * Updates the cart
      *
-     * @param   array   $items
+     * @param  array  $items [description]
+     * @return [type]        [description]
      */
     public function update($items = [])
     {

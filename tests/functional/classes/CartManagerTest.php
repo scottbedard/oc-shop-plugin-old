@@ -2,7 +2,9 @@
 
 use Bedard\Shop\Classes\CartManager;
 use Bedard\Shop\Models\CartItem;
+use Bedard\Shop\Models\Settings;
 use Bedard\Shop\Tests\Fixtures\Generate;
+use Request;
 
 class CartManagerTest extends \OctoberPluginTestCase
 {
@@ -112,5 +114,24 @@ class CartManagerTest extends \OctoberPluginTestCase
 
         $manager->removePromotion();
         $this->assertEquals(null, $manager->cart->promotion_id);
+    }
+
+    public function test_clearing_the_entire_cart()
+    {
+        $product1   = Generate::product('Foo');
+        $inventory1 = Generate::inventory($product1, [], ['quantity' => 5]);
+
+        $product2   = Generate::product('Bar');
+        $inventory2 = Generate::inventory($product2, [], ['quantity' => 5]);
+
+        $manager = CartManager::openOrCreate();
+        $manager->add($inventory1->id);
+        $manager->add($inventory2->id);
+
+        $manager->cart->load('items');
+        $this->assertEquals(2, $manager->cart->items->count());
+        $manager->clear();
+        $manager->cart->load('items');
+        $this->assertEquals(0, $manager->cart->items->count());
     }
 }

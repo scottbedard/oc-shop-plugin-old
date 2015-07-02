@@ -84,6 +84,16 @@ class Cart extends ComponentBase
     }
 
     /**
+     * Removes all items from the cart
+     */
+    public function onClearCart()
+    {
+        $manager = CartManager::openOrCreate();
+        $manager->clear();
+        $this->prepareVars($manager->cart);
+    }
+
+    /**
      * Remove items from the cart
      */
     public function onRemoveFromCart()

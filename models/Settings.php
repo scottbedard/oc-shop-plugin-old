@@ -17,9 +17,16 @@ class Settings extends Model
      */
     public static function getEditor()
     {
-        $backend = Settings::get('backend');
-        return isset($backend['editor'])
-            ? $backend['editor']
-            : 'richeditor';
+        return Settings::get('backend_editor', 'richeditor');
+    }
+
+    /**
+     * Returns the cart life in minutes, or false if disabled
+     *
+     * @return  boolean (false) | integer   (default: 10080)
+     */
+    public static function getCartLife()
+    {
+        return Settings::get('cart_life', 10080) ?: false;
     }
 }

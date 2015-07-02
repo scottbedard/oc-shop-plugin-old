@@ -2,14 +2,31 @@
 #  Form Field Definitions
 # ===================================
 
-tabs:
-    fields:
+fields:
 
-        backend[editor]:
-            tab: bedard.shop::lang.settings.backend.tab
-            label: bedard.shop::lang.settings.backend.editor
-            type: radio
-            options:
-                richeditor: bedard.shop::lang.settings.backend.editor_rich
-                code: bedard.shop::lang.settings.backend.editor_code
-            default: richeditor
+    backend_editor:
+        # tab: bedard.shop::lang.settings.backend.tab
+        label: bedard.shop::lang.settings.backend.editor
+        type: radio
+        options:
+            richeditor: bedard.shop::lang.settings.backend.editor_rich
+            code: bedard.shop::lang.settings.backend.editor_code
+        default: richeditor
+        span: left
+
+    cart_life:
+        # tab: bedard.shop::lang.settings.cart.tab
+        label: bedard.shop::lang.settings.cart.life
+        comment: bedard.shop::lang.settings.cart.life_comment
+        type: dropdown
+        options:
+            0: bedard.shop::lang.settings.cart.life_session
+            720: bedard.shop::lang.settings.cart.life_half_day
+            1440: bedard.shop::lang.settings.cart.life_day
+            10080: bedard.shop::lang.settings.cart.life_week
+            20160: bedard.shop::lang.settings.cart.life_two_weeks
+            43200: bedard.shop::lang.settings.cart.life_month
+            86400: bedard.shop::lang.settings.cart.life_two_months
+            2628000: bedard.shop::lang.settings.cart.life_forever
+        default: 10080
+        span: right
