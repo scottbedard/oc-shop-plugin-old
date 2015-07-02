@@ -142,7 +142,8 @@ class OptionsInventories extends FormWidgetBase
         $inventory = Inventory::findOrNew($inventoryId);
         $inventory->product_id = intval(input('product_id'));
         $inventory->sku = input('sku');
-        $inventory->quantity = intval(input('quantity'));
+        $inventory->quantity = input('quantity');
+        $inventory->modifier = input('modifier');
 
         $inventory->saveWithValues(input('valueIds'));
 
