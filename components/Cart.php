@@ -42,30 +42,38 @@ class Cart extends ComponentBase
 
     protected function prepareVars()
     {
-        // Default cart data
-        $this->itemCount    = 0;
-        $this->isEmpty      = true;
-
         // If we have a cart, replace the defaults
         $this->cart = $this->manager->cart;
-        if ($this->cart) {
-            $this->itemCount    = CartItem::where('cart_id', $this->cart->id)->sum('quantity');
-            $this->isEmpty      = $this->itemCount == 0;
-        }
     }
 
     /**
-     * Returns all items in the cart, and loads relationships
+     * Returns all items in the cart
      *
      * @return  Illuminate\Database\Eloquent\Collection
      */
     public function getItems()
     {
-        if (!$this->cart)
-            return [];
+        return $this->manager->getItems();
+    }
 
-        $this->cart->loadRelationships();
-        return $this->cart->items;
+    /**
+     * Returns the sum of CartItem quantities
+     *
+     * @return  integer
+     */
+    public function itemCount()
+    {
+        return $this->manager->getItemCount();
+    }
+
+    /**
+     * Determines if the cart is empty or not
+     *
+     * @return  boolean
+     */
+    public function isEmpty()
+    {
+        return $this->manager->getItemCount() == 0;
     }
 
     /**

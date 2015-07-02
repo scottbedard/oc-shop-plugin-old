@@ -55,7 +55,6 @@ class Cart extends Model
      */
     public function getBaseSubtotalAttribute()
     {
-        $this->loadRelationships();
         return $this->items->sum('baseSubtotal');
     }
 
@@ -73,7 +72,6 @@ class Cart extends Model
     {
         if (!$this->hasPromotion) return false;
 
-        $this->loadRelationships();
         $cart = $this->items->lists('product_id');
         $required = $this->promotion->products->lists('id');
 
@@ -111,7 +109,6 @@ class Cart extends Model
 
     public function getSubtotalAttribute()
     {
-        $this->loadRelationships();
         return $this->items->sum('subtotal');
     }
 
@@ -132,24 +129,5 @@ class Cart extends Model
             $savings = $this->subtotal;
 
         return $savings;
-    }
-
-    /**
-     * Lazy loads related models if they haven't already been loaded
-     */
-    public function loadRelationships()
-    {
-        if (!$this->isLoaded) {
-            $this->load([
-                'items.inventory.product.current_price',
-                'items.inventory.values.option',
-            ]);
-
-            if ($this->promotion_id) {
-                $this->load('promotion.products');
-            }
-
-            $this->isLoaded = true;
-        }
     }
 }

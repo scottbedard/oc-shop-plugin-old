@@ -140,4 +140,26 @@ class CartManagerTest extends \OctoberPluginTestCase
         $manager->cart->load('items');
         $this->assertEquals(0, $manager->cart->items->count());
     }
+
+    public function test_getItems_and_getItemCount_methods()
+    {
+        $product1   = Generate::product('Foo');
+        $inventory1 = Generate::inventory($product1, [], ['quantity' => 5]);
+
+        $product2   = Generate::product('Bar');
+        $inventory2 = Generate::inventory($product2, [], ['quantity' => 5]);
+
+        $manager = new CartManager;
+
+        $this->assertEquals(0, $manager->getItemCount());
+        $this->assertEquals([], $manager->getItems());
+
+        $manager->loadCart();
+        $manager->add($inventory1->id, [], 2);
+        $manager->add($inventory2->id, [], 5);
+
+        $this->assertEquals(7, $manager->getItemCount());
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $manager->getItems());
+        $this->assertEquals(2, $manager->getItems()->count());
+    }
 }

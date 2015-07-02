@@ -31,6 +31,12 @@ class CartManager {
     public $cart;
 
     /**
+     * @var boolean     Helpers to keep track of lazy loading
+     */
+    protected $itemsLoaded      = false;
+    protected $itemDataLoaded   = false;
+
+    /**
      * Open the current cart if there is one
      */
     public function __construct()
@@ -76,6 +82,43 @@ class CartManager {
 
         // If we still don't have a cart, throw an exception
         if (!$this->cart) throw new AjaxException('CART_INVALID');
+    }
+
+    /**
+     * Loads the cart items relationship
+     *
+     * @param   boolean     $force
+     */
+    public function loadItems($force = false)
+    {
+        if ((!$this->itemsLoaded && $this->cart) || $force) {
+            $this->cart->load('items');
+            $this->itemsLoaded = true;
+        }
+    }
+
+    /**
+     * Loads the relationships under the CartItem models
+     *
+     * @param   boolean     $force
+     */
+    public function loadItemData($force = false)
+    {
+        if (!$this->cart) return;
+
+        $this->loadItems($force);
+        if (!$this->itemDataLoaded || $force) {
+            $this->cart->items->load([
+                'inventory.product.current_price',
+                'inventory.values.option',
+            ]);
+
+            if ($this->cart->promotion_id) {
+                $this->cart->load('promotion.products');
+            }
+
+            $this->itemDataLoaded = true;
+        }
     }
 
     /**
@@ -137,9 +180,36 @@ class CartManager {
     }
 
     /**
+     * Returns a collection of CartItem models, or an empty array
+     * if no cart exists.
+     *
+     * @return  array | Illuminate\Database\Eloquent\Collection
+     */
+    public function getItems()
+    {
+        if (!$this->cart) return [];
+
+        $this->loadItemData();
+        return $this->cart->items;
+    }
+
+    /**
+     * Returns the sum of CartItem quantities
+     *
+     * @return  integer
+     */
+    public function getItemCount()
+    {
+        if (!$this->cart) return 0;
+
+        $this->loadItems();
+        return $this->cart->items->sum('quantity');
+    }
+
+    /**
      * Removes one or more items from the cart
      *
-     * @param   integer|array   $itemIds
+     * @param   integer | array     $itemIds
      */
     public function remove($itemIds)
     {
@@ -180,7 +250,7 @@ class CartManager {
         $this->loadCart();
 
         // Determine if anything has actually changed
-        $this->cart->load('items');
+        $this->loadItems();
         $updated = false;
         foreach ($this->cart->items as $cartItem) {
             if (!array_key_exists($cartItem->id, $items))

@@ -22,11 +22,11 @@ class CartModelTest extends \OctoberPluginTestCase
 
         $manager->cart->promotion->cart_minimum = 20;
         $manager->cart->promotion->save();
-        $manager->cart->isLoaded = false;
+        $manager->loadItemData(true);
         $this->assertFalse($manager->cart->isPromotionMinimumReached);
 
         $manager->add($inventory->id);
-        $manager->cart->isLoaded = false;
+        $manager->loadItemData(true);
         $this->assertTrue($manager->cart->isPromotionMinimumReached);
     }
 
@@ -65,30 +65,26 @@ class CartModelTest extends \OctoberPluginTestCase
         $promotion  = Generate::promotion('Promo', ['is_cart_percentage' => false, 'cart_percentage' => 10, 'cart_exact' => 5]);
 
         $manager->add($inventory1->id);
-        $manager->cart->loadRelationships();
+        $manager->loadItemData(true);
         $this->assertEquals(0, $manager->cart->promotionSavings);
 
         $manager->applyPromotion('Promo');
-        $manager->cart->isLoaded = false;
-        $manager->cart->loadRelationships();
+        $manager->loadItemData(true);
         $this->assertEquals(5, $manager->cart->promotionSavings);
 
         $manager->cart->promotion->cart_exact = 200;
         $manager->cart->promotion->save();
-        $manager->cart->isLoaded = false;
-        $manager->cart->loadRelationships();
+        $manager->loadItemData(true);
         $this->assertEquals(100, $manager->cart->promotionSavings);
 
         $manager->cart->promotion->is_cart_percentage = true;
         $manager->cart->promotion->save();
-        $manager->cart->isLoaded = false;
-        $manager->cart->loadRelationships();
+        $manager->loadItemData(true);
         $this->assertEquals(10, $manager->cart->promotionSavings);
 
         $manager->cart->promotion->end_at = Carbon::now()->subDays(1);
         $manager->cart->promotion->save();
-        $manager->cart->isLoaded = false;
-        $manager->cart->loadRelationships();
+        $manager->loadItemData(true);
         $this->assertEquals(0, $manager->cart->promotionSavings);
     }
 
