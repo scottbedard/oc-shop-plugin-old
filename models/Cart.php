@@ -47,9 +47,20 @@ class Cart extends Model
     /**
      * Accessors and Mutators
      */
+    public function getBaseSubtotalAttribute()
+    {
+        $this->loadRelationships();
+        return $this->items->sum('baseSubtotal');
+    }
+
+    public function getHasPromotionAttribute()
+    {
+        return $this->promotion_id != null && $this->promotion;
+    }
+
     public function getHasPromotionProductsAttribute()
     {
-        if (!$this->promotion) return false;
+        if (!$this->hasPromotion) return false;
 
         $this->loadRelationships();
         $cart = $this->items->lists('product_id');
@@ -65,7 +76,7 @@ class Cart extends Model
 
     public function getIsPromotionMinimumReachedAttribute()
     {
-        if (!$this->promotion) return false;
+        if (!$this->hasPromotion) return false;
 
         return $this->promotion->cart_minimum > 0
             ? $this->subtotal >= $this->promotion->cart_minimum
@@ -74,29 +85,42 @@ class Cart extends Model
 
     public function getIsPromotionRunningAttribute()
     {
-        return $this->promotion
+        return $this->hasPromotion
             ? $this->promotion->isRunning
             : false;
     }
 
     public function getIsUsingPromotionAttribute()
     {
-        return $this->promotion &&
+        return $this->hasPromotion &&
             $this->isPromotionRunning &&
             $this->isPromotionMinimumReached &&
             $this->hasPromotionProducts;
-    }
-
-    public function getBaseSubtotalAttribute()
-    {
-        $this->loadRelationships();
-        return $this->items->sum('baseSubtotal');
     }
 
     public function getSubtotalAttribute()
     {
         $this->loadRelationships();
         return $this->items->sum('subtotal');
+    }
+
+    public function getTotalAttribute()
+    {
+        return $this->subtotal - $this->promotionSavings;
+    }
+
+    public function getPromotionSavingsAttribute()
+    {
+        if (!$this->isUsingPromotion) return 0;
+
+        $savings = $this->promotion->is_cart_percentage
+                ? round($this->subtotal * ($this->promotion->cart_percentage / 100), 2)
+                : $this->promotion->cart_exact;
+
+        if ($savings > $this->subtotal)
+            $savings = $this->subtotal;
+
+        return $savings;
     }
 
     /**

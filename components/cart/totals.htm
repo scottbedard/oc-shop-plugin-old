@@ -1,6 +1,6 @@
 <tr>
     <td>
-        {% if __SELF__.cart.promotion %}
+        {% if __SELF__.cart.hasPromotion %}
             <div>
                 {% if __SELF__.cart.isUsingPromotion %}
                     Using promo code {{ __SELF__.cart.promotion.code }}
@@ -32,6 +32,18 @@
     <td>
         <input type="submit" class="btn" value="Update" />
     </td>
-    <td>Total</td>
+    <td>Subtotal</td>
     <td>{{ __SELF__.cart.subtotal|moneyFormat }}</td>
 </tr>
+{% if __SELF__.cart.promotionSavings %}
+    <tr>
+        <td colspan="2"></td>
+        <td>Promotion</td>
+        <td>-{{ __SELF__.cart.promotionSavings|moneyFormat }}</td>
+    </tr>
+    <tr>
+        <td colspan="2"></td>
+        <td>Total</td>
+        <td>{{ __SELF__.cart.total|moneyFormat }}</td>
+    </tr>
+{% endif %}

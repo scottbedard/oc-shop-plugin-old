@@ -293,7 +293,7 @@ return [
         ],
         'cart' => [
             'life'                      => 'Cart Lifetime',
-            'life_comment'              => 'This defines how long a cart should persist when a user leaves the page.',
+            'life_comment'              => 'This determines how long to keep carts alive after a user leaves the site.',
             'life_session'              => 'That session only',
             'life_half_day'             => '12 hours',
             'life_day'                  => '1 day',
