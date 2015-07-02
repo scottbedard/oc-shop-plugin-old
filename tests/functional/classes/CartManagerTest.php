@@ -13,13 +13,14 @@ class CartManagerTest extends \OctoberPluginTestCase
 
     public function test_initializing_and_opening_a_new_cart()
     {
-        $first = CartManager::open();
+        $first = new CartManager;
         $this->assertNull($first->cart);
 
-        $second = CartManager::openOrCreate();
+        $second = new CartManager;
+        $second->loadCart();
         $this->assertInstanceOf('Bedard\Shop\Models\Cart', $second->cart);
 
-        $third = CartManager::open();
+        $third = new CartManager;
         $this->assertInstanceOf('Bedard\Shop\Models\Cart', $third->cart);
         $this->assertEquals($second->cart->id, $third->cart->id);
     }
@@ -29,7 +30,8 @@ class CartManagerTest extends \OctoberPluginTestCase
         $product    = Generate::product('Foo');
         $inventory  = Generate::inventory($product, [], ['quantity' => 5]);
 
-        $manager = CartManager::openOrCreate();
+        $manager = new CartManager;
+        $manager->loadCart();
         $manager->add($inventory->id);
 
         $manager->cart->load('items');
@@ -50,7 +52,8 @@ class CartManagerTest extends \OctoberPluginTestCase
         $product2   = Generate::product('Bar');
         $inventory2 = Generate::inventory($product2, [], ['quantity' => 5]);
 
-        $manager = CartManager::openOrCreate();
+        $manager = new CartManager;
+        $manager->loadCart();
         $manager->add($inventory1->id);
         $manager->add($inventory2->id);
 
@@ -81,7 +84,8 @@ class CartManagerTest extends \OctoberPluginTestCase
         $product3   = Generate::product('Baz');
         $inventory3 = Generate::inventory($product3, [], ['quantity' => 5]);
 
-        $manager = CartManager::openOrCreate();
+        $manager = new CartManager;
+        $manager->loadCart();
         $manager->add($inventory1->id);
         $manager->add($inventory2->id);
         $manager->add($inventory3->id);
@@ -106,7 +110,8 @@ class CartManagerTest extends \OctoberPluginTestCase
     {
         $promotion = Generate::promotion('Foo');
 
-        $manager = CartManager::openOrCreate();
+        $manager = new CartManager;
+        $manager->loadCart();
         $this->assertEquals(null, $manager->cart->promotion_id);
 
         $manager->applyPromotion('Foo');
@@ -124,7 +129,8 @@ class CartManagerTest extends \OctoberPluginTestCase
         $product2   = Generate::product('Bar');
         $inventory2 = Generate::inventory($product2, [], ['quantity' => 5]);
 
-        $manager = CartManager::openOrCreate();
+        $manager = new CartManager;
+        $manager->loadCart();
         $manager->add($inventory1->id);
         $manager->add($inventory2->id);
 

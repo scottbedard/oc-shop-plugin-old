@@ -31,70 +31,51 @@ class CartManager {
     public $cart;
 
     /**
-     * Instantiate a new CartManager, and open the existing cart
-     *
-     * @return  CartManager
+     * Open the current cart if there is one
      */
-    public static function open()
+    public function __construct()
     {
-        $manager = new self();
-
         // First, attempt to load the cart from the user's session
         if ($session = Session::get(self::SESSION_KEY)) {
-            $manager->cart = Cart::where('key', $session['key'])
+            $this->cart = Cart::where('key', $session['key'])
                 ->find($session['id']);
                 // todo: make sure cart is open
         }
 
         // If that fails, check if we have the cart data saved in a cookie
         elseif (Settings::getCartLife() && $cookie = Request::cookie(self::SESSION_KEY)) {
-            $manager->cart = Cart::where('key', $cookie['key'])
+            $this->cart = Cart::where('key', $cookie['key'])
                 ->find($cookie['id']);
                 // todo: make sure cart is open
         }
-
-        return $manager;
     }
 
     /**
-     * Instantiates a new CartManager, and opens the existing cart,
-     * or creates a new one of none exists.
-     *
-     * @return  CartManager
+     * Create a new cart if it isn't aleady loaded
      */
-    public static function openOrCreate()
+    public function loadCart()
     {
-        $manager = self::open();
-
         // Create a new cart
-        if (!$manager->cart) {
+        if (!$this->cart) {
             $cart = Cart::create(['key' => str_random(40)]);
             Session::put(self::SESSION_KEY, [
                 'id'    => $cart->id,
                 'key'   => $cart->key
             ]);
 
-            $manager->cart = $cart;
+            $this->cart = $cart;
         }
 
         // Create a cart cookie
         if ($life = Settings::getCartLife()) {
             Cookie::queue(self::SESSION_KEY, [
-                'id'    => $manager->cart->id,
-                'key'   => $manager->cart->key,
+                'id'    => $this->cart->id,
+                'key'   => $this->cart->key,
             ], $life);
         }
 
-        return $manager;
-    }
-
-    /**
-     * Verifies that the cart is open, and throws an exception if it's not
-     */
-    protected function verifyCart()
-    {
-        if (!$this->cart)
-            throw new AjaxException('CART_INVALID');
+        // If we still don't have a cart, throw an exception
+        if (!$this->cart) throw new AjaxException('CART_INVALID');
     }
 
     /**
@@ -106,7 +87,7 @@ class CartManager {
      */
     public function add($productId, $valueIds = [], $quantity = 1)
     {
-        $this->verifyCart();
+        $this->loadCart();
 
         if (!$product = Product::isEnabled()->find($productId))
             throw new AjaxException('The requested product was not found, or is not enabled.', 2);
@@ -135,7 +116,7 @@ class CartManager {
      */
     public function applyPromotion($code)
     {
-        $this->verifyCart();
+        $this->loadCart();
 
         if (!$promotion = Promotion::isRunning()->where('code', $code)->first())
             throw new AjaxException('PROMOTION_INVALID');
@@ -149,7 +130,7 @@ class CartManager {
      */
     public function clear()
     {
-        $this->verifyCart();
+        $this->loadCart();
 
         CartItem::where('cart_id', $this->cart->id)->delete();
         $this->cart->touch();
@@ -162,7 +143,7 @@ class CartManager {
      */
     public function remove($itemIds)
     {
-        $this->verifyCart();
+        $this->loadCart();
 
         CartItem::where('cart_id', $this->cart->id)
             ->where(function($query) use ($itemIds) {
@@ -182,7 +163,7 @@ class CartManager {
      */
     public function removePromotion()
     {
-        $this->verifyCart();
+        $this->loadCart();
 
         $this->cart->promotion_id = null;
         $this->cart->save();
@@ -196,7 +177,7 @@ class CartManager {
      */
     public function update($items = [])
     {
-        $this->verifyCart();
+        $this->loadCart();
 
         // Determine if anything has actually changed
         $this->cart->load('items');

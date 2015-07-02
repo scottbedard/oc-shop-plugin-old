@@ -1,6 +1,8 @@
 <?php namespace Bedard\Shop;
 
+use App;
 use Backend;
+use Bedard\Shop\Classes\CartManager;
 use Bedard\Shop\Classes\CurrencyHelper;
 use Bedard\Shop\Models\Currency;
 use Lang;
@@ -30,6 +32,17 @@ class Plugin extends PluginBase
             'author'      => 'Scott Bedard',
             'icon'        => 'icon-shopping-cart'
         ];
+    }
+
+    /**
+     * Plugin startup
+     */
+    public function boot()
+    {
+        // Register the CartManager as a singleton
+        App::singleton('Bedard\Shop\Classes\CartManager', function($app) {
+            return new CartManager;
+        });
     }
 
     /**
@@ -195,6 +208,7 @@ class Plugin extends PluginBase
         return [
             'Bedard\Shop\Components\Cart'       => 'shopCart',
             'Bedard\Shop\Components\Category'   => 'shopCategory',
+            'Bedard\Shop\Components\Checkout'   => 'shopCheckout',
             'Bedard\Shop\Components\Navigation' => 'shopNavigation',
             'Bedard\Shop\Components\Product'    => 'shopProduct',
         ];

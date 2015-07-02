@@ -12,7 +12,7 @@ class CartModelTest extends \OctoberPluginTestCase
 
     public function test_promotion_minimum_is_reached()
     {
-        $manager    = CartManager::openOrCreate();
+        $manager    = new CartManager;
         $promotion  = Generate::promotion('Foo');
         $product    = Generate::product('Bar', ['base_price' => 50]);
         $inventory  = Generate::inventory($product, [], ['quantity' => 5]);
@@ -32,7 +32,7 @@ class CartModelTest extends \OctoberPluginTestCase
 
     public function test_cart_has_promotion_products()
     {
-        $manager    = CartManager::openOrCreate();
+        $manager    = new CartManager;
         $product1   = Generate::product('Foo');
         $product2   = Generate::product('Bar');
         $inventory1 = Generate::inventory($product1, [], ['quantity' => 5]);
@@ -59,7 +59,7 @@ class CartModelTest extends \OctoberPluginTestCase
 
     public function test_cart_savings_is_calculated_correctly()
     {
-        $manager    = CartManager::openOrCreate();
+        $manager    = new CartManager;
         $product1   = Generate::product('Foo', ['base_price' => 100]);
         $inventory1 = Generate::inventory($product1, [], ['quantity' => 5]);
         $promotion  = Generate::promotion('Promo', ['is_cart_percentage' => false, 'cart_percentage' => 10, 'cart_exact' => 5]);

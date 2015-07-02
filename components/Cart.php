@@ -1,6 +1,6 @@
 <?php namespace Bedard\Shop\Components;
 
-use Bedard\Shop\Classes\CartManager;
+use App;
 use Bedard\Shop\Models\CartItem;
 use Cms\Classes\ComponentBase;
 
@@ -8,7 +8,12 @@ class Cart extends ComponentBase
 {
 
     /**
-     * @var CartModel   The user's shopping cart
+     * @var CartManager     The cart manager instance
+     */
+    protected $manager;
+
+    /**
+     * @var CartModel       The user's shopping cart
      */
     public $cart;
 
@@ -25,33 +30,27 @@ class Cart extends ComponentBase
         ];
     }
 
-    /**
-     * Initialize the user's shopping cart
-     */
-    public function onRun()
+    public function init()
     {
-        $manager = CartManager::open();
-        $this->prepareVars($manager->cart);
+        $this->manager = App::make('Bedard\Shop\Classes\CartManager');
     }
 
-    /**
-     * Set up component variables
-     *
-     * @param   Bedard\Shop\Models\Cart     $cart
-     */
-    protected function prepareVars($cart)
+    public function onRun()
+    {
+        $this->prepareVars();
+    }
+
+    protected function prepareVars()
     {
         // Default cart data
         $this->itemCount    = 0;
         $this->isEmpty      = true;
 
         // If we have a cart, replace the defaults
-        if ($this->cart = $cart) {
-            $this->itemCount    = CartItem::where('cart_id', $cart->id)->sum('quantity');
+        $this->cart = $this->manager->cart;
+        if ($this->cart) {
+            $this->itemCount    = CartItem::where('cart_id', $this->cart->id)->sum('quantity');
             $this->isEmpty      = $this->itemCount == 0;
-
-            // Reset the cart loaded property
-            $this->cart->isLoaded = false;
         }
     }
 
@@ -78,9 +77,8 @@ class Cart extends ComponentBase
         $valueIds   = array_map('intval', input('options') ?: []);
         $quantity   = intval(input('quantity')) ?: 1;
 
-        $manager = CartManager::openOrCreate();
-        $manager->add($productId, $valueIds, $quantity);
-        $this->prepareVars($manager->cart);
+        $this->manager->add($productId, $valueIds, $quantity);
+        $this->prepareVars();
     }
 
     /**
@@ -88,9 +86,8 @@ class Cart extends ComponentBase
      */
     public function onClearCart()
     {
-        $manager = CartManager::openOrCreate();
-        $manager->clear();
-        $this->prepareVars($manager->cart);
+        $this->manager->clear();
+        $this->prepareVars();
     }
 
     /**
@@ -98,9 +95,8 @@ class Cart extends ComponentBase
      */
     public function onRemoveFromCart()
     {
-        $manager = CartManager::openOrCreate();
-        $manager->remove(intval(input('remove')));
-        $this->prepareVars($manager->cart);
+        $this->manager->remove(intval(input('remove')));
+        $this->prepareVars();
     }
 
     /**
@@ -108,9 +104,8 @@ class Cart extends ComponentBase
      */
     public function onRemovePromotion()
     {
-        $manager = CartManager::openOrCreate();
-        $manager->removePromotion();
-        $this->prepareVars($manager->cart);
+        $this->manager->removePromotion();
+        $this->prepareVars();
     }
 
     /**
@@ -118,13 +113,12 @@ class Cart extends ComponentBase
      */
     public function onUpdateCart()
     {
-        $manager = CartManager::openOrCreate();
-        $manager->update(array_map('intval', input('items') ?: []));
+        $this->manager->update(array_map('intval', input('items') ?: []));
 
         if ($promotion = input('promotion'))
-            $manager->applyPromotion($promotion);
+            $this->manager->applyPromotion($promotion);
 
-        $this->prepareVars($manager->cart);
+        $this->prepareVars();
     }
 
 }
