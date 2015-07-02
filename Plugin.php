@@ -49,28 +49,34 @@ class Plugin extends PluginBase
 
                 'sideMenu' => [
                     'categories' => [
-                        'label'         => 'bedard.shop::lang.categories.controller',
+                        'label'         => 'bedard.shop::lang.navigation.categories',
                         'icon'          => 'icon-folder-o',
                         'url'           => Backend::url('bedard/shop/categories'),
                         'permissions'   => ['bedard.shop.access_categories'],
                     ],
                     'products' => [
-                        'label'         => 'bedard.shop::lang.products.controller',
+                        'label'         => 'bedard.shop::lang.navigation.products',
                         'icon'          => 'icon-cubes',
                         'url'           => Backend::url('bedard/shop/products'),
                         'permissions'   => ['bedard.shop.access_products'],
                     ],
                     'discounts' => [
-                        'label'         => 'bedard.shop::lang.discounts.controller',
+                        'label'         => 'bedard.shop::lang.navigation.discounts',
                         'icon'          => 'icon-clock-o',
                         'url'           => Backend::url('bedard/shop/discounts'),
                         'permissions'   => ['bedard.shop.access_discounts'],
                     ],
                     'promotions' => [
-                        'label'         => 'bedard.shop::lang.promotions.controller',
+                        'label'         => 'bedard.shop::lang.navigation.promotions',
                         'icon'          => 'icon-star',
                         'url'           => Backend::url('bedard/shop/promotions'),
                         'permissions'   => ['bedard.shop.access_promotions'],
+                    ],
+                    'settings' => [
+                        'label'         => 'bedard.shop::lang.navigation.settings.sidebar',
+                        'icon'          => 'icon-cog',
+                        'url'           => Backend::url('system/settings/update/bedard/shop/settings'),
+                        'permissions'   => ['bedard.shop.access_settings'],
                     ],
                 ],
             ],
@@ -93,8 +99,8 @@ class Plugin extends PluginBase
 
         return [
             'settings' => [
-                'label'         => 'bedard.shop::lang.settings.model',
-                'description'   => 'bedard.shop::lang.settings.description',
+                'label'         => 'bedard.shop::lang.navigation.settings.general',
+                'description'   => 'bedard.shop::lang.navigation.settings.general_description',
                 'category'      => 'bedard.shop::lang.general.plugin',
                 'class'         => 'Bedard\Shop\Models\Settings',
                 'permissions'   => ['bedard.shop.access_settings'],
@@ -102,8 +108,8 @@ class Plugin extends PluginBase
                 'order'         => 100,
             ],
             'currency' => [
-                'label'         => 'bedard.shop::lang.currency.model',
-                'description'   => 'bedard.shop::lang.currency.description',
+                'label'         => 'bedard.shop::lang.navigation.settings.currency',
+                'description'   => 'bedard.shop::lang.navigation.settings.currency_description',
                 'category'      => 'bedard.shop::lang.general.plugin',
                 'class'         => 'Bedard\Shop\Models\Currency',
                 'permissions'   => ['bedard.shop.access_settings'],

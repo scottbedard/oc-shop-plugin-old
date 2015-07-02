@@ -57,6 +57,33 @@ return [
     ],
 
     //
+    // Form
+    //
+    'form' => [
+        'delete_confirm'                => 'Are you sure?',
+        'delete_confirm_name'           => 'Do you really want to delete this :name?',
+        'delete_failed_name'            => 'Failed to delete :name.',
+        'return_to_name_list'           => 'Return to :name list',
+    ],
+
+    //
+    // Navigation
+    //
+    'navigation' => [
+        'discounts'                     => 'Discounts',
+        'categories'                    => 'Categories',
+        'products'                      => 'Products',
+        'promotions'                    => 'Promotions',
+        'settings' => [
+            'sidebar'                   => 'Settings',
+            'currency'                  => 'Currency',
+            'currency_description'      => 'Manager formatting and currency settings.',
+            'general'                   => 'General Settings',
+            'general_description'       => 'Manager general shop settings.',
+        ],
+    ],
+
+    //
     // Permissions
     //
     'permissions' => [
@@ -66,16 +93,6 @@ return [
         'access_products'               => 'Manage products',
         'access_promotions'             => 'Manage promotions',
         'access_settings'               => 'Manage shop settings',
-    ],
-
-    //
-    // Form
-    //
-    'form' => [
-        'delete_confirm'                => 'Are you sure?',
-        'delete_confirm_name'           => 'Do you really want to delete this :name?',
-        'delete_failed_name'            => 'Failed to delete :name.',
-        'return_to_name_list'           => 'Return to :name list',
     ],
 
     //
@@ -152,10 +169,8 @@ return [
         'code_placeholder'              => 'Enter currency code (USD, EUR, GBP, etc...)',
         'decimal'                       => 'Decimal Character',
         'decimal_placeholder'           => '',
-        'description'                   => 'Manage currency and formatting.',
         'hide_double_zeros'             => 'Remove double zeros',
         'hide_double_zeros_comment'     => 'Example: "10.00" would be displayed as "10"',
-        'model'                         => 'Currency',
         'symbol'                        => 'Symbol',
         'symbol_placeholder'            => 'Enter currency symbol ($, €, £, etc...)',
         'thousands'                     => 'Thousands Seperator',
@@ -271,24 +286,24 @@ return [
 
     'settings' => [
         'backend' => [
-            'editor'                    => 'Editor',
+            'editor'                    => 'Backend Editor',
             'editor_code'               => 'Code editor / markdown',
             'editor_rich'               => 'Rich text editor',
             'tab'                       => 'Backend',
         ],
         'cart' => [
-            'life'                      => 'Time to live',
-            'life_description'          => 'This defines how long a cart should "stay alive" after the user leaves the page.',
+            'life'                      => 'Cart Lifetime',
+            'life_comment'              => 'This defines how long a cart should persist when a user leaves the page.',
+            'life_session'              => 'That session only',
             'life_half_day'             => '12 hours',
             'life_day'                  => '1 day',
             'life_week'                 => '1 week',
             'life_two_weeks'            => '2 weeks',
             'life_month'                => '1 month',
+            'life_two_months'           => '2 months',
             'life_forever'              => 'Forever',
             'tab'                       => 'Shopping Carts',
         ],
-        'description'                   => 'Manage general shop settings.',
-        'model'                         => 'Settings',
     ],
 
     'values' => [
