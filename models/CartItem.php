@@ -67,6 +67,11 @@ class CartItem extends Model
         return $this->price < $this->base_price;
     }
 
+    public function getMaxAttribute()
+    {
+        return $this->inventory->quantity;
+    }
+
     public function getNameAttribute()
     {
         return $this->inventory->product->name;

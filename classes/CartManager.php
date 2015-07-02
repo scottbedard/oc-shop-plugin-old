@@ -13,6 +13,13 @@ use Session;
 
 class CartManager {
 
+    /*
+     * Summary of error responses
+     *
+     * CART_INVALID         The cart was not found, or could not be loaded
+     * PROMOTION_INVALID    A code was entered, but no running promotion could be found
+     */
+
     /**
      * @var string      The session key
      */
@@ -82,6 +89,15 @@ class CartManager {
     }
 
     /**
+     * Verifies that the cart is open, and throws an exception if it's not
+     */
+    protected function verifyCart()
+    {
+        if (!$this->cart)
+            throw new AjaxException('CART_INVALID');
+    }
+
+    /**
      * Adds a product to the cart
      *
      * @param   integer     $productId
@@ -90,8 +106,7 @@ class CartManager {
      */
     public function add($productId, $valueIds = [], $quantity = 1)
     {
-        if (!$this->cart)
-            throw new AjaxException('The cart is not loaded.', 1);
+        $this->verifyCart();
 
         if (!$product = Product::isEnabled()->find($productId))
             throw new AjaxException('The requested product was not found, or is not enabled.', 2);
@@ -120,11 +135,10 @@ class CartManager {
      */
     public function applyPromotion($code)
     {
-        if (!$this->cart)
-            throw new AjaxException('The cart is not loaded.', 1);
+        $this->verifyCart();
 
         if (!$promotion = Promotion::isRunning()->where('code', $code)->first())
-            throw new AjaxException('Invalid or expired promotion code.', 4);
+            throw new AjaxException('PROMOTION_INVALID');
 
         $this->cart->promotion_id = $promotion->id;
         $this->cart->save();
@@ -135,8 +149,7 @@ class CartManager {
      */
     public function clear()
     {
-        if (!$this->cart)
-            throw new AjaxException('The cart is not loaded.', 1);
+        $this->verifyCart();
 
         CartItem::where('cart_id', $this->cart->id)->delete();
         $this->cart->touch();
@@ -149,8 +162,7 @@ class CartManager {
      */
     public function remove($itemIds)
     {
-        if (!$this->cart)
-            throw new AjaxException('The cart is not loaded.', 1);
+        $this->verifyCart();
 
         CartItem::where('cart_id', $this->cart->id)
             ->where(function($query) use ($itemIds) {
@@ -170,8 +182,7 @@ class CartManager {
      */
     public function removePromotion()
     {
-        if (!$this->cart)
-            throw new AjaxException('The cart is not loaded.', 1);
+        $this->verifyCart();
 
         $this->cart->promotion_id = null;
         $this->cart->save();
@@ -185,8 +196,7 @@ class CartManager {
      */
     public function update($items = [])
     {
-        if (!$this->cart)
-            throw new AjaxException('The cart is not loaded.', 1);
+        $this->verifyCart();
 
         // Determine if anything has actually changed
         $this->cart->load('items');

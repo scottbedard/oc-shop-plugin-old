@@ -29,6 +29,12 @@ class Cart extends Model
      * @var array Relations
      */
     public $belongsTo = [
+        'address' => [
+            'Bedard\Shop\Models\Address',
+        ],
+        'payment' => [
+            'Bedard\Shop\Models\Payment',
+        ],
         'promotion' => [
             'Bedard\Shop\Models\Promotion',
         ],
@@ -51,6 +57,11 @@ class Cart extends Model
     {
         $this->loadRelationships();
         return $this->items->sum('baseSubtotal');
+    }
+
+    public function getHasAddressAttribute()
+    {
+        return $this->address_id != null && $this->address;
     }
 
     public function getHasPromotionAttribute()
