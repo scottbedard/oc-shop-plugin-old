@@ -7,8 +7,8 @@ class CurrencyHelper {
     /**
      * Formats an amount of money
      *
-     * @param   float   $amount
-     * @return  string
+     * @param   float           $amount
+     * @return  string|false
      */
     public static function format($amount = 0)
     {

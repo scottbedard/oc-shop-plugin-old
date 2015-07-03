@@ -17,7 +17,7 @@ class Category extends Model
     use \October\Rain\Database\Traits\SimpleTree,
         \October\Rain\Database\Traits\Validation;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         $this->setTreeOrderBy('position', 'asc');

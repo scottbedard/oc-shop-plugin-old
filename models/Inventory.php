@@ -102,14 +102,6 @@ class Inventory extends Model
     }
 
     /**
-     * Filter form fields
-     */
-    public function filterFields($fields, $context = null)
-    {
-        // $fields->values->hidden = $this->product->options->count() == 0;
-    }
-
-    /**
      * Returns related value names in the correct order
      *
      * @return  array

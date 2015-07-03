@@ -56,8 +56,9 @@ class Checkout extends ComponentBase
      */
     public function getDefaultCountryOptions()
     {
+        $options    = [];
         $options[0] = Lang::get('bedard.shop::lang.components.checkout.default_country_none');
-        $options = array_merge($options, Country::getNameList());
+        $options    = array_merge($options, Country::getNameList());
 
         return $options;
     }

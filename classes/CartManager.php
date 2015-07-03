@@ -239,11 +239,8 @@ class CartManager {
     public function removeAddress()
     {
         $this->loadCart();
-
-        if ($this->cart->hasAddress) {
-            $this->cart->address = null;
-            $this->cart->save();
-        }
+        $this->cart->address = null;
+        $this->cart->save();
     }
 
     /**
@@ -252,11 +249,8 @@ class CartManager {
     public function removeCustomer()
     {
         $this->loadCart();
-
-        if ($this->cart->hasCustomer) {
-            $this->cart->customer_id = null;
-            $this->cart->save();
-        }
+        $this->cart->customer_id = null;
+        $this->cart->save();
     }
 
     /**
@@ -265,17 +259,15 @@ class CartManager {
     public function removePromotion()
     {
         $this->loadCart();
-
-        if ($this->cart->hasPromotion) {
-            $this->cart->promotion_id = null;
-            $this->cart->save();
-        }
+        $this->cart->promotion_id = null;
+        $this->cart->save();
     }
 
     /**
      * Attaches a customer and address to the cart
      *
-     * @param   array   $data
+     * @param   array   $customerData
+     * @param   array   $addressData
      */
     public function setCustomerAddress($customerData, $addressData)
     {
@@ -304,8 +296,7 @@ class CartManager {
     /**
      * Updates the cart
      *
-     * @param  array  $items [description]
-     * @return [type]        [description]
+     * @param  array  $items
      */
     public function update($items = [])
     {

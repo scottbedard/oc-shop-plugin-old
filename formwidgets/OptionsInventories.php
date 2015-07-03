@@ -78,7 +78,7 @@ class OptionsInventories extends FormWidgetBase
     /**
      * Display the Inventory popup form
      *
-     * @return  makePartial()
+     * @return  mixed
      */
     public function onDisplayInventory()
     {
@@ -96,7 +96,7 @@ class OptionsInventories extends FormWidgetBase
     /**
      * Display the Option popup form
      *
-     * @return  makePartial()
+     * @return  mixed
      */
     public function onDisplayOption()
     {
@@ -114,7 +114,7 @@ class OptionsInventories extends FormWidgetBase
     /**
      * Makes a popup form
      *
-     * @return  makePartial()
+     * @return  mixed
      */
     protected function makeForm($form, $modelName, $handler)
     {

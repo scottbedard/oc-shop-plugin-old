@@ -1,5 +1,5 @@
 <?php namespace Bedard\Shop\Models;
-;
+
 use Model;
 
 /**

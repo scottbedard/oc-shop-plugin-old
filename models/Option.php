@@ -132,7 +132,7 @@ class Option extends Model
         $this->save();
 
         // Create / update values
-        $saveIds = $ids;
+        $savedIds = [];
         foreach ($ids as $i => $id) {
             $value = Value::findOrNew($ids[$i]);
             $value->option_id   = $this->id;
