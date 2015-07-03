@@ -163,7 +163,7 @@ class CartManagerTest extends \OctoberPluginTestCase
         $this->assertEquals(2, $manager->getItems()->count());
     }
 
-    public function test_set_customer_and_address_method()
+    public function test_adding_and_removing_customer_and_address_method()
     {
         $customer = [
             'first_name' => 'Some',
@@ -190,5 +190,13 @@ class CartManagerTest extends \OctoberPluginTestCase
         $manager->cart->load('customer', 'address');
         $this->assertInstanceOf('Bedard\Shop\Models\Customer', $manager->cart->customer);
         $this->assertInstanceOf('Bedard\Shop\Models\Address', $manager->cart->address);
+
+        $manager->removeCustomer();
+        $manager->cart->load('customer');
+        $this->assertNull($manager->cart->customer_id);
+
+        $manager->removeAddress();
+        $manager->cart->load('address');
+        $this->assertNull($manager->cart->address_id);
     }
 }

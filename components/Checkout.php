@@ -80,6 +80,26 @@ class Checkout extends ComponentBase
     }
 
     /**
+     * Removes an Address from the cart
+     */
+    public function onRemoveAddress()
+    {
+        $this->manager->removeAddress();
+        $this->prepareCart();
+        $this->prepareVars();
+    }
+
+    /**
+     * Removes a Customer from the cart
+     */
+    public function onRemoveCustomer()
+    {
+        $this->manager->removeCustomer();
+        $this->prepareCart();
+        $this->prepareVars();
+    }
+
+    /**
      * Attach a customer and/or address to the cart
      */
     public function onSubmitDetails()

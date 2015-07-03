@@ -234,14 +234,42 @@ class CartManager {
     }
 
     /**
+     * Removes an Address from the cart
+     */
+    public function removeAddress()
+    {
+        $this->loadCart();
+
+        if ($this->cart->hasAddress) {
+            $this->cart->address = null;
+            $this->cart->save();
+        }
+    }
+
+    /**
+     * Removes a Customer from the cart
+     */
+    public function removeCustomer()
+    {
+        $this->loadCart();
+
+        if ($this->cart->hasCustomer) {
+            $this->cart->customer_id = null;
+            $this->cart->save();
+        }
+    }
+
+    /**
      * Removes a promotion
      */
     public function removePromotion()
     {
         $this->loadCart();
 
-        $this->cart->promotion_id = null;
-        $this->cart->save();
+        if ($this->cart->hasPromotion) {
+            $this->cart->promotion_id = null;
+            $this->cart->save();
+        }
     }
 
     /**
