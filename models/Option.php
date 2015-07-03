@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Models;
 
+use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Value;
 use Flash;
 use Lang;
@@ -55,10 +56,21 @@ class Option extends Model
      */
     public function afterValidate()
     {
-        // Ensure that the Option name is unique
-        $names = Option::where('product_id', $this->product_id)
-            ->where('id', '<>', $this->id ?: 0)
-            ->lists('name');
+        if ($this->product_id) {
+            $names = Option::where('product_id', $this->product_id)
+                ->where('id', '<>', $this->id ?: 0)
+                ->lists('name');
+        } else {
+            $sessionKey = input('sessionKey') ?: $this->sessionKey;
+            $names = Product::findOrNew($this->product_id)
+                ->options()
+                ->withDeferred($sessionKey)
+                ->lists('name', 'id');
+
+            if (isset($names[$this->id])) {
+                unset($names[$this->id]);
+            }
+        }
 
         if (in_array(strtolower($this->name), array_map('strtolower', $names))) {
             $message = Lang::get('bedard.shop::lang.options.name_unique');

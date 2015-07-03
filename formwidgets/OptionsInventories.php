@@ -1,6 +1,7 @@
 <?php namespace Bedard\Shop\FormWidgets;
 
 use Backend\Classes\FormWidgetBase;
+use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Option;
 use Lang;
@@ -22,10 +23,6 @@ class OptionsInventories extends FormWidgetBase
      */
     public function render()
     {
-        if (!$this->model->id) {
-            return $this->makePartial('hint');
-        }
-
         $this->prepareVars();
         return $this->makePartial('optionsinventories');
     }
@@ -44,10 +41,12 @@ class OptionsInventories extends FormWidgetBase
             'value.delete_text'         => Lang::get('bedard.shop::lang.values.delete_text'),
         ]);
 
+        $sessionKey = input('sessionKey') ?: $this->sessionKey;
+
         // These variables will be used normally by partials
         $this->model->load('options.values', 'inventories.values');
-        $this->vars['inventories']  = $this->model->inventories;
-        $this->vars['options']      = $this->model->options;
+        $this->vars['inventories']  = $this->model->inventories()->withDeferred($sessionKey)->get();
+        $this->vars['options']      = $this->model->options()->withDeferred($sessionKey)->orderBy('position', 'asc')->get();
     }
 
     /**
@@ -138,14 +137,16 @@ class OptionsInventories extends FormWidgetBase
      */
     public function onProcessInventory()
     {
-        $inventoryId = intval(input('model_id'));
-        $inventory = Inventory::findOrNew($inventoryId);
-        $inventory->product_id = intval(input('product_id'));
-        $inventory->sku = input('sku');
-        $inventory->quantity = input('quantity');
-        $inventory->modifier = input('modifier');
-
+        $inventoryId            = input('model_id');
+        $inventory              = Inventory::findOrNew($inventoryId);
+        $inventory->product_id  = $this->model->id ?: null;
+        $inventory->sku         = input('sku');
+        $inventory->quantity    = input('quantity');
+        $inventory->modifier    = input('modifier');
         $inventory->saveWithValues(input('valueIds'));
+
+        // Attach via deferred binding
+        $this->model->inventories()->add($inventory, input('sessionKey'));
 
         $model = Lang::get('bedard.shop::lang.inventories.model');
         if ($inventoryId) {
@@ -166,10 +167,15 @@ class OptionsInventories extends FormWidgetBase
     {
         $optionId = intval(input('model_id'));
         $option = Option::findOrNew($optionId);
+        $option->product_id = $this->model->id ?: null;
         $option->name = input('name');
-        $option->product_id = intval(input('product_id'));
         $option->placeholder = input('placeholder');
         $option->saveWithValues(input('valueIds'), input('valueNames'));
+
+        // Attach via deferred binding if needed
+        if (!$option->product_id) {
+            $this->model->options()->add($option, input('sessionKey'));
+        }
 
         $model = Lang::get('bedard.shop::lang.options.model');
         if ($optionId) {

@@ -124,11 +124,12 @@ class Product extends Model
 
     public function afterSave()
     {
-        // Sync Price models if the base_price or categories have changed
+        // Sync the base price if it has changed
         if ($this->changedPrice) {
             $this->syncBasePrice();
         }
 
+        // Sync the discount prices if the base_price has changed
         if ($this->changedPrice || $this->changedCategories) {
             $this->syncDiscountedPrices();
         }

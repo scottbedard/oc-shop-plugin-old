@@ -1,7 +1,9 @@
 +function ($) { "use strict";
 
-    var OptionsInventories = function ($el) {
+    var OptionsInventories = function (el) {
         var self = this;
+
+        self.$widget = $(el);
 
         // Trigger the popup with a new item
         $('a[data-control="add"]').unbind().on('click', function() {
@@ -49,7 +51,8 @@
         // Determine which handler to send this to
         $li.popup({
             extraData: {
-                id: $li.data('id') || null
+                id: $li.data('id') || null,
+                sessionKey: self.$widget.data('session-key'),
             },
             handler: OptionsInventoriesAlias + '::onDisplay' + $list.data('model')
         });
@@ -65,7 +68,6 @@
             $apply  = $popup.find('[data-control="apply-btn"]').first(),
             $loadingIndicator = $popup.find('div.loading-indicator');
 
-
         // Determine the option ID
         var modelId = typeof $li.data('id') != 'undefined'
             ? $li.data('id')
@@ -75,6 +77,9 @@
         $apply.on('click', function() {
             $loadingIndicator.show();
             $form.request(OptionsInventoriesAlias + '::onProcess' + $list.data('model'), {
+                data: {
+                    sessionKey: self.$widget.data('session-key')
+                },
                 success: function(data) {
                     this.success(data).done(function() {
                         self.setToolbarVisibility('visible');
@@ -117,6 +122,7 @@
             $.request(handler, {
                 data: {
                     id: $li.data('id'),
+                    sessionKey: self.$widget.data('session-key'),
                 },
                 complete: function() {
                     $li.removeClass('pre-delete')

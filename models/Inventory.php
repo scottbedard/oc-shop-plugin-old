@@ -46,7 +46,6 @@ class Inventory extends Model
      * Validation
      */
     public $rules = [
-        'product_id'    => 'required',
         'sku'           => 'unique:bedard_shop_inventories',
         'quantity'      => 'integer|min:0',
         'modifier'      => 'numeric',
@@ -82,9 +81,23 @@ class Inventory extends Model
         return $this->product->price + $this->modifier;
     }
 
+    public function setModifierAttribute($value)
+    {
+        $this->attributes['modifier'] = $value ?: 0;
+    }
+
+    public function setPriceAttribute($value)
+    {
+        $this->attributes['price'] = $value ?: 0;
+    }
+
+    public function setQuantityAttribute($value)
+    {
+        $this->attributes['quantity'] = $value ?: 0;
+    }
+
     public function setSkuAttribute($value)
     {
-        // Prevent duplicate SKUs by converting empty strings to null
         $this->attributes['sku'] = $value ?: null;
     }
 
@@ -93,7 +106,7 @@ class Inventory extends Model
      */
     public function filterFields($fields, $context = null)
     {
-        $fields->values->hidden = $this->product->options->count() == 0;
+        // $fields->values->hidden = $this->product->options->count() == 0;
     }
 
     /**

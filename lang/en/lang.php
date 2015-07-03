@@ -241,7 +241,6 @@ return [
         'model'                         => 'Product',
         'name_placeholder'              => 'New product name',
         'options_inventories'           => 'Options & Inventories',
-        'options_inventories_hint'      => 'Please save the product before creating options or inventories.',
         'out_of_stock'                  => 'Out of stock',
         'price'                         => 'Price',
         'scoreboard_disabled'           => 'Disabled',
