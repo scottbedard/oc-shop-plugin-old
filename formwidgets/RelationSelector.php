@@ -92,19 +92,35 @@ class RelationSelector extends FormWidgetBase
     }
 
     /**
-     * Executes a query to search related models
+     * Puts together the search results for the related models
      */
     protected function searchRelation()
     {
-        $relation   = new $this->config->class;
-        $key   = $this->config->key;
+        $perPage    = 10;
         $search     = input('search');
+        $page       = input('page') ?: 1;
+        $key        = $this->config->key;
+        $relation   = new $this->config->class;
 
+        $total = $this->countSearch($relation, $search, $key);
+        $this->executeSearch($relation, $search, $key, $page, $perPage);
+        $this->preparePagination($page, $perPage, $total);
+    }
+
+    /**
+     * Counts the number of results returned by the search
+     *
+     * @param   Model       $relation   The model being searched
+     * @param   string      $search     The search term
+     * @param   string      $key        The column being searched
+     * @return  integer
+     */
+    protected function countSearch($relation, $search, $key)
+    {
         $scope = isset($this->config->scope)
             ? $this->config->scope
             : false;
 
-        // Pagination variables
         if ($scope) {
             $total = $search
                 ? $relation::$scope()->where($key, 'LIKE', "%$search%")->count()
@@ -115,34 +131,60 @@ class RelationSelector extends FormWidgetBase
                 : $relation::count();
         }
 
-        $perPage    = 10;
-        $lastPage   = ceil($total / $perPage);
-        $page       = input('page') ?: 1;
-        $skip       = ($page - 1) * $perPage;
+        $this->vars['resultsTotal'] = $total;
+        return $total;
+    }
 
-        // Build the query
-        $order = input('order') ?: 'asc';
-        $query = $relation::limit($perPage)->skip($skip);
-        $query->orderBy($key, $order);
+    /**
+     * Execute the search and pass the results to the view
+     *
+     * @param   Model       $relation   The model being searched
+     * @param   string      $search     The search term
+     * @param   string      $key        The column being searched
+     * @param   integer     $page       The page number
+     * @param   integer     $perPage    Reults per page
+     */
+    protected function executeSearch($relation, $search, $key, $page, $perPage)
+    {
+        $skip   = ($page - 1) * $perPage;
+        $order  = input('order') ?: 'asc';
+        $query  = $relation::limit($perPage)->skip($skip)->orderBy($key, $order);
+
         if ($search) {
             $query->where($key, 'LIKE', "%$search%");
         }
 
-        if (isset($this->config->scope)) {
-            $scope = $this->config->scope;
+        if (isset($this->config->scope) && ($scope = $this->config->scope)) {
             $query->$scope();
         }
 
-        // Pass variables to the partials
-        $this->vars['search']       = $search ?: '';
-        $this->vars['order']        = $order;
-        $this->vars['page']         = $page;
-        $this->vars['pagePrevious'] = $page - 1 >= 1 ? $page - 1 : false;
-        $this->vars['pageNext']     = $page + 1 <= $lastPage ? $page + 1 : false;
-        $this->vars['results']      = $query->get();
+        // Pass necessary variables to the view
+        $this->vars['order']    = $order;
+        $this->vars['search']   = $search ?: '';
+        $this->vars['results']  = $query->get();
+    }
+
+    /**
+     * Prepares pagination variables
+     *
+     * @param   integer     $page       The current page
+     * @param   integer     $perPage    The number of items per page
+     * @param   integer     $total      The total number of results
+     */
+    protected function preparePagination($page, $perPage, $total)
+    {
+        $this->vars['page'] = $page;
+
+        $this->vars['pagePrevious'] = $page > 1
+            ? $page - 1
+            : false;
+
+        $this->vars['pageNext'] = $page + 1 <= ceil($total / $perPage)
+            ? $page + 1
+            : false;
+
         $this->vars['resultsFrom']  = ($page - 1) * $perPage + 1;
         $this->vars['resultsTo']    = $this->vars['resultsFrom'] + $this->vars['results']->count() - 1;
-        $this->vars['resultsTotal'] = $total;
     }
 
     /**
