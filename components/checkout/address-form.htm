@@ -6,11 +6,13 @@
 
     <form
         data-request="{{ __SELF__ ~ '::onSubmitDetails' }}"
-        data-request-update="">
+        data-request-update="'{{ __SELF__ ~ '::form' }}': '#checkoutForm'"
+        data-request-error="alert(jqXHR.responseJSON.result);">
 
         <input type="text" name="address[organization]" placeholder="Organization" />
         <input type="text" name="address[street_1]" placeholder="Street 1" />
         <input type="text" name="address[street_2]" placeholder="Street 2" />
+        <input type="text" name="address[city]" placeholder="City" />
         <input type="text" name="address[postal_code]" placeholder="Postal code" />
 
         <div id="partialCountryState">

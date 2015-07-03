@@ -1,6 +1,7 @@
 <form
     data-request="{{ __SELF__ ~ '::onSubmitDetails' }}"
-    data-request-update="'{{ __SELF__ ~ '::form' }}': '#checkoutForm'">
+    data-request-update="'{{ __SELF__ ~ '::form' }}': '#checkoutForm'"
+    data-request-error="alert(jqXHR.responseJSON.result);">
 
     <input type="text" name="customer[first_name]" placeholder="First name" />
     <input type="text" name="customer[last_name]" placeholder="Last name" />

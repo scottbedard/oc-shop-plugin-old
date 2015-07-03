@@ -1,8 +1,9 @@
-{% set countryId = countryId|default(form_value('country_id')) %}
-{% set stateId = stateId|default(form_value('state_id')) %}
+{% set countryId = countryId|default(form_value('address')['country_id']) %}
+{% set stateId = stateId|default(form_value('address')['state_id']) %}
 
 {{ form_select_country('country_id', countryId, {
     id: 'accountCountry',
+    name: 'address[country_id]',
     class: 'browser-default',
     emptyOption: '',
     'data-request': 'onInit',
@@ -13,6 +14,7 @@
 
 {{ form_select_state('state_id', countryId, stateId, {
     id: 'accountState',
+    name: 'address[state_id]',
     class: 'browser-default',
     emptyOption: ''
 }) }}
