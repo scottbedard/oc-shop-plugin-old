@@ -9,7 +9,7 @@ use Request;
 class CartManagerTest extends \OctoberPluginTestCase
 {
 
-    protected $refreshPlugins = ['Bedard.Shop'];
+    protected $refreshPlugins = ['RainLab.Location', 'Bedard.Shop'];
 
     public function test_initializing_and_opening_a_new_cart()
     {
