@@ -1,0 +1,10 @@
+<form
+    data-request="{{ __SELF__ ~ '::onSubmitDetails' }}"
+    data-request-update="'{{ __SELF__ ~ '::form' }}': '#checkoutForm'">
+
+    <input type="text" name="customer[first_name]" placeholder="First name" />
+    <input type="text" name="customer[last_name]" placeholder="Last name" />
+    <input type="text" name="customer[email]" placeholder="Email address" />
+    <input type="submit" name="Continue" />
+
+</form>

@@ -7,6 +7,7 @@ use RainLab\Location\Models\Country;
 
 class Checkout extends ComponentBase
 {
+    use \Bedard\Shop\Traits\CartAccessTrait;
 
     /**
      * @var Bedard\Shop\Models\Address
@@ -14,19 +15,9 @@ class Checkout extends ComponentBase
     public $address;
 
     /**
-     * @var Bedard\Shop\Models\Cart
-     */
-    public $cart;
-
-    /**
      * @var Bedard\Shop\Models\Customer
      */
     public $customer;
-
-    /**
-     * @var Bedard\Shop\Classes\CartManager
-     */
-    protected $manager;
 
     /**
      * Component Details
@@ -71,22 +62,19 @@ class Checkout extends ComponentBase
         return $options;
     }
 
-    public function init()
-    {
-        $this->manager = App::make('Bedard\Shop\Classes\CartManager');
-    }
-
     public function onRun()
     {
+        $this->prepareCart();
         $this->prepareVars();
     }
 
     public function prepareVars()
     {
-        $this->cart             = $this->manager->cart;
-        $this->defaultCountry   = intval($this->property('defaultCountry'));
+        if ($this->cart->hasCustomer) {
+            $this->customer = $this->cart->customer;
+        }
 
-        if ($this->cart && $this->cart->address_id) {
+        if ($this->cart->hasAddress) {
             $this->address = $this->cart->address;
         }
     }
@@ -100,5 +88,7 @@ class Checkout extends ComponentBase
         $address    = input('address');
 
         $this->manager->setCustomerAddress($customer, $address);
+        $this->prepareCart();
+        $this->prepareVars();
     }
 }

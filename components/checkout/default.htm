@@ -1,12 +1,12 @@
 <h1>Checkout</h1>
-{% if not __SELF__.cart or __SELF__.cart.isEmpty %}
+{% if __SELF__.isEmpty %}
 
     <p>Empty carts = empty hearts :(</p>
 
 {% else %}
 
-    <div id="addressForm">
-        {% partial __SELF__ ~ '::address' %}
+    <div id="checkoutForm">
+        {% partial __SELF__ ~ '::form' %}
     </div>
 
 {% endif %}

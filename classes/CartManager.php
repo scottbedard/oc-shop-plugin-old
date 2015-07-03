@@ -118,7 +118,7 @@ class CartManager {
                 'inventory.values.option',
             ]);
 
-            if ($this->cart->promotion_id) {
+            if ($this->cart->hasPromotion) {
                 $this->cart->load('promotion.products');
             }
 

@@ -1,0 +1,9 @@
+{% if not __SELF__.cart.hasCustomer %}
+
+    {% partial __SELF__ ~ '::customer-form' %}
+
+{% elseif not __SELF__.cart.hasAddress %}
+
+    {% partial __SELF__ ~ '::address-form' %}
+
+{% endif %}

@@ -63,17 +63,17 @@ class Cart extends Model
 
     public function getHasAddressAttribute()
     {
-        return $this->address_id != null && $this->address;
+        return $this->address_id != null;
     }
 
     public function getHasCustomerAttribute()
     {
-        return $this->customer_id != null && $this->customer;
+        return $this->customer_id != null;
     }
 
     public function getHasPromotionAttribute()
     {
-        return $this->promotion_id != null && $this->promotion;
+        return $this->promotion_id != null;
     }
 
     public function getHasPromotionProductsAttribute()

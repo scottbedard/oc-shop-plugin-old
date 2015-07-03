@@ -6,16 +6,7 @@ use Cms\Classes\ComponentBase;
 
 class Cart extends ComponentBase
 {
-
-    /**
-     * @var CartManager     The cart manager instance
-     */
-    protected $manager;
-
-    /**
-     * @var CartModel       The user's shopping cart
-     */
-    public $cart;
+    use \Bedard\Shop\Traits\CartAccessTrait;
 
     /**
      * Component details
@@ -30,50 +21,12 @@ class Cart extends ComponentBase
         ];
     }
 
-    public function init()
-    {
-        $this->manager = App::make('Bedard\Shop\Classes\CartManager');
-    }
-
+    /**
+     * Run the component
+     */
     public function onRun()
     {
-        $this->prepareVars();
-    }
-
-    protected function prepareVars()
-    {
-        // If we have a cart, replace the defaults
-        $this->cart = $this->manager->cart;
-    }
-
-    /**
-     * Returns all items in the cart
-     *
-     * @return  Illuminate\Database\Eloquent\Collection
-     */
-    public function getItems()
-    {
-        return $this->manager->getItems();
-    }
-
-    /**
-     * Returns the sum of CartItem quantities
-     *
-     * @return  integer
-     */
-    public function itemCount()
-    {
-        return $this->manager->getItemCount();
-    }
-
-    /**
-     * Determines if the cart is empty or not
-     *
-     * @return  boolean
-     */
-    public function isEmpty()
-    {
-        return $this->manager->getItemCount() == 0;
+        $this->prepareCart();
     }
 
     /**
@@ -86,7 +39,7 @@ class Cart extends ComponentBase
         $quantity   = intval(input('quantity')) ?: 1;
 
         $this->manager->add($productId, $valueIds, $quantity);
-        $this->prepareVars();
+        $this->prepareCart();
     }
 
     /**
@@ -95,7 +48,7 @@ class Cart extends ComponentBase
     public function onClearCart()
     {
         $this->manager->clear();
-        $this->prepareVars();
+        $this->prepareCart();
     }
 
     /**
@@ -104,7 +57,7 @@ class Cart extends ComponentBase
     public function onRemoveFromCart()
     {
         $this->manager->remove(intval(input('remove')));
-        $this->prepareVars();
+        $this->prepareCart();
     }
 
     /**
@@ -113,7 +66,7 @@ class Cart extends ComponentBase
     public function onRemovePromotion()
     {
         $this->manager->removePromotion();
-        $this->prepareVars();
+        $this->prepareCart();
     }
 
     /**
@@ -126,7 +79,7 @@ class Cart extends ComponentBase
         if ($promotion = input('promotion'))
             $this->manager->applyPromotion($promotion);
 
-        $this->prepareVars();
+        $this->prepareCart();
     }
 
 }
