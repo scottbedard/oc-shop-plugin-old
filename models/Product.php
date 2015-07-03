@@ -205,15 +205,13 @@ class Product extends Model
     {
         // Joins a price table
         $now = date('Y-m-d H:i:s');
-        $prices = "(
-            SELECT
-                `bedard_shop_prices`.`product_id`,
-                MIN(`bedard_shop_prices`.`price`) AS `price`
-            FROM `bedard_shop_prices`
-            WHERE (`bedard_shop_prices`.`start_at` IS NULL OR `bedard_shop_prices`.`start_at` <= '$now')
-            AND (`bedard_shop_prices`.`end_at` IS NULL OR `bedard_shop_prices`.`end_at` > '$now')
-            GROUP BY `bedard_shop_prices`.`product_id`
-        ) AS `prices`";
+        $prices = "(".
+            "SELECT `bedard_shop_prices`.`product_id`, `bedard_shop_prices`.`discount_id`, MIN(`bedard_shop_prices`.`price`) AS `price` ".
+            "FROM `bedard_shop_prices` ".
+            "WHERE (`bedard_shop_prices`.`start_at` IS NULL OR `bedard_shop_prices`.`start_at` <= '$now') ".
+            "AND (`bedard_shop_prices`.`end_at` IS NULL OR `bedard_shop_prices`.`end_at` > '$now') ".
+            "GROUP BY `bedard_shop_prices`.`product_id`".
+        ") AS `prices`";
 
         $query->join(DB::raw($prices), function($join) {
             $join->on('prices.product_id', '=', 'bedard_shop_products.id');

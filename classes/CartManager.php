@@ -109,7 +109,9 @@ class CartManager {
         $this->loadItems($force);
         if (!$this->itemDataLoaded || $force) {
             $this->cart->items->load([
-                'inventory.product.current_price',
+                'inventory.product' => function($product) {
+                    $product->joinPrices();
+                },
                 'inventory.values.option',
             ]);
 

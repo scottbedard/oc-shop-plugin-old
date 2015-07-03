@@ -66,8 +66,8 @@ class Product extends ComponentBase
     {
         // Load the selected product
         $this->product = ProductModel::isEnabled()
+            ->joinPrices()
             ->where('slug', $this->property('slug'))
-            ->with('current_price.discount')
             ->with('options.values')
             ->with('inventories.values')
             ->with('images')
