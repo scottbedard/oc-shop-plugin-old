@@ -12,9 +12,9 @@ class CreateCartItemsTable extends Migration
         {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('cart_id')->unsigned()->nullable();
-            $table->integer('product_id')->unsigned()->nullable();
-            $table->integer('inventory_id')->unsigned()->nullable();
+            $table->integer('cart_id')->unsigned()->nullable()->index();
+            $table->integer('product_id')->unsigned()->nullable()->index();
+            $table->integer('inventory_id')->unsigned()->nullable()->index();
             $table->integer('quantity')->unsigned()->default(0);
             $table->timestamps();
             $table->softDeletes();

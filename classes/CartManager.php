@@ -1,12 +1,15 @@
 <?php namespace Bedard\Shop\Classes;
 
+use Bedard\Shop\Models\Address;
 use Bedard\Shop\Models\Cart;
 use Bedard\Shop\Models\CartItem;
+use Bedard\Shop\Models\Customer;
 use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Promotion;
 use Bedard\Shop\Models\Settings;
 use Cookie;
+use Exception;
 use October\Rain\Exception\AjaxException;
 use Request;
 use Session;
@@ -239,6 +242,35 @@ class CartManager {
 
         $this->cart->promotion_id = null;
         $this->cart->save();
+    }
+
+    /**
+     * Attaches a customer and address to the cart
+     *
+     * @param   array   $data
+     */
+    public function setCustomerAddress($customerData, $addressData)
+    {
+        $this->loadCart();
+
+        try {
+            $save = false;
+            if (is_array($customerData) && array_filter($customerData) && ($customer = Customer::firstOrCreate($customerData))) {
+                $this->cart->customer_id = $customer->id;
+                $save = true;
+            }
+
+            if (is_array($addressData) && array_filter($addressData) && ($address = Address::firstOrCreate($addressData))) {
+                $this->cart->address_id = $address->id;
+                $save = true;
+            }
+
+            if ($save) {
+                $this->cart->save();
+            }
+        } catch (Exception $e) {
+            throw new AjaxException($e->getMessage());
+        }
     }
 
     /**

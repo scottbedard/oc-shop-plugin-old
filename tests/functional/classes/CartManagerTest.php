@@ -162,4 +162,33 @@ class CartManagerTest extends \OctoberPluginTestCase
         $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $manager->getItems());
         $this->assertEquals(2, $manager->getItems()->count());
     }
+
+    public function test_set_customer_and_address_method()
+    {
+        $customer = [
+            'first_name' => 'Some',
+            'last_name' => 'Guy',
+            'email' => 'some.guy@example.com',
+        ];
+
+        $address = [
+            'organization'  => 'Some Company',
+            'street_1'      => '123 Foo St.',
+            'street_2'      => 'Apartment 2B',
+            'city'          => 'Schenectady',
+            'postal_code'   => '12345',
+            'state_id'      => 37,
+            'country_id'    => 1,
+        ];
+
+        $manager = new CartManager;
+        $manager->loadCart();
+        $this->assertNull($manager->cart->customer_id);
+        $this->assertNull($manager->cart->address_id);
+
+        $manager->setCustomerAddress($customer, $address);
+        $manager->cart->load('customer', 'address');
+        $this->assertInstanceOf('Bedard\Shop\Models\Customer', $manager->cart->customer);
+        $this->assertInstanceOf('Bedard\Shop\Models\Address', $manager->cart->address);
+    }
 }

@@ -3,21 +3,16 @@
 use Model;
 
 /**
- * Address Model
+ * Customer Model
  */
-class Address extends Model
+class Customer extends Model
 {
     use \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'bedard_shop_addresses';
-
-    /**
-     * @var array   Implemented behaviors
-     */
-    public $implement = ['RainLab.Location.Behaviors.LocationModel'];
+    public $table = 'bedard_shop_customers';
 
     /**
      * @var array Guarded fields
@@ -28,14 +23,9 @@ class Address extends Model
      * @var array Fillable fields
      */
     protected $fillable = [
-        'organization',
-        'street_1',
-        'street_2',
-        'city',
-        'postal_code',
-        'state_name',
-        'is_billing',
-        'is_shipping',
+        'first_name',
+        'last_name',
+        'email',
     ];
 
     /**
@@ -51,7 +41,9 @@ class Address extends Model
      * Validation
      */
     public $rules = [
-        'steet_1' => 'required',
+        'first_name'    => 'required',
+        'last_name'     => 'required',
+        'email'         => 'required|email',
     ];
 
 }

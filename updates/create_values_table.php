@@ -12,7 +12,7 @@ class CreateValuesTable extends Migration
         {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('option_id')->unsigned()->index()->nullable();
+            $table->integer('option_id')->unsigned()->nullable()->index();
             $table->string('name')->nullable();
             $table->integer('position')->unsigned()->default(0);
             $table->timestamps();

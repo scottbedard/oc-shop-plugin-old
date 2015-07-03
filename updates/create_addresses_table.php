@@ -12,15 +12,15 @@ class CreateAddressesTable extends Migration
         {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('recipient')->nullable();
             $table->string('organization')->nullable();
             $table->string('street_1')->nullable();
             $table->string('street_2')->nullable();
             $table->string('city')->nullable();
             $table->string('postal_code')->nullable();
             $table->string('state_name')->nullable();
-            $table->integer('state_id')->unsigned()->nullable();
-            $table->string('country_id')->nullable();
+            $table->integer('state_id')->unsigned()->nullable()->index();
+            $table->integer('country_id')->unsigned()->nullable()->index();
+            $table->boolean('is_billing')->default(true);
             $table->boolean('is_shipping')->default(true);
             $table->timestamps();
         });

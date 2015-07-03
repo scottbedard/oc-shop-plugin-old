@@ -1,3 +1,12 @@
-<p>This is the default markup for component Checkout</p>
+<h1>Checkout</h1>
+{% if not __SELF__.cart or __SELF__.cart.isEmpty %}
 
-<small>You can delete this file if you want</small>
+    <p>Empty carts = empty hearts :(</p>
+
+{% else %}
+
+    <div id="addressForm">
+        {% partial __SELF__ ~ '::address' %}
+    </div>
+
+{% endif %}

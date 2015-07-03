@@ -17,6 +17,7 @@
     - create_promotions_table.php
     - create_product_promotion_table.php
     - create_country_promotion_table.php
+    - create_customers_table.php
     - create_addresses_table.php
     - create_payments_table.php
     - create_drivers_table.php

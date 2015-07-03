@@ -12,7 +12,7 @@ class CreatePaymentsTable extends Migration
         {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('cart_id')->unsigned()->nullable();
+            $table->integer('cart_id')->unsigned()->nullable()->index();
             $table->string('hash')->nullable();
             $table->boolean('is_inventoried')->default(false);
             $table->timestamp('received_at')->nullable();

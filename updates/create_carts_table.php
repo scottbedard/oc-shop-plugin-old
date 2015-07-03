@@ -14,8 +14,9 @@ class CreateCartsTable extends Migration
             $table->increments('id');
             $table->string('key')->nullable();
             $table->string('hash')->nullable();
-            $table->integer('address_id')->unsigned()->nullable();
-            $table->integer('promotion_id')->unsigned()->nullable();
+            $table->integer('customer_id')->unsigned()->nullable()->index();
+            $table->integer('address_id')->unsigned()->nullable()->index();
+            $table->integer('promotion_id')->unsigned()->nullable()->index();
             $table->string('status')->default('open');
             $table->timestamps();
         });

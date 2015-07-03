@@ -42,6 +42,13 @@ return [
             'slug'                      => 'Category',
             'slug_description'          => 'Select a category or enter a slug parameter.',
         ],
+        'checkout' => [
+            'default_country'           => 'Default country',
+            'default_country_description' => 'This determines which country will be selected by default.',
+            'default_country_none'      => 'No default country',
+            'description'               => 'Processes checkout forms and payment.',
+            'name'                      => 'Checkout',
+        ],
         'navigation' => [
             'description'               => 'Displays a the category tree.',
             'name'                      => 'Navigation',

@@ -32,6 +32,9 @@ class Cart extends Model
         'address' => [
             'Bedard\Shop\Models\Address',
         ],
+        'customer' => [
+            'Bedard\Shop\Models\Customer',
+        ],
         'payment' => [
             'Bedard\Shop\Models\Payment',
         ],
@@ -63,6 +66,11 @@ class Cart extends Model
         return $this->address_id != null && $this->address;
     }
 
+    public function getHasCustomerAttribute()
+    {
+        return $this->customer_id != null && $this->customer;
+    }
+
     public function getHasPromotionAttribute()
     {
         return $this->promotion_id != null && $this->promotion;
@@ -81,6 +89,11 @@ class Cart extends Model
     public function getIsDiscountedAttribute()
     {
         return $this->baseSubtotal < $this->subtotal;
+    }
+
+    public function getIsEmptyAttribute()
+    {
+        return $this->items->sum('quantity') == 0;
     }
 
     public function getIsPromotionMinimumReachedAttribute()

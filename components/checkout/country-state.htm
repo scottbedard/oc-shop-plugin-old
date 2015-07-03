@@ -1,0 +1,18 @@
+{% set countryId = countryId|default(form_value('country_id')) %}
+{% set stateId = stateId|default(form_value('state_id')) %}
+
+{{ form_select_country('country_id', countryId, {
+    id: 'accountCountry',
+    class: 'browser-default',
+    emptyOption: '',
+    'data-request': 'onInit',
+    'data-request-update': {
+        'shopCheckout::country-state': '#partialCountryState'
+    }
+}) }}
+
+{{ form_select_state('state_id', countryId, stateId, {
+    id: 'accountState',
+    class: 'browser-default',
+    emptyOption: ''
+}) }}
