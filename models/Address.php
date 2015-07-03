@@ -51,7 +51,12 @@ class Address extends Model
      * Validation
      */
     public $rules = [
-        'steet_1' => 'required',
+        'street_1'      => 'required',
+        'city'          => 'required',
+        'postal_code'   => 'required',
+        'state_name'    => 'required_without:state_id',
+        'state_id'      => 'required_without:state_name',
+        'country_id'    => 'required',
     ];
 
 }
