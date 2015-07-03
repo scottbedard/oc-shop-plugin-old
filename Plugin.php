@@ -40,7 +40,7 @@ class Plugin extends PluginBase
     public function boot()
     {
         // Register the CartManager as a singleton
-        App::singleton('Bedard\Shop\Classes\CartManager', function($app) {
+        App::singleton('Bedard\Shop\Classes\CartManager', function() {
             return new CartManager;
         });
     }

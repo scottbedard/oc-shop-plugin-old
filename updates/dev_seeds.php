@@ -52,7 +52,7 @@ class DevSeeds extends Seeder
                 $parent_id = $parent->id;
             }
 
-            $seed = Generate::category($category['name'], [
+            Generate::category($category['name'], [
                 'parent_id'     => $parent_id,
                 'position'      => $i,
                 'filter'        => isset($category['filter']) ? $category['filter'] : null,
@@ -98,9 +98,9 @@ class DevSeeds extends Seeder
             $small  = Generate::value($size, 'Small', ['position' => 0]);
             $medium = Generate::value($size, 'Medium', ['position' => 1]);
             $large  = Generate::value($size, 'Large', ['position' => 2]);
-            $inv1   = Generate::inventory($seed, [$small->id], ['quantity' => rand(0, 2)]);
-            $inv2   = Generate::inventory($seed, [$medium->id], ['quantity' => rand(0, 2)]);
-            $inv3   = Generate::inventory($seed, [$large->id], ['quantity' => rand(0, 2)]);
+            Generate::inventory($seed, [$small->id], ['quantity' => rand(0, 2)]);
+            Generate::inventory($seed, [$medium->id], ['quantity' => rand(0, 2)]);
+            Generate::inventory($seed, [$large->id], ['quantity' => rand(0, 2)]);
         }
 
         // Create some electronics...
@@ -126,7 +126,7 @@ class DevSeeds extends Seeder
             ]);
             $seed->categories()->sync(Category::whereIn('slug', $tv['categories'])->lists('id'));
 
-            $inventory = Generate::inventory($seed, [], ['quantity' => rand(0, 5)]);
+            Generate::inventory($seed, [], ['quantity' => rand(0, 5)]);
         }
 
         // Create some computers
@@ -148,7 +148,7 @@ class DevSeeds extends Seeder
             $hd = Generate::option('Hard Drive', ['product_id' => $seed->id]);
             foreach ($computer['options'] as $option => $modifier) {
                 $option = Generate::value($hd, $option);
-                $inventory = Generate::inventory($seed, [$option->id], ['quantity' => rand(0, 2), 'modifier' => $modifier]);
+                Generate::inventory($seed, [$option->id], ['quantity' => rand(0, 2), 'modifier' => $modifier]);
             }
         }
     }
