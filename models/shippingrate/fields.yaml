@@ -1,0 +1,17 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+
+    base_price:
+        label: bedard.shop::lang.shippingrates.base_price
+        comment: bedard.shop::lang.shippingrates.base_price_comment
+        placeholder: '0.00'
+        span: left
+
+    rate:
+        label: bedard.shop::lang.shippingrates.rate
+        comment: bedard.shop::lang.shippingrates.rate_comment
+        placeholder: '0.00'
+        span: right

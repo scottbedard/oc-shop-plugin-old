@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: bedard.shop::lang.shippingmethods.model
+
+# Model Form Field configuration
+form: $/bedard/shop/models/shippingmethod/fields.yaml
+
+# Model Class name
+modelClass: Bedard\Shop\Models\ShippingMethod
+
+# Default redirect location
+defaultRedirect: bedard/shop/shippingmethods
+
+# Create page
+create:
+    title: backend::lang.relation.create_name
+    redirect: bedard/shop/shippingmethods/update/:id
+    redirectClose: bedard/shop/shippingmethods
+
+# Update page
+update:
+    title: backend::lang.relation.update_name
+    redirect: bedard/shop/shippingmethods
+    redirectClose: bedard/shop/shippingmethods
+
+# Preview page
+preview:
+    title: backend::lang.relations.preview_name

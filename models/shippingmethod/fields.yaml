@@ -1,0 +1,22 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+
+    name:
+        label: bedard.shop::lang.shippingmethods.method_name
+
+    min_weight:
+        label: bedard.shop::lang.shippingmethods.min_weight
+        comment: bedard.shop::lang.shippingmethods.min_weight_comment
+        span: left
+
+    max_weight:
+        label: bedard.shop::lang.shippingmethods.max_weight
+        comment: bedard.shop::lang.shippingmethods.max_weight_comment
+        span: right
+
+    rates:
+        type: partial
+        path: $/bedard/shop/models/shippingmethod/_rates.htm

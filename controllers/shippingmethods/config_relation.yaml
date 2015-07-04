@@ -1,0 +1,13 @@
+# ===================================
+#  Relation Behavior Config
+# ===================================
+
+rates:
+    label: bedard.shop::lang.shippingrates.controller
+    view:
+        list: ~/plugins/bedard/shop/models/shippingrate/columns.yaml
+        toolbarButtons: create|delete
+    manage:
+        form: ~/plugins/bedard/shop/models/shippingrate/fields.yaml
+        recordsPerPage: 10
+        deferredBinding: true

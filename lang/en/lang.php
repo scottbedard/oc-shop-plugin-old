@@ -90,6 +90,7 @@ return [
             'shipping'                  => 'Shipping',
             'shipping_description'      => 'Manage shipping providers and settings.',
         ],
+        'shipping'                      => 'Shipping Table',
     ],
 
     //
@@ -327,6 +328,17 @@ return [
             'calculator'                => 'Shipping Calculator',
             'calculator_placeholder'    => '-- select shipping calculator --',
         ],
+    ],
+
+    'shippingmethods' => [
+        'controller'                    => 'Shipping Methods',
+        'list_title'                    => 'Manage Shipping Methods',
+        'max_weight'                    => 'Maximum weight',
+        'max_weight_comment'            => 'Maximum weight in :units (leave blank for no maximum)',
+        'method_name'                   => 'Shipping method name',
+        'min_weight'                    => 'Minimum weight',
+        'min_weight_comment'            => 'Minimum weight in :units (leave blank for no minimum)',
+        'model'                         => 'Shipping Method',
     ],
 
     'values' => [
