@@ -43,10 +43,17 @@ class OptionsInventories extends FormWidgetBase
 
         $sessionKey = input('sessionKey') ?: $this->sessionKey;
 
-        // These variables will be used normally by partials
-        $this->model->load('options.values', 'inventories.values');
-        $this->vars['inventories']  = $this->model->inventories()->withDeferred($sessionKey)->get();
-        $this->vars['options']      = $this->model->options()->withDeferred($sessionKey)->orderBy('position', 'asc')->get();
+        $this->model->load([
+            'inventories' => function($inventory) use ($sessionKey) {
+                $inventory->withDeferred($sessionKey)->with('values');
+            },
+            'options' => function($option) use ($sessionKey) {
+                $option->withDeferred($sessionKey)->with('values')->orderBy('position');
+            },
+        ]);
+
+        $this->vars['inventories']  = $this->model->inventories;
+        $this->vars['options']      = $this->model->options;
     }
 
     /**

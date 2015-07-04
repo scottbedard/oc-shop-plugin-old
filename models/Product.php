@@ -270,7 +270,7 @@ class Product extends Model
             $this->changedPrice = true;
         }
 
-        $this->attributes['base_price'] = $value > 0 ? $value : 0;
+        $this->attributes['base_price'] = $value ?: 0;
     }
 
     public function setDescriptionAttribute($value)
@@ -285,6 +285,11 @@ class Product extends Model
         // Parse the code snippet
         $this->attributes['snippet'] = $value;
         $this->attributes['snippet_html'] = Markdown::parse(trim($value));
+    }
+
+    public function setWeightAttribute($value)
+    {
+        $this->attributes['weight'] = $value ?: 0;
     }
 
     /**

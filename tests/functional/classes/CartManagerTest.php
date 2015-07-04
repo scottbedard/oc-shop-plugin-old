@@ -206,6 +206,7 @@ class CartManagerTest extends \OctoberPluginTestCase
         $manager = new CartManager;
         $manager->loadCart();
 
+        Shipping::set('calculator', 'Bedard\Shop\Classes\ShippingTable');
         Shipping::set('behavior', 'off');
         $this->assertSame(false, $manager->calculateShipping());
 
