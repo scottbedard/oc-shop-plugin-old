@@ -67,7 +67,7 @@ class ShippingRate extends Model
         $this->attributes['rate'] = $value ?: 0;
     }
 
-     /**
+    /**
      * Filter the form fields
      */
     public function filterFields($fields, $context = null)
@@ -88,8 +88,9 @@ class ShippingRate extends Model
             ? input('ShippingRate')['countries']
             : $this->countries->lists('id');
 
-        if (!$countryIds)
+        if (!$countryIds) {
             return [];
+        }
 
         $states = State::select('rainlab_location_states.*', 'rainlab_location_countries.code')
             ->join('rainlab_location_countries', 'rainlab_location_states.country_id', '=', 'rainlab_location_countries.id')
@@ -101,9 +102,9 @@ class ShippingRate extends Model
 
         $options = [];
         foreach ($states as $state) {
-            $options[$state->id] = count($countryIds) <= 1
-                ? $state->name
-                : $state->country->code.': '.$state->name;
+            $options[$state->id] = count($countryIds) > 1
+                ? $state->country->code.': '.$state->name
+                : $state->name;
         }
 
         return $options;
