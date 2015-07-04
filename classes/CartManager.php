@@ -57,6 +57,13 @@ class CartManager {
                 ->find($cookie['id']);
                 // todo: make sure cart is open
         }
+
+        // If we still don't have a cart, forget the session and cookie to
+        // prevent queries looking for a cart that doesn't exist.
+        if (!$this->cart) {
+            Session::forget(self::SESSION_KEY);
+            Cookie::queue(Cookie::forget(self::SESSION_KEY));
+        }
     }
 
     /**
