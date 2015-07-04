@@ -59,4 +59,25 @@ class Address extends Model
         'country_id'    => 'required',
     ];
 
+    /**
+     * Accessors and Mutators
+     */
+    public function getStateOrNameAttribute()
+    {
+        if (!$this->state) {
+            return $this->attributes['state_name'] ?: false;
+        }
+
+        return $this->state->name;
+    }
+
+    public function getStateCodeOrNameAttribute()
+    {
+        if (!$this->state) {
+            return $this->attributes['state_name'] ?: false;
+        }
+
+        return $this->state->code;
+    }
+
 }

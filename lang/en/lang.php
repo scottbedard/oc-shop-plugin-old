@@ -263,6 +263,8 @@ return [
         'status_disabled'               => 'Disabled',
         'status_normal'                 => 'Normal',
         'thumbnails'                    => 'Thumbnails',
+        'weight'                        => 'Weight',
+        'weight_comment'                => 'Product weight in :units',
     ],
 
     'promotions' => [
@@ -294,10 +296,15 @@ return [
 
     'settings' => [
         'backend' => [
-            'editor'                    => 'Backend Editor',
+            'editor'                    => 'Backend editor',
             'editor_code'               => 'Code editor / markdown',
             'editor_rich'               => 'Rich text editor',
             'tab'                       => 'Backend',
+            'weight_unit'               => 'Unit of weight',
+            'weight_unit_oz'            => 'Ounces',
+            'weight_unit_lb'            => 'Pounds',
+            'weight_unit_gr'            => 'Grams',
+            'weight_unit_kg'            => 'Kilograms',
         ],
         'cart' => [
             'life'                      => 'Cart Lifetime',

@@ -87,6 +87,16 @@ class Products extends Controller
             ]);
         }
 
+        $units = Lang::get('bedard.shop::lang.settings.backend.weight_unit_'.Settings::getWeightUnits());
+        $form->addSecondaryTabFields([
+            'weight' => [
+                'tab'       => 'bedard.shop::lang.products.details_tab',
+                'label'     => 'bedard.shop::lang.products.weight',
+                'comment'   => Lang::get('bedard.shop::lang.products.weight_comment', ['units' => strtolower($units)]),
+                'span'      => 'right',
+            ],
+        ]);
+
         // Only show one type of editor
         if (Settings::getEditor() == 'code') {
             $form->removeField('description_html');

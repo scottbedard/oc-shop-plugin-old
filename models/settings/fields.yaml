@@ -4,6 +4,18 @@
 
 fields:
 
+    weight_unit:
+        # tab: bedard.shop::lang.settings.backend.tab
+        label: bedard.shop::lang.settings.backend.weight_unit
+        type: dropdown
+        options:
+            oz: bedard.shop::lang.settings.backend.weight_unit_oz
+            lb: bedard.shop::lang.settings.backend.weight_unit_lb
+            gr: bedard.shop::lang.settings.backend.weight_unit_gr
+            kg: bedard.shop::lang.settings.backend.weight_unit_kg
+        default: oz
+        span: left
+
     backend_editor:
         # tab: bedard.shop::lang.settings.backend.tab
         label: bedard.shop::lang.settings.backend.editor
@@ -12,7 +24,7 @@ fields:
             richeditor: bedard.shop::lang.settings.backend.editor_rich
             code: bedard.shop::lang.settings.backend.editor_code
         default: richeditor
-        span: left
+        span: right
 
     cart_life:
         # tab: bedard.shop::lang.settings.cart.tab
@@ -29,4 +41,4 @@ fields:
             86400: bedard.shop::lang.settings.cart.life_two_months
             2628000: bedard.shop::lang.settings.cart.life_forever
         default: 10080
-        span: right
+        span: left

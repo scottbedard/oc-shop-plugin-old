@@ -89,6 +89,7 @@ class DevSeeds extends Seeder
                 'base_price'    => $shirt['base_price'],
                 'description'   => $faker->paragraph(10),
                 'snippet'       => $faker->paragraph(2),
+                'weight'        => 5.5,
                 'is_enabled'    => (bool) rand(0, $is_enabled),
             ]);
 
@@ -122,6 +123,7 @@ class DevSeeds extends Seeder
                 'base_price'    => $tv['base_price'],
                 'description'   => $faker->paragraph(10),
                 'snippet'       => $faker->paragraph(2),
+                'weight'        => 500,
                 'is_enabled'     => (bool) rand(0, $is_enabled),
             ]);
             $seed->categories()->sync(Category::whereIn('slug', $tv['categories'])->lists('id'));
@@ -141,7 +143,8 @@ class DevSeeds extends Seeder
                 'base_price'    => $computer['base_price'],
                 'description'   => $faker->paragraph(10),
                 'snippet'       => $faker->paragraph(2),
-                'is_enabled'     => (bool) rand(0, $is_enabled),
+                'weight'        => 300,
+                'is_enabled'    => (bool) rand(0, $is_enabled),
             ]);
             $seed->categories()->sync(Category::whereIn('slug', $computer['categories'])->lists('id'));
 
