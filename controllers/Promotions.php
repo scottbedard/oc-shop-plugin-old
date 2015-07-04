@@ -4,8 +4,6 @@ use BackendMenu;
 use Backend\Classes\Controller;
 use Bedard\Shop\Models\Promotion;
 use DB;
-use Flash;
-use Lang;
 
 /**
  * Promotions Back-end Controller
@@ -14,7 +12,8 @@ class Promotions extends Controller
 {
     public $implement = [
         'Backend.Behaviors.FormController',
-        'Backend.Behaviors.ListController'
+        'Backend.Behaviors.ListController',
+        'Bedard.Shop.Behaviors.ListActions',
     ];
 
     public $formConfig = 'config_form.yaml';
@@ -71,21 +70,5 @@ class Promotions extends Controller
         ) as `shipping_amount`";
 
         return $query->select(DB::raw("*, $status, $cart, $shipping"));
-    }
-
-    /**
-     * Delete selected rows
-     */
-    public function index_onDelete()
-    {
-        if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
-            foreach ($checkedIds as $postId) {
-                if ($model = Promotion::find($postId)) {
-                    $model->delete();
-                }
-            }
-            Flash::success(Lang::get('backend::lang.list.delete_selected_success'));
-        }
-        return $this->listRefresh();
     }
 }

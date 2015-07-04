@@ -5,8 +5,6 @@ use Backend\Classes\Controller;
 use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Settings;
 use DB;
-use Flash;
-use Lang;
 
 /**
  * Products Back-end Controller
@@ -15,7 +13,8 @@ class Products extends Controller
 {
     public $implement = [
         'Backend.Behaviors.FormController',
-        'Backend.Behaviors.ListController'
+        'Backend.Behaviors.ListController',
+        'Bedard.Shop.Behaviors.ListActions',
     ];
 
     public $formConfig = 'config_form.yaml';
@@ -48,15 +47,13 @@ class Products extends Controller
     }
 
     /**
-     * Refreshes the list and scoreboard
+     * Override the default list refresh action to update the scoreboard as well
      *
      * @return  array
      */
-    private function refreshListAndScoreboard()
+    public function overrideListRefresh()
     {
         $this->prepareVars();
-        $this->asExtension('ListController')->index();
-
         $array = $this->listRefresh();
         $array['#products-scoreboard'] = $this->makePartial('list_scoreboard');
 
@@ -135,22 +132,4 @@ class Products extends Controller
         $query->isNotFiltered();
     }
 
-    /**
-     * Delete selected rows
-     *
-     * @return  array
-     */
-    public function index_onDelete()
-    {
-        if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
-            foreach ($checkedIds as $postId) {
-                if ($model = Product::find($postId)) {
-                    $model->delete();
-                }
-            }
-            Flash::success(Lang::get('backend::lang.list.delete_selected_success'));
-        }
-
-        return $this->refreshListAndScoreboard();
-    }
 }
