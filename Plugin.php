@@ -2,9 +2,11 @@
 
 use App;
 use Backend;
+use Bedard\Shop\Models\ShippingSettings;
 use Bedard\Shop\Classes\CartManager;
 use Bedard\Shop\Classes\CurrencyHelper;
 use Bedard\Shop\Models\Currency;
+use Exception;
 use Lang;
 use System\Classes\PluginBase;
 
@@ -43,6 +45,18 @@ class Plugin extends PluginBase
         App::singleton('Bedard\Shop\Classes\CartManager', function() {
             return new CartManager;
         });
+
+        // Bind the shipping calculator class if there is one
+        $shippingInterface = 'Bedard\Shop\Classes\ShippingInterface';
+        if ($shippingCalculator = ShippingSettings::getCalculatorClass()) {
+            App::bind($shippingInterface, function() use ($shippingInterface, $shippingCalculator) {
+                if (!in_array($shippingInterface, class_implements($shippingCalculator))) {
+                    throw new Exception("Shipping calculators must implement $shippingInterface.");
+                }
+
+                return new $shippingCalculator;
+            });
+        }
     }
 
     /**
@@ -128,6 +142,15 @@ class Plugin extends PluginBase
                 'permissions'   => ['bedard.shop.access_settings'],
                 'icon'          => $currencyIcon,
                 'order'         => 200,
+            ],
+            'shipping' => [
+                'label'         => 'bedard.shop::lang.navigation.settings.shipping',
+                'description'   => 'bedard.shop::lang.navigation.settings.shipping_description',
+                'category'      => 'bedard.shop::lang.general.plugin',
+                'class'         => 'Bedard\Shop\Models\ShippingSettings',
+                'permissions'   => ['bedard.shop.access_settings'],
+                'icon'          => 'icon-truck',
+                'order'         => 300,
             ],
         ];
     }

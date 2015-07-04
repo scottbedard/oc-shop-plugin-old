@@ -87,6 +87,8 @@ return [
             'currency_description'      => 'Manager formatting and currency settings.',
             'general'                   => 'General Settings',
             'general_description'       => 'Manager general shop settings.',
+            'shipping'                  => 'Shipping',
+            'shipping_description'      => 'Manage shipping providers and settings.',
         ],
     ],
 
@@ -309,6 +311,14 @@ return [
             'life_two_months'           => '2 months',
             'life_forever'              => 'Forever',
             'tab'                       => 'Shopping Carts',
+        ],
+        'shipping' => [
+            'behavior'                  => 'Behavior',
+            'behavior_off'              => 'Off, shipping will not be calculated',
+            'behavior_on'               => 'On, shipping will be calculated, but allowed to fail',
+            'behavior_required'         => 'Required, a successful shipping calculation is required',
+            'calculator'                => 'Shipping Calculator',
+            'calculator_placeholder'    => '-- select shipping calculator --',
         ],
     ],
 

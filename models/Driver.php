@@ -28,4 +28,17 @@ class Driver extends Model
         'is_enabled',
     ];
 
+    /**
+     * Query Scopes
+     */
+    public function scopeIsPayment($query)
+    {
+        return $query->where('type', 'payment');
+    }
+
+    public function scopeIsShipping($query)
+    {
+        return $query->where('type', 'shipping');
+    }
+
 }

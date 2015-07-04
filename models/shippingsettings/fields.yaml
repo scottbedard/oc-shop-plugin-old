@@ -1,0 +1,21 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+
+    calculator:
+        label: bedard.shop::lang.settings.shipping.calculator
+        placeholder: bedard.shop::lang.settings.shipping.calculator_placeholder
+        type: dropdown
+        span: left
+
+    behavior:
+        label: bedard.shop::lang.settings.shipping.behavior
+        type: dropdown
+        options:
+            off: bedard.shop::lang.settings.shipping.behavior_off
+            on: bedard.shop::lang.settings.shipping.behavior_on
+            required: bedard.shop::lang.settings.shipping.behavior_required
+        default: off
+        span: right

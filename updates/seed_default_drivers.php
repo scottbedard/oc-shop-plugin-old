@@ -8,10 +8,11 @@ class SeedDefaultDrivers extends Seeder
     public function run()
     {
         // Standard shipping calculator
-        Driver::firstOrCreate([
-            'name'  => 'Shipping Table',
-            'type'  => 'shipping',
-            'class' => '',
+        Driver::create([
+            'name'          => 'Shipping Table',
+            'type'          => 'shipping',
+            'class'         => 'Bedard\Shop\Classes\ShippingTable',
+            'is_enabled'    => true,
         ]);
     }
 }
