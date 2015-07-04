@@ -297,8 +297,9 @@ class Product extends Model
      */
     public function filterFields($fields, $context = null)
     {
-        $units = Lang::get('bedard.shop::lang.settings.backend.weight_unit_'.Settings::getWeightUnits());
-        $fields->weight->comment = Lang::get('bedard.shop::lang.products.weight_comment', ['units' => strtolower($units)]);
+        $units  = Settings::getWeightUnits();
+        $lang   = strtolower(Lang::get('bedard.shop::lang.common.weight_'.$units.'_plural'));
+        $fields->weight->comment = Lang::get('bedard.shop::lang.products.weight_comment', ['units' => $lang]);
     }
 
     /**

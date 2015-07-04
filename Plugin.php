@@ -175,6 +175,10 @@ class Plugin extends PluginBase
                 'tab'   => 'bedard.shop::lang.general.plugin',
                 'label' => 'bedard.shop::lang.permissions.access_promotions',
             ],
+            'bedard.shop.access_shipping_table' => [
+                'tab'   => 'bedard.shop::lang.general.plugin',
+                'label' => 'bedard.shop::lang.permissions.access_shipping_table',
+            ],
             'bedard.shop.access_settings' => [
                 'tab'   => 'bedard.shop::lang.general.plugin',
                 'label' => 'bedard.shop::lang.permissions.access_settings',

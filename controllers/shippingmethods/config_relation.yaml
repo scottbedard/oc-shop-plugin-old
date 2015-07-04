@@ -3,7 +3,7 @@
 # ===================================
 
 rates:
-    label: bedard.shop::lang.shippingrates.controller
+    label: bedard.shop::lang.shippingrates.model
     view:
         list: ~/plugins/bedard/shop/models/shippingrate/columns.yaml
         toolbarButtons: create|delete

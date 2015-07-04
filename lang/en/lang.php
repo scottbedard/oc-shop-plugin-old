@@ -103,6 +103,7 @@ return [
         'access_products'               => 'Manage products',
         'access_promotions'             => 'Manage promotions',
         'access_settings'               => 'Manage shop settings',
+        'access_shipping_table'         => 'Manage shipping table'
     ],
 
     //
@@ -125,6 +126,14 @@ return [
         'start_at_immediate'            => 'Leave blank to start immediately.',
         'status'                        => 'Status',
         'updated_at'                    => 'Last Updated',
+        'weight_gr_plural'              => 'Grams',
+        'weight_gr_singular'            => 'Gram',
+        'weight_kg_plural'              => 'Kilograms',
+        'weight_kg_singular'            => 'Kilogram',
+        'weight_oz_plural'              => 'Ounces',
+        'weight_oz_singular'            => 'Ounce',
+        'weight_lb_plural'              => 'Pounds',
+        'weight_lb_singular'            => 'Pound',
     ],
 
     //
@@ -302,10 +311,6 @@ return [
             'editor_rich'               => 'Rich text editor',
             'tab'                       => 'Backend',
             'weight_unit'               => 'Unit of weight',
-            'weight_unit_oz'            => 'Ounces',
-            'weight_unit_lb'            => 'Pounds',
-            'weight_unit_gr'            => 'Grams',
-            'weight_unit_kg'            => 'Kilograms',
         ],
         'cart' => [
             'life'                      => 'Cart Lifetime',
@@ -335,10 +340,24 @@ return [
         'list_title'                    => 'Manage Shipping Methods',
         'max_weight'                    => 'Maximum weight',
         'max_weight_comment'            => 'Maximum weight in :units (leave blank for no maximum)',
-        'method_name'                   => 'Shipping method name',
+        'method_name'                   => 'Method name',
         'min_weight'                    => 'Minimum weight',
         'min_weight_comment'            => 'Minimum weight in :units (leave blank for no minimum)',
         'model'                         => 'Shipping Method',
+        'rates'                         => 'Shipping rates',
+    ],
+
+    'shippingrates' => [
+        'base_price'                    => 'Base price',
+        'base_price_comment'            => 'The shipping rate\'s starting price',
+        'controller'                    => 'Shipping Rates',
+        'countries'                     => 'Countries',
+        'countries_comment'             => 'Select countries that this shipping rate applies to',
+        'model'                         => 'Shipping Rate',
+        'rate'                          => 'Rate',
+        'rate_comment'                  => 'Cost per :units',
+        'states'                        => 'States',
+        'states_comment'                => 'Leaving all states unselected will apply the rate to every state'
     ],
 
     'values' => [

@@ -19,6 +19,8 @@ class ShippingMethods extends Controller
     public $listConfig      = 'config_list.yaml';
     public $relationConfig  = 'config_relation.yaml';
 
+    public $requiredPermissions = ['bedard.shop.access_shipping_table'];
+
     public function __construct()
     {
         parent::__construct();

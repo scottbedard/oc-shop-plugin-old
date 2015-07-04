@@ -9,14 +9,17 @@ fields:
 
     min_weight:
         label: bedard.shop::lang.shippingmethods.min_weight
+        # Comment added through filterFields()
         comment: bedard.shop::lang.shippingmethods.min_weight_comment
         span: left
 
     max_weight:
         label: bedard.shop::lang.shippingmethods.max_weight
+        # Comment added through filterFields()
         comment: bedard.shop::lang.shippingmethods.max_weight_comment
         span: right
 
     rates:
+        label: bedard.shop::lang.shippingmethods.rates
         type: partial
         path: $/bedard/shop/models/shippingmethod/_rates.htm

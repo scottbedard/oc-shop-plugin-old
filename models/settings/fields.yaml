@@ -9,10 +9,10 @@ fields:
         label: bedard.shop::lang.settings.backend.weight_unit
         type: dropdown
         options:
-            oz: bedard.shop::lang.settings.backend.weight_unit_oz
-            lb: bedard.shop::lang.settings.backend.weight_unit_lb
-            gr: bedard.shop::lang.settings.backend.weight_unit_gr
-            kg: bedard.shop::lang.settings.backend.weight_unit_kg
+            oz: bedard.shop::lang.common.weight_oz_plural
+            lb: bedard.shop::lang.common.weight_lb_plural
+            gr: bedard.shop::lang.common.weight_gr_plural
+            kg: bedard.shop::lang.common.weight_kg_plural
         default: oz
         span: left
 

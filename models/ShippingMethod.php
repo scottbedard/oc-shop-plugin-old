@@ -44,12 +44,33 @@ class ShippingMethod extends Model
     ];
 
     /**
+     * Accessors and Mutators
+     */
+    public function getMaxWeightAttribute()
+    {
+        return array_key_exists('max_weight', $this->attributes) && $this->attributes['max_weight'] > 0
+            ? $this->attributes['max_weight']
+            : null;
+    }
+
+    public function setMaxWeightAttribute($value)
+    {
+        $this->attributes['max_weight'] = $value ?: 0;
+    }
+
+    public function setMinWeightAttribute($value)
+    {
+        $this->attributes['min_weight'] = $value ?: 0;
+    }
+
+    /**
      * Filter the form fields
      */
     public function filterFields($fields, $context = null)
     {
-        $units = Lang::get('bedard.shop::lang.settings.backend.weight_unit_'.Settings::getWeightUnits());
-        $fields->min_weight->comment = Lang::get('bedard.shop::lang.shippingmethods.min_weight_comment', ['units' => strtolower($units)]);
-        $fields->max_weight->comment = Lang::get('bedard.shop::lang.shippingmethods.max_weight_comment', ['units' => strtolower($units)]);
+        $units  = Settings::getWeightUnits();
+        $lang   = strtolower(Lang::get('bedard.shop::lang.common.weight_'.$units.'_plural'));
+        $fields->min_weight->comment = Lang::get('bedard.shop::lang.shippingmethods.min_weight_comment', ['units' => $lang]);
+        $fields->max_weight->comment = Lang::get('bedard.shop::lang.shippingmethods.max_weight_comment', ['units' => $lang]);
     }
 }

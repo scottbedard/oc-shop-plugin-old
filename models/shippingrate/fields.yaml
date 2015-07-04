@@ -12,6 +12,19 @@ fields:
 
     rate:
         label: bedard.shop::lang.shippingrates.rate
-        comment: bedard.shop::lang.shippingrates.rate_comment
+        # Comment added through filterFields()
         placeholder: '0.00'
+        span: right
+
+    countries:
+        label: bedard.shop::lang.shippingrates.countries
+        comment: bedard.shop::lang.shippingrates.countries_comment
+        type: relation
+        span: left
+
+    states:
+        label: bedard.shop::lang.shippingrates.states
+        comment: bedard.shop::lang.shippingrates.states_comment
+        type: checkboxlist
+        dependsOn: countries
         span: right
