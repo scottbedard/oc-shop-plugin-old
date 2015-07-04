@@ -71,6 +71,10 @@ class Checkout extends ComponentBase
 
     public function prepareVars()
     {
+        if (!$this->cart) {
+            return;
+        }
+
         if ($this->cart->hasCustomer) {
             $this->customer = $this->cart->customer;
         }

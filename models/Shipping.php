@@ -1,9 +1,10 @@
 <?php namespace Bedard\Shop\Models;
 
 use Bedard\Shop\Models\Driver;
+use Exception;
 use Model;
 
-class ShippingSettings extends Model
+class Shipping extends Model
 {
     public $implement = ['System.Behaviors.SettingsModel'];
 
@@ -28,17 +29,26 @@ class ShippingSettings extends Model
      */
     public static function getBehavior()
     {
-        return ShippingSettings::get('behavior', 'off');
+        return Shipping::get('behavior', 'off');
     }
 
     /**
-     * Returns the selected shipping calculator class
+     * Instantiates the default shipping calculator
      *
-     * @return  string|false
+     * @return  mixed
      */
-    public static function getCalculatorClass()
+    public static function getCalculator()
     {
-        return ShippingSettings::get('calculator', false);
+        if (Shipping::getBehavior() == 'off' || (!$calculator = Shipping::get('calculator', false))) {
+            return false;
+        }
+
+        $shippingInterface = 'Bedard\Shop\Classes\ShippingInterface';
+        if (!in_array($shippingInterface, class_implements($calculator))) {
+            throw new Exception("Shipping calculators must implement $shippingInterface.");
+        }
+
+        return new $calculator;
     }
 
 }
