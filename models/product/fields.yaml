@@ -50,8 +50,10 @@ secondaryTabs:
             placeholder: '0.00'
             span: right
 
-        weight: # This exists to tell the controller where to insert the weight field.
+        weight:
             tab: bedard.shop::lang.products.details_tab
+            label: bedard.shop::lang.products.weight
+            span: right
 
         is_enabled:
             tab: bedard.shop::lang.products.details_tab

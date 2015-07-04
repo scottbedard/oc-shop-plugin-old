@@ -1,7 +1,7 @@
 <?php Block::put('breadcrumb') ?>
     <ul>
-        <li><a href="<?= Backend::url('bedard/shop/discounts') ?>"><?= e(trans('bedard.shop::lang.discounts.controller')) ?></a></li>
-        <li><?= e(trans('backend::lang.form.create_title', ['name' => trans('bedard.shop::lang.discounts.model')])) ?></li>
+        <li><a href="<?= Backend::url('bedard/shop/promotions') ?>"><?= e(trans('bedard.shop::lang.promotions.controller')) ?></a></li>
+        <li><?= e(trans('backend::lang.form.create_title', ['name' => trans('bedard.shop::lang.promotions.model')])) ?></li>
     </ul>
 <?php Block::endPut() ?>
 
@@ -20,7 +20,7 @@
                     data-request="onSave"
                     data-hotkey="ctrl+s, cmd+s"
                     data-load-indicator="<?= e(trans('backend::lang.form.creating_name', [
-                        'name' => trans('bedard.shop::lang.discounts.model'
+                        'name' => trans('bedard.shop::lang.promotions.model'
                     )])) ?>"
                     class="btn btn-primary">
                     <?= e(trans('backend::lang.form.create')) ?>
@@ -31,13 +31,13 @@
                     data-request-data="close:1"
                     data-hotkey="ctrl+enter, cmd+enter"
                     data-load-indicator="<?= e(trans('backend::lang.form.creating_name', [
-                        'name' => trans('bedard.shop::lang.discounts.model')
+                        'name' => trans('bedard.shop::lang.promotions.model')
                     ])) ?>"
                     class="btn btn-default">
                     <?= e(trans('backend::lang.form.create_and_close')) ?>
                 </button>
                 <span class="btn-text">
-                    <?= e(trans('backend::lang.form.or')) ?> <a href="<?= Backend::url('bedard/shop/discounts') ?>"><?= e(trans('backend::lang.form.cancel')) ?></a>
+                    <?= e(trans('backend::lang.form.or')) ?> <a href="<?= Backend::url('bedard/shop/promotions') ?>"><?= e(trans('backend::lang.form.cancel')) ?></a>
                 </span>
             </div>
         </div>
@@ -48,8 +48,8 @@
 
     <p class="flash-message static error"><?= e($this->fatalError) ?></p>
     <p>
-        <a href="<?= Backend::url('bedard/shop/discounts') ?>" class="btn btn-default">
-            <?= e(trans('bedard.shop::lang.form.return_to_name_list', ['name' => trans('bedard.shop::lang.discounts.model')])) ?>
+        <a href="<?= Backend::url('bedard/shop/promotions') ?>" class="btn btn-default">
+            <?= e(trans('bedard.shop::lang.form.return_to_name_list', ['name' => trans('bedard.shop::lang.promotions.model')])) ?>
         </a>
     </p>
 

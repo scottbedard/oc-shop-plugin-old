@@ -3,6 +3,7 @@
 use Bedard\Shop\Models\Category;
 use Bedard\Shop\Models\Discount;
 use Bedard\Shop\Models\Price;
+use Bedard\Shop\Models\Settings;
 use DB;
 use Lang;
 use Markdown;
@@ -284,6 +285,15 @@ class Product extends Model
         // Parse the code snippet
         $this->attributes['snippet'] = $value;
         $this->attributes['snippet_html'] = Markdown::parse(trim($value));
+    }
+
+    /**
+     * Filter the form fields
+     */
+    public function filterFields($fields, $context = null)
+    {
+        $units = Lang::get('bedard.shop::lang.settings.backend.weight_unit_'.Settings::getWeightUnits());
+        $fields->weight->comment = Lang::get('bedard.shop::lang.products.weight_comment', ['units' => strtolower($units)]);
     }
 
     /**
