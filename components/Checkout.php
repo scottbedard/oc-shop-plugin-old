@@ -81,6 +81,7 @@ class Checkout extends ComponentBase
 
         if ($this->cart->hasAddress) {
             $this->address = $this->cart->address;
+            $this->manager->calculateShipping();
         }
     }
 

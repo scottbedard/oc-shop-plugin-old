@@ -8,6 +8,7 @@ use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Promotion;
 use Bedard\Shop\Models\Settings;
+use Bedard\Shop\Models\Shipping;
 use Cookie;
 use Exception;
 use October\Rain\Exception\AjaxException;
@@ -52,7 +53,7 @@ class CartManager {
         }
 
         // If that fails, check if we have the cart data saved in a cookie
-        elseif (Settings::getCartLife() && $cookie = Request::cookie(self::SESSION_KEY)) {
+        elseif (Settings::getCartLife() !== false && ($cookie = Request::cookie(self::SESSION_KEY))) {
             $this->cart = Cart::where('key', $cookie['key'])
                 ->find($cookie['id']);
                 // todo: make sure cart is open
@@ -178,6 +179,24 @@ class CartManager {
 
         $this->cart->promotion_id = $promotion->id;
         $this->cart->save();
+    }
+
+    /**
+     * Determines if shipping needs to be calculated, and if so passes the
+     * request to the shipping calculator.
+     */
+    public function calculateShipping()
+    {
+        $behavior = Shipping::getBehavior();
+        if ($behavior == 'off' ||
+            ($this->cart->shipping_rates != 'failed' && $this->cart->shipping_rates) ||
+            ($this->cart->shipping_rates == 'failed' && $behavior != 'required')) {
+            return false;
+        }
+
+        $calculator = Shipping::getCalculator();
+        $calculator->setCart($this->cart);
+        $calculator->getRates();
     }
 
     /**

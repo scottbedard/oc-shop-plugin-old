@@ -3,6 +3,7 @@
 use Bedard\Shop\Classes\CartManager;
 use Bedard\Shop\Models\CartItem;
 use Bedard\Shop\Models\Settings;
+use Bedard\Shop\Models\Shipping;
 use Bedard\Shop\Tests\Fixtures\Generate;
 use Request;
 
@@ -198,5 +199,23 @@ class CartManagerTest extends \OctoberPluginTestCase
         $manager->removeAddress();
         $manager->cart->load('address');
         $this->assertNull($manager->cart->address_id);
+    }
+
+    public function test_shipping_is_only_calculated_when_its_needed()
+    {
+        $manager = new CartManager;
+        $manager->loadCart();
+
+        Shipping::set('behavior', 'off');
+        $this->assertSame(false, $manager->calculateShipping());
+
+        Shipping::set('behavior', 'on');
+        $this->assertNotSame(false, $manager->calculateShipping());
+
+        $manager->cart->shipping_rates = 'failed';
+        $this->assertSame(false, $manager->calculateShipping());
+
+        Shipping::set('behavior', 'required');
+        $this->assertNotSame(false, $manager->calculateShipping());
     }
 }
