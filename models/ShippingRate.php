@@ -38,6 +38,7 @@ class ShippingRate extends Model
     public $belongsTo = [
         'method' => [
             'Bedard\Shop\Models\ShippingMethod',
+            'key' => 'shipping_method_id',
         ],
     ];
 
@@ -54,6 +55,17 @@ class ShippingRate extends Model
     ];
 
     /**
+     * Query Scopes
+     */
+     public function scopeWhereWeight($query, $weight)
+     {
+         return $query
+             ->whereHas('method', function($method) use ($weight) {
+                 $method->whereWeight($weight);
+             });
+     }
+
+    /**
      * Validation
      */
     public $rules = [
@@ -61,17 +73,17 @@ class ShippingRate extends Model
         'rate'          => 'numeric|min:0',
     ];
 
-    /**
+     /**
      * Accessors and Mutators
      */
     public function setBasePriceAttribute($value)
     {
-        $this->attributes['base_price'] = $value ?: 0;
+        $this->attributes['base_price'] = $value ?: null;
     }
 
     public function setRateAttribute($value)
     {
-        $this->attributes['rate'] = $value ?: 0;
+        $this->attributes['rate'] = $value ?: null;
     }
 
     /**

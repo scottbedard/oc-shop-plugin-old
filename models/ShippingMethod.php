@@ -49,30 +49,37 @@ class ShippingMethod extends Model
     ];
 
     /**
+     * Query Scopes
+     */
+    public function scopeWhereWeight($query, $weight)
+    {
+        return $query
+            ->where(function($range) use ($weight) {
+                $range
+                    ->where(function($lower) use ($weight) {
+                        $lower
+                            ->whereNull('min_weight')
+                            ->orWhere('min_weight', '<=', $weight);
+                    })
+                    ->where(function($upper) use ($weight) {
+                        $upper
+                            ->whereNull('max_weight')
+                            ->orWhere('max_weight', '>=', $weight);
+                    });
+            });
+    }
+
+    /**
      * Accessors and Mutators
      */
-    public function getMaxWeightAttribute()
-    {
-        return array_key_exists('max_weight', $this->attributes) && $this->attributes['max_weight'] > 0
-            ? $this->attributes['max_weight']
-            : null;
-    }
-
-    public function getMinWeightAttribute()
-    {
-        return array_key_exists('min_weight', $this->attributes) && $this->attributes['min_weight'] > 0
-            ? $this->attributes['min_weight']
-            : null;
-    }
-
     public function setMaxWeightAttribute($value)
     {
-        $this->attributes['max_weight'] = $value ?: 0;
+        $this->attributes['max_weight'] = $value ?: null;
     }
 
     public function setMinWeightAttribute($value)
     {
-        $this->attributes['min_weight'] = $value ?: 0;
+        $this->attributes['min_weight'] = $value ?: null;
     }
 
     /**

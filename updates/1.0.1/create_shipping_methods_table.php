@@ -13,8 +13,8 @@ class CreateShippingMethodsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name')->nullable();
-            $table->decimal('min_weight', 10, 2)->default(0);
-            $table->decimal('max_weight', 10, 2)->default(0);
+            $table->decimal('min_weight', 10, 2)->nullable();
+            $table->decimal('max_weight', 10, 2)->nullable();
             $table->timestamps();
         });
     }
