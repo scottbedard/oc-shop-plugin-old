@@ -14,6 +14,10 @@ columns:
 
     base_price:
         label: bedard.shop::lang.shippingrates.base_price
+        type: partial
+        path: $/bedard/shop/models/shippingrate/_base_price.htm
 
     rate:
         label: bedard.shop::lang.shippingrates.rate
+        type: partial
+        path: $/bedard/shop/models/shippingrate/_rate.htm
