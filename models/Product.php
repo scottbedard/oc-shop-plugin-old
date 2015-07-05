@@ -214,7 +214,7 @@ class Product extends Model
             "GROUP BY `bedard_shop_prices`.`product_id`".
         ") AS `prices`";
 
-        $query
+        return $query
             ->addSelect('prices.price')
             ->join(DB::raw($prices), 'prices.product_id', '=', 'bedard_shop_products.id');
     }
@@ -228,9 +228,9 @@ class Product extends Model
             'GROUP BY `bedard_shop_inventories`.`product_id`'.
         ') AS `stocks`';
 
-        $query
+        return $query
             ->addSelect('stocks.stock')
-            ->join(DB::raw($stock), 'stocks.product_id', '=', 'bedard_shop_products.id');
+            ->leftJoin(DB::raw($stock), 'stocks.product_id', '=', 'bedard_shop_products.id');
     }
 
     public function scopeWherePrice($query, $operator, $amount)
@@ -275,6 +275,13 @@ class Product extends Model
         return is_array($this->attributes) && array_key_exists('price', $this->attributes)
             ? $this->attributes['price']
             : $this->current_price->price;
+    }
+
+    public function getStockAttribute($value)
+    {
+        return is_array($this->attributes) && array_key_exists('stock', $this->attributes)
+            ? intval($this->attributes['stock'])
+            : null;
     }
 
     public function setBasePriceAttribute($value)

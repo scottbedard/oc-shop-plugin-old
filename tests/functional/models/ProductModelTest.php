@@ -181,4 +181,18 @@ class ProductModelTest extends \OctoberPluginTestCase
         $this->assertEquals(10, $query->price);
         $this->assertFalse(isset($query->toArray()['current_price']));
     }
+
+    public function test_join_stock_scope()
+    {
+        $product = Generate::product('Product');
+
+        $query = Product::joinStock()->find($product->id);
+        $this->assertEquals(0, $query->stock);
+
+        $inventory1 = Generate::inventory($product, [1], ['quantity' => 10]);
+        $inventory2 = Generate::inventory($product, [2], ['quantity' => 5]);
+
+        $query = Product::joinStock()->find($product->id);
+        $this->assertEquals(15, $query->stock);
+    }
 }
