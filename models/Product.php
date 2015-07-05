@@ -1,9 +1,9 @@
 <?php namespace Bedard\Shop\Models;
 
+use Bedard\Shop\Classes\WeightHelper;
 use Bedard\Shop\Models\Category;
 use Bedard\Shop\Models\Discount;
 use Bedard\Shop\Models\Price;
-use Bedard\Shop\Models\Settings;
 use DB;
 use Lang;
 use Markdown;
@@ -297,9 +297,9 @@ class Product extends Model
      */
     public function filterFields($fields, $context = null)
     {
-        $units  = Settings::getWeightUnits();
-        $lang   = strtolower(Lang::get('bedard.shop::lang.common.weight_'.$units.'_plural'));
-        $fields->weight->comment = Lang::get('bedard.shop::lang.products.weight_comment', ['units' => $lang]);
+        $fields->weight->comment = Lang::get('bedard.shop::lang.products.weight_comment', [
+            'units' => WeightHelper::getPlural()
+        ]);
     }
 
     /**

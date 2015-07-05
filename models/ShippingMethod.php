@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Models;
 
+use Bedard\Shop\Classes\WeightHelper;
 use Lang;
 use Model;
 
@@ -79,9 +80,8 @@ class ShippingMethod extends Model
      */
     public function filterFields($fields, $context = null)
     {
-        $units  = Settings::getWeightUnits();
-        $lang   = strtolower(Lang::get('bedard.shop::lang.common.weight_'.$units.'_plural'));
-        $fields->min_weight->comment = Lang::get('bedard.shop::lang.shippingmethods.min_weight_comment', ['units' => $lang]);
-        $fields->max_weight->comment = Lang::get('bedard.shop::lang.shippingmethods.max_weight_comment', ['units' => $lang]);
+        $units = WeightHelper::getPlural();
+        $fields->min_weight->comment = Lang::get('bedard.shop::lang.shippingmethods.min_weight_comment', ['units' => $units]);
+        $fields->max_weight->comment = Lang::get('bedard.shop::lang.shippingmethods.max_weight_comment', ['units' => $units]);
     }
 }

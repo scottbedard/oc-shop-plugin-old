@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Models;
 
+use Bedard\Shop\Classes\WeightHelper;
 use Lang;
 use Model;
 use RainLab\Location\Models\State;
@@ -27,6 +28,8 @@ class ShippingRate extends Model
     protected $fillable = [
         'base_price',
         'rate',
+        'countries',
+        'states',
     ];
 
     /**
@@ -76,9 +79,9 @@ class ShippingRate extends Model
      */
     public function filterFields($fields, $context = null)
     {
-        $units  = Settings::getWeightUnits();
-        $lang   = strtolower(Lang::get('bedard.shop::lang.common.weight_'.$units.'_singular'));
-        $fields->rate->comment = Lang::get('bedard.shop::lang.shippingrates.rate_comment', ['units' => $lang]);
+        $fields->rate->comment = Lang::get('bedard.shop::lang.shippingrates.rate_comment', [
+            'units' => WeightHelper::getSingular()
+        ]);
     }
 
     /**
