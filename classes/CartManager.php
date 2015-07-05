@@ -121,7 +121,7 @@ class CartManager {
         if (!$this->itemDataLoaded || $force) {
             $this->cart->items->load([
                 'inventory.product' => function($product) {
-                    $product->select('bedard_shop_products.*')->joinPrices();
+                    $product->joinPrices();
                 },
                 'inventory.values.option',
             ]);

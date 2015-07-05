@@ -215,7 +215,6 @@ class Product extends Model
         ") AS `prices`";
 
         return $query
-            ->addSelect('prices.price')
             ->join(DB::raw($prices), 'prices.product_id', '=', 'bedard_shop_products.id');
     }
 
@@ -229,8 +228,22 @@ class Product extends Model
         ') AS `stocks`';
 
         return $query
-            ->addSelect('stocks.stock')
             ->leftJoin(DB::raw($stock), 'stocks.product_id', '=', 'bedard_shop_products.id');
+    }
+
+    public function scopeSelectStatus($query)
+    {
+        // Select the product's status
+        return $query
+            ->addSelect(DB::raw(
+                '('.
+                    'CASE '.
+                        'WHEN (`bedard_shop_products`.`is_enabled` = 0) THEN 0 '.
+                        'WHEN (`price` < `bedard_shop_products`.`base_price`) THEN 2 '.
+                        'ELSE 1 '.
+                    'END'.
+                ') as `status`'
+            ));
     }
 
     public function scopeWherePrice($query, $operator, $amount)

@@ -120,6 +120,8 @@ class Products extends Controller
     public function listExtendQuery($query)
     {
         $query
+            ->addSelect('id', 'name', 'slug', 'price', 'stock')
+            ->selectStatus()
             ->joinPrices()
             ->joinStock()
             ->with('current_price.discount');
