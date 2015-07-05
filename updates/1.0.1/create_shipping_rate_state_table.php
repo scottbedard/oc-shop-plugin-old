@@ -11,9 +11,9 @@ class CreateShippingRateStateTable extends Migration
         Schema::create('bedard_shop_shipping_rate_state', function($table)
         {
             $table->engine = 'InnoDB';
-            $table->integer('rate_id')->unsigned()->nullable();
+            $table->integer('shipping_rate_id')->unsigned()->nullable();
             $table->integer('state_id')->unsigned()->nullable();
-            $table->primary(['rate_id', 'state_id']);
+            $table->primary(['shipping_rate_id', 'state_id'], 'rate_state_primary');
         });
     }
 

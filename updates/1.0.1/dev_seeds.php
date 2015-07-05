@@ -20,6 +20,7 @@ class DevSeeds extends Seeder
         $this->seedProducts();
         $this->seedDiscounts();
         $this->seedPromotions();
+        $this->seedShippingTable();
     }
 
     public function seedCategories()
@@ -199,5 +200,18 @@ class DevSeeds extends Seeder
 
         $promotion->products()->attach($product);
         $promotion->countries()->attach($country);
+    }
+
+    public function seedShippingTable()
+    {
+        $standard   = Generate::shippingMethod('Standard');
+        $priority   = Generate::shippingMethod('Priority', ['min_weight' => 5, 'max_weight' => 20]);
+        $rate1      = Generate::shippingRate($standard, ['base_price' => 1, 'rate' => 0.05]);
+        $rate2      = Generate::shippingRate($standard, ['base_price' => 2, 'rate' => 0.1]);
+        $rate3      = Generate::shippingRate($priority, ['base_price' => 3, 'rate' => 0.15]);
+
+        $rate1->countries()->sync([1]);
+        $rate2->countries()->sync([1,2]);
+        $rate3->countries()->sync([1,2,3]);
     }
 }

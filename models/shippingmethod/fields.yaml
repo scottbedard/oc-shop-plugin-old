@@ -5,7 +5,7 @@
 fields:
 
     name:
-        label: bedard.shop::lang.shippingmethods.method_name
+        label: bedard.shop::lang.shippingmethods.name
 
     min_weight:
         label: bedard.shop::lang.shippingmethods.min_weight

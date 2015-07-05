@@ -12,8 +12,8 @@ class CreateShippingCountryRateTable extends Migration
         {
             $table->engine = 'InnoDB';
             $table->integer('country_id')->unsigned()->nullable();
-            $table->integer('rate_id')->unsigned()->nullable();
-            $table->primary(['country_id', 'rate_id']);
+            $table->integer('shipping_rate_id')->unsigned()->nullable();
+            $table->primary(['country_id', 'shipping_rate_id'], 'country_rate_primary');
         });
     }
 

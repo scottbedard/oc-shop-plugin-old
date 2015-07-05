@@ -9,6 +9,7 @@ use RainLab\Location\Models\State;
  */
 class ShippingRate extends Model
 {
+    use \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string The database table used by the model.
@@ -37,21 +38,24 @@ class ShippingRate extends Model
         ],
     ];
 
-    /**
-     * Relationships
-     */
     public $belongsToMany = [
         'countries' => [
             'RainLab\Location\Models\Country',
             'table' => 'bedard_shop_shipping_country_rate',
-            'key'   => 'rate_id',
             'scope' => 'isEnabled',
         ],
         'states' => [
             'RainLab\Location\Models\State',
             'table' => 'bedard_shop_shipping_rate_state',
-            'key'   => 'rate_id',
         ],
+    ];
+
+    /**
+     * Validation
+     */
+    public $rules = [
+        'base_price'    => 'numeric|min:0',
+        'rate'          => 'numeric|min:0',
     ];
 
     /**

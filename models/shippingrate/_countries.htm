@@ -1,0 +1,9 @@
+<?php
+
+foreach ($record->countries as $country) {
+    ?>
+    <i data-toggle="tooltip"
+        title="<?= $country->name ?>"
+        class="flag-<?= strtolower($country->code) ?>"></i>
+    <?php
+}

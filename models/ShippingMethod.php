@@ -23,7 +23,11 @@ class ShippingMethod extends Model
     /**
      * @var array   Fillable fields
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'name',
+        'min_weight',
+        'max_weight',
+    ];
 
     /**
      * @var array   Relations
@@ -50,6 +54,13 @@ class ShippingMethod extends Model
     {
         return array_key_exists('max_weight', $this->attributes) && $this->attributes['max_weight'] > 0
             ? $this->attributes['max_weight']
+            : null;
+    }
+
+    public function getMinWeightAttribute()
+    {
+        return array_key_exists('min_weight', $this->attributes) && $this->attributes['min_weight'] > 0
+            ? $this->attributes['min_weight']
             : null;
     }
 

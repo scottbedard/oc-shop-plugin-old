@@ -8,6 +8,8 @@ use Bedard\Shop\Models\Option;
 use Bedard\Shop\Models\Price;
 use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Promotion;
+use Bedard\Shop\Models\ShippingMethod;
+use Bedard\Shop\Models\ShippingRate;
 use Bedard\Shop\Models\Value;
 
 class Generate {
@@ -165,6 +167,46 @@ class Generate {
 
         $promotion->save();
         return $promotion;
+    }
+
+    /**
+     * Generate a shipping method for use in tests
+     *
+     * @param   string      $name
+     * @param   array       $data
+     * @return  Promotion
+     */
+    public static function shippingMethod($name, $data = [])
+    {
+        $method = new ShippingMethod;
+        $method->name = $name;
+
+        foreach ($data as $key => $value) {
+            $method->$key = $value;
+        }
+
+        $method->save();
+        return $method;
+    }
+
+    /**
+     * Generate a shipping method for use in tests
+     *
+     * @param   ShippingMethod  $method
+     * @param   array           $data
+     * @return  Promotion
+     */
+    public static function shippingRate(ShippingMethod $method, $data = [])
+    {
+        $rate = new ShippingRate;
+        $rate->shipping_method_id = $method->id;
+
+        foreach ($data as $key => $value) {
+            $rate->$key = $value;
+        }
+
+        $rate->save();
+        return $rate;
     }
 
     /**

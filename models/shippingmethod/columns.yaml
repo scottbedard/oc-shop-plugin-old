@@ -3,6 +3,16 @@
 # ===================================
 
 columns:
-    id:
-        label: ID
-        searchable: true
+
+    name:
+        label: bedard.shop::lang.shippingmethods.name
+
+    min_weight:
+        label: bedard.shop::lang.shippingmethods.min_weight
+        type: partial
+        path: $/bedard/shop/models/shippingmethod/_weight.htm
+
+    max_weight:
+        label: bedard.shop::lang.shippingmethods.max_weight
+        type: partial
+        path: $/bedard/shop/models/shippingmethod/_weight.htm

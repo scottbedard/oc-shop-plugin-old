@@ -3,6 +3,17 @@
 # ===================================
 
 columns:
+
     id:
-        label: ID
-        searchable: true
+        label: bedard.shop::lang.shippingrates.id
+
+    countries:
+        label: bedard.shop::lang.shippingrates.countries
+        type: partial
+        path: $/bedard/shop/models/shippingrate/_countries.htm
+
+    base_price:
+        label: bedard.shop::lang.shippingrates.base_price
+
+    rate:
+        label: bedard.shop::lang.shippingrates.rate

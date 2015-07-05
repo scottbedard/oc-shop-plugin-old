@@ -30,4 +30,15 @@ class ShippingMethods extends Controller
         $this->addCss('/plugins/bedard/shop/assets/css/form.css');
         $this->addCss('/plugins/bedard/shop/assets/css/list.css');
     }
+
+    /**
+     * Extend the relation controller's list query
+     *
+     * @param   October\Rain\Database\Builder   $query
+     * @return  October\Rain\Database\Builder
+     */
+    public function relationExtendQuery($query)
+    {
+        $query->with('countries');
+    }
 }
