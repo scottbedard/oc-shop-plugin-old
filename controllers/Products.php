@@ -120,7 +120,7 @@ class Products extends Controller
     public function listExtendQuery($query)
     {
         $query
-            ->addSelect('id', 'name', 'slug', 'price', 'stock')
+            ->addSelect('id', 'name', 'price', 'stock', 'created_at', 'updated_at')
             ->selectStatus()
             ->joinPrices()
             ->joinStock()
