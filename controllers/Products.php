@@ -121,6 +121,7 @@ class Products extends Controller
     {
         $query
             ->joinPrices()
+            ->joinStock()
             ->with('current_price.discount');
     }
 

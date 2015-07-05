@@ -10,11 +10,11 @@ if ($record->isDiscounted): ?>
         data-placement="top"
         title="<?= CurrencyHelper::format($record->base_price) ?>"
         class="green">
-        <?= CurrencyHelper::format($record->current_price->price) ?>
+        <?= CurrencyHelper::format($value) ?>
     </a>
 
 <?php else: ?>
 
-    <?= CurrencyHelper::format($record->current_price->price) ?>
+    <?= CurrencyHelper::format($value) ?>
 
 <?php endif ?>

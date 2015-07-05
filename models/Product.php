@@ -214,9 +214,23 @@ class Product extends Model
             "GROUP BY `bedard_shop_prices`.`product_id`".
         ") AS `prices`";
 
-        $query->join(DB::raw($prices), function($join) {
-            $join->on('prices.product_id', '=', 'bedard_shop_products.id');
-        });
+        $query
+            ->addSelect('prices.price')
+            ->join(DB::raw($prices), 'prices.product_id', '=', 'bedard_shop_products.id');
+    }
+
+    public function scopeJoinStock($query)
+    {
+        // Joins a stock table
+        $stock = '('.
+            'SELECT `bedard_shop_inventories`.`product_id`, SUM(`bedard_shop_inventories`.`quantity`) AS `stock` '.
+            'FROM `bedard_shop_inventories` '.
+            'GROUP BY `bedard_shop_inventories`.`product_id`'.
+        ') AS `stocks`';
+
+        $query
+            ->addSelect('stocks.stock')
+            ->join(DB::raw($stock), 'stocks.product_id', '=', 'bedard_shop_products.id');
     }
 
     public function scopeWherePrice($query, $operator, $amount)
@@ -258,7 +272,7 @@ class Product extends Model
     {
         // If the price has been joined to the query, return it. Otherwise grab
         // the price from the current_price relationship.
-        return isset($this->attributes['price'])
+        return is_array($this->attributes) && array_key_exists('price', $this->attributes)
             ? $this->attributes['price']
             : $this->current_price->price;
     }

@@ -13,16 +13,10 @@ columns:
         type: partial
         path: $/bedard/shop/models/product/_current_price.htm
 
-    inventory:
+    stock:
         label: bedard.shop::lang.inventories.model
         type: partial
-        path: $/bedard/shop/models/product/_inventory.htm
-        select: >
-            (
-                SELECT SUM(`bedard_shop_inventories`.`quantity`)
-                FROM `bedard_shop_inventories`
-                WHERE `bedard_shop_inventories`.`product_id` = `bedard_shop_products`.`id`
-            )
+        path: $/bedard/shop/models/product/_stock.htm
 
     status:
         label: bedard.shop::lang.common.status
