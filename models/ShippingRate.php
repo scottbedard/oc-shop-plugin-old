@@ -84,7 +84,7 @@ class ShippingRate extends Model
                 ->whereHas('states', function($state) use ($id) {
                     $state->where('id', $id);
                 })
-                ->orHas('states', '=',  0);
+                ->orHas('states', '=', 0);
         });
     }
 
