@@ -79,14 +79,13 @@ class ShippingRate extends Model
             return $query;
         }
 
-        return $query
-            ->where(function($states) use ($id) {
-                $states
-                    ->orHas('states', 0)
-                    ->orWhereHas('states', function($state) use ($id) {
-                        $state->where('id', $id);
-                    });
-            });
+        return $query->where(function($states) use ($id) {
+            $states
+                ->whereHas('states', function($state) use ($id) {
+                    $state->where('id', $id);
+                })
+                ->orHas('states', '=',  0);
+        });
     }
 
     public function scopeWeight($query, $weight)
@@ -109,12 +108,12 @@ class ShippingRate extends Model
      */
     public function setBasePriceAttribute($value)
     {
-        $this->attributes['base_price'] = $value ?: null;
+        $this->attributes['base_price'] = $value ?: 0;
     }
 
     public function setRateAttribute($value)
     {
-        $this->attributes['rate'] = $value ?: null;
+        $this->attributes['rate'] = $value ?: 0;
     }
 
     /**

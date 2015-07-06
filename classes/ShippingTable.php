@@ -2,7 +2,6 @@
 
 use Bedard\Shop\Classes\ShippingBase;
 use Bedard\Shop\Classes\ShippingInterface;
-
 use Bedard\Shop\Models\ShippingRate;
 
 class ShippingTable extends ShippingBase implements ShippingInterface {
