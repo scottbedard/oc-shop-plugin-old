@@ -49,7 +49,9 @@ class CartManager extends CartSession {
      */
     public function loadItemData($force = false)
     {
-        if (!$this->cart) return;
+        if (!$this->cart) {
+            return;
+        }
 
         $this->loadItems($force);
         if (!$this->itemDataLoaded || $force) {
@@ -124,8 +126,9 @@ class CartManager extends CartSession {
     {
         $this->loadCart();
 
-        if (!$promotion = Promotion::isRunning()->where('code', $code)->first())
+        if (!$promotion = Promotion::isRunning()->where('code', $code)->first()) {
             throw new AjaxException('PROMOTION_INVALID');
+        }
 
         $this->cart->promotion_id = $promotion->id;
         $this->actionCompleted();
@@ -298,10 +301,13 @@ class CartManager extends CartSession {
         $this->loadItems();
         $updated = false;
         foreach ($this->cart->items as $cartItem) {
-            if (!array_key_exists($cartItem->id, $items))
+            if (!array_key_exists($cartItem->id, $items)) {
                 continue;
-            if ($cartItem->quantity != $items[$cartItem->id])
+            }
+
+            if ($cartItem->quantity != $items[$cartItem->id]) {
                 $updated = true;
+            }
         }
 
         if (!$updated) {

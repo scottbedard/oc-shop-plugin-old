@@ -200,4 +200,20 @@ class CartManagerTest extends \OctoberPluginTestCase
         $manager->cart->load('address');
         $this->assertNull($manager->cart->address_id);
     }
+
+    public function test_shipping_is_cleared_when_actions_are_completed()
+    {
+        $product1   = Generate::product('Foo');
+        $inventory1 = Generate::inventory($product1, [], ['quantity' => 5]);
+
+        $manager = new CartManager;
+        $manager->loadCart();
+        $manager->cart->shipping_rates = [];
+        $manager->cart->shipping_failed = true;
+        $manager->cart->save();
+
+        $manager->addItem($inventory1->id, [], 2);
+        $this->assertNull($manager->cart->shipping_rates);
+        $this->assertFalse($manager->cart->shipping_failed);
+    }
 }
