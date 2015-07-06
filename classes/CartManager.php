@@ -1,21 +1,18 @@
 <?php namespace Bedard\Shop\Classes;
 
 use Bedard\Shop\Models\Address;
-use Bedard\Shop\Models\Cart;
 use Bedard\Shop\Models\CartItem;
 use Bedard\Shop\Models\Customer;
 use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Promotion;
-use Bedard\Shop\Models\Settings;
 use Bedard\Shop\Models\Shipping;
-use Cookie;
 use Exception;
 use October\Rain\Exception\AjaxException;
-use Request;
-use Session;
 
-class CartManager {
+use Bedard\Shop\Classes\CartSession;
+
+class CartManager extends CartSession {
 
     /*
      * Summary of error responses
@@ -25,75 +22,10 @@ class CartManager {
      */
 
     /**
-     * @var string      The session key
-     */
-    const SESSION_KEY = 'bedard_shop_cart';
-
-    /**
-     * @var Cart        The user's shopping cart model
-     */
-    public $cart;
-
-    /**
      * @var boolean     Helpers to keep track of lazy loading
      */
     protected $itemsLoaded      = false;
     protected $itemDataLoaded   = false;
-
-    /**
-     * Open the current cart if there is one
-     */
-    public function __construct()
-    {
-        // First, attempt to load the cart from the user's session
-        if ($session = Session::get(self::SESSION_KEY)) {
-            $this->cart = Cart::where('key', $session['key'])
-                ->find($session['id']);
-                // todo: make sure cart is open
-        }
-
-        // If that fails, check if we have the cart data saved in a cookie
-        elseif (Settings::getCartLife() !== false && ($cookie = Request::cookie(self::SESSION_KEY))) {
-            $this->cart = Cart::where('key', $cookie['key'])
-                ->find($cookie['id']);
-                // todo: make sure cart is open
-        }
-
-        // If we still don't have a cart, forget the session and cookie to
-        // prevent queries looking for a cart that doesn't exist.
-        if (!$this->cart) {
-            Session::forget(self::SESSION_KEY);
-            Cookie::queue(Cookie::forget(self::SESSION_KEY));
-        }
-    }
-
-    /**
-     * Create a new cart if it isn't aleady loaded
-     */
-    public function loadCart()
-    {
-        // Create a new cart
-        if (!$this->cart) {
-            $cart = Cart::create(['key' => str_random(40)]);
-            Session::put(self::SESSION_KEY, [
-                'id'    => $cart->id,
-                'key'   => $cart->key
-            ]);
-
-            $this->cart = $cart;
-        }
-
-        // Create a cart cookie
-        if ($life = Settings::getCartLife()) {
-            Cookie::queue(self::SESSION_KEY, [
-                'id'    => $this->cart->id,
-                'key'   => $this->cart->key,
-            ], $life);
-        }
-
-        // If we still don't have a cart, throw an exception
-        if (!$this->cart) throw new AjaxException('CART_INVALID');
-    }
 
     /**
      * Loads the cart items relationship
