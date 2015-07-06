@@ -51,7 +51,7 @@ class ShippingMethod extends Model
     /**
      * Query Scopes
      */
-    public function scopeWhereWeight($query, $weight)
+    public function scopeWeight($query, $weight)
     {
         return $query
             ->where(function($range) use ($weight) {

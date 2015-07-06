@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Tests\Fixtures;
 
+use Bedard\Shop\Models\Address;
 use Bedard\Shop\Models\Cart;
 use Bedard\Shop\Models\Category;
 use Bedard\Shop\Models\Discount;
@@ -13,6 +14,24 @@ use Bedard\Shop\Models\ShippingRate;
 use Bedard\Shop\Models\Value;
 
 class Generate {
+
+    /**
+     * Generate an address for use in tests
+     *
+     * @param   array       $data
+     * @return  Address
+     */
+    public static function address($data)
+    {
+        $address = new Address;
+
+        foreach ($data as $key => $value) {
+            $address->$key = $value;
+        }
+
+        $address->save();
+        return $address;
+    }
 
     /**
      * Create a cart for use in tests

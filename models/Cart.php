@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Models;
 
+use Bedard\Shop\Models\Shipping;
 use Model;
 
 /**
@@ -24,6 +25,11 @@ class Cart extends Model
     protected $fillable = [
         'key',
     ];
+
+    /**
+     * @var array Jsonable fields
+     */
+    protected $jsonable = ['shipping_rates'];
 
     /**
      * @var array Relations
@@ -142,5 +148,18 @@ class Cart extends Model
             $savings = $this->subtotal;
 
         return $savings;
+    }
+
+    public function getShippingIsRequiredAttribute()
+    {
+        $behavior = Shipping::getBehavior();
+        return count($this->shipping_rates) == 0 &&
+               ($behavior == 'on' && !$this->shipping_failed) ||
+               ($behavior == 'required' && empty($this->shipping_rates));
+    }
+
+    public function getWeightAttribute()
+    {
+        return $this->items->sum('weight');
     }
 }

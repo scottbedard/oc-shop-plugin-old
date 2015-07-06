@@ -1,6 +1,7 @@
 <?php namespace Bedard\Shop\Models;
 
 use Bedard\Shop\Classes\WeightHelper;
+use Bedard\Shop\Models\Cart;
 use Lang;
 use Model;
 use RainLab\Location\Models\State;
@@ -57,13 +58,43 @@ class ShippingRate extends Model
     /**
      * Query Scopes
      */
-     public function scopeWhereWeight($query, $weight)
-     {
-         return $query
-             ->whereHas('method', function($method) use ($weight) {
-                 $method->whereWeight($weight);
-             });
-     }
+    public function scopeCountry($query, $id)
+    {
+        return $query->whereHas('countries', function($country) use ($id) {
+            $country->where('id', $id);
+        });
+    }
+
+    public function scopeForCart($query, Cart $cart)
+    {
+        return $query
+            ->weight($cart->weight)
+            ->country($cart->address->country_id)
+            ->state($cart->address->state_id);
+    }
+
+    public function scopeState($query, $id)
+    {
+        if (!$id) {
+            return $query;
+        }
+
+        return $query
+            ->where(function($states) use ($id) {
+                $states
+                    ->orHas('states', 0)
+                    ->orWhereHas('states', function($state) use ($id) {
+                        $state->where('id', $id);
+                    });
+            });
+    }
+
+    public function scopeWeight($query, $weight)
+    {
+        return $query->whereHas('method', function($method) use ($weight) {
+            $method->weight($weight);
+        });
+    }
 
     /**
      * Validation
@@ -73,7 +104,7 @@ class ShippingRate extends Model
         'rate'          => 'numeric|min:0',
     ];
 
-     /**
+    /**
      * Accessors and Mutators
      */
     public function setBasePriceAttribute($value)

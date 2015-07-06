@@ -21,15 +21,15 @@ class ShippingRateModelTest extends \OctoberPluginTestCase
         $rate3 = Generate::shippingRate($method3);
         $rate4 = Generate::shippingRate($method4);
 
-        $query = ShippingRate::whereWeight(0)->get();
+        $query = ShippingRate::weight(0)->get();
         $this->assertEquals(2, $query->count());
         $this->assertEquals(1, $query->where('id', $method1->id)->count());
         $this->assertEquals(1, $query->where('id', $method4->id)->count());
 
-        $query = ShippingRate::whereWeight(7)->get();
+        $query = ShippingRate::weight(7)->get();
         $this->assertEquals(4, $query->count());
 
-        $query = ShippingRate::whereWeight(15)->get();
+        $query = ShippingRate::weight(15)->get();
         $this->assertEquals(3, $query->count());
         $this->assertEquals(1, $query->where('id', $method1->id)->count());
         $this->assertEquals(1, $query->where('id', $method2->id)->count());

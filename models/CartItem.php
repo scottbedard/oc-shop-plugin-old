@@ -97,6 +97,11 @@ class CartItem extends Model
         return $this->price * $this->quantity;
     }
 
+    public function getWeightAttribute($value)
+    {
+        return $this->quantity * $this->inventory->product->weight;
+    }
+
     public function setQuantityAttribute($value)
     {
         $this->attributes['quantity'] = $value > 0 ? $value : 0;

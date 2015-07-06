@@ -1,7 +1,9 @@
 <?php namespace Bedard\Shop\Tests\Functional\Models;
 
 use Bedard\Shop\Classes\CartManager;
+use Bedard\Shop\Models\Cart;
 use Bedard\Shop\Models\CartItem;
+use Bedard\Shop\Models\Shipping;
 use Bedard\Shop\Tests\Fixtures\Generate;
 use Carbon\Carbon;
 
@@ -88,4 +90,31 @@ class CartModelTest extends \OctoberPluginTestCase
         $this->assertEquals(0, $manager->cart->promotionSavings);
     }
 
+    public function test_shipping_is_required()
+    {
+        $cart = Generate::cart();
+        $cart = Cart::find($cart->id);
+
+        Shipping::set('behavior', 'off');
+        $this->assertFalse($cart->shippingIsRequired);
+
+        Shipping::set('behavior', 'on');
+        $this->assertTrue($cart->shippingIsRequired);
+
+        $cart->shipping_failed = true;
+        $this->assertFalse($cart->shippingIsRequired);
+
+        Shipping::set('behavior', 'required');
+        $this->assertTrue($cart->shippingIsRequired);
+
+        $cart->shipping_rates = [
+            ['name' => 'Standard', 'cost' => 2],
+            ['name' => 'Priority', 'cost' => 5],
+        ];
+        $cart->shipping_failed = false;
+        $this->assertFalse($cart->shippingIsRequired);
+
+        Shipping::set('behavior', 'on');
+        $this->assertFalse($cart->shippingIsRequired);
+    }
 }

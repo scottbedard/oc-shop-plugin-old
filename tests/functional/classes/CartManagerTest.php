@@ -200,23 +200,4 @@ class CartManagerTest extends \OctoberPluginTestCase
         $manager->cart->load('address');
         $this->assertNull($manager->cart->address_id);
     }
-
-    public function test_shipping_is_only_calculated_when_its_needed()
-    {
-        $manager = new CartManager;
-        $manager->loadCart();
-
-        Shipping::set('calculator', 'Bedard\Shop\Classes\ShippingTable');
-        Shipping::set('behavior', 'off');
-        $this->assertSame(false, $manager->calculateShipping());
-
-        Shipping::set('behavior', 'on');
-        $this->assertNotSame(false, $manager->calculateShipping());
-
-        $manager->cart->shipping_rates = 'failed';
-        $this->assertSame(false, $manager->calculateShipping());
-
-        Shipping::set('behavior', 'required');
-        $this->assertNotSame(false, $manager->calculateShipping());
-    }
 }

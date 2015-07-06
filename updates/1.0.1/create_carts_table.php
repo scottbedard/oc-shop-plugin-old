@@ -20,6 +20,7 @@ class CreateCartsTable extends Migration
             $table->text('shipping_rates')->nullable();
             $table->string('shipping_name')->nullable();
             $table->string('shipping_cost')->nullable();
+            $table->boolean('shipping_failed')->default(false);
             $table->string('status')->default('open');
             $table->timestamps();
         });
