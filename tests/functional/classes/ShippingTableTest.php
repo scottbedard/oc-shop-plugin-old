@@ -54,6 +54,7 @@ class ShippingTableTest extends \OctoberPluginTestCase
         $rates = $table->getRates();
 
         // 1 & 5 should be returned
-        $this->assertEquals([1,5], array_column($rates, 'cost'));
+        $this->assertEquals(1, $rates[0]['cost']);
+        $this->assertEquals(5, $rates[1]['cost']);
     }
 }
