@@ -139,10 +139,19 @@ class Plugin extends PluginBase
                 'label'         => 'bedard.shop::lang.navigation.settings.shipping',
                 'description'   => 'bedard.shop::lang.navigation.settings.shipping_description',
                 'category'      => 'bedard.shop::lang.general.plugin',
-                'class'         => 'Bedard\Shop\Models\Shipping',
+                'class'         => 'Bedard\Shop\Models\ShippingSettings',
                 'permissions'   => ['bedard.shop.access_settings'],
                 'icon'          => 'icon-truck',
                 'order'         => 300,
+            ],
+            'payment' => [
+                'label'         => 'bedard.shop::lang.navigation.settings.payment',
+                'description'   => 'bedard.shop::lang.navigation.settings.payment_description',
+                'category'      => 'bedard.shop::lang.general.plugin',
+                'class'         => 'Bedard\Shop\Models\PaymentSettings',
+                'permissions'   => ['bedard.shop.access_settings'],
+                'icon'          => 'icon-credit-card',
+                'order'         => 400,
             ],
         ];
     }

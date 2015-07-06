@@ -9,7 +9,7 @@ use Bedard\Shop\Models\Customer;
 use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Promotion;
-use Bedard\Shop\Models\Shipping;
+use Bedard\Shop\Models\ShippingSettings;
 use October\Rain\Exception\AjaxException;
 
 class CartManager extends CartSession {
@@ -158,7 +158,7 @@ class CartManager extends CartSession {
 
         $this->loadItemData();
 
-        $calculator = Shipping::getCalculator($this->cart);
+        $calculator = ShippingSettings::getCalculator($this->cart);
 
         if (!$this->cart->shipping_rates = $calculator->getRates()) {
             $this->cart->shipping_failed = true;

@@ -1,6 +1,6 @@
 <?php namespace Bedard\Shop\Models;
 
-use Bedard\Shop\Models\Shipping;
+use Bedard\Shop\Models\ShippingSettings;
 use Model;
 
 /**
@@ -152,7 +152,7 @@ class Cart extends Model
 
     public function getShippingIsRequiredAttribute()
     {
-        $behavior = Shipping::getBehavior();
+        $behavior = ShippingSettings::getBehavior();
         return count($this->shipping_rates) == 0 &&
                ($behavior == 'on' && !$this->shipping_failed) ||
                ($behavior == 'required' && empty($this->shipping_rates));

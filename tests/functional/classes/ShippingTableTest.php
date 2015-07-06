@@ -2,7 +2,7 @@
 
 use Bedard\Shop\Classes\CartManager;
 use Bedard\Shop\Classes\ShippingTable;
-use Bedard\Shop\Models\Shipping;
+use Bedard\Shop\Models\ShippingSettings;
 use Bedard\Shop\Tests\Fixtures\Generate;
 
 class ShippingTableTest extends \OctoberPluginTestCase
@@ -12,8 +12,8 @@ class ShippingTableTest extends \OctoberPluginTestCase
 
     public function test_getRates_method()
     {
-        Shipping::set('behavior', 'on');
-        Shipping::set('calculator', 'Bedard\Shop\Classes\ShippingTable');
+        ShippingSettings::set('behavior', 'on');
+        ShippingSettings::set('calculator', 'Bedard\Shop\Classes\ShippingTable');
 
         // Create a shopping cart with an address
         $product    = Generate::product('Product', ['base_price' => 10, 'weight' => 10]);

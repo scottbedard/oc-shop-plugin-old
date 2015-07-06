@@ -5,7 +5,7 @@ use Bedard\Shop\Models\Driver;
 use Exception;
 use Model;
 
-class Shipping extends Model
+class ShippingSettings extends Model
 {
     public $implement = ['System.Behaviors.SettingsModel'];
 
@@ -30,7 +30,7 @@ class Shipping extends Model
      */
     public static function getBehavior()
     {
-        return Shipping::get('behavior', 'off');
+        return self::get('behavior', 'off');
     }
 
     /**
@@ -41,7 +41,7 @@ class Shipping extends Model
      */
     public static function getCalculator(Cart $cart)
     {
-        if (Shipping::getBehavior() == 'off' || (!$calculator = Shipping::get('calculator', false))) {
+        if (self::getBehavior() == 'off' || (!$calculator = self::get('calculator', false))) {
             return false;
         }
 

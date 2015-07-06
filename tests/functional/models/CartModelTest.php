@@ -3,7 +3,7 @@
 use Bedard\Shop\Classes\CartManager;
 use Bedard\Shop\Models\Cart;
 use Bedard\Shop\Models\CartItem;
-use Bedard\Shop\Models\Shipping;
+use Bedard\Shop\Models\ShippingSettings;
 use Bedard\Shop\Tests\Fixtures\Generate;
 use Carbon\Carbon;
 
@@ -95,16 +95,16 @@ class CartModelTest extends \OctoberPluginTestCase
         $cart = Generate::cart();
         $cart = Cart::find($cart->id);
 
-        Shipping::set('behavior', 'off');
+        ShippingSettings::set('behavior', 'off');
         $this->assertFalse($cart->shippingIsRequired);
 
-        Shipping::set('behavior', 'on');
+        ShippingSettings::set('behavior', 'on');
         $this->assertTrue($cart->shippingIsRequired);
 
         $cart->shipping_failed = true;
         $this->assertFalse($cart->shippingIsRequired);
 
-        Shipping::set('behavior', 'required');
+        ShippingSettings::set('behavior', 'required');
         $this->assertTrue($cart->shippingIsRequired);
 
         $cart->shipping_rates = [
@@ -114,7 +114,7 @@ class CartModelTest extends \OctoberPluginTestCase
         $cart->shipping_failed = false;
         $this->assertFalse($cart->shippingIsRequired);
 
-        Shipping::set('behavior', 'on');
+        ShippingSettings::set('behavior', 'on');
         $this->assertFalse($cart->shippingIsRequired);
     }
 }
