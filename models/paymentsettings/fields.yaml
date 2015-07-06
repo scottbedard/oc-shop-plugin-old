@@ -3,6 +3,9 @@
 # ===================================
 
 fields:
-    id:
-        label: ID
-        disabled: true
+
+    gateway:
+        label: bedard.shop::lang.settings.payment.gateway
+        placeholder: bedard.shop::lang.settings.payment.gateway_placeholder
+        type: dropdown
+        span: left

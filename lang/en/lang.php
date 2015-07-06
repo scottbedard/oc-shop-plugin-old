@@ -331,6 +331,10 @@ return [
             'life_forever'              => 'Forever',
             'tab'                       => 'Shopping Carts',
         ],
+        'payment' => [
+            'gateway'                   => 'Payment Gateway',
+            'gateway_default'           => '-- select payment gateway --',
+        ],
         'shipping' => [
             'behavior'                  => 'Behavior',
             'behavior_off'              => 'Off, shipping will not be calculated',

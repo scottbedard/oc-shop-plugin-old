@@ -5,6 +5,8 @@ use Backend;
 use Bedard\Shop\Classes\CartManager;
 use Bedard\Shop\Classes\CurrencyHelper;
 use Bedard\Shop\Models\Currency;
+use Bedard\Shop\Models\Driver;
+use Event;
 use Lang;
 use System\Classes\PluginBase;
 
@@ -42,6 +44,31 @@ class Plugin extends PluginBase
         // Register the CartManager as a singleton
         App::singleton('Bedard\Shop\Classes\CartManager', function() {
             return new CartManager;
+        });
+
+        // Allow drivers to extend their settings model with additional fields
+        Event::listen('backend.form.extendFields', function($widget) {
+            // Shipping drivers
+            if ($widget->model instanceof \Bedard\Shop\Models\ShippingSettings) {
+                $drivers = Driver::isShipping()->get();
+                foreach ($drivers as $driver) {
+                    $class = new $driver->class;
+                    if ($settings = $class->registerSettings()) {
+                        $widget->addTabFields($class->registerSettings());
+                    }
+                }
+            }
+
+            // Payment drivers
+            if ($widget->model instanceof \Bedard\Shop\Models\PaymentSettings) {
+                $drivers = Driver::isPayment()->get();
+                foreach ($drivers as $driver) {
+                    $class = new $driver->class;
+                    if ($settings = $class->registerSettings()) {
+                        $widget->addTabFields($class->registerSettings());
+                    }
+                }
+            }
         });
     }
 

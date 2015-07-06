@@ -20,7 +20,7 @@ class ShippingSettings extends Model
      */
     public function getCalculatorOptions()
     {
-        return Driver::isShipping()->lists('name', 'class');
+        return Driver::isShipping()->orderBy('name')->lists('name', 'class');
     }
 
     /**
@@ -50,7 +50,9 @@ class ShippingSettings extends Model
             throw new Exception("Shipping calculators must implement $shippingInterface.");
         }
 
-        return new $calculator($cart);
+        $class = new $calculator;
+        $class->setCart($cart);
+        return $class;
     }
 
 }

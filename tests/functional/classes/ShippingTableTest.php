@@ -50,7 +50,8 @@ class ShippingTableTest extends \OctoberPluginTestCase
         $manager->cart->save();
         $manager->cart->load('address');
 
-        $table = new BasicTable($manager->cart);
+        $table = new BasicTable();
+        $table->setCart($manager->cart);
         $rates = $table->getRates();
 
         // 1 & 5 should be returned
