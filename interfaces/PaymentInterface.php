@@ -1,4 +1,4 @@
-<?php namespace Bedard\Shop\Classes;
+<?php namespace Bedard\Shop\Interfaces;
 
 use Bedard\Shop\Interfaces\DriverInterface;
 

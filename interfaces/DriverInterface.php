@@ -17,4 +17,12 @@ interface DriverInterface {
      * @return  array
      */
     public function registerSettings();
+
+    /**
+     * Register driver validation
+     *
+     * @return  array
+     */
+    public function registerValidation();
+
 }

@@ -54,7 +54,7 @@ class Plugin extends PluginBase
                 foreach ($drivers as $driver) {
                     $class = new $driver->class;
                     if ($settings = $class->registerSettings()) {
-                        $widget->addTabFields($class->registerSettings());
+                        $widget->addTabFields($settings);
                     }
                 }
             }
@@ -65,7 +65,7 @@ class Plugin extends PluginBase
                 foreach ($drivers as $driver) {
                     $class = new $driver->class;
                     if ($settings = $class->registerSettings()) {
-                        $widget->addTabFields($class->registerSettings());
+                        $widget->addTabFields($settings);
                     }
                 }
             }

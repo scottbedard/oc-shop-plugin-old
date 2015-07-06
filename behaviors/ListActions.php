@@ -31,11 +31,16 @@ class ListActions extends ControllerBehavior {
     public function index_onDelete()
     {
         $model = $this->config->modelClass;
+
         if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
-            foreach ($checkedIds as $id) {
-                if ($record = $model::find($id)) {
-                    $record->delete();
+            if (method_exists($model, 'beforeDelete') || method_exists($model, 'afterDelete')) {
+                foreach ($checkedIds as $id) {
+                    if ($record = $model::find($id)) {
+                        $record->delete();
+                    }
                 }
+            } else {
+                $model::whereIn('id', $checkedIds)->delete();
             }
 
             Flash::success(Lang::get('backend::lang.list.delete_selected_success'));

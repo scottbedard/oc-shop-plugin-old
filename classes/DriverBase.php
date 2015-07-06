@@ -24,7 +24,18 @@ class DriverBase {
      *
      * @return  array
      */
-    public function registerSettings() {
+    public function registerSettings()
+    {
+        return [];
+    }
+
+    /**
+     * Register driver validation
+     *
+     * @return  array
+     */
+    public function registerValidation()
+    {
         return [];
     }
 
