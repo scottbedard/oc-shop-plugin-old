@@ -44,7 +44,7 @@ class ShippingTableTest extends \OctoberPluginTestCase
         $rate5->countries()->sync([1]);
 
         $manager = new CartManager;
-        $manager->add($product->id);
+        $manager->addItem($product->id);
         $manager->loadItemData(true);
         $manager->cart->address_id = $address->id;
         $manager->cart->save();

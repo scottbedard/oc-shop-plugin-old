@@ -33,13 +33,13 @@ class CartManagerTest extends \OctoberPluginTestCase
 
         $manager = new CartManager;
         $manager->loadCart();
-        $manager->add($inventory->id);
+        $manager->addItem($inventory->id);
 
         $manager->cart->load('items');
         $this->assertEquals(1, $manager->cart->items->count());
         $this->assertEquals(1, $manager->cart->items->where('inventory_id', $inventory->id)->first()->quantity);
 
-        $manager->add($inventory->id, [], 10);
+        $manager->addItem($inventory->id, [], 10);
         $manager->cart->load('items');
         $this->assertEquals(1, $manager->cart->items->count());
         $this->assertEquals(5, $manager->cart->items->where('inventory_id', $inventory->id)->first()->quantity);
@@ -55,15 +55,15 @@ class CartManagerTest extends \OctoberPluginTestCase
 
         $manager = new CartManager;
         $manager->loadCart();
-        $manager->add($inventory1->id);
-        $manager->add($inventory2->id);
+        $manager->addItem($inventory1->id);
+        $manager->addItem($inventory2->id);
 
         $manager->cart->load('items');
         $this->assertEquals(2, $manager->cart->items->count());
         $one = $manager->cart->items->where('inventory_id', $inventory1->id)->first();
         $two = $manager->cart->items->where('inventory_id', $inventory2->id)->first();
 
-        $manager->update([
+        $manager->updateItems([
             $one->id => 3,
             $two->id => 10,
         ]);
@@ -87,9 +87,9 @@ class CartManagerTest extends \OctoberPluginTestCase
 
         $manager = new CartManager;
         $manager->loadCart();
-        $manager->add($inventory1->id);
-        $manager->add($inventory2->id);
-        $manager->add($inventory3->id);
+        $manager->addItem($inventory1->id);
+        $manager->addItem($inventory2->id);
+        $manager->addItem($inventory3->id);
 
         $manager->cart->load('items');
         $this->assertEquals(3, $manager->cart->items->count());
@@ -97,12 +97,12 @@ class CartManagerTest extends \OctoberPluginTestCase
         $two    = $manager->cart->items->where('inventory_id', $inventory2->id)->first();
         $three  = $manager->cart->items->where('inventory_id', $inventory3->id)->first();
 
-        $manager->remove($one->id);
+        $manager->removeItems($one->id);
         $manager->cart->load('items');
         $this->assertEquals(2, $manager->cart->items->count());
         $this->assertEquals(0, $manager->cart->items->where('id', $one->id)->count());
 
-        $manager->remove([$two->id, $three->id]);
+        $manager->removeItems([$two->id, $three->id]);
         $manager->cart->load('items');
         $this->assertEquals(0, $manager->cart->items->count());
     }
@@ -132,12 +132,12 @@ class CartManagerTest extends \OctoberPluginTestCase
 
         $manager = new CartManager;
         $manager->loadCart();
-        $manager->add($inventory1->id);
-        $manager->add($inventory2->id);
+        $manager->addItem($inventory1->id);
+        $manager->addItem($inventory2->id);
 
         $manager->cart->load('items');
         $this->assertEquals(2, $manager->cart->items->count());
-        $manager->clear();
+        $manager->clearItems();
         $manager->cart->load('items');
         $this->assertEquals(0, $manager->cart->items->count());
     }
@@ -156,8 +156,8 @@ class CartManagerTest extends \OctoberPluginTestCase
         $this->assertEquals([], $manager->getItems());
 
         $manager->loadCart();
-        $manager->add($inventory1->id, [], 2);
-        $manager->add($inventory2->id, [], 5);
+        $manager->addItem($inventory1->id, [], 2);
+        $manager->addItem($inventory2->id, [], 5);
 
         $this->assertEquals(7, $manager->getItemCount());
         $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $manager->getItems());

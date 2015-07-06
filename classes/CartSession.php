@@ -41,15 +41,14 @@ class CartSession {
         // If we still don't have a cart, forget the session and cookie to
         // prevent queries looking for a cart that doesn't exist.
         if (!$this->cart) {
-            Session::forget(self::CART_KEY);
-            Cookie::queue(Cookie::forget(self::CART_KEY));
+            $this->forgetCart();
         }
     }
 
     /**
      * Creates a new cart and session
      */
-    public function createCart()
+    protected function createCart()
     {
         $cart = Cart::create(['key' => str_random(40)]);
 
@@ -62,6 +61,15 @@ class CartSession {
     }
 
     /**
+     * Forget the cart session and cookie
+     */
+    protected function forgetCart()
+    {
+        Session::forget(self::CART_KEY);
+        Cookie::queue(Cookie::forget(self::CART_KEY));
+    }
+
+    /**
      * Creates a cart if one doesn't exist yet, and refreshes the cart cookie
      */
     public function loadCart()
@@ -70,17 +78,18 @@ class CartSession {
             $this->createCart();
         }
 
+        // If we still don't have a cart, forget the cart and throw an exception
+        if (!$this->cart) {
+            $this->forgetCart();
+            throw new AjaxException('CART_INVALID');
+        }
+
         // Refresh cart cookie
         if ($life = Settings::getCartLife()) {
             Cookie::queue(self::CART_KEY, [
                 'id'    => $this->cart->id,
                 'key'   => $this->cart->key,
             ], $life);
-        }
-
-        // If we still don't have a cart, throw an exception
-        if (!$this->cart) {
-            throw new AjaxException('CART_INVALID');
         }
     }
 }

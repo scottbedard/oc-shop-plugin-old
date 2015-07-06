@@ -38,7 +38,7 @@ class Cart extends ComponentBase
         $valueIds   = array_map('intval', input('options') ?: []);
         $quantity   = intval(input('quantity')) ?: 1;
 
-        $this->manager->add($productId, $valueIds, $quantity);
+        $this->manager->addItem($productId, $valueIds, $quantity);
         $this->prepareCart();
     }
 
@@ -47,7 +47,7 @@ class Cart extends ComponentBase
      */
     public function onClearCart()
     {
-        $this->manager->clear();
+        $this->manager->clearItems();
         $this->prepareCart();
     }
 
@@ -56,7 +56,7 @@ class Cart extends ComponentBase
      */
     public function onRemoveFromCart()
     {
-        $this->manager->remove(intval(input('remove')));
+        $this->manager->removeItems(input('remove'));
         $this->prepareCart();
     }
 
@@ -74,10 +74,11 @@ class Cart extends ComponentBase
      */
     public function onUpdateCart()
     {
-        $this->manager->update(array_map('intval', input('items') ?: []));
+        $this->manager->updateItems(array_map('intval', input('items') ?: []));
 
-        if ($promotion = input('promotion'))
+        if ($promotion = input('promotion')) {
             $this->manager->applyPromotion($promotion);
+        }
 
         $this->prepareCart();
     }

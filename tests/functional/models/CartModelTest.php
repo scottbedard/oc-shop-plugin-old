@@ -27,7 +27,7 @@ class CartModelTest extends \OctoberPluginTestCase
         $manager->loadItemData(true);
         $this->assertFalse($manager->cart->isPromotionMinimumReached);
 
-        $manager->add($inventory->id);
+        $manager->addItem($inventory->id);
         $manager->loadItemData(true);
         $this->assertTrue($manager->cart->isPromotionMinimumReached);
     }
@@ -45,16 +45,16 @@ class CartModelTest extends \OctoberPluginTestCase
         $manager->applyPromotion('Promo');
         $this->assertFalse($manager->cart->hasPromotionProducts);
 
-        $manager->add($inventory2->id);
+        $manager->addItem($inventory2->id);
         $item = CartItem::where('cart_id', $manager->cart->id)->where('inventory_id', $inventory2->id)->first();
         $manager->cart->load('items');
         $this->assertTrue($manager->cart->hasPromotionProducts);
 
-        $manager->add($inventory1->id);
+        $manager->addItem($inventory1->id);
         $manager->cart->load('items');
         $this->assertTrue($manager->cart->hasPromotionProducts);
 
-        $manager->remove($item->id);
+        $manager->removeItems($item->id);
         $manager->cart->load('items');
         $this->assertFalse($manager->cart->hasPromotionProducts);
     }
@@ -66,7 +66,7 @@ class CartModelTest extends \OctoberPluginTestCase
         $inventory1 = Generate::inventory($product1, [], ['quantity' => 5]);
         $promotion  = Generate::promotion('Promo', ['is_cart_percentage' => false, 'cart_percentage' => 10, 'cart_exact' => 5]);
 
-        $manager->add($inventory1->id);
+        $manager->addItem($inventory1->id);
         $manager->loadItemData(true);
         $this->assertEquals(0, $manager->cart->promotionSavings);
 
