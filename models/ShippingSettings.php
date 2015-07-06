@@ -45,7 +45,7 @@ class ShippingSettings extends Model
             return false;
         }
 
-        $shippingInterface = 'Bedard\Shop\Classes\ShippingInterface';
+        $shippingInterface = 'Bedard\Shop\Interfaces\ShippingInterface';
         if (!in_array($shippingInterface, class_implements($calculator))) {
             throw new Exception("Shipping calculators must implement $shippingInterface.");
         }

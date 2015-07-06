@@ -1,7 +1,7 @@
 <?php namespace Bedard\Shop\Drivers\Shipping;
 
 use Bedard\Shop\Classes\ShippingBase;
-use Bedard\Shop\Classes\ShippingInterface;
+use Bedard\Shop\Interfaces\ShippingInterface;
 use Bedard\Shop\Models\ShippingRate;
 
 class BasicTable extends ShippingBase implements ShippingInterface {

@@ -1,8 +1,8 @@
-<?php namespace Bedard\Shop\Classes;
+<?php namespace Bedard\Shop\Interfaces;
 
 use Bedard\Shop\Models\Cart;
 
-interface ShippingInterface {
+interface DriverInterface {
 
     /**
      * Inject the shopping cart object
@@ -10,10 +10,5 @@ interface ShippingInterface {
      * @param   Cart    $cart
      */
     public function __construct(Cart $cart);
-
-    /**
-     * Calculate and save the shipping rates
-     */
-    public function getRates();
 
 }

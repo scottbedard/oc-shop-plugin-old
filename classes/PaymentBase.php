@@ -2,9 +2,9 @@
 
 use Bedard\Shop\Classes\DriverBase;
 
-class ShippingBase extends DriverBase {
+class PaymentBase extends DriverBase {
 
-    // This class exists to allow for future changes to shipping drivers without
+    // This class exists to allow for future changes to payment drivers without
     // forcing drivers provided by external plugins to update their code.
 
 }
