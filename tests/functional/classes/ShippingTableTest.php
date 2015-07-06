@@ -1,7 +1,7 @@
 <?php namespace Bedard\Shop\Tests\Functional\Classes;
 
 use Bedard\Shop\Classes\CartManager;
-use Bedard\Shop\Classes\ShippingTable;
+use Bedard\Shop\Drivers\Shipping\BasicTable;
 use Bedard\Shop\Models\ShippingSettings;
 use Bedard\Shop\Tests\Fixtures\Generate;
 
@@ -13,7 +13,7 @@ class ShippingTableTest extends \OctoberPluginTestCase
     public function test_getRates_method()
     {
         ShippingSettings::set('behavior', 'on');
-        ShippingSettings::set('calculator', 'Bedard\Shop\Classes\ShippingTable');
+        ShippingSettings::set('calculator', 'Bedard\Shop\Drivers\Shipping\BasicTable');
 
         // Create a shopping cart with an address
         $product    = Generate::product('Product', ['base_price' => 10, 'weight' => 10]);
@@ -50,7 +50,7 @@ class ShippingTableTest extends \OctoberPluginTestCase
         $manager->cart->save();
         $manager->cart->load('address');
 
-        $table = new ShippingTable($manager->cart);
+        $table = new BasicTable($manager->cart);
         $rates = $table->getRates();
 
         // 1 & 5 should be returned

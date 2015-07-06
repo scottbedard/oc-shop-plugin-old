@@ -1,10 +1,10 @@
-<?php namespace Bedard\Shop\Classes;
+<?php namespace Bedard\Shop\Drivers\Shipping;
 
 use Bedard\Shop\Classes\ShippingBase;
 use Bedard\Shop\Classes\ShippingInterface;
 use Bedard\Shop\Models\ShippingRate;
 
-class ShippingTable extends ShippingBase implements ShippingInterface {
+class BasicTable extends ShippingBase implements ShippingInterface {
 
     /**
      * Calculate and save the shipping rates
@@ -37,7 +37,7 @@ class ShippingTable extends ShippingBase implements ShippingInterface {
 
             if (!$better) {
                 $final[] = [
-                    'class' => 'Bedard\Shop\Classes\ShippingTable',
+                    'class' => 'Bedard\Shop\Drivers\Shipping\BasicTable',
                     'name'  => $result['name'],
                     'cost'  => $result['cost'],
                 ];

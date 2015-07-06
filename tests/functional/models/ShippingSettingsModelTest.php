@@ -13,11 +13,11 @@ class ShippingSettingsModelTest extends \OctoberPluginTestCase
         $cart = Generate::cart();
 
         ShippingSettings::set('behavior', 'off');
-        ShippingSettings::set('calculator', 'Bedard\Shop\Classes\ShippingTable');
+        ShippingSettings::set('calculator', 'Bedard\Shop\Drivers\Shipping\BasicTable');
         $this->assertFalse(ShippingSettings::getCalculator($cart));
 
         ShippingSettings::set('behavior', 'on');
-        $this->assertInstanceOf('Bedard\Shop\Classes\ShippingTable', ShippingSettings::getCalculator($cart));
+        $this->assertInstanceOf('Bedard\Shop\Drivers\Shipping\BasicTable', ShippingSettings::getCalculator($cart));
 
         ShippingSettings::set('calculator', false);
         $this->assertFalse(ShippingSettings::getCalculator($cart));

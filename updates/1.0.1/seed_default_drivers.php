@@ -11,7 +11,7 @@ class SeedDefaultDrivers extends Seeder
         Driver::create([
             'name'          => 'Shipping Table',
             'type'          => 'shipping',
-            'class'         => 'Bedard\Shop\Classes\ShippingTable',
+            'class'         => 'Bedard\Shop\Drivers\Shipping\BasicTable',
             'is_enabled'    => true,
         ]);
 
