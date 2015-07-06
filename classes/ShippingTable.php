@@ -38,7 +38,7 @@ class ShippingTable extends ShippingBase implements ShippingInterface {
 
             if (!$better) {
                 $final[] = [
-                    'class' => self::class,
+                    'class' => 'Bedard\Shop\Classes\ShippingTable',
                     'name'  => $result['name'],
                     'cost'  => $result['cost'],
                 ];
