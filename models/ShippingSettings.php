@@ -7,11 +7,18 @@ use Model;
 
 class ShippingSettings extends Model
 {
+    use \October\Rain\Database\Traits\Validation;
+
     public $implement = ['System.Behaviors.SettingsModel'];
 
     public $settingsCode = 'bedard_shop_shipping';
 
     public $settingsFields = 'fields.yaml';
+
+    /**
+     * Validation
+     */
+    public $rules = [];
 
     /**
      * Returns all installed shipping calculators
@@ -24,35 +31,39 @@ class ShippingSettings extends Model
     }
 
     /**
-     * Returns the shipping calculator behavior
+     * Determines if a response is required from the shipping calculator
      *
-     * @return  string
+     * @return  boolean
      */
-    public static function getBehavior()
+    public static function getIsRequired()
     {
-        return self::get('behavior', 'off');
+        return (bool) self::get('is_required', false);
     }
 
     /**
-     * Instantiates the default shipping calculator
+     * Determines if a shopping
      *
-     * @param   Cart        $cart
+     * @param   Cart|null   $cart
      * @return  mixed
      */
-    public static function getCalculator(Cart $cart)
+    public static function getCalculator(Cart $cart = null)
     {
-        if (self::getBehavior() == 'off' || (!$calculator = self::get('calculator', false))) {
+        if (!$class = self::get('calculator', false)) {
             return false;
         }
 
         $shippingInterface = 'Bedard\Shop\Interfaces\ShippingInterface';
-        if (!in_array($shippingInterface, class_implements($calculator))) {
+        if (!in_array($shippingInterface, class_implements($class))) {
             throw new Exception("Shipping calculators must implement $shippingInterface.");
         }
 
-        $class = new $calculator;
-        $class->setCart($cart);
-        return $class;
+        if (is_null($cart)) {
+            return $class;
+        }
+
+        $calculator = new $class;
+        $calculator->setCart($cart);
+        return $calculator;
     }
 
 }

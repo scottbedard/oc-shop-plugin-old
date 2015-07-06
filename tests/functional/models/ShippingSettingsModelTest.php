@@ -11,15 +11,14 @@ class ShippingSettingsModelTest extends \OctoberPluginTestCase
     public function test_getCalculator_method()
     {
         $cart = Generate::cart();
+        $driver = 'Bedard\Shop\Drivers\Shipping\BasicTable';
 
-        ShippingSettings::set('behavior', 'off');
-        ShippingSettings::set('calculator', 'Bedard\Shop\Drivers\Shipping\BasicTable');
+        ShippingSettings::set('calculator', null);
+        $this->assertFalse(ShippingSettings::getCalculator());
         $this->assertFalse(ShippingSettings::getCalculator($cart));
 
-        ShippingSettings::set('behavior', 'on');
-        $this->assertInstanceOf('Bedard\Shop\Drivers\Shipping\BasicTable', ShippingSettings::getCalculator($cart));
-
-        ShippingSettings::set('calculator', false);
-        $this->assertFalse(ShippingSettings::getCalculator($cart));
+        ShippingSettings::set('calculator', $driver);
+        $this->assertEquals($driver, ShippingSettings::getCalculator());
+        $this->assertInstanceOf($driver, ShippingSettings::getCalculator($cart));
     }
 }

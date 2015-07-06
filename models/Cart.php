@@ -27,6 +27,13 @@ class Cart extends Model
     ];
 
     /**
+     * @var array Attribute casting
+     */
+    protected $casts = [
+        'shipping_failed' => 'boolean',
+    ];
+
+    /**
      * @var array Jsonable fields
      */
     protected $jsonable = ['shipping_rates'];
@@ -152,10 +159,13 @@ class Cart extends Model
 
     public function getShippingIsRequiredAttribute()
     {
-        $behavior = ShippingSettings::getBehavior();
-        return count($this->shipping_rates) == 0 &&
-               ($behavior == 'on' && !$this->shipping_failed) ||
-               ($behavior == 'required' && empty($this->shipping_rates));
+        // If we have no calculator, or we already have rates
+        if (!ShippingSettings::getCalculator() || count($this->shipping_rates) > 0) {
+            return false;
+        }
+
+        // Return true if shipping is required, or it has not failed
+        return !$this->shipping_failed || ShippingSettings::getIsRequired();
     }
 
     public function getWeightAttribute()

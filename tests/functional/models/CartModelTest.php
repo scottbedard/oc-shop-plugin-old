@@ -95,26 +95,24 @@ class CartModelTest extends \OctoberPluginTestCase
         $cart = Generate::cart();
         $cart = Cart::find($cart->id);
 
-        ShippingSettings::set('behavior', 'off');
+        ShippingSettings::set('calculator', false);
         $this->assertFalse($cart->shippingIsRequired);
 
-        ShippingSettings::set('behavior', 'on');
+        ShippingSettings::set('calculator', 'Bedard\Shop\Drivers\Shipping\BasicTable');
+        ShippingSettings::set('is_required', false);
         $this->assertTrue($cart->shippingIsRequired);
 
+        ShippingSettings::set('is_required', true);
         $cart->shipping_failed = true;
-        $this->assertFalse($cart->shippingIsRequired);
+        $this->assertTrue($cart->shippingIsRequired);
 
-        ShippingSettings::set('behavior', 'required');
+        $cart->shipping_failed = false;
         $this->assertTrue($cart->shippingIsRequired);
 
         $cart->shipping_rates = [
             ['name' => 'Standard', 'cost' => 2],
             ['name' => 'Priority', 'cost' => 5],
         ];
-        $cart->shipping_failed = false;
-        $this->assertFalse($cart->shippingIsRequired);
-
-        ShippingSettings::set('behavior', 'on');
         $this->assertFalse($cart->shippingIsRequired);
     }
 }

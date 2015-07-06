@@ -19,7 +19,7 @@ class SeedDefaultDrivers extends Seeder
         Driver::create([
             'name'          => 'PayPal Express',
             'type'          => 'payment',
-            'class'         => 'Bedard\Shop\Payment\PaypalExpress',
+            'class'         => 'Bedard\Shop\Drivers\Payment\PaypalExpress',
             'is_enabled'    => true,
         ]);
     }

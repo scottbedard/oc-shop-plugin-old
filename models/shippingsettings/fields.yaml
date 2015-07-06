@@ -10,12 +10,11 @@ fields:
         type: dropdown
         span: left
 
-    behavior:
-        label: bedard.shop::lang.settings.shipping.behavior
+    is_required:
+        label: bedard.shop::lang.settings.shipping.is_required
         type: dropdown
         options:
-            off: bedard.shop::lang.settings.shipping.behavior_off
-            on: bedard.shop::lang.settings.shipping.behavior_on
-            required: bedard.shop::lang.settings.shipping.behavior_required
-        default: off
+            0: bedard.shop::lang.settings.shipping.is_required_off
+            1: bedard.shop::lang.settings.shipping.is_required_on
+        default: 0
         span: right

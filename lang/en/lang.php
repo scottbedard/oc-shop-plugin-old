@@ -220,6 +220,19 @@ return [
         'status_upcoming'               => 'Upcoming',
     ],
 
+    'drivers' => [
+        'paypalexpress' => [
+            'api_username'              => 'API username',
+            'api_password'              => 'API password',
+            'api_signature'             => 'API signature',
+            'brand_name'                => 'Brand name',
+            'driver'                    => 'Paypal Express',
+            'live'                      => 'Live',
+            'sandbox'                   => 'Sandbox',
+            'server'                    => 'Server',
+        ],
+    ],
+
     'inventories' => [
         'default'                       => 'Default Inventory',
         'inventory_exists'              => 'That inventory already exists.',
@@ -333,13 +346,12 @@ return [
         ],
         'payment' => [
             'gateway'                   => 'Payment Gateway',
-            'gateway_default'           => '-- select payment gateway --',
+            'gateway_placeholder'       => '-- select payment gateway --',
         ],
         'shipping' => [
-            'behavior'                  => 'Behavior',
-            'behavior_off'              => 'Off, shipping will not be calculated',
-            'behavior_on'               => 'On, shipping will be calculated, but allowed to fail',
-            'behavior_required'         => 'Required, a successful shipping calculation is required',
+            'is_required'               => 'Calculator response',
+            'is_required_on'            => 'Required, a response must be received to check out.',
+            'is_required_off'           => 'Not required, a user may still checkout if calculator fails.',
             'calculator'                => 'Shipping Calculator',
             'calculator_placeholder'    => '-- select shipping calculator --',
         ],
