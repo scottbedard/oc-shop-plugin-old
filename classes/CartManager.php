@@ -184,8 +184,6 @@ class CartManager {
     /**
      * Determines if shipping needs to be calculated, and if so passes the
      * request to the shipping calculator.
-     *
-     * @return  null|boolean
      */
     public function calculateShipping()
     {
@@ -194,9 +192,13 @@ class CartManager {
         }
 
         $this->loadItemData();
-        $calculator = Shipping::getCalculator();
-        $calculator->setCart($this->cart);
-        $rates = $calculator->getRates();
+        $calculator = Shipping::getCalculator($this->cart);
+
+        if (!$this->cart->shipping_rates = $calculator->getRates()) {
+            $this->cart->shipping_failed = true;
+        }
+
+        $this->cart->save();
     }
 
     /**

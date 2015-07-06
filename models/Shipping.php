@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Models;
 
+use Bedard\Shop\Models\Cart;
 use Bedard\Shop\Models\Driver;
 use Exception;
 use Model;
@@ -35,9 +36,10 @@ class Shipping extends Model
     /**
      * Instantiates the default shipping calculator
      *
+     * @param   Cart        $cart
      * @return  mixed
      */
-    public static function getCalculator()
+    public static function getCalculator(Cart $cart)
     {
         if (Shipping::getBehavior() == 'off' || (!$calculator = Shipping::get('calculator', false))) {
             return false;
@@ -48,7 +50,7 @@ class Shipping extends Model
             throw new Exception("Shipping calculators must implement $shippingInterface.");
         }
 
-        return new $calculator;
+        return new $calculator($cart);
     }
 
 }

@@ -10,11 +10,11 @@ class ShippingBase {
     protected $cart;
 
     /**
-     * Sets the shopping cart object
+     * Inject the shopping cart object
      *
      * @param   Cart    $cart
      */
-    public function setCart(Cart $cart)
+    public function __construct(Cart $cart)
     {
         $this->cart = $cart;
     }
