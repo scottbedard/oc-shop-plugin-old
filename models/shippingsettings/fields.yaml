@@ -18,3 +18,8 @@ fields:
             1: bedard.shop::lang.settings.shipping.is_required_on
         default: 0
         span: right
+
+    driversettings:
+        label: bedard.shop::lang.settings.shipping.manage
+        type: driversettings
+        scope: isShipping

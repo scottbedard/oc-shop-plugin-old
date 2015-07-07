@@ -61,8 +61,11 @@ class ShippingSettings extends Model
             return $class;
         }
 
+        $driver = Driver::where('class', $class)->first();
+
         $calculator = new $class;
         $calculator->setCart($cart);
+        $calculator->setConfig($driver->config);
         return $calculator;
     }
 

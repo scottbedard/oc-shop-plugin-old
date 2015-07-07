@@ -10,6 +10,11 @@ class DriverBase {
     protected $cart;
 
     /**
+     * @var array       The driver configuration
+     */
+    protected $config = [];
+
+    /**
      * @var array       Validation rules for driver configuration
      */
     public $rules = [];
@@ -20,6 +25,19 @@ class DriverBase {
     public $customMessages = [];
 
     /**
+     * Get a value from the driver configuration
+     *
+     * @param   string      $key
+     * @return  mixed|null
+     */
+    public function getConfig($key)
+    {
+        return isset($this->config[$key])
+            ? $this->config[$key]
+            : null;
+    }
+
+    /**
      * Set the shopping cart object
      *
      * @param   Cart    $cart
@@ -27,6 +45,16 @@ class DriverBase {
     public function setCart(Cart $cart)
     {
         $this->cart = $cart;
+    }
+
+    /**
+     * Set the driver configuration
+     *
+     * @param   array|null  $config
+     */
+    public function setConfig($config)
+    {
+        $this->config = $config;
     }
 
     /**

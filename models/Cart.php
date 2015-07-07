@@ -172,4 +172,13 @@ class Cart extends Model
     {
         return $this->items->sum('weight');
     }
+
+    /**
+     * Return the cart weight in a specified unit
+     */
+    public function getWeight($unit = 'oz')
+    {
+        // todo: add conversion logic
+        return $this->items->sum('weight');
+    }
 }
