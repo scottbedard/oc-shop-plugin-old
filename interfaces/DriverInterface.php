@@ -12,14 +12,21 @@ interface DriverInterface {
     public function setCart(Cart $cart);
 
     /**
-     * Register driver settings
+     * Register configuration fields
      *
      * @return  array
      */
-    public function registerSettings();
+    public function registerFields();
 
     /**
-     * Register driver validation
+     * Registers tabbed configuration fields
+     *
+     * @return array
+     */
+    public function registerTabFields();
+
+    /**
+     * Register configuration validation
      *
      * @return  array
      */

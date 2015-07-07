@@ -1,0 +1,90 @@
+#driversettings {
+
+    @driver_padding: 18px;
+    @driver_size: 150px;
+    @driver_spacing: 12px;
+
+    .driver {
+        background: #fff;
+        border: 1px solid #E0E0E0;
+        border-radius: 3px;
+        display: inline-block;
+        float: left;
+        height: @driver_size;
+        position: relative;
+        width: @driver_size;
+
+        .off {
+            display: inline-block;
+        }
+
+        .on {
+            display: none;
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+        .off, .on {
+            left: 50%;
+            padding: @driver_padding;
+            position: absolute;
+            text-align: center;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+
+            img {
+                height: auto;
+                width: 100%;
+            }
+        }
+
+        &:hover {
+            color: #fff;
+            background-color: #58b6f7;
+
+            .off {
+                display: none;
+            }
+
+            .on {
+                display: inline-block;
+            }
+        }
+
+        &:not(:last-of-type) {
+            margin-bottom: @driver_spacing;
+            margin-right: @driver_spacing;
+        }
+
+        a {
+            color: #fff !important;
+            display: block;
+            height: 100%;
+            width: 100%;
+        }
+    }
+}
+
+.driversettings-modal {
+    .modal-body {
+        .values-widget:not(:last-of-type) {
+            margin-bottom: 10px;
+        }
+    }
+
+    .modal-footer {
+        .loading-indicator {
+            display: none;
+            padding: 0;
+
+            div, span {
+                float: right;
+                margin-left: 15px;
+                position: relative;
+            }
+        }
+    }
+}
+
+.colpick { z-index: 1050; }

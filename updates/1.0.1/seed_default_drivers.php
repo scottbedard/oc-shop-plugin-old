@@ -1,6 +1,7 @@
 <?php namespace Bedard\Shop\Updates;
 
 use Bedard\Shop\Models\Driver;
+use System\Models\File;
 use October\Rain\Database\Updates\Seeder;
 
 class SeedDefaultDrivers extends Seeder
@@ -12,15 +13,33 @@ class SeedDefaultDrivers extends Seeder
             'name'          => 'Shipping Table',
             'type'          => 'shipping',
             'class'         => 'Bedard\Shop\Drivers\Shipping\BasicTable',
-            'is_enabled'    => true,
+            'is_default'    => true,
         ]);
 
         // PayPal Express
-        Driver::create([
-            'name'          => 'PayPal Express',
+        $paypal = Driver::create([
+            'name'          => 'Paypal Express',
             'type'          => 'payment',
             'class'         => 'Bedard\Shop\Drivers\Payment\PaypalExpress',
-            'is_enabled'    => true,
+            'is_default'    => true,
         ]);
+
+        $logo = new File;
+        $logo->fromFile(plugins_path('bedard/shop/assets/images/paypal.png'));
+        $logo->save();
+        $paypal->image()->add($logo);
+
+        // Stripe
+        $stripe = Driver::create([
+            'name'          => 'Stripe',
+            'type'          => 'payment',
+            'class'         => 'Bedard\Shop\Drivers\Payment\Stripe',
+            'is_default'    => true,
+        ]);
+
+        $logo = new File;
+        $logo->fromFile(plugins_path('bedard/shop/assets/images/stripe.png'));
+        $logo->save();
+        $stripe->image()->add($logo);
     }
 }

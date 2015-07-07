@@ -5,9 +5,19 @@ use Bedard\Shop\Models\Cart;
 class DriverBase {
 
     /**
-     * @var Cart
+     * @var Cart        The user's shopping cart
      */
     protected $cart;
+
+    /**
+     * @var array       Validation rules for driver configuration
+     */
+    public $rules = [];
+
+    /**
+     * @var array       Custom validation error messages
+     */
+    public $customMessages = [];
 
     /**
      * Set the shopping cart object
@@ -20,11 +30,21 @@ class DriverBase {
     }
 
     /**
-     * Register driver settings
+     * Register configuration fields
      *
      * @return  array
      */
-    public function registerSettings()
+    public function registerFields()
+    {
+        return [];
+    }
+
+    /**
+     * Registers tabbed configuration fields
+     *
+     * @return array
+     */
+    public function registerTabFields()
     {
         return [];
     }
@@ -37,6 +57,16 @@ class DriverBase {
     public function registerValidation()
     {
         return [];
+    }
+
+    /**
+     * Run custom messages through the Transliterator
+     *
+     * @return  array
+     */
+    public function getCustomMessages()
+    {
+        return array_map('trans', $this->customMessages);
     }
 
 }

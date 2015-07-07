@@ -1,0 +1,71 @@
+#driversettings .driver {
+  background: #fff;
+  border: 1px solid #E0E0E0;
+  border-radius: 3px;
+  display: inline-block;
+  float: left;
+  height: 150px;
+  position: relative;
+  width: 150px;
+}
+#driversettings .driver .off {
+  display: inline-block;
+}
+#driversettings .driver .on {
+  display: none;
+  font-size: 16px;
+  font-weight: 300;
+}
+#driversettings .driver .off,
+#driversettings .driver .on {
+  left: 50%;
+  padding: 18px;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 100%;
+}
+#driversettings .driver .off img,
+#driversettings .driver .on img {
+  height: auto;
+  width: 100%;
+}
+#driversettings .driver:hover {
+  color: #fff;
+  background-color: #58b6f7;
+}
+#driversettings .driver:hover .off {
+  display: none;
+}
+#driversettings .driver:hover .on {
+  display: inline-block;
+}
+#driversettings .driver:not(:last-of-type) {
+  margin-bottom: 12px;
+  margin-right: 12px;
+}
+#driversettings .driver a {
+  color: #fff !important;
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+.driversettings-modal .modal-body .values-widget:not(:last-of-type) {
+  margin-bottom: 10px;
+}
+.driversettings-modal .modal-footer .loading-indicator {
+  display: none;
+  padding: 0;
+}
+.driversettings-modal .modal-footer .loading-indicator div,
+.driversettings-modal .modal-footer .loading-indicator span {
+  float: right;
+  margin-left: 15px;
+  position: relative;
+}
+.colpick {
+  z-index: 1050;
+}

@@ -6,42 +6,72 @@ use Bedard\Shop\Interfaces\PaymentInterface;
 class PaypalExpress extends PaymentBase implements PaymentInterface {
 
     /**
-     * Register driver settings
+     * Validation rules
+     */
+    public $rules = [
+        'brand_name'    => 'required',
+        'api_username'  => 'required',
+        'api_password'  => 'required',
+        'api_signature' => 'required',
+        'is_live'       => 'boolean',
+    ];
+
+    /**
+     * Register configuration fields
      *
      * @return  array
      */
-    public function registerSettings()
+    public function registerFields()
     {
         return [
-            'paypal_express[brand_name]' => [
-                'tab'       => 'bedard.shop::lang.drivers.paypalexpress.driver',
+            'brand_name' => [
                 'label'     => 'bedard.shop::lang.drivers.paypalexpress.brand_name',
             ],
-            'paypal_express[is_live]' => [
-                'tab'       => 'bedard.shop::lang.drivers.paypalexpress.driver',
+        ];
+    }
+
+    /**
+     * Register tabbed configuration fields
+     *
+     * @return  array
+     */
+    public function registerTabFields()
+    {
+        return [
+            'api_username' => [
+                'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_connection',
+                'label'     => 'bedard.shop::lang.drivers.paypalexpress.api_username',
+                'span'      => 'left',
+            ],
+            'api_password' => [
+                'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_connection',
+                'label'     => 'bedard.shop::lang.drivers.paypalexpress.api_password',
+                'span'      => 'right',
+            ],
+            'api_signature' => [
+                'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_connection',
+                'label'     => 'bedard.shop::lang.drivers.paypalexpress.api_signature',
+                'span'      => 'left',
+            ],
+            'logo_url' => [
+                'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_appearance',
+                'label'     => 'bedard.shop::lang.drivers.paypalexpress.logo_url',
+            ],
+            'border_color' => [
+                'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_appearance',
+                'label'     => 'bedard.shop::lang.drivers.paypalexpress.border_color',
+                'type'      => 'colorpicker',
+            ],
+            'is_live' => [
+                'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_connection',
                 'label'     => 'bedard.shop::lang.drivers.paypalexpress.server',
-                'type'      => 'radio',
+                'type'      => 'dropdown',
                 'options'   => [
                     '1' => 'bedard.shop::lang.drivers.paypalexpress.live',
                     '0' => 'bedard.shop::lang.drivers.paypalexpress.sandbox',
                 ],
                 'default'   => '0',
                 'span'      => 'right',
-            ],
-            'paypal_express[api_username]' => [
-                'tab'       => 'bedard.shop::lang.drivers.paypalexpress.driver',
-                'label'     => 'bedard.shop::lang.drivers.paypalexpress.api_username',
-                'span'      => 'left',
-            ],
-            'paypal_express[api_password]' => [
-                'tab'       => 'bedard.shop::lang.drivers.paypalexpress.driver',
-                'label'     => 'bedard.shop::lang.drivers.paypalexpress.api_password',
-                'span'      => 'left',
-            ],
-            'paypal_express[api_signature]' => [
-                'tab'       => 'bedard.shop::lang.drivers.paypalexpress.driver',
-                'label'     => 'bedard.shop::lang.drivers.paypalexpress.api_signature',
-                'span'      => 'left',
             ],
         ];
     }

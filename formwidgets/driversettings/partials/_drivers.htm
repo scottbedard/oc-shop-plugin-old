@@ -1,0 +1,18 @@
+<?php foreach ($drivers as $driver): ?>
+
+    <div class="driver" data-control="driver" data-id="<?= $driver->id ?>">
+        <a href="javascript:;">
+            <div class="off">
+                <?php if ($driver->image): ?>
+                    <img src="<?= $driver->image->getPath() ?>" alt="<?= e(trans($driver->name)) ?>" />
+                <?php else: ?>
+                    <?= e(trans($driver->name)) ?>
+                <?php endif ?>
+            </div>
+            <div class="on">
+                <?= e(trans($driver->name)) ?>
+            </div>
+        </a>
+    </div>
+
+<?php endforeach ?>

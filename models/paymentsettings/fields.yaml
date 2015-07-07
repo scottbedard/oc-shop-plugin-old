@@ -5,7 +5,12 @@
 fields:
 
     gateway:
-        label: bedard.shop::lang.settings.payment.gateway
-        placeholder: bedard.shop::lang.settings.payment.gateway_placeholder
+        label: bedard.shop::lang.settings.payment.default
+        placeholder: bedard.shop::lang.settings.payment.default_placeholder
         type: dropdown
         span: left
+
+    driversettings:
+        label: bedard.shop::lang.settings.payment.manage
+        type: driversettings
+        scope: isPayment
