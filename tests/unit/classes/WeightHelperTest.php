@@ -4,6 +4,7 @@ use Bedard\Shop\Classes\WeightHelper;
 
 class WeightHelperTest extends \OctoberPluginTestCase
 {
+    protected $refreshPlugins = ['Bedard.Shop'];
 
     public function test_unit_conversion()
     {
