@@ -12,12 +12,8 @@ class WeightHelper {
      * @param   string          $to         The desired unit
      * @param   string|false    $from       The starting unit
      */
-    public static function convert($weight, $to, $from = false)
+    public static function convert($weight, $to, $from)
     {
-        if (!$from) {
-            $from = Settings::getWeightUnits();
-        }
-
         // The number of grams in a given unit
         $kilogram   = 1000;
         $ounce      = 28.3495;
