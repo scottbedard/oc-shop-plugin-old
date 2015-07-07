@@ -45,11 +45,9 @@ class Driver extends Model
     /**
      * Relationships
      */
-     public $attachOne = [
-         'image' => [
-             'System\Models\File',
-         ],
-     ];
+    public $attachOne = [
+        'image' => ['System\Models\File'],
+    ];
 
     /**
      * Query Scopes
@@ -61,7 +59,7 @@ class Driver extends Model
 
     public function scopeIsShipping($query)
     {
-        return $query->where('type', 'shipping');
+    return $query->where('type', 'shipping');
     }
 
     /**
