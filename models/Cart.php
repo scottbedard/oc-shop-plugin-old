@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Models;
 
+use Bedard\Shop\Classes\WeightHelper;
 use Bedard\Shop\Models\ShippingSettings;
 use Model;
 
@@ -175,10 +176,12 @@ class Cart extends Model
 
     /**
      * Return the cart weight in a specified unit
+     *
+     * @param   string  $unit   The desired return unit
+     * @return  float
      */
     public function getWeight($unit = 'oz')
     {
-        // todo: add conversion logic
-        return $this->items->sum('weight');
+        return WeightHelper::convert($this->items->sum('weight'), $unit);
     }
 }
