@@ -3,15 +3,15 @@
 use Backend\Classes\FormWidgetBase;
 
 /**
- * Password Form Widget
+ * ApiPassword Form Widget
  */
-class Password extends FormWidgetBase
+class ApiPassword extends FormWidgetBase
 {
 
     /**
      * {@inheritDoc}
      */
-    protected $defaultAlias = 'bedard_shop_password';
+    protected $defaultAlias = 'bedard_shop_api_password';
 
     /**
      * {@inheritDoc}
@@ -19,7 +19,7 @@ class Password extends FormWidgetBase
     public function render()
     {
         $this->prepareVars();
-        return $this->makePartial('password');
+        return $this->makePartial('apipassword');
     }
 
     /**
@@ -28,8 +28,15 @@ class Password extends FormWidgetBase
     public function prepareVars()
     {
         $this->vars['name'] = $this->formField->getName();
-        $this->vars['value'] = $this->getLoadValue();
-        $this->vars['model'] = $this->model;
+        $this->vars['token'] = str_random(strlen($this->getLoadValue()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function loadAssets()
+    {
+        $this->addJs('js/apipassword.js', 'Bedard.Shop');
     }
 
     /**

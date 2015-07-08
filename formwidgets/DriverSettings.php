@@ -91,8 +91,17 @@ class DriverSettings extends FormWidgetBase
             return;
         }
 
-        // Validate the configuration if needed
+        // Reset password fields matching an api password token
         $class = $driver->getClass();
+        if ($tokens = input('_api_password_tokens')) {
+            foreach ($tokens as $key => $value) {
+                if (isset($config[$key]) && $config[$key] == $value && isset($class->config[$key])) {
+                    $config[$key] = $class->config[$key];
+                }
+            }
+        }
+
+        // Validate the input
         if ($class->rules) {
             $validator = Validator::make($config, $class->rules, $class->getCustomMessages());
             if (!$validator->passes()) {

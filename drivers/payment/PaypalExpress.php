@@ -43,14 +43,14 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
             'api_password' => [
                 'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_connection',
                 'label'     => 'bedard.shop::lang.drivers.paypalexpress.api_password',
-                'type'      => 'masked-password',
+                'type'      => 'api-password',
                 'required'  => true,
                 'span'      => 'right',
             ],
             'api_signature' => [
                 'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_connection',
                 'label'     => 'bedard.shop::lang.drivers.paypalexpress.api_signature',
-                'type'      => 'masked-password',
+                'type'      => 'api-password',
                 'required'  => true,
                 'span'      => 'left',
             ],

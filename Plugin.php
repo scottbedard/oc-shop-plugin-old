@@ -206,9 +206,9 @@ class Plugin extends PluginBase
                 'label' => 'Driver Settings',
                 'code'  => 'driversettings',
             ],
-            'Bedard\Shop\FormWidgets\Password' => [
-                'label' => 'Masked Password',
-                'code'  => 'masked-password'
+            'Bedard\Shop\FormWidgets\ApiPassword' => [
+                'label' => 'API Password',
+                'code'  => 'api-password'
             ],
             'Bedard\Shop\FormWidgets\OptionsInventories' => [
                 'label' => 'Options & Inventories',
