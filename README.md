@@ -1,6 +1,7 @@
 # oc-shop-plugin
 
 [![](https://travis-ci.org/scottbedard/oc-shop-plugin.svg)](https://travis-ci.org/scottbedard/oc-shop-plugin)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/scottbedard/oc-shop-plugin/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/scottbedard/oc-shop-plugin/?branch=master)
 [![](https://img.shields.io/github/license/mashape/apistatus.svg)](http://opensource.org/licenses/MIT)
 
 This is a work in progress, and is not ready for use by anyone.
@@ -72,4 +73,6 @@ Settings and permission docs will be written soon.
 
 <a name="shipping" href="#shipping"></a>
 ### Shipping
-Shipping docs will be written soon.
+This plugin provides a basic shipping table out of the box. To get started, you'll first need to create a `shipping method`. Here you can define the `name` of your method, as well as a `minimum weight` and `maximum weight`. Think of shipping methods as a type of shipment. For example, a package between 5lbs and 10lbs. Next, it's time to create some `shipping rates`. Shipping rates define how much you will charge to mail this type of package to a destination. A `base price` and `rate` are used to define the overall cost of the shipping. Lastly, select the `countries` and `states` that the rate should apply to.
+
+If your shop is using an external shipping driver, it is still a good idea to define rates via the shipping table. The reason for this is to prevent a user from receiving a null shipping response should the shipping calculator fail. For example, if your shop is using the [U.S. Postal Service](https://github.com/scottbedard/oc-uspsdriver-plugin) driver, and no response is received, it may pass the request to the shipping table as a backup.
