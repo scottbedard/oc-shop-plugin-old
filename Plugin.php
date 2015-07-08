@@ -226,6 +226,10 @@ class Plugin extends PluginBase
                 'label' => 'Knob',
                 'code'  => 'owl-knob'
             ],
+            'Owl\FormWidgets\Password\Widget' => [
+                'label' => 'Password',
+                'code'  => 'owl-password'
+            ],
         ];
     }
 
