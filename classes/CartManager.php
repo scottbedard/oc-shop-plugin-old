@@ -27,8 +27,13 @@ class CartManager extends CartSession {
     /**
      * @var boolean     Helpers to keep track of lazy loading
      */
-    protected $itemsLoaded      = false;
-    protected $itemDataLoaded   = false;
+    protected $itemsLoaded = false;
+    protected $itemDataLoaded = false;
+
+    /**
+     * @var boolean     Determines if cart was modified due to an invalid quantity
+     */
+    public $invalidQuantities = false;
 
     /**
      * Loads the cart items relationship

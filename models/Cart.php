@@ -194,15 +194,6 @@ class Cart extends Model
     }
 
     /**
-     * Generates a random string to be used in callback URLs
-     */
-    public function beforePayment()
-    {
-        $this->hash = str_random(40);
-        $this->save();
-    }
-
-    /**
      * Return the cart weight in a specified unit
      *
      * @param   string  $unit   The desired return unit
@@ -211,5 +202,22 @@ class Cart extends Model
     public function getWeight($unit = 'oz')
     {
         return WeightHelper::convert($this->items->sum('weight'), $unit);
+    }
+
+    /**
+     * Validate and potentially repair the CartItem quantities
+     *
+     * @return  boolean
+     */
+    public function validateQuantities()
+    {
+        $valid = true;
+        foreach ($this->items as $item) {
+            if (!$item->validateQuantity()) {
+                $valid = false;
+            }
+        }
+
+        return $valid;
     }
 }

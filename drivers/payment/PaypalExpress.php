@@ -6,9 +6,11 @@ use Bedard\Shop\Classes\PaymentException;
 use Bedard\Shop\Interfaces\PaymentInterface;
 use Bedard\Shop\Models\Currency;
 use Bedard\Shop\Models\PaymentSettings;
+use Cms\Classes\MediaLibrary;
 use Exception;
 use Omnipay\Omnipay;
 use Redirect;
+use URL;
 
 class PaypalExpress extends PaymentBase implements PaymentInterface {
     use \Bedard\Shop\Traits\OmnipayGatewayTrait;
@@ -41,14 +43,14 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
             'api_password' => [
                 'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_connection',
                 'label'     => 'bedard.shop::lang.drivers.paypalexpress.api_password',
-                'type'      => 'owl-password',
+                'type'      => 'masked-password',
                 'required'  => true,
                 'span'      => 'right',
             ],
             'api_signature' => [
                 'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_connection',
                 'label'     => 'bedard.shop::lang.drivers.paypalexpress.api_signature',
-                'type'      => 'owl-password',
+                'type'      => 'masked-password',
                 'required'  => true,
                 'span'      => 'left',
             ],
@@ -68,9 +70,12 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
                 'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_appearance',
                 'label'     => 'bedard.shop::lang.drivers.paypalexpress.brand_name',
             ],
-            'logo_url' => [
+            'logo' => [
                 'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_appearance',
-                'label'     => 'bedard.shop::lang.drivers.paypalexpress.logo_url',
+                'label'     => 'bedard.shop::lang.drivers.paypalexpress.logo',
+                'comment'   => 'bedard.shop::lang.drivers.paypalexpress.logo_comment',
+                'type'      => 'mediafinder',
+                'mode'      => 'image',
             ],
             'border_color' => [
                 'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_appearance',
@@ -113,8 +118,8 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
                 $payment->setBorderColor(substr($color, 1));
             }
 
-            if ($logo = $this->getConfig('logo_url')) {
-                $payment->setLogoImageUrl($logo);
+            if ($logo = $this->getConfig('logo')) {
+                $payment->setLogoImageUrl(URL::to(MediaLibrary::instance()->url($logo)));
             }
 
             $response = $payment->send();

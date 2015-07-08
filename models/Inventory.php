@@ -93,7 +93,7 @@ class Inventory extends Model
 
     public function setQuantityAttribute($value)
     {
-        $this->attributes['quantity'] = $value ?: 0;
+        $this->attributes['quantity'] = intval($value) > 0 ? intval($value) : 0;
     }
 
     public function setSkuAttribute($value)

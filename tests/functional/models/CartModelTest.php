@@ -115,4 +115,38 @@ class CartModelTest extends \OctoberPluginTestCase
         ];
         $this->assertFalse($cart->shippingIsRequired);
     }
+
+    public function test_validate_cart_quantities()
+    {
+        $cart       = Generate::cart();
+        $product1   = Generate::product('Shirt');
+        $product2   = Generate::product('Jacket');
+        $product3   = Generate::product('Sweatshirt');
+        $inventory1 = Generate::inventory($product1, [], ['quantity' => 5]);
+        $inventory2 = Generate::inventory($product2, [], ['quantity' => 5]);
+        $inventory3 = Generate::inventory($product3, [], ['quantity' => 5]);
+        $item1      = Generate::cartItem($cart, $inventory1, ['quantity' => 5]);
+        $item2      = Generate::cartItem($cart, $inventory2, ['quantity' => 5]);
+        $item3      = Generate::cartItem($cart, $inventory3, ['quantity' => 5]);
+
+        $cart = Cart::with('items.inventory')->find($cart->id);
+        $this->assertTrue($cart->validateQuantities());
+
+        $product3->is_enabled = false;
+        $inventory1->quantity = 0;
+        $item2->quantity = 10;
+        $inventory1->save();
+        $product3->save();
+        $item2->save();
+
+        $cart->load('items.inventory.product');
+        $this->assertEquals(5, $cart->items()->find($item1->id)->quantity);
+        $this->assertEquals(10, $cart->items()->find($item2->id)->quantity);
+        $this->assertEquals(1, $cart->items()->where('id', $item3->id)->count());
+
+        $this->assertFalse($cart->validateQuantities());
+        $this->assertEquals(5, $cart->items()->find($item2->id)->quantity);
+        $this->assertEquals(0, $cart->items()->where('id', $item1->id)->count());
+        $this->assertEquals(0, $cart->items()->where('id', $item3->id)->count());
+    }
 }

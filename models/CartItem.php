@@ -106,4 +106,23 @@ class CartItem extends Model
     {
         $this->attributes['quantity'] = $value > 0 ? $value : 0;
     }
+
+    /**
+     * Validate and possibly repair the quantity of the CartItem
+     *
+     * @return  boolean
+     */
+    public function validateQuantity()
+    {
+        if ($this->inventory->quantity <= 0 || !$this->inventory->product->is_enabled) {
+            $this->delete();
+            return false;
+        } elseif ($this->quantity > $this->inventory->quantity) {
+            $this->quantity = $this->inventory->quantity;
+            $this->save();
+            return false;
+        }
+
+        return true;
+    }
 }
