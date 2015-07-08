@@ -179,7 +179,7 @@ class Cart extends Model
      */
     public function beforeCheckout()
     {
-        echo 'hey';
+        // todo: validate the cart, validate the shipping
     }
 
     /**

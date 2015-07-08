@@ -21,4 +21,11 @@ class Stripe extends PaymentBase implements PaymentInterface {
         ];
     }
 
+    /**
+     * Begin the payment process
+     */
+    public function beginPayment()
+    {
+        return;
+    }
 }

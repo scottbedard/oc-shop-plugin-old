@@ -156,10 +156,10 @@ class CartManager extends CartSession {
 
         $this->loadItemData();
 
-        // todo: validate the cart
-
         $this->cart->beforeCheckout();
+
         $gateway = PaymentSettings::getGateway($this->cart);
+
         return $gateway->beginPayment();
     }
 
