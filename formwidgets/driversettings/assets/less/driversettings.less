@@ -16,15 +16,16 @@
 
         .off {
             display: inline-block;
+            color: #777;
         }
 
         .on {
             display: none;
-            font-size: 16px;
-            font-weight: 300;
         }
 
         .off, .on {
+            font-size: 16px;
+            font-weight: 300;
             left: 50%;
             padding: @driver_padding;
             position: absolute;
@@ -62,6 +63,17 @@
             display: block;
             height: 100%;
             width: 100%;
+            text-decoration: none !important;
+        }
+
+        i {
+            position: absolute;
+            top: 0;
+            // left: 0;
+            // bottom: 0;
+            right: 0;
+            font-size: 16px;
+            padding: 10px;
         }
     }
 }

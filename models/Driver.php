@@ -1,6 +1,7 @@
 <?php namespace Bedard\Shop\Models;
 
 use Backend;
+use Lang;
 use Model;
 
 /**
@@ -59,7 +60,17 @@ class Driver extends Model
 
     public function scopeIsShipping($query)
     {
-    return $query->where('type', 'shipping');
+        return $query->where('type', 'shipping');
+    }
+
+    /**
+     * Accessors and Mutators
+     */
+    public function getNameAttribute()
+    {
+        return isset($this->attributes['name'])
+            ? Lang::get($this->attributes['name'])
+            : null;
     }
 
     /**

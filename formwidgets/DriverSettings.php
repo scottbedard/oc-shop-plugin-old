@@ -69,7 +69,7 @@ class DriverSettings extends FormWidgetBase
 
         $form->model = $model;
 
-        return $this->makePartial('form', [
+        return $this->makePartial('popup', [
             'driver'    => $driver,
             'form'      => $this->makeWidget('Backend\Widgets\Form', $form),
         ]);

@@ -1,0 +1,39 @@
+<div class="driversettings-modal" data-success="<?= e(trans('bedard.shop::lang.common.driver_saved', ['name' => $driver->name])) ?>">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="popup">&times;</button>
+        <h4 class="modal-title">
+            <?= $driver->name ?>
+        </h4>
+    </div>
+
+    <div class="modal-body form-container">
+        <form data-request-data="'_id': <?= $driver->id ?>">
+            <?= $form->render() ?>
+        <form>
+    </div>
+
+    <div class="modal-footer">
+        <div class="loading-indicator-container">
+            <div class="loading-indicator-container">
+                <div class="loading-indicator">
+                    <div><?= e(trans('backend::lang.form.saving')) ?></div>
+                    <span></span>
+                </div>
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-action="apply-btn"
+                    data-hotkey="ctrl+s, cmd+s">
+                    <?= e(trans('backend::lang.form.save')) ?>
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-default"
+                    data-dismiss="popup"
+                    data-hotkey="esc">
+                    <?= e(trans('backend::lang.form.cancel')) ?>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

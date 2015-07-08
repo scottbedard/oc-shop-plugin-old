@@ -62,15 +62,15 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
                 'label'     => 'bedard.shop::lang.drivers.paypalexpress.border_color',
                 'type'      => 'colorpicker',
             ],
-            'is_live' => [
+            'server' => [
                 'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_connection',
                 'label'     => 'bedard.shop::lang.drivers.paypalexpress.server',
                 'type'      => 'dropdown',
                 'options'   => [
-                    '1' => 'bedard.shop::lang.drivers.paypalexpress.live',
-                    '0' => 'bedard.shop::lang.drivers.paypalexpress.sandbox',
+                    'sandbox' => 'bedard.shop::lang.drivers.paypalexpress.sandbox',
+                    'production' => 'bedard.shop::lang.drivers.paypalexpress.production',
                 ],
-                'default'   => '0',
+                'default'   => 'sandbox',
                 'span'      => 'right',
             ],
         ];

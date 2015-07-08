@@ -9,7 +9,7 @@ class SeedDefaultDrivers extends Seeder
     public function run()
     {
         // Standard shipping calculator
-        Driver::create([
+        $table = Driver::create([
             'name'          => 'Shipping Table',
             'type'          => 'shipping',
             'class'         => 'Bedard\Shop\Drivers\Shipping\BasicTable',
@@ -24,9 +24,7 @@ class SeedDefaultDrivers extends Seeder
             'is_default'    => true,
         ]);
 
-        $logo = new File;
-        $logo->fromFile(plugins_path('bedard/shop/assets/images/paypal.png'));
-        $logo->save();
+        $logo = $this->makeFile('bedard/shop/assets/images/paypal.png');
         $paypal->image()->add($logo);
 
         // Stripe
@@ -37,9 +35,15 @@ class SeedDefaultDrivers extends Seeder
             'is_default'    => true,
         ]);
 
-        $logo = new File;
-        $logo->fromFile(plugins_path('bedard/shop/assets/images/stripe.png'));
-        $logo->save();
+        $logo = $this->makeFile('bedard/shop/assets/images/stripe.png');
         $stripe->image()->add($logo);
+    }
+
+    protected function makeFile($path)
+    {
+        $file = new File;
+        $file->fromFile(plugins_path($path));
+        $file->save();
+        return $file;
     }
 }

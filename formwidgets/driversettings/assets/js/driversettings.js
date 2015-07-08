@@ -55,13 +55,18 @@
             $form.request(self.alias + '::onUpdateDriver', {
                 success: function() {
                     $popup.trigger('close.oc.popup');
+                    $.oc.flashMsg({
+                        'text': $popup.data('success'),
+                        'class': 'success',
+                        'interval': 3,
+                    })
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     if (jqXHR.status == 406 && jqXHR.responseJSON) {
                         $.oc.flashMsg({
                             'text': jqXHR.responseJSON.result,
                             'class': 'error',
-                            'interval': 3
+                            'interval': 3,
                         });
                     }
 

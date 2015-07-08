@@ -2,15 +2,16 @@
 
     <div class="driver" data-control="driver" data-id="<?= $driver->id ?>">
         <a href="javascript:;">
+            <i class="icon-cog"></i>
             <div class="off">
                 <?php if ($driver->image): ?>
-                    <img src="<?= $driver->image->getPath() ?>" alt="<?= e(trans($driver->name)) ?>" />
+                    <img src="<?= $driver->image->getPath() ?>" alt="<?= $driver->name ?>" />
                 <?php else: ?>
-                    <?= e(trans($driver->name)) ?>
+                    <?= $driver->name ?>
                 <?php endif ?>
             </div>
             <div class="on">
-                <?= e(trans($driver->name)) ?>
+                <span><?= $driver->name ?></span>
             </div>
         </a>
     </div>
