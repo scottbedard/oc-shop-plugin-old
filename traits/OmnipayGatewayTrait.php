@@ -1,6 +1,8 @@
 <?php namespace Bedard\Shop\Traits;
 
 use Omnipay\Common\CreditCard;
+use Omnipay\Common\Item;
+use Omnipay\Common\ItemBag;
 
 trait OmnipayGatewayTrait {
 
@@ -34,26 +36,34 @@ trait OmnipayGatewayTrait {
      */
     protected function getItems()
     {
-        $items = [];
+        $bag = new ItemBag;
+
+        // Add the CartItem models to the ItemBag
         foreach ($this->cart->items as $item) {
-            $items[] = [
-                'name'          => $item->name,
-                'description'   => 'foo', // todo:
-                'quantity'      => $item->quantity,
-                'price'         => $item->price,
-            ];
+            $add = new Item([
+                'name'      => $item->name,
+                'price'     => $item->price,
+                'quantity'  => $item->quantity,
+            ]);
+
+            if ($options = $item->inventory->getValueNames()) {
+                $add->setDescription(implode(', ', $options));
+            }
+
+            $bag->add($add);
         }
 
-        // // Add a promotion code with a negative value
-        // if ($this->payment->promotion_id) {
-        //     $items[] = [
-        //         'name'          => 'Promotion code "'.$this->payment->promotion_code.'"',
-        //         'quantity'      => 1,
-        //         'price'         => $this->payment->promotion_value * -1,
-        //     ];
-        // }
+        // Add the promotion if there is one
+        if ($this->cart->isUsingPromotion) {
+            $bag->add(new Item([
+                'name'          => $this->cart->promotion->code,
+                'description'   => $this->cart->promotion->message,
+                'quantity'      => 1,
+                'price'         => $this->cart->promotionSavings * -1,
+            ]));
+        }
 
-        return $items;
+        return $bag;
     }
 
 }
