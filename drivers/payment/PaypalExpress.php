@@ -46,11 +46,13 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
             'api_password' => [
                 'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_connection',
                 'label'     => 'bedard.shop::lang.drivers.paypalexpress.api_password',
+                'type'      => 'owl-password',
                 'span'      => 'right',
             ],
             'api_signature' => [
                 'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_connection',
                 'label'     => 'bedard.shop::lang.drivers.paypalexpress.api_signature',
+                'type'      => 'owl-password',
                 'span'      => 'left',
             ],
             'logo_url' => [
@@ -74,5 +76,13 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
                 'span'      => 'right',
             ],
         ];
+    }
+
+    /**
+     * Begin the payment process
+     */
+    public function beginPayment()
+    {
+        echo 'beginning';
     }
 }

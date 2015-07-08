@@ -175,6 +175,14 @@ class Cart extends Model
     }
 
     /**
+     * Handle before checkout events
+     */
+    public function beforeCheckout()
+    {
+        echo 'hey';
+    }
+
+    /**
      * Return the cart weight in a specified unit
      *
      * @param   string  $unit   The desired return unit

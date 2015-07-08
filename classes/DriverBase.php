@@ -78,16 +78,6 @@ class DriverBase {
     }
 
     /**
-     * Register driver validation
-     *
-     * @return  array
-     */
-    public function registerValidation()
-    {
-        return [];
-    }
-
-    /**
      * Run custom messages through the Transliterator
      *
      * @return  array

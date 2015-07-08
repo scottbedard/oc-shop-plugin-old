@@ -7,6 +7,7 @@ use Bedard\Shop\Models\Address;
 use Bedard\Shop\Models\CartItem;
 use Bedard\Shop\Models\Customer;
 use Bedard\Shop\Models\Inventory;
+use Bedard\Shop\Models\PaymentSettings;
 use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Promotion;
 use Bedard\Shop\Models\ShippingSettings;
@@ -135,15 +136,31 @@ class CartManager extends CartSession {
     }
 
     /**
-     * Removes all items from the cart
+     * Applys a shipping rate to the cart
+     *
+     * @param   string  $rate_id
      */
-    public function clearItems()
+    public function applyShipping($rate_id)
     {
-        $this->loadCart();
+        echo $rate_id;
+    }
 
-        CartItem::where('cart_id', $this->cart->id)->delete();
+    /**
+     * Validate the cart and pass to the payment driver
+     */
+    public function beginPayment()
+    {
+        if (!$this->cart) {
+            return;
+        }
 
-        $this->actionCompleted();
+        $this->loadItemData();
+
+        // todo: validate the cart
+
+        $this->cart->beforeCheckout();
+        $gateway = PaymentSettings::getGateway($this->cart);
+        return $gateway->beginPayment();
     }
 
     /**
@@ -165,6 +182,18 @@ class CartManager extends CartSession {
         }
 
         $this->cart->save();
+    }
+
+    /**
+     * Removes all items from the cart
+     */
+    public function clearItems()
+    {
+        $this->loadCart();
+
+        CartItem::where('cart_id', $this->cart->id)->delete();
+
+        $this->actionCompleted();
     }
 
     /**

@@ -41,7 +41,7 @@ class ShippingSettings extends Model
     }
 
     /**
-     * Determines if a shopping
+     * Returns the shipping calculator driver
      *
      * @param   Cart|null   $cart
      * @return  mixed

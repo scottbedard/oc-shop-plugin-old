@@ -83,6 +83,8 @@ class Checkout extends ComponentBase
             $this->address = $this->cart->address;
             $this->manager->calculateShipping();
         }
+
+        $this->readyToPay = $this->cart->hasCustomer && $this->cart->hasAddress && !$this->cart->shippingIsRequired;
     }
 
     /**
@@ -116,5 +118,13 @@ class Checkout extends ComponentBase
         $this->manager->setCustomerAddress($customer, $address);
         $this->prepareCart();
         $this->prepareVars();
+    }
+
+    /**
+     * Pass the request to the payment driver
+     */
+    public function onBeginPayment()
+    {
+        $this->manager->beginPayment();
     }
 }

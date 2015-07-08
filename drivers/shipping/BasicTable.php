@@ -6,10 +6,20 @@ use Bedard\Shop\Models\ShippingRate;
 
 class BasicTable extends ShippingBase implements ShippingInterface {
 
+    /**
+     * @var string  Unique key used to identify rates from this driver
+     */
+    protected $driver_id = 'SHIP_TABLE';
+
+    /**
+     * Register configuration fields
+     *
+     * @return  array
+     */
     public function registerFields()
     {
         return [
-            'brand_name' => [
+            'info' => [
                 'type'      => 'partial',
                 'path'      => '$/bedard/shop/drivers/shipping/basictable/_info.htm',
             ],
@@ -36,6 +46,7 @@ class BasicTable extends ShippingBase implements ShippingInterface {
         }
 
         // Loop through the costs and remove same-method rates at higher costs
+        $i = 1;
         $final = [];
         foreach ($results as $result) {
             $better = (bool) array_filter($results, function($better) use ($result) {
@@ -47,10 +58,12 @@ class BasicTable extends ShippingBase implements ShippingInterface {
 
             if (!$better) {
                 $final[] = [
+                    'id'    => $this->driver_id.'_'.$i,
                     'class' => 'Bedard\Shop\Drivers\Shipping\BasicTable',
                     'name'  => $result['name'],
                     'cost'  => $result['cost'],
                 ];
+                $i++;
             }
         }
 

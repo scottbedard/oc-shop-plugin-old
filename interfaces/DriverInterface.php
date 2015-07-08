@@ -40,11 +40,4 @@ interface DriverInterface {
      */
     public function registerTabFields();
 
-    /**
-     * Register configuration validation
-     *
-     * @return  array
-     */
-    public function registerValidation();
-
 }
