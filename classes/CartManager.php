@@ -10,6 +10,7 @@ use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\PaymentSettings;
 use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Promotion;
+use Bedard\Shop\Models\Settings;
 use Bedard\Shop\Models\ShippingSettings;
 use October\Rain\Exception\AjaxException;
 
@@ -33,7 +34,7 @@ class CartManager extends CartSession {
     /**
      * @var boolean     Determines if cart was modified due to an invalid quantity
      */
-    public $invalidQuantities = false;
+    public $cartWasInvalid = false;
 
     /**
      * Loads the cart items relationship
@@ -67,6 +68,10 @@ class CartManager extends CartSession {
                 },
                 'inventory.values.option',
             ]);
+
+            if (Settings::getCartValidation()) {
+                $this->cartWasInvalid = !$this->cart->validateQuantities();
+            }
 
             if ($this->cart->hasPromotion) {
                 $this->cart->load('promotion.products');

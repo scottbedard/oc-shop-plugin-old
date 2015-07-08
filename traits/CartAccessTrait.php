@@ -29,6 +29,16 @@ trait CartAccessTrait {
     }
 
     /**
+     * Determines if the cart was invalid
+     *
+     * @return  boolean
+     */
+    public function cartWasInvalid()
+    {
+        return $this->manager->cartWasInvalid;
+    }
+
+    /**
      * Returns all items in the cart
      *
      * @return  Illuminate\Database\Eloquent\Collection

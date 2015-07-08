@@ -21,7 +21,11 @@ An example theme can be found [here](https://github.com/scottbedard/oc-shop-them
 
 <a name="carts" href="#carts"></a>
 ### Carts
-Cart docs will be written soon.
+To set up the user's shopping cart, simply attach the `shopCart` component to your layout files. This component provides all handlers related to modifying a user's shopping cart. Please see the demonstration theme for example usage of the component.
+
+The `cart lifetime` can be set from the shop's `general settings` page. When a user leaves your site, their cart will be recoverable until their cart life expires. Once a cart expires, it will be considered abandoned, and this information will be reflected in backend graphs.
+
+The cart comes with optional validation built in. If enabled, it will manage user shopping carts to prevent conflicting items. Consider the following example... Your shop has a shirt that has 1 in stock. Now imagine this shirt is in two different user's shopping carts at the same time. With cart validation enabled, when one of the users completes their order the other's cart will be adjusted to reflect the new inventory. This validation will occur on any page that loads item details from the `shopCart` or `shopCheckout` components. With cart validation disabled, both users will be allowed to check out as long as the product was in stock when it was added to their cart. Please see the demonstration theme for a demonstration of how to trigger an event when a user's cart is modified.
 
 <a name="categories" href="#categories"></a>
 ### Categories
