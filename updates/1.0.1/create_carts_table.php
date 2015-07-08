@@ -12,6 +12,7 @@ class CreateCartsTable extends Migration
         {
             $table->engine = 'InnoDB';
             $table->increments('id');
+            $table->string('status')->default('open');
             $table->string('key')->nullable();
             $table->string('hash')->nullable();
             $table->integer('customer_id')->unsigned()->nullable()->index();
@@ -21,7 +22,7 @@ class CreateCartsTable extends Migration
             $table->string('shipping_name')->nullable();
             $table->string('shipping_cost')->nullable();
             $table->boolean('shipping_failed')->default(false);
-            $table->string('status')->default('open');
+            $table->boolean('is_inventoried')->default(false);
             $table->timestamps();
         });
     }

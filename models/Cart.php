@@ -31,7 +31,8 @@ class Cart extends Model
      * @var array Attribute casting
      */
     protected $casts = [
-        'shipping_failed' => 'boolean',
+        'is_inventoried'    => 'boolean',
+        'shipping_failed'   => 'boolean',
     ];
 
     /**
@@ -66,6 +67,24 @@ class Cart extends Model
      * @var boolean     Determines if relationships have been loaded or not, or reset
      */
     public $isLoaded = false;
+
+    /**
+     * Query Scopes
+     */
+    public function scopeIsComplete($query)
+    {
+        return $query->where('status', 'complete');
+    }
+
+    public function scopeIsOpen($query)
+    {
+        return $query->where('status', 'open');
+    }
+
+    public function scopeIsPaying($query)
+    {
+        return $query->where('status', 'paying');
+    }
 
     /**
      * Accessors and Mutators
@@ -175,11 +194,12 @@ class Cart extends Model
     }
 
     /**
-     * Handle before checkout events
+     * Generates a random string to be used in callback URLs
      */
-    public function beforeCheckout()
+    public function beforePayment()
     {
-        // todo: validate the cart, validate the shipping
+        $this->hash = str_random(40);
+        $this->save();
     }
 
     /**

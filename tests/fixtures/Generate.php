@@ -2,6 +2,7 @@
 
 use Bedard\Shop\Models\Address;
 use Bedard\Shop\Models\Cart;
+use Bedard\Shop\Models\CartItem;
 use Bedard\Shop\Models\Category;
 use Bedard\Shop\Models\Discount;
 use Bedard\Shop\Models\Inventory;
@@ -41,6 +42,29 @@ class Generate {
     public static function cart()
     {
         return Cart::create(['key' => str_random(40)]);
+    }
+
+    /**
+     * Create a CartItem for use in tests
+     *
+     * @param   Cart        $cart
+     * @param   Inventory   $inventory
+     * @param   array       $data
+     * @return  CartItem
+     */
+    public static function cartItem($cart, $inventory, $data = [])
+    {
+        $cartItem = new CartItem;
+        $cartItem->cart_id      = $cart->id;
+        $cartItem->inventory_id = $inventory->id;
+        $cartItem->product_id   = $inventory->product_id;
+
+        foreach ($data as $key => $value) {
+            $cartItem->$key = $value;
+        }
+
+        $cartItem->save();
+        return $cartItem;
     }
 
     /**

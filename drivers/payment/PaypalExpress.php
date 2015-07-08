@@ -1,9 +1,11 @@
 <?php namespace Bedard\Shop\Drivers\Payment;
 
+use Bedard\Shop\Classes\PaymentProcessor;
 use Bedard\Shop\Classes\PaymentBase;
 use Bedard\Shop\Classes\PaymentException;
 use Bedard\Shop\Interfaces\PaymentInterface;
 use Bedard\Shop\Models\Currency;
+use Bedard\Shop\Models\PaymentSettings;
 use Exception;
 use Omnipay\Omnipay;
 use Redirect;
@@ -15,28 +17,12 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
      * Validation rules
      */
     public $rules = [
-        'brand_name'    => 'required',
         'api_username'  => 'required',
         'api_password'  => 'required',
         'api_signature' => 'required',
         'server'        => 'required',
         'border_color'  => 'regex:/^#([A-Fa-f0-9]{6})$/',
     ];
-
-    /**
-     * Register configuration fields
-     *
-     * @return  array
-     */
-    public function registerFields()
-    {
-        return [
-            'brand_name' => [
-                'label'     => 'bedard.shop::lang.drivers.paypalexpress.brand_name',
-                'required'  => true,
-            ],
-        ];
-    }
 
     /**
      * Register tabbed configuration fields
@@ -78,6 +64,10 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
                 'required'  => true,
                 'span'      => 'right',
             ],
+            'brand_name' => [
+                'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_appearance',
+                'label'     => 'bedard.shop::lang.drivers.paypalexpress.brand_name',
+            ],
             'logo_url' => [
                 'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_appearance',
                 'label'     => 'bedard.shop::lang.drivers.paypalexpress.logo_url',
@@ -99,17 +89,25 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
 
         try {
 
-            $hash = str_random(40);
-
             $total = number_format($this->cart->total, 2, '.', '');
 
             $payment = $gateway->purchase([
-                    'returnUrl' => 'http://shop.october.dev/success',
-                    'cancelUrl' => 'http://shop.october.dev/cancel',
+                    'returnUrl' => route('bedard.shop.payments', [
+                        'cart'      => $this->cart->id,
+                        'driver'    => $this->driver->id,
+                        'hash'      => $this->cart->hash,
+                        'status'    => 'success'
+                    ]),
+                    'cancelUrl' => route('bedard.shop.payments', [
+                        'cart'      => $this->cart->id,
+                        'driver'    => $this->driver->id,
+                        'hash'      => $this->cart->hash,
+                        'status'    => 'canceled'
+                    ]),
                     'amount'    => $total,
                     'currency'  => Currency::getCode(),
                 ])
-                ->setBrandName($this->getConfig('brand_name'))
+                // ->setShippingAmount(5)
                 ->setItems($this->getItems())
                 ->setAmount($total)
                 ->setCard($this->getCard())
@@ -117,45 +115,30 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
                 ->setAddressOverride(1)
                 ->setNoShipping(2);
 
-            if ($color = $this->getConfig('border_color')) {
-                $payment->setBorderColor('#'.$color[1].$color[3].$color[5]);
+            if ($brand = $this->getConfig('brand_name')) {
+                $payment->setBrandName($brand);
             }
 
+            if ($color = $this->getConfig('border_color')) {
+                $payment->setBorderColor(substr($color, 1));
+            }
+
+            if ($logo = $this->getConfig('logo_url')) {
+                $payment->setLogoImageUrl($logo);
+            }
 
             $response = $payment->send();
-
-            // print_r ($this->getConfig('border_color'));
 
             // Paypal Express should always return a redirect
             if (!$response->isRedirect()) {
                 throw new PaymentException($response->getMessage());
             }
 
+            $this->beginPaymentProcessor();
             return Redirect::to($response->getRedirectUrl());
 
-            // $response = $gateway->purchase([
-            //         'returnUrl' => route('bedard.shop.payment', ['id' => $id, 'hash' => $hash, 'status' => 'success']),
-            //         'cancelUrl' => route('bedard.shop.payment', ['id' => $id, 'hash' => $hash, 'status' => 'canceled']),
-            //         'amount'    => $total,
-            //         'currency'  => Currency::getCode(),
-            //     ])
-            //     ->setItems($this->getItems())
-            //     ->setAmount($total)
-            //     ->setShippingAmount($shipping)
-            //     ->setCard($this->getCard())
-            //     ->setAddressOverride(1)
-            //     ->setNoShipping(2)
-            //     ->setTaxAmount($tax)
-            //     // ->setHeaderImageUrl()
-            //     ->setLogoImageUrl($logoUrl)
-            //     ->setBrandName($this->config['brand_name'])
-            //     ->setBorderColor(str_replace('#', '', $this->config['border_color']))
-            //     ->send();
-
         } catch (Exception $e) {
-
-            echo $e->getMessage();
-
+            throw new PaymentException($e->getMessage());
         }
     }
 

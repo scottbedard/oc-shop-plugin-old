@@ -10,6 +10,27 @@ fields:
         type: dropdown
         span: left
 
+    timing:
+        label: bedard.shop::lang.settings.payment.timing
+        type: dropdown
+        options:
+            completed: bedard.shop::lang.settings.payment.timing_completed
+            immediate: bedard.shop::lang.settings.payment.timing_immediate
+        default: completed
+        span: right
+
+    success_url:
+        label: bedard.shop::lang.settings.payment.url_success
+        span: left
+
+    canceled_url:
+        label: bedard.shop::lang.settings.payment.url_canceled
+        span: right
+
+    error_url:
+        label: bedard.shop::lang.settings.payment.url_error
+        span: left
+
     driversettings:
         label: bedard.shop::lang.settings.payment.manage
         type: driversettings

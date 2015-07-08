@@ -76,6 +76,7 @@ class CartManager extends CartSession {
      */
     protected function actionCompleted()
     {
+        $this->cart->hash               = str_random(40);
         $this->cart->shipping_rates     = null;
         $this->cart->shipping_name      = null;
         $this->cart->shipping_cost      = null;
@@ -156,7 +157,7 @@ class CartManager extends CartSession {
 
         $this->loadItemData();
 
-        $this->cart->beforeCheckout();
+        // todo: validate the cart here
 
         $gateway = PaymentSettings::getGateway($this->cart);
 

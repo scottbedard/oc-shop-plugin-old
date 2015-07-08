@@ -1,10 +1,17 @@
 <?php namespace Bedard\Shop\Classes;
 
 use Bedard\Shop\Classes\DriverBase;
+use Bedard\Shop\Classes\PaymentProcessor;
 
 class PaymentBase extends DriverBase {
 
-    // This class exists to allow for future changes to payment drivers without
-    // forcing drivers provided by external plugins to update their code.
+    /**
+     * Begin the payment process
+     */
+    public function beginPaymentProcessor()
+    {
+        $processor = new PaymentProcessor($this->cart);
+        $processor->begin();
+    }
 
 }

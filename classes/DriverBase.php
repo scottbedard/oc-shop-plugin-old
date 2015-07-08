@@ -1,26 +1,32 @@
 <?php namespace Bedard\Shop\Classes;
 
 use Bedard\Shop\Models\Cart;
+use Bedard\Shop\Models\Driver;
 
 class DriverBase {
 
     /**
-     * @var Cart        The user's shopping cart
+     * @var Cart                        The user's shopping cart
      */
     protected $cart;
 
     /**
-     * @var array       The driver configuration
+     * @var array                       The driver configuration
      */
     protected $config = [];
 
     /**
-     * @var array       Validation rules for driver configuration
+     * @var Bedard\Shop\Models\Driver   The driver model
+     */
+    protected $driver;
+
+    /**
+     * @var array                       Validation rules for driver configuration
      */
     public $rules = [];
 
     /**
-     * @var array       Custom validation error messages
+     * @var array                       Custom validation error messages
      */
     public $customMessages = [];
 
@@ -38,7 +44,7 @@ class DriverBase {
     }
 
     /**
-     * Set the shopping cart object
+     * Set the Cart model
      *
      * @param   Cart    $cart
      */
@@ -48,13 +54,14 @@ class DriverBase {
     }
 
     /**
-     * Set the driver configuration
+     * Set the Driver model and config
      *
-     * @param   array|null  $config
+     * @param   Driver      $driver
      */
-    public function setConfig($config)
+    public function setDriver(Driver $driver)
     {
-        $this->config = $config;
+        $this->driver = $driver;
+        $this->config = $driver->config;
     }
 
     /**

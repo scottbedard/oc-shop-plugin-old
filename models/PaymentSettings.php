@@ -18,7 +18,11 @@ class PaymentSettings extends Model
     /**
      * Validation
      */
-    public $rules = [];
+    public $rules = [
+        'success_url'   => 'required',
+        'canceled_url'  => 'required',
+        'error_url'     => 'required',
+    ];
 
     /**
      * Return all installed payment gateways
@@ -54,8 +58,48 @@ class PaymentSettings extends Model
         $driver = Driver::isPayment()->where('class', $class)->first();
 
         $gateway = new $class;
+        $gateway->setDriver($driver);
         $gateway->setCart($cart);
-        $gateway->setConfig($driver->config);
         return $gateway;
+    }
+
+    /**
+     * Returns the inventory reduction behavior
+     *
+     * @return  string
+     */
+    public static function getTiming()
+    {
+        return self::get('timing', 'completed');
+    }
+
+    /**
+     * Returns the success URL
+     *
+     * @return  string
+     */
+    public static function getSuccessUrl()
+    {
+        return self::get('success_url');
+    }
+
+    /**
+     * Returns the canceled URL
+     *
+     * @return  string
+     */
+    public static function getCanceledUrl()
+    {
+        return self::get('canceled_url');
+    }
+
+    /**
+     * Returns the error URL
+     *
+     * @return  string
+     */
+    public static function getErrorUrl()
+    {
+        return self::get('error_url');
     }
 }

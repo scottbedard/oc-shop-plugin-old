@@ -1,6 +1,7 @@
 <?php namespace Bedard\Shop\Interfaces;
 
 use Bedard\Shop\Models\Cart;
+use Bedard\Shop\Models\Driver;
 
 interface DriverInterface {
 
@@ -13,18 +14,18 @@ interface DriverInterface {
     public function getConfig($key);
 
     /**
-     * Set the shopping cart object
+     * Set the Cart model
      *
      * @param   Cart    $cart
      */
     public function setCart(Cart $cart);
 
     /**
-     * Set the driver configuration
+     * Set the Driver model and config
      *
-     * @param   array   $config
+     * @param   Driver      $driver
      */
-    public function setConfig($config);
+    public function setDriver(Driver $driver);
 
     /**
      * Register configuration fields

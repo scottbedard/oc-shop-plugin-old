@@ -1,4 +1,4 @@
-<?php namespace Bedard\Shop\Tests\Functional\Models;
+<?php namespace Bedard\Shop\Tests\Functional\Classes;
 
 use Bedard\Shop\Classes\CartManager;
 use Bedard\Shop\Models\CartItem;
