@@ -206,6 +206,10 @@ class Plugin extends PluginBase
                 'label' => 'Driver Settings',
                 'code'  => 'driversettings',
             ],
+            'Bedard\Shop\FormWidgets\Password' => [
+                'label' => 'Masked Password',
+                'code'  => 'masked-password'
+            ],
             'Bedard\Shop\FormWidgets\OptionsInventories' => [
                 'label' => 'Options & Inventories',
                 'code'  => 'optionsinventories',
@@ -225,10 +229,6 @@ class Plugin extends PluginBase
             'Owl\FormWidgets\Knob\Widget' => [
                 'label' => 'Knob',
                 'code'  => 'owl-knob'
-            ],
-            'Owl\FormWidgets\Password\Widget' => [
-                'label' => 'Password',
-                'code'  => 'owl-password'
             ],
         ];
     }

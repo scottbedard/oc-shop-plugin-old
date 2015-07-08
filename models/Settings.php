@@ -17,7 +17,7 @@ class Settings extends Model
      */
     public static function getEditor()
     {
-        return Settings::get('backend_editor', 'richeditor');
+        return self::get('backend_editor', 'richeditor');
     }
 
     /**
@@ -27,7 +27,17 @@ class Settings extends Model
      */
     public static function getCartLife()
     {
-        return Settings::get('cart_life', 10080) ?: false;
+        return self::get('cart_life', 10080) ?: false;
+    }
+
+    /**
+     * Returns the cart validation setting
+     *
+     * @return  boolean
+     */
+    public static function getCartValidation()
+    {
+        return (bool) self::get('cart_validation', true);
     }
 
     /**
@@ -37,6 +47,6 @@ class Settings extends Model
      */
     public static function getWeightUnits()
     {
-        return Settings::get('weight_unit', 'oz');
+        return self::get('weight_unit', 'oz');
     }
 }

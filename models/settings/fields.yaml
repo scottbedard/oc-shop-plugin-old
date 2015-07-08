@@ -4,6 +4,33 @@
 
 fields:
 
+    cart_life:
+        # tab: bedard.shop::lang.settings.cart.tab
+        label: bedard.shop::lang.settings.cart.life
+        comment: bedard.shop::lang.settings.cart.life_comment
+        type: dropdown
+        options:
+            0: bedard.shop::lang.settings.cart.life_session
+            720: bedard.shop::lang.settings.cart.life_half_day
+            1440: bedard.shop::lang.settings.cart.life_day
+            10080: bedard.shop::lang.settings.cart.life_week
+            20160: bedard.shop::lang.settings.cart.life_two_weeks
+            43200: bedard.shop::lang.settings.cart.life_month
+            86400: bedard.shop::lang.settings.cart.life_two_months
+            2628000: bedard.shop::lang.settings.cart.life_forever
+        default: 10080
+        span: left
+
+    cart_validation:
+        label: bedard.shop::lang.settings.cart.validation
+        comment: bedard.shop::lang.settings.cart.validation_comment
+        type: dropdown
+        options:
+            1: bedard.shop::lang.settings.cart.validation_on
+            0: bedard.shop::lang.settings.cart.validation_off
+        default: 1
+        span: right
+
     weight_unit:
         # tab: bedard.shop::lang.settings.backend.tab
         label: bedard.shop::lang.settings.backend.weight_unit
@@ -25,20 +52,3 @@ fields:
             code: bedard.shop::lang.settings.backend.editor_code
         default: richeditor
         span: right
-
-    cart_life:
-        # tab: bedard.shop::lang.settings.cart.tab
-        label: bedard.shop::lang.settings.cart.life
-        comment: bedard.shop::lang.settings.cart.life_comment
-        type: dropdown
-        options:
-            0: bedard.shop::lang.settings.cart.life_session
-            720: bedard.shop::lang.settings.cart.life_half_day
-            1440: bedard.shop::lang.settings.cart.life_day
-            10080: bedard.shop::lang.settings.cart.life_week
-            20160: bedard.shop::lang.settings.cart.life_two_weeks
-            43200: bedard.shop::lang.settings.cart.life_month
-            86400: bedard.shop::lang.settings.cart.life_two_months
-            2628000: bedard.shop::lang.settings.cart.life_forever
-        default: 10080
-        span: left
