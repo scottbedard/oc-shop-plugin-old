@@ -19,10 +19,11 @@ class CartManager extends CartSession {
     /*
      * Summary of AjaxException messages
      *
-     * CART_INVALID         The cart was not found, or could not be loaded
-     * INVENTORY_INVALID    An inventory was not found
-     * PROMOTION_INVALID    A promotion was not found
-     * PRODUCT_INVALID      A product was not found
+     * CART_INVALID             The cart was not found, or could not be loaded
+     * INVENTORY_INVALID        An inventory was not found
+     * PROMOTION_INVALID        A promotion was not found
+     * PRODUCT_INVALID          A product was not found
+     * INVENTORIES_ADJUSTED     The cart was invalid, and inventory quantities were adjusted
      */
 
     /**
@@ -157,17 +158,22 @@ class CartManager extends CartSession {
     }
 
     /**
-     * Validate the cart and pass to the payment driver
+     * Initiate the payment payment driver
      */
-    public function beginPayment()
+    public function beginPaymentDriver()
     {
         if (!$this->cart) {
             return;
         }
 
         $this->loadItemData();
+        if ($this->cartWasInvalid) {
+            throw new AjaxException('INVENTORIES_ADJUSTED');
+        }
 
-        // todo: validate the cart here
+        if ($this->cart->shipping_rates || input('shipping')) {
+            $this->selectShipping();
+        }
 
         $gateway = PaymentSettings::getGateway($this->cart);
 
@@ -296,6 +302,35 @@ class CartManager extends CartSession {
         $this->cart->promotion_id = null;
 
         $this->actionCompleted();
+    }
+
+    /**
+     * Select a shipping rate
+     *
+     * @return  boolean
+     */
+    public function selectShipping()
+    {
+        // If a rate was selected, look for it in the quoted rates
+        $rates = $this->cart->shipping_rates;
+        if ($selected = input('shipping')) {
+            foreach ($rates as $i => $rate) {
+                if ($rate['id'] == $selected) {
+                    $this->cart->shipping_name = $rate['name'];
+                    $this->cart->shipping_cost = $rate['cost'];
+                    return $this->cart->save();
+                }
+            }
+        }
+
+        // Otherwise pick the cheapest rate
+        usort($rates, function($a, $b) {
+            return $a['cost'] - $b['cost'];
+        });
+
+        $this->cart->shipping_name = $rates[0]['name'];
+        $this->cart->shipping_cost = $rates[0]['cost'];
+        return $this->cart->save();
     }
 
     /**

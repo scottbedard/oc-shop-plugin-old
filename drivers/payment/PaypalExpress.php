@@ -102,7 +102,7 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
                     'amount'    => $total,
                     'currency'  => Currency::getCode(),
                 ])
-                // ->setShippingAmount(5)
+                ->setShippingAmount($this->cart->shipping_cost)
                 ->setItems($this->getItems())
                 ->setAmount($total)
                 ->setCard($this->getCard())

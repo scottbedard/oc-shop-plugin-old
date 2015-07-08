@@ -160,7 +160,7 @@ class Cart extends Model
 
     public function getTotalAttribute()
     {
-        return $this->subtotal - $this->promotionSavings;
+        return $this->subtotal - $this->promotionSavings + $this->shipping_cost;
     }
 
     public function getPromotionSavingsAttribute()

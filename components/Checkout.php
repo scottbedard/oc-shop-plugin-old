@@ -125,6 +125,6 @@ class Checkout extends ComponentBase
      */
     public function onBeginPayment()
     {
-        return $this->manager->beginPayment();
+        return $this->manager->beginPaymentDriver();
     }
 }

@@ -17,7 +17,7 @@ class PaymentBase extends DriverBase {
     /**
      * Returns a route that handles a payment response
      *
-     * @param   string      $status
+     * @param   string      $type
      * @return  string
      */
     public function getResponseURL($type)
