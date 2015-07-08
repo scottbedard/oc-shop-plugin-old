@@ -44,7 +44,6 @@ class PaymentProcessor {
     public function cancel()
     {
         $this->inventory->up();
-
         $this->cart->status = 'canceled';
         $this->cart->save();
     }
@@ -55,7 +54,6 @@ class PaymentProcessor {
     public function complete()
     {
         $this->inventory->down();
-
         $this->cart->status = 'complete';
         $this->cart->save();
     }
@@ -63,7 +61,6 @@ class PaymentProcessor {
     public function error()
     {
         $this->inventory->up();
-
         $this->cart->status = 'error';
         $this->cart->save();
     }

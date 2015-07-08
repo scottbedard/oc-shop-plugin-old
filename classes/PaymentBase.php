@@ -14,4 +14,20 @@ class PaymentBase extends DriverBase {
         $processor->begin();
     }
 
+    /**
+     * Returns a route that handles a payment response
+     *
+     * @param   string      $status
+     * @return  string
+     */
+    public function getResponseURL($type)
+    {
+        return route('bedard.shop.payments', [
+            'cart'      => $this->cart->id,
+            'driver'    => $this->driver->id,
+            'hash'      => $this->cart->hash,
+            'status'    => $type,
+        ]);
+    }
+
 }

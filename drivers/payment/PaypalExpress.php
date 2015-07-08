@@ -92,18 +92,8 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
             $total = number_format($this->cart->total, 2, '.', '');
 
             $payment = $gateway->purchase([
-                    'returnUrl' => route('bedard.shop.payments', [
-                        'cart'      => $this->cart->id,
-                        'driver'    => $this->driver->id,
-                        'hash'      => $this->cart->hash,
-                        'status'    => 'success'
-                    ]),
-                    'cancelUrl' => route('bedard.shop.payments', [
-                        'cart'      => $this->cart->id,
-                        'driver'    => $this->driver->id,
-                        'hash'      => $this->cart->hash,
-                        'status'    => 'canceled'
-                    ]),
+                    'returnUrl' => $this->getResponseURL('success'),
+                    'cancelUrl' => $this->getResponseURL('canceled'),
                     'amount'    => $total,
                     'currency'  => Currency::getCode(),
                 ])
