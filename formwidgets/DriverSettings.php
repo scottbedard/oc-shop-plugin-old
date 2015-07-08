@@ -87,6 +87,10 @@ class DriverSettings extends FormWidgetBase
         $config = input();
         unset($config['_id']);
 
+        if (empty($config)) {
+            return;
+        }
+
         // Validate the configuration if needed
         $class = $driver->getClass();
         if ($class->rules) {

@@ -9,34 +9,27 @@ class SeedDefaultDrivers extends Seeder
     public function run()
     {
         // Standard shipping calculator
-        $table = Driver::create([
-            'name'          => 'Shipping Table',
-            'type'          => 'shipping',
-            'class'         => 'Bedard\Shop\Drivers\Shipping\BasicTable',
-            'is_default'    => true,
-        ]);
+        $table = new Driver;
+        $table->name    = 'Shipping Table';
+        $table->type    = 'shipping';
+        $table->class   = 'Bedard\Shop\Drivers\Shipping\BasicTable';
+        $table->save();
 
         // PayPal Express
-        $paypal = Driver::create([
-            'name'          => 'Paypal Express',
-            'type'          => 'payment',
-            'class'         => 'Bedard\Shop\Drivers\Payment\PaypalExpress',
-            'is_default'    => true,
-        ]);
-
-        $logo = $this->makeFile('bedard/shop/assets/images/paypal.png');
-        $paypal->image()->add($logo);
+        $paypal = new Driver;
+        $paypal->name    = 'Paypal Express';
+        $paypal->type    = 'payment';
+        $paypal->class   = 'Bedard\Shop\Drivers\Payment\PaypalExpress';
+        $paypal->save();
+        $paypal->image()->add($this->makeFile('bedard/shop/assets/images/paypal.png'));
 
         // Stripe
-        $stripe = Driver::create([
-            'name'          => 'Stripe',
-            'type'          => 'payment',
-            'class'         => 'Bedard\Shop\Drivers\Payment\Stripe',
-            'is_default'    => true,
-        ]);
-
-        $logo = $this->makeFile('bedard/shop/assets/images/stripe.png');
-        $stripe->image()->add($logo);
+        $stripe = new Driver;
+        $stripe->name    = 'Stripe';
+        $stripe->type    = 'payment';
+        $stripe->class   = 'Bedard\Shop\Drivers\Payment\Stripe';
+        $stripe->save();
+        $stripe->image()->add($this->makeFile('bedard/shop/assets/images/stripe.png'));
     }
 
     protected function makeFile($path)

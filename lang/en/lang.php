@@ -236,6 +236,9 @@ return [
             'tab_connection'            => 'Connection',
             'tab_appearance'            => 'Appearance',
         ],
+        'basictable' => [
+            'info'                      => 'There are no settings available for the basic shipping table.',
+        ],
     ],
 
     'inventories' => [

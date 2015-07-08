@@ -6,6 +6,16 @@ use Bedard\Shop\Models\ShippingRate;
 
 class BasicTable extends ShippingBase implements ShippingInterface {
 
+    public function registerFields()
+    {
+        return [
+            'brand_name' => [
+                'type'      => 'partial',
+                'path'      => '$/bedard/shop/drivers/shipping/basictable/_info.htm',
+            ],
+        ];
+    }
+
     /**
      * Calculate and save the shipping rates
      */
