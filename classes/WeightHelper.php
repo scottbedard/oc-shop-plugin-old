@@ -14,34 +14,16 @@ class WeightHelper {
      */
     public static function convert($weight, $to, $from = false)
     {
-        if (!$from) {
+        if ($from === false) {
             $from = Settings::getWeightUnits();
         }
 
-        // The number of grams in a given unit
-        $kilogram   = 1000;
-        $ounce      = 28.3495;
-        $pound      = 453.592;
+        $kg = 1000;
+        $oz = 28.3495;
+        $lb = 453.592;
+        $gr = $g = 1;
 
-        // First convert the weight to grams
-        if ($from == 'oz') {
-            $weight = $weight * $ounce;
-        } elseif ($from == 'lb') {
-            $weight = $weight * $pound;
-        } elseif ($from == 'kg') {
-            $weight = $weight * $kilogram;
-        }
-
-        // Then convert to the desired unit
-        if ($to == 'oz') {
-            $weight = $weight / $ounce;
-        } elseif ($to == 'lb') {
-            $weight = $weight / $pound;
-        } elseif ($to == 'kg') {
-            $weight = $weight / $kilogram;
-        }
-
-        return round($weight, 4);
+        return round(($weight * $$from) / $$to, 4);
     }
 
     /**
