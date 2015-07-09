@@ -92,8 +92,8 @@ fields:
         key: name
         partial: $/bedard/shop/models/promotion/_selected_products.htm
         addText: bedard.shop::lang.common.products_select
-        addIcon: icon-cubes
-        removeIcon: icon-times
+        addIcon: oc-icon-cubes
+        removeIcon: oc-icon-times
         popupPlaceholder: bedard.shop::lang.common.products_search
         popupHeader: bedard.shop::lang.common.products_select
         popupEmpty: bedard.shop::lang.common.products_no_results
@@ -109,8 +109,8 @@ fields:
         scope: isEnabled
         partial: $/bedard/shop/models/promotion/_selected_countries.htm
         addText: bedard.shop::lang.promotions.countries_select
-        addIcon: icon-globe
-        removeIcon: icon-times
+        addIcon: oc-icon-globe
+        removeIcon: oc-icon-times
         popupPlaceholder: bedard.shop::lang.promotions.countries_search
         popupHeader: bedard.shop::lang.promotions.countries_select
         popupEmpty: bedard.shop::lang.promotions.countries_no_results

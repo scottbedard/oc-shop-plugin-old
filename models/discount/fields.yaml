@@ -54,8 +54,8 @@ fields:
         key: name
         partial: $/bedard/shop/models/discount/_selected_categories.htm
         addText: bedard.shop::lang.discounts.categories_select
-        addIcon: icon-folder
-        removeIcon: icon-times
+        addIcon: oc-icon-folder
+        removeIcon: oc-icon-times
         popupPlaceholder: bedard.shop::lang.discounts.categories_search
         popupHeader: bedard.shop::lang.discounts.categories_select
         popupEmpty: bedard.shop::lang.discounts.categories_no_results
@@ -69,8 +69,8 @@ fields:
         key: name
         partial: $/bedard/shop/models/discount/_selected_products.htm
         addText: bedard.shop::lang.common.products_select
-        addIcon: icon-cubes
-        removeIcon: icon-times
+        addIcon: oc-icon-cubes
+        removeIcon: oc-icon-times
         popupPlaceholder: bedard.shop::lang.common.products_search
         popupHeader: bedard.shop::lang.common.products_select
         popupEmpty: bedard.shop::lang.common.products_no_results

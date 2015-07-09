@@ -42,45 +42,18 @@ class RelationSelector extends FormWidgetBase
      */
     public function prepareVars()
     {
-        $this->vars['alias'] = $this->alias;
-        $this->vars['fieldName'] = $this->formField->arrayName.'['.$this->formField->fieldName.'][]';
-        $this->vars['key'] = $this->config->key;
-
-        $this->vars['partial'] = isset($this->config->partial)
-            ? $this->config->partial
-            : 'default';
-
-        $this->vars['addText'] = isset($this->config->addText)
-            ? $this->config->addText
-            : 'backend::lang.relation.add';
-
-        $this->vars['removeText'] = isset($this->config->removeText)
-            ? $this->config->removeText
-            : 'backend::lang.relation.remove';
-
-        $this->vars['addIcon'] = isset($this->config->addIcon)
-            ? 'oc-'.$this->config->addIcon
-            : '';
-
-        $this->vars['removeIcon'] = isset($this->config->removeIcon)
-            ? 'oc-'.$this->config->removeIcon
-            : '';
-
-        $this->vars['popupHeader'] = isset($this->config->popupHeader)
-            ? $this->config->popupHeader
-            : 'backend::lang.relation.add_selected';
-
-        $this->vars['popupEmpty'] = isset($this->config->popupEmpty)
-            ? $this->config->popupEmpty
-            : 'backend::lang.list.no_records';
-
-        $this->vars['popupPlaceholder'] = isset($this->config->popupPlaceholder)
-            ? $this->config->popupPlaceholder
-            : 'backend::lang.list.search_prompt';
-
-        $this->vars['selectionEmpty'] = isset($this->config->selectionEmpty)
-            ? $this->config->selectionEmpty
-            : 'backend::lang.list.no_records';
+        $this->vars['alias']            = $this->alias;
+        $this->vars['fieldName']        = $this->formField->arrayName.'['.$this->formField->fieldName.'][]';
+        $this->vars['key']              = $this->config->key;
+        $this->vars['partial']          = $this->getConfig('partial', 'default');
+        $this->vars['addText']          = $this->getConfig('addText', 'backend::lang.relation.add');
+        $this->vars['removeText']       = $this->getConfig('removeText', 'backend::lang.relation.remove');
+        $this->vars['addIcon']          = $this->getConfig('addIcon');
+        $this->vars['removeIcon']       = $this->getConfig('removeIcon');
+        $this->vars['popupHeader']      = $this->getConfig('popupHeader', 'backend::lang.relation.add_selected');
+        $this->vars['popupEmpty']       = $this->getConfig('popupEmpty', 'backend::lang.list.no_records');
+        $this->vars['popupPlaceholder'] = $this->getConfig('popupPlaceholder', 'backend::lang.list.search_prompt');
+        $this->vars['selectionEmpty']   = $this->getConfig('selectionEmpty');
     }
 
     /**
