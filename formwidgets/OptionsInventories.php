@@ -83,39 +83,27 @@ class OptionsInventories extends FormWidgetBase
     }
 
     /**
-     * Display the Inventory popup form
-     *
-     * @return  mixed
+     * Display the Inventory or Options form
      */
     public function onDisplayInventory()
     {
-        $form = $this->makeConfig('$/bedard/shop/models/inventory/fields.yaml');
-        $form->model = Inventory::findOrNew(intval(input('id')));
-        $form->model->product_id = $this->model->id;
-
-        return $this->makeForm(
-            $form,
-            Lang::get('bedard.shop::lang.inventories.model'),
-            'onProcessInventory'
-        );
+        $inventory = Inventory::findOrNew(input('id'));
+        return $this->displayForm($inventory, 'inventory', 'bedard.shop::lang.inventories.model', 'onProcessInventory');
     }
 
-    /**
-     * Display the Option popup form
-     *
-     * @return  mixed
-     */
     public function onDisplayOption()
     {
-        $form = $this->makeConfig('$/bedard/shop/models/option/fields.yaml');
-        $form->model = Option::findOrNew(intval(input('id')));
+        $option = Option::findOrNew(input('id'));
+        return $this->displayForm($option, 'option', 'bedard.shop::lang.options.model', 'onProcessOption');
+    }
+
+    protected function displayForm($model, $dir, $lang, $handler)
+    {
+        $form = $this->makeConfig("$/bedard/shop/models/$dir/fields.yaml");
+        $form->model = $model;
         $form->model->product_id = $this->model->id;
 
-        return $this->makeForm(
-            $form,
-            Lang::get('bedard.shop::lang.options.model'),
-            'onProcessOption'
-        );
+        return $this->makeForm($form, Lang::get($lang), $handler);
     }
 
     /**
@@ -152,16 +140,11 @@ class OptionsInventories extends FormWidgetBase
         $inventory->modifier    = input('modifier');
         $inventory->saveWithValues(input('valueIds'));
 
-        // Attach via deferred binding
-        $this->model->inventories()->add($inventory, input('sessionKey'));
-
-        $model = Lang::get('bedard.shop::lang.inventories.model');
-        if ($inventoryId) {
-            Flash::success(Lang::get('backend::lang.form.update_success', ['name' => $model]));
-        } else {
-            Flash::success(Lang::get('backend::lang.form.create_success', ['name' => $model]));
+        if (!$inventory->product_id) {
+            $this->model->inventories()->add($inventory, input('sessionKey'));
         }
 
+        $this->contextFlash($inventoryId, 'bedard.shop::lang.inventories.model');
         return $this->renderPartials();
     }
 
@@ -172,67 +155,45 @@ class OptionsInventories extends FormWidgetBase
      */
     public function onProcessOption()
     {
-        $optionId = intval(input('model_id'));
-        $option = Option::findOrNew($optionId);
-        $option->product_id = $this->model->id ?: null;
-        $option->name = input('name');
-        $option->placeholder = input('placeholder');
+        $optionId               = intval(input('model_id'));
+        $option                 = Option::findOrNew($optionId);
+        $option->product_id     = $this->model->id ?: null;
+        $option->name           = input('name');
+        $option->placeholder    = input('placeholder');
         $option->saveWithValues(input('valueIds'), input('valueNames'));
 
-        // Attach via deferred binding if needed
         if (!$option->product_id) {
             $this->model->options()->add($option, input('sessionKey'));
         }
 
-        $model = Lang::get('bedard.shop::lang.options.model');
-        if ($optionId) {
-            Flash::success(Lang::get('backend::lang.form.update_success', ['name' => $model]));
-        } else {
-            Flash::success(Lang::get('backend::lang.form.create_success', ['name' => $model]));
-        }
-
+        $this->contextFlash($optionId, 'bedard.shop::lang.options.model');
         return $this->renderPartials();
     }
 
+    protected function contextFlash($update, $name)
+    {
+        $context = $update ? 'update' : 'create';
+        Flash::success(Lang::get("backend::lang.form.{$context}_success", ['name' => Lang::get($name)]));
+    }
+
     /**
-     * Deletes an inventory
-     *
-     * @return  array
+     * Delete an Option or Inventory
      */
     public function onDeleteInventory()
     {
-        $success = false;
-        if ($inventory = Inventory::find(intval(input('id')))) {
-            $success = $inventory->delete();
-        }
-
-        $model = Lang::get('bedard.shop::lang.inventories.model');
-        if ($success) {
-            Flash::success(Lang::get('backend::lang.form.delete_success', ['name' => $model]));
-        } else {
-            Flash::error(Lang::get('bedard.shop::lang.form.delete_failed_name', ['name' => $model]));
-        }
-
-        return $this->renderPartials();
+        return $this->deleteAndFlash(Inventory::find(input('id')), 'bedard.shop::lang.inventories.model');
     }
 
-    /**
-     * Deletes an option
-     *
-     * @return  array
-     */
     public function onDeleteOption()
     {
-        $success = false;
-        if ($option = Option::find(intval(input('id')))) {
-            $success = $option->delete();
-        }
+        return $this->deleteAndFlash(Option::find(input('id')), 'bedard.shop::lang.options.model');
+    }
 
-        $model = Lang::get('bedard.shop::lang.options.model');
-        if ($success) {
-            Flash::success(Lang::get('backend::lang.form.delete_success', ['name' => $model]));
-        } else {
-            Flash::error(Lang::get('bedard.shop::lang.form.delete_failed_name', ['name' => $model]));
+    protected function deleteAndFlash($model, $name)
+    {
+        if ($model) {
+            $success = $model->delete();
+            Flash::success(Lang::get('backend::lang.form.delete_success', ['name' => Lang::get($name)]));
         }
 
         return $this->renderPartials();
@@ -243,7 +204,9 @@ class OptionsInventories extends FormWidgetBase
      */
     public function getSaveValue($value)
     {
-        if (!$options = input('options')) return;
+        if (!$options = input('options')) {
+            return;
+        }
 
         foreach ($options as $position => $id) {
             $option = Option::find($id);
