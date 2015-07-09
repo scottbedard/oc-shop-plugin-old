@@ -46,7 +46,7 @@ class Order extends Model
      */
     public function setCartSubtotalAttribute($value)
     {
-     $this->attributes['cart_subtotal'] = $value ?: 0;
+        $this->attributes['cart_subtotal'] = $value ?: 0;
     }
 
     public function setPaymentTotalAttribute($value)
