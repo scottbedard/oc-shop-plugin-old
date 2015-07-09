@@ -50,8 +50,8 @@ class Cart extends Model
         'customer' => [
             'Bedard\Shop\Models\Customer',
         ],
-        'payment' => [
-            'Bedard\Shop\Models\Payment',
+        'order' => [
+            'Bedard\Shop\Models\Order',
         ],
         'promotion' => [
             'Bedard\Shop\Models\Promotion',

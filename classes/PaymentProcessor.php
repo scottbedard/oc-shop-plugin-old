@@ -2,7 +2,7 @@
 
 use Bedard\Shop\Classes\InventoryManager;
 use Bedard\Shop\Models\Cart;
-use Bedard\Shop\Models\Payment;
+use Bedard\Shop\Models\Order;
 use Bedard\Shop\Models\PaymentSettings;
 
 class PaymentProcessor {
@@ -65,14 +65,14 @@ class PaymentProcessor {
             'promotion',
         ]);
 
-        $payment = new Payment;
-        $payment->payment_driver_id = $payment_driver_id;
-        $payment->cart_cache        = $this->cart->toArray();
-        $payment->cart_subtotal     = $this->cart->subtotal;
-        $payment->shipping_total    = $this->cart->shipping_cost;
-        $payment->promotion_total   = $this->cart->promotionSavings;
-        $payment->payment_total     = $this->cart->total;
-        $payment->save();
+        $order = new Order;
+        $order->payment_driver_id = $payment_driver_id;
+        $order->cart_cache        = $this->cart->toArray();
+        $order->cart_subtotal     = $this->cart->subtotal;
+        $order->shipping_total    = $this->cart->shipping_cost;
+        $order->promotion_total   = $this->cart->promotionSavings;
+        $order->payment_total     = $this->cart->total;
+        $order->save();
 
         $this->inventory->down();
         $this->cart->status = 'complete';

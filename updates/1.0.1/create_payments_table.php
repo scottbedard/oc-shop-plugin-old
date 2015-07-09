@@ -8,7 +8,7 @@ class CreatePaymentsTable extends Migration
 
     public function up()
     {
-        Schema::create('bedard_shop_payments', function($table)
+        Schema::create('bedard_shop_orders', function($table)
         {
             $table->engine = 'InnoDB';
             $table->increments('id');
@@ -31,7 +31,7 @@ class CreatePaymentsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('bedard_shop_payments');
+        Schema::dropIfExists('bedard_shop_orders');
     }
 
 }

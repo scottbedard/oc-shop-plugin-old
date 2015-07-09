@@ -5,13 +5,13 @@ use Model;
 /**
  * Payment Model
  */
-class Payment extends Model
+class Order extends Model
 {
 
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'bedard_shop_payments';
+    public $table = 'bedard_shop_orders';
 
     /**
      * @var array Guarded fields

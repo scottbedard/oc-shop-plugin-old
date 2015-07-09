@@ -62,7 +62,7 @@ class Plugin extends PluginBase
                 'sideMenu' => [
                     'orders' => [
                         'label'         => 'bedard.shop::lang.navigation.orders',
-                        'icon'          => 'icon-money',
+                        'icon'          => 'icon-shopping-cart',
                         'url'           => Backend::url('bedard/shop/orders'),
                         'permissions'   => ['bedard.shop.access_orders'],
                     ],
