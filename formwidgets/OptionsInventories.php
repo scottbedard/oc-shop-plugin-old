@@ -1,7 +1,6 @@
 <?php namespace Bedard\Shop\FormWidgets;
 
 use Backend\Classes\FormWidgetBase;
-use Bedard\Shop\Models\Product;
 use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Option;
 use Lang;
@@ -83,7 +82,7 @@ class OptionsInventories extends FormWidgetBase
     }
 
     /**
-     * Display the Inventory or Options form
+     * Ajax Handlers
      */
     public function onDisplayInventory()
     {
@@ -97,25 +96,40 @@ class OptionsInventories extends FormWidgetBase
         return $this->displayForm($option, 'option', 'bedard.shop::lang.options.model', 'onProcessOption');
     }
 
+    public function onDeleteInventory()
+    {
+        return $this->deleteModel(Inventory::find(input('id')), 'bedard.shop::lang.inventories.model');
+    }
+
+    public function onDeleteOption()
+    {
+        return $this->deleteModel(Option::find(input('id')), 'bedard.shop::lang.options.model');
+    }
+
+    public function onProcessInventory()
+    {
+        $inventory = Inventory::findOrNew(input('model_id'));
+        return $this->saveModel($inventory, ['sku', 'quantity', 'modifier'], 'inventories');
+    }
+
+    public function onProcessOption()
+    {
+        $option = Option::findOrNew(input('model_id'));
+        return $this->saveModel($option, ['name', 'placeholder'], 'options');
+    }
+
+    /**
+     * Displys a popup form
+     */
     protected function displayForm($model, $dir, $lang, $handler)
     {
         $form = $this->makeConfig("$/bedard/shop/models/$dir/fields.yaml");
         $form->model = $model;
         $form->model->product_id = $this->model->id;
 
-        return $this->makeForm($form, Lang::get($lang), $handler);
-    }
-
-    /**
-     * Makes a popup form
-     *
-     * @return  mixed
-     */
-    protected function makeForm($form, $modelName, $handler)
-    {
         $header = $form->model->id
-            ? Lang::get('backend::lang.relation.update_name', ['name' => $modelName])
-            : Lang::get('backend::lang.relation.create_name', ['name' => $modelName]);
+            ? Lang::get('backend::lang.relation.update_name', ['name' => Lang::get($lang)])
+            : Lang::get('backend::lang.relation.create_name', ['name' => Lang::get($lang)]);
 
         return $this->makePartial('form', [
             'header'    => $header,
@@ -126,76 +140,44 @@ class OptionsInventories extends FormWidgetBase
     }
 
     /**
-     * Create or update an inventory
+     * Deletes an Option or Inventory
      *
-     * @return  array
+     * @param   Option|Inventory    $model      The model being deleted
+     * @param   string              $name       The lang string of the model type
+     * @return  mixed
      */
-    public function onProcessInventory()
-    {
-        $inventoryId            = input('model_id');
-        $inventory              = Inventory::findOrNew($inventoryId);
-        $inventory->product_id  = $this->model->id ?: null;
-        $inventory->sku         = input('sku');
-        $inventory->quantity    = input('quantity');
-        $inventory->modifier    = input('modifier');
-        $inventory->saveWithValues(input('valueIds'));
-
-        if (!$inventory->product_id) {
-            $this->model->inventories()->add($inventory, input('sessionKey'));
-        }
-
-        $this->contextFlash($inventoryId, 'bedard.shop::lang.inventories.model');
-        return $this->renderPartials();
-    }
-
-    /**
-     * Create or update an option
-     *
-     * @return  array
-     */
-    public function onProcessOption()
-    {
-        $optionId               = intval(input('model_id'));
-        $option                 = Option::findOrNew($optionId);
-        $option->product_id     = $this->model->id ?: null;
-        $option->name           = input('name');
-        $option->placeholder    = input('placeholder');
-        $option->saveWithValues(input('valueIds'), input('valueNames'));
-
-        if (!$option->product_id) {
-            $this->model->options()->add($option, input('sessionKey'));
-        }
-
-        $this->contextFlash($optionId, 'bedard.shop::lang.options.model');
-        return $this->renderPartials();
-    }
-
-    protected function contextFlash($update, $name)
-    {
-        $context = $update ? 'update' : 'create';
-        Flash::success(Lang::get("backend::lang.form.{$context}_success", ['name' => Lang::get($name)]));
-    }
-
-    /**
-     * Delete an Option or Inventory
-     */
-    public function onDeleteInventory()
-    {
-        return $this->deleteAndFlash(Inventory::find(input('id')), 'bedard.shop::lang.inventories.model');
-    }
-
-    public function onDeleteOption()
-    {
-        return $this->deleteAndFlash(Option::find(input('id')), 'bedard.shop::lang.options.model');
-    }
-
-    protected function deleteAndFlash($model, $name)
+    protected function deleteModel($model, $name)
     {
         if ($model) {
-            $success = $model->delete();
+            $model->delete();
             Flash::success(Lang::get('backend::lang.form.delete_success', ['name' => Lang::get($name)]));
         }
 
+        return $this->renderPartials();
+    }
+
+    /**
+     * Creates or updates an Option or Inventory
+     *
+     * @param   Option|Inventory    $model      The model being created or updated
+     * @param   array               $fields     The fields being saved
+     * @param   string              $type       The name of the relationship and lang resource
+     * @return  mixed
+     */
+    protected function saveModel($model, $fields, $type)
+    {
+        $model->product_id = $this->model->id ?: null;
+        foreach ($fields as $field) {
+            $model->$field = input($field);
+        }
+
+        $context = $model->id ? 'update' : 'create';
+        $model->saveWithValues(input('valueIds'), input('valueNames'));
+        if (!$model->product_id) {
+            $this->model->$type()->add($model, input('sessionKey'));
+        }
+
+        Flash::success(Lang::get("backend::lang.form.{$context}_success", ['name' => Lang::get("bedard.shop::lang.$type.model")]));
         return $this->renderPartials();
     }
 

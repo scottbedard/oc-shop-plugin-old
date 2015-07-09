@@ -80,7 +80,7 @@
 .options-inventories-modal .modal-body {
   padding-bottom: 20px;
 }
-.options-inventories-modal .modal-body div[data-field-name="values"] span:not(:last-of-type) {
+.options-inventories-modal .modal-body .value-selector:not(:last-of-type) {
   margin-bottom: 10px;
 }
 .options-inventories-modal .modal-footer .loading-indicator {
