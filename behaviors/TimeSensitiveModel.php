@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Behaviors;
 
+use DB;
 use System\Classes\ModelBehavior;
 
 /**
@@ -10,6 +11,11 @@ use System\Classes\ModelBehavior;
  * and end_at properties.
  */
 class TimeSensitiveModel extends ModelBehavior {
+
+    /**
+     * @var Model
+     */
+    protected $model;
 
     /**
      * Constructor
@@ -27,6 +33,8 @@ class TimeSensitiveModel extends ModelBehavior {
 
             // todo: figure out how to get $customMessages in here
         }
+
+        $this->model = $model;
     }
 
     /**
@@ -74,6 +82,19 @@ class TimeSensitiveModel extends ModelBehavior {
             $query->whereNull('end_at')
                   ->orWhere('end_at', '>', $now);
         });
+    }
+
+    public function scopeSelectStatus($query)
+    {
+        $now = date('Y-m-d H:i:s');
+        $table = $this->model->table;
+        $query->addSelect(DB::raw("(".
+            "CASE ".
+                "WHEN (`$table`.`end_at` IS NOT NULL AND `$table`.`end_at` < '$now') THEN 2 ".
+                "WHEN (`$table`.`start_at` IS NOT NULL AND `$table`.`start_at` >= '$now') THEN 1 ".
+                "ELSE 0 ".
+            "END".
+        ") as `status`"));
     }
 
     /**

@@ -2,6 +2,7 @@
 
 use Bedard\Shop\Models\Price;
 use Bedard\Shop\Models\Product;
+use DB;
 use Model;
 use Queue;
 
@@ -10,7 +11,8 @@ use Queue;
  */
 class Discount extends Model
 {
-    use \October\Rain\Database\Traits\Validation;
+    use \Bedard\Shop\Traits\NumericColumnTrait,
+        \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string  The database table used by the model.
@@ -83,6 +85,19 @@ class Discount extends Model
         foreach ($this->prices as $price) {
             $price->delete();
         }
+    }
+
+    /**
+     * Query Scopes
+     */
+    public function scopeSelectAmount($query)
+    {
+        return $query->addSelect($this->selectNumeric(
+            $this->table,
+            'is_percentage',
+            'amount_percentage',
+            'amount_exact'
+        ));
     }
 
     /**

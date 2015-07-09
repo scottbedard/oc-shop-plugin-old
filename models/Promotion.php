@@ -7,7 +7,8 @@ use Model;
  */
 class Promotion extends Model
 {
-    use \October\Rain\Database\Traits\Validation;
+    use \Bedard\Shop\Traits\NumericColumnTrait,
+        \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string  The database table used by the model.
@@ -74,6 +75,28 @@ class Promotion extends Model
     public $customMessages = [
         'end_at.after'      => 'bedard.shop::lang.common.end_at_invalid',
     ];
+
+    public function scopeSelectCartAmount($query)
+    {
+        return $query->addSelect($this->selectNumeric(
+            $this->table,
+            'is_cart_percentage',
+            'cart_percentage',
+            'cart_exact',
+            'cart_amount'
+        ));
+    }
+
+    public function scopeSelectShippingAmount($query)
+    {
+        return $query->addSelect($this->selectNumeric(
+            $this->table,
+            'is_shipping_percentage',
+            'shipping_percentage',
+            'shipping_exact',
+            'shipping_amount'
+        ));
+    }
 
     /**
      * Accessors and Mutators
