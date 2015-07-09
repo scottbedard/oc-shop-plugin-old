@@ -60,6 +60,18 @@ class Plugin extends PluginBase
                 'order'       => 300,
 
                 'sideMenu' => [
+                    'orders' => [
+                        'label'         => 'bedard.shop::lang.navigation.orders',
+                        'icon'          => 'icon-money',
+                        'url'           => Backend::url('bedard/shop/orders'),
+                        'permissions'   => ['bedard.shop.access_orders'],
+                    ],
+                    'customers' => [
+                        'label'         => 'bedard.shop::lang.navigation.customers',
+                        'icon'          => 'icon-users',
+                        'url'           => Backend::url('bedard/shop/customers'),
+                        'permissions'   => ['bedard.shop.access_customers'],
+                    ],
                     'categories' => [
                         'label'         => 'bedard.shop::lang.navigation.categories',
                         'icon'          => 'icon-folder-o',
@@ -163,6 +175,14 @@ class Plugin extends PluginBase
     public function registerPermissions()
     {
         return [
+            'bedard.shop.access_orders' => [
+                'tab'   => 'bedard.shop::lang.general.plugin',
+                'label' => 'bedard.shop::lang.permissions.access_orders',
+            ],
+            'bedard.shop.access_customers' => [
+                'tab'   => 'bedard.shop::lang.general.plugin',
+                'label' => 'bedard.shop::lang.permissions.access_customers',
+            ],
             'bedard.shop.access_categories' => [
                 'tab'   => 'bedard.shop::lang.general.plugin',
                 'label' => 'bedard.shop::lang.permissions.access_categories',

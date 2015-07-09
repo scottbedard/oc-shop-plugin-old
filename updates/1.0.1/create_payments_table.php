@@ -13,6 +13,9 @@ class CreatePaymentsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('cart_id')->unsigned()->nullable()->index();
+            $table->integer('customer_id')->unsigned()->nullable()->index();
+            $table->integer('shipping_address_id')->unsigned()->nullable()->index();
+            $table->integer('billing_address_id')->unsigned()->nullable()->index();
             $table->integer('shipping_driver_id')->unsigned()->nullable()->index();
             $table->integer('payment_driver_id')->unsigned()->nullable()->index();
             $table->json('cart_cache')->nullable();

@@ -77,8 +77,10 @@ return [
     // Navigation
     //
     'navigation' => [
-        'discounts'                     => 'Discounts',
         'categories'                    => 'Categories',
+        'customers'                     => 'Customers',
+        'discounts'                     => 'Discounts',
+        'orders'                        => 'Orders',
         'products'                      => 'Products',
         'promotions'                    => 'Promotions',
         'settings' => [
@@ -100,8 +102,10 @@ return [
     //
     'permissions' => [
         'access_categories'             => 'Manage categories',
+        'access_customers'              => 'Access customer information',
         'access_discounts'              => 'Manage discounts',
         'access_inventories'            => 'Manage inventories',
+        'access_orders'                 => 'Manage orders',
         'access_products'               => 'Manage products',
         'access_promotions'             => 'Manage promotions',
         'access_settings'               => 'Manage shop settings',
