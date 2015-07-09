@@ -56,12 +56,24 @@ class PaymentProcessor {
      */
     public function complete($payment_driver_id = null)
     {
-        // todo: narrow selection to only include relevant data
+        // Only cache the relevant cart data
         $this->cart->load([
-            'items.inventory.product',
-            'items.inventory.values.option',
-            'address',
-            'customer',
+            'items' => function($item) {
+                $item->withTrashed()->with([
+                    'inventory' => function($inventory) {
+                        $inventory->addSelect('id', 'product_id', 'sku', 'modifier')->with([
+                            'product' => function($product) {
+                                $product->joinPrices()->addSelect('id', 'name', 'base_price', 'price');
+                            },
+                            'values' => function($values) {
+                                $values->addSelect('id', 'option_id', 'name')->with(['option' => function($option) {
+                                    $option->addSelect('id', 'name');
+                                }]);
+                            }
+                        ]);
+                    }
+                ]);
+            },
             'promotion',
         ]);
 
@@ -85,4 +97,23 @@ class PaymentProcessor {
         $this->cart->status = 'error';
         $this->cart->save();
     }
+
+    // protected function cacheCart()
+    // {
+    //     $cache = [
+    //         'items' => [],
+    //         'products' => [],
+    //         'promotion' => [],
+    //     ];
+    //
+    //     foreach ($this->cart->items as $item) {
+    //         $cache['items'][] = [
+    //             'id'            => $item->id,
+    //             'product_id'    => $item->product_id,
+    //             'quantity'      => $item->quantity,
+    //         ];
+    //     }
+    //
+    //     return $cache;
+    // }
 }
