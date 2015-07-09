@@ -71,6 +71,11 @@ class Cart extends Model
     /**
      * Query Scopes
      */
+    public function scopeIsCanceled($query)
+    {
+        return $query->where('status', 'canceled');
+    }
+
     public function scopeIsComplete($query)
     {
         return $query->where('status', 'complete');
@@ -84,6 +89,13 @@ class Cart extends Model
     public function scopeIsPaying($query)
     {
         return $query->where('status', 'paying');
+    }
+
+    public function scopeIsOpenOrCanceled($query)
+    {
+        return $query->where(function($query) {
+            $query->where('status', 'open')->orWhere('status', 'canceled');
+        });
     }
 
     /**

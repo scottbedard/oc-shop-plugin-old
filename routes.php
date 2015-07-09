@@ -15,7 +15,7 @@ Route::get('bedard/shop/payments/{cart}/{driver}/{hash}/{status}', ['as' => 'bed
         $cart = Cart::where('hash', $hash)->isPaying()->find($cart_id);
         $payment = new PaymentProcessor($cart);
         if ($status == 'success') {
-            $payment->complete();
+            $payment->complete($driver_id);
             return Redirect::to(PaymentSettings::getSuccessUrl());
         } elseif ($status == 'canceled') {
             $payment->cancel();

@@ -7,5 +7,5 @@ interface PaymentInterface extends DriverInterface {
     /**
      * Begin the payment process
      */
-    public function beginPayment();
+    public function executePayment();
 }

@@ -27,16 +27,18 @@ class CartSession {
         // First, attempt to load the cart from the user's session
         if ($session = Session::get(self::CART_KEY)) {
             $this->cart = Cart::where('key', $session['key'])
+                ->isOpenOrCanceled()
                 ->find($session['id']);
-                // todo: make sure cart is open
         }
 
         // If that fails, check if we have the cart data saved in a cookie
         elseif (Settings::getCartLife() !== false && ($cookie = Request::cookie(self::CART_KEY))) {
             $this->cart = Cart::where('key', $cookie['key'])
+                ->isOpenOrCanceled()
                 ->find($cookie['id']);
-                // todo: make sure cart is open
         }
+
+        // todo: canceled carts should resume their session
 
         // If we still don't have a cart, forget the session and cookie to
         // prevent queries looking for a cart that doesn't exist.

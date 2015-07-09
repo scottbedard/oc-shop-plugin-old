@@ -13,10 +13,14 @@ class CreatePaymentsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('cart_id')->unsigned()->nullable()->index();
-            $table->boolean('is_inventoried')->default(false);
-            $table->timestamp('received_at')->nullable();
-            $table->timestamp('canceled_at')->nullable();
-            $table->timestamp('completed_at')->nullable();
+            $table->integer('shipping_driver_id')->unsigned()->nullable()->index();
+            $table->integer('payment_driver_id')->unsigned()->nullable()->index();
+            $table->json('cart_cache')->nullable();
+            $table->decimal('cart_subtotal', 10, 2)->default(0);
+            $table->decimal('shipping_total', 10, 2)->default(0);
+            $table->decimal('promotion_total', 10, 2)->default(0);
+            $table->decimal('payment_total', 10, 2)->default(0);
+            $table->timestamp('returned_at')->nullable();
             $table->timestamp('shipped_at')->nullable();
             $table->timestamps();
         });

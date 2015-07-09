@@ -55,10 +55,13 @@ class PaymentSettings extends Model
             return $class;
         }
 
-        $driver = Driver::isPayment()->where('class', $class)->first();
-
         $gateway = new $class;
-        $gateway->setDriver($driver);
+
+        if ($driver = Driver::isPayment()->where('class', $class)->first()) {
+            $gateway->setDriver($driver);
+        }
+        // todo: possibly throw an exception here
+
         $gateway->setCart($cart);
         return $gateway;
     }

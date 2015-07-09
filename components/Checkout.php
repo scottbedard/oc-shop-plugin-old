@@ -2,7 +2,9 @@
 
 use App;
 use Cms\Classes\ComponentBase;
+use Exception;
 use Lang;
+use October\Rain\Exception\AjaxException;
 use RainLab\Location\Models\Country;
 
 class Checkout extends ComponentBase
@@ -125,6 +127,12 @@ class Checkout extends ComponentBase
      */
     public function onBeginPayment()
     {
-        return $this->manager->beginPaymentDriver();
+        try {
+            $response = $this->manager->initPayment();
+        } catch (Exception $e) {
+            throw new AjaxException($e->getMessage());
+        }
+
+        return $response;
     }
 }

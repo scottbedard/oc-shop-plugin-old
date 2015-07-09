@@ -88,7 +88,7 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
     /**
      * Begin the payment process
      */
-    public function beginPayment()
+    public function executePayment()
     {
         $gateway = $this->openGateway();
 

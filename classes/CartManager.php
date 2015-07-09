@@ -19,11 +19,12 @@ class CartManager extends CartSession {
     /*
      * Summary of AjaxException messages
      *
-     * CART_INVALID             The cart was not found, or could not be loaded
-     * INVENTORY_INVALID        An inventory was not found
-     * PROMOTION_INVALID        A promotion was not found
-     * PRODUCT_INVALID          A product was not found
-     * INVENTORIES_ADJUSTED     The cart was invalid, and inventory quantities were adjusted
+     * CART_INVALID             The cart was invalid, and inventory quantities were adjusted
+     * CART_NOT_FOUND           The cart was not found, or could not be loaded
+     * INVENTORY_NOT_FOUND      An inventory was not found
+     * GATEWAY_NOT_FOUND        The payment gateway was not found, or could not be instantiated
+     * PRODUCT_NOT_FOUND        A product was not found
+     * PROMOTION_NOT_FOUND      A promotion was not found
      */
 
     /**
@@ -89,8 +90,7 @@ class CartManager extends CartSession {
     {
         $this->cart->hash               = str_random(40);
         $this->cart->shipping_rates     = null;
-        $this->cart->shipping_name      = null;
-        $this->cart->shipping_cost      = null;
+        $this->cart->shipping_id        = null;
         $this->cart->shipping_failed    = false;
         $this->cart->updated_at         = Carbon::now();
         $this->cart->save();
@@ -108,11 +108,11 @@ class CartManager extends CartSession {
         $this->loadCart();
 
         if (!$product = Product::isEnabled()->find($productId)) {
-            throw new AjaxException('PRODUCT_INVALID');
+            throw new AjaxException('PRODUCT_NOT_FOUND');
         }
 
         if (!$inventory = Inventory::where('product_id', $product->id)->findByValues($valueIds)) {
-            throw new AjaxException('INVENTORY_INVALID');
+            throw new AjaxException('INVENTORY_NOT_FOUND');
         }
 
         $cartItem = CartItem::firstOrNew([
@@ -140,44 +140,11 @@ class CartManager extends CartSession {
         $this->loadCart();
 
         if (!$promotion = Promotion::isRunning()->where('code', $code)->first()) {
-            throw new AjaxException('PROMOTION_INVALID');
+            throw new AjaxException('PROMOTION_NOT_FOUND');
         }
 
         $this->cart->promotion_id = $promotion->id;
         $this->actionCompleted();
-    }
-
-    /**
-     * Applys a shipping rate to the cart
-     *
-     * @param   string  $rate_id
-     */
-    public function applyShipping($rate_id)
-    {
-        echo $rate_id;
-    }
-
-    /**
-     * Initiate the payment payment driver
-     */
-    public function beginPaymentDriver()
-    {
-        if (!$this->cart) {
-            return;
-        }
-
-        $this->loadItemData();
-        if ($this->cartWasInvalid) {
-            throw new AjaxException('INVENTORIES_ADJUSTED');
-        }
-
-        if ($this->cart->shipping_rates || input('shipping')) {
-            $this->selectShipping();
-        }
-
-        $gateway = PaymentSettings::getGateway($this->cart);
-
-        return $gateway->beginPayment();
     }
 
     /**
@@ -247,6 +214,31 @@ class CartManager extends CartSession {
     }
 
     /**
+     * Initiate the payment payment driver
+     */
+    public function initPayment()
+    {
+        if (!$this->cart) {
+            return;
+        }
+
+        $this->loadItemData();
+        if ($this->cartWasInvalid) {
+            throw new AjaxException('CART_INVALID');
+        }
+
+        if ($this->cart->shipping_rates) {
+            $this->selectShipping();
+        }
+
+        if (!$gateway = PaymentSettings::getGateway($this->cart)) {
+            throw new AjaxException('GATEWAY_NOT_FOUND');
+        }
+
+        return $gateway->executePayment();
+    }
+
+    /**
      * Removes an Address from the cart
      */
     public function removeAddress()
@@ -311,13 +303,14 @@ class CartManager extends CartSession {
      */
     public function selectShipping()
     {
+        // todo: write a test for this
+
         // If a rate was selected, look for it in the quoted rates
         $rates = $this->cart->shipping_rates;
         if ($selected = input('shipping')) {
             foreach ($rates as $i => $rate) {
                 if ($rate['id'] == $selected) {
-                    $this->cart->shipping_name = $rate['name'];
-                    $this->cart->shipping_cost = $rate['cost'];
+                    $this->cart->shipping_id = $selected;
                     return $this->cart->save();
                 }
             }
@@ -328,8 +321,7 @@ class CartManager extends CartSession {
             return $a['cost'] - $b['cost'];
         });
 
-        $this->cart->shipping_name = $rates[0]['name'];
-        $this->cart->shipping_cost = $rates[0]['cost'];
+        $this->cart->shipping_id = $rates[0]['id'];
         return $this->cart->save();
     }
 
