@@ -96,7 +96,7 @@ class Plugin extends PluginBase
                         'url'           => Backend::url('bedard/shop/promotions'),
                         'permissions'   => ['bedard.shop.access_promotions'],
                     ],
-                    'shipping' => [
+                    'shippingmethods' => [
                         'label'         => 'bedard.shop::lang.navigation.shipping',
                         'icon'          => 'icon-table',
                         'url'           => Backend::url('bedard/shop/shippingmethods'),
