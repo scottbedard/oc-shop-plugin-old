@@ -226,6 +226,10 @@ return [
     ],
 
     'drivers' => [
+        'nopayment' => [
+            'name'                      => 'No Payment',
+            'message'                   => 'This driver should only be used if you wish to handle payments manually. Users will be redirected to the success page upon order completion.',
+        ],
         'paypalexpress' => [
             'api_username'              => 'API username',
             'api_password'              => 'API password',

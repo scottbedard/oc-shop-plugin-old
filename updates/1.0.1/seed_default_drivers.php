@@ -15,6 +15,13 @@ class SeedDefaultDrivers extends Seeder
         $table->class   = 'Bedard\Shop\Drivers\Shipping\BasicTable';
         $table->save();
 
+        // No Payment
+        $nopayment = new Driver;
+        $nopayment->name = 'bedard.shop::lang.drivers.nopayment.name';
+        $nopayment->type = 'payment';
+        $nopayment->class = 'Bedard\Shop\Drivers\Payment\NoPayment';
+        $nopayment->save();
+
         // PayPal Express
         $paypal = new Driver;
         $paypal->name    = 'Paypal Express';
