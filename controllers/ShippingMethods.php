@@ -12,7 +12,7 @@ class ShippingMethods extends Controller
         'Backend.Behaviors.FormController',
         'Backend.Behaviors.ListController',
         'Backend.Behaviors.RelationController',
-        'Bedard.Shop.Behaviors.ListActions',
+        'Owl.Behaviors.ListDelete.Behavior',
     ];
 
     public $formConfig      = 'config_form.yaml';

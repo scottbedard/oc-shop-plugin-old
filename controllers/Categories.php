@@ -17,6 +17,7 @@ class Categories extends Controller
     public $implement = [
         'Backend.Behaviors.FormController',
         'Backend.Behaviors.ListController',
+        'Owl.Behaviors.ListDelete.Behavior',
     ];
 
     public $formConfig = 'config_form.yaml';
@@ -100,20 +101,22 @@ class Categories extends Controller
     }
 
     /**
-     * Delete selected rows
+     * Override the list delete behavior to prevent category syncing
+     *
+     * @param   Category    $category       The category being deleted
      */
-    public function index_onDelete()
+    public function overrideListDelete(Category $category)
     {
-        if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
-            foreach ($checkedIds as $postId) {
-                if ($model = Category::find($postId)) {
-                    $model->syncAfterDelete = false;
-                    $model->delete();
-                }
-            }
-            Category::syncAllCategories();
-            Flash::success(Lang::get('backend::lang.list.delete_selected_success'));
-        }
-        return $this->listRefresh();
+        $category->syncAfterDelete = false;
+        $category->delete();
+    }
+
+    /**
+     * After the categories are deleted, syncronize category inheritance
+     */
+    public function afterListDelete()
+    {
+        Category::syncAllCategories();
+        Flash::success(Lang::get('backend::lang.list.delete_selected_success'));
     }
 }

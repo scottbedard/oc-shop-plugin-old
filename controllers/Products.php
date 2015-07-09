@@ -14,7 +14,7 @@ class Products extends Controller
     public $implement = [
         'Backend.Behaviors.FormController',
         'Backend.Behaviors.ListController',
-        'Bedard.Shop.Behaviors.ListActions',
+        'Owl.Behaviors.ListDelete.Behavior',
     ];
 
     public $formConfig = 'config_form.yaml';
