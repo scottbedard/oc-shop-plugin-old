@@ -12,6 +12,7 @@ An example theme can be found [here](https://github.com/scottbedard/oc-shop-them
 - [Categories](#categories)
 - [Customers](#customers)
 - [Discounts](#discounts)
+- [Drivers](https://github.com/scottbedard/oc-shop-plugin/blob/master/docs/drivers.md)
 - [Payments](#payments)
 - [Payment Gateways](#gateways)
 - [Products](#products)
