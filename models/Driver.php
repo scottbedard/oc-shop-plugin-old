@@ -53,6 +53,13 @@ class Driver extends Model
     /**
      * Query Scopes
      */
+    public function scopeIsConfigured($query)
+    {
+        return $query->where(function($query) {
+            $query->whereNotNull('config')->orWhere('is_configurable', false);
+        });
+    }
+
     public function scopeIsPayment($query)
     {
         return $query->where('type', 'payment');
@@ -66,6 +73,11 @@ class Driver extends Model
     /**
      * Accessors and Mutators
      */
+    public function getIsConfiguredAttribute()
+    {
+        return !$this->is_configurable || (bool) $this->config;
+    }
+
     public function getNameAttribute()
     {
         return isset($this->attributes['name'])

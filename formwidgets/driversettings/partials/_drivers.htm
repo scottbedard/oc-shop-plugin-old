@@ -1,6 +1,6 @@
 <?php foreach ($drivers as $driver): ?>
 
-    <div class="driver" data-control="driver" data-id="<?= $driver->id ?>">
+    <div class="driver<?php if (!$driver->isConfigured) echo ' not-configured'; ?>" data-control="driver" data-id="<?= $driver->id ?>">
         <a href="javascript:;">
             <i class="icon-cog"></i>
             <div class="off">
@@ -13,6 +13,12 @@
             <div class="on">
                 <span><?= $driver->name ?></span>
             </div>
+
+            <span class="status">
+                <?= $driver->isConfigured
+                    ? e(trans('bedard.shop::lang.drivers.status_ready'))
+                    : e(trans('bedard.shop::lang.drivers.status_unconfigured')) ?>
+            </span>
         </a>
     </div>
 

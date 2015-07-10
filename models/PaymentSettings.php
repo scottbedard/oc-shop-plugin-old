@@ -31,7 +31,7 @@ class PaymentSettings extends Model
      */
     public function getGatewayOptions()
     {
-        return Driver::isPayment()->orderBy('name')->lists('name', 'class');
+        return Driver::isPayment()->isConfigured()->orderBy('name')->lists('name', 'class');
     }
 
     /**

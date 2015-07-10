@@ -34,15 +34,31 @@
   height: auto;
   width: 100%;
 }
+#driversettings .driver .status {
+  display: none;
+}
 #driversettings .driver:hover {
   color: #fff;
   background-color: #58b6f7;
+}
+#driversettings .driver:hover .status {
+  display: block;
+  font-size: 10px;
+  bottom: 5px;
+  right: 5px;
+  position: absolute;
 }
 #driversettings .driver:hover .off {
   display: none;
 }
 #driversettings .driver:hover .on {
   display: inline-block;
+}
+#driversettings .driver.not-configured {
+  opacity: 0.6;
+}
+#driversettings .driver.not-configured:hover {
+  background-color: #D9534F;
 }
 #driversettings .driver:not(:last-of-type) {
   margin-bottom: 12px;

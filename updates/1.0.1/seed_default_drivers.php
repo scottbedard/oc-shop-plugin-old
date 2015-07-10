@@ -27,6 +27,7 @@ class SeedDefaultDrivers extends Seeder
         $paypal->name    = 'Paypal Express';
         $paypal->type    = 'payment';
         $paypal->class   = 'Bedard\Shop\Drivers\Payment\PaypalExpress';
+        $paypal->is_configurable = true;
         $paypal->save();
         $paypal->image()->add($this->makeFile('bedard/shop/assets/images/paypal.png'));
 
@@ -35,6 +36,7 @@ class SeedDefaultDrivers extends Seeder
         $stripe->name    = 'Stripe';
         $stripe->type    = 'payment';
         $stripe->class   = 'Bedard\Shop\Drivers\Payment\Stripe';
+        $stripe->is_configurable = true;
         $stripe->save();
         $stripe->image()->add($this->makeFile('bedard/shop/assets/images/stripe.png'));
     }

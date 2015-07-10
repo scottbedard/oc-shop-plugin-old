@@ -17,6 +17,7 @@ class CreateDriversTable extends Migration
             $table->string('type')->nullable();
             $table->text('config')->nullable();
             $table->boolean('is_default')->default(false);
+            $table->boolean('is_configurable')->default(false);
             $table->timestamps();
         });
     }

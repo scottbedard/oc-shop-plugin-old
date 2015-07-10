@@ -53,13 +53,15 @@
         $popup.on('click', 'button[data-action="apply-btn"]', function() {
             $indicator.show();
             $form.request(self.alias + '::onUpdateDriver', {
-                success: function() {
+                success: function(data) {
                     $popup.trigger('close.oc.popup');
                     $.oc.flashMsg({
                         'text': $popup.data('success'),
                         'class': 'success',
                         'interval': 3,
                     })
+
+                    this.success(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     if (jqXHR.status == 406 && jqXHR.responseJSON) {

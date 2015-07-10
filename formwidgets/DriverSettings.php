@@ -111,6 +111,8 @@ class DriverSettings extends FormWidgetBase
 
         $driver->config = $config;
         $driver->save();
+        $this->prepareVars();
+        return ['#driversettings' => $this->makePartial('drivers')];
     }
 
 }

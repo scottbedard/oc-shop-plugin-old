@@ -40,9 +40,21 @@
             }
         }
 
+        .status {
+            display: none;
+        }
+
         &:hover {
             color: #fff;
             background-color: #58b6f7;
+
+            .status {
+                display: block;
+                font-size: 10px;
+                bottom: 5px;
+                right: 5px;
+                position: absolute;
+            }
 
             .off {
                 display: none;
@@ -50,6 +62,13 @@
 
             .on {
                 display: inline-block;
+            }
+        }
+
+        &.not-configured {
+            opacity: 0.6;
+            &:hover {
+                background-color: #D9534F;
             }
         }
 

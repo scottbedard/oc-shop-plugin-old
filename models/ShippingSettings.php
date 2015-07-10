@@ -27,7 +27,7 @@ class ShippingSettings extends Model
      */
     public function getCalculatorOptions()
     {
-        return Driver::isShipping()->orderBy('name')->lists('name', 'class');
+        return Driver::isShipping()->isConfigured()->orderBy('name')->lists('name', 'class');
     }
 
     /**

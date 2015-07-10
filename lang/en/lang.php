@@ -226,6 +226,11 @@ return [
     ],
 
     'drivers' => [
+        'status_ready'                  => 'Ready to use',
+        'status_unconfigured'           => 'Not configured',
+        'basictable' => [
+            'info'                      => 'There are no settings available for the basic shipping table.',
+        ],
         'nopayment' => [
             'name'                      => 'No Payment',
             'message'                   => 'This driver should only be used if you wish to handle payments manually. Users will be redirected to the success page upon order completion.',
@@ -244,9 +249,6 @@ return [
             'server'                    => 'Server',
             'tab_appearance'            => 'Appearance',
             'tab_connection'            => 'Connection',
-        ],
-        'basictable' => [
-            'info'                      => 'There are no settings available for the basic shipping table.',
         ],
     ],
 
