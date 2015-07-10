@@ -15,8 +15,8 @@ class Stripe extends PaymentBase implements PaymentInterface {
         return [
             'message' => [
                 'label'     => 'Stripe',
-                'type'      => 'partial',
-                'path'      => '$/bedard/shop/drivers/payment/stripe/_soon.htm',
+                'type'      => 'owl-comment',
+                'comment'   => 'This payment gateway is expected to be added soon, hang tight until then!',
             ],
         ];
     }

@@ -246,6 +246,10 @@ class Plugin extends PluginBase
                 'label' => 'Value Selector',
                 'code'  => 'valueselector',
             ],
+            'Owl\FormWidgets\Comment\Widget' => [
+                'label' => 'Comment',
+                'code'  => 'owl-comment'
+            ],
             'Owl\FormWidgets\Knob\Widget' => [
                 'label' => 'Knob',
                 'code'  => 'owl-knob'

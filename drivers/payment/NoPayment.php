@@ -16,8 +16,8 @@ class NoPayment extends PaymentBase implements PaymentInterface {
         return [
             'redirect_message' => [
                 'label'     => 'bedard.shop::lang.drivers.nopayment.name',
-                'type'      => 'partial',
-                'path'      => '$/bedard/shop/drivers/payment/nopayment/_message.htm',
+                'type'      => 'owl-comment',
+                'comment'   => 'bedard.shop::lang.drivers.nopayment.message',
             ],
         ];
     }

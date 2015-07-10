@@ -21,6 +21,7 @@
     },
     "require": {
         "php": ">=5.4.0",
+        "owl/comment": "~1.0@dev",
         "owl/list-delete": "~1.0@dev",
         "owl/knob": "~1.0@dev",
         "owl/treesort": "~1.0@dev",
