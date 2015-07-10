@@ -3,29 +3,29 @@
 # ===================================
 
 # Record name
-name: Customer
+name: bedard.shop::lang.customers.model
 
 # Model Form Field configuration
 form: $/bedard/shop/models/customer/fields.yaml
 
 # Model Class name
-modelClass: Bedard\Shop\Models\Customer
+modelClass: Bedard\Shop\Models\customer
 
 # Default redirect location
 defaultRedirect: bedard/shop/customers
 
 # Create page
 create:
-    title: Create Customer
+    title: backend::lang.relation.create_name
     redirect: bedard/shop/customers/update/:id
     redirectClose: bedard/shop/customers
 
 # Update page
 update:
-    title: Edit Customer
+    title: backend::lang.relation.update_name
     redirect: bedard/shop/customers
     redirectClose: bedard/shop/customers
 
 # Preview page
 preview:
-    title: Preview Customer
+    title: backend::lang.relations.preview_name

@@ -4,6 +4,7 @@ use Bedard\Shop\Classes\PaymentProcessor;
 use Bedard\Shop\Models\Cart;
 use Bedard\Shop\Models\CartItem;
 use Bedard\Shop\Models\Inventory;
+use Bedard\Shop\Models\Order;
 use Bedard\Shop\Models\PaymentSettings;
 use Bedard\Shop\Tests\Fixtures\Generate;
 
@@ -80,5 +81,18 @@ class PaymentProcessorTest extends \OctoberPluginTestCase
         $processor->complete();
         $this->assertEquals(3, Inventory::find($inventory->id)->quantity);
         $this->assertTrue(Cart::find($cart->id)->is_inventoried);
+    }
+
+    public function test_order_is_inserted()
+    {
+        $cart       = Generate::cart();
+        $product    = Generate::product('Foo');
+        $inventory  = Generate::inventory($product, [], ['quantity' => 10]);
+        $item       = Generate::cartItem($cart, $inventory, ['quantity' => 5]);
+
+        $processor = new PaymentProcessor($cart);
+        $processor->complete();
+
+        $this->assertEquals(1, Order::where('cart_id', $cart->id)->count());
     }
 }

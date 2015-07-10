@@ -35,6 +35,9 @@ class Customer extends Model
         'carts' => [
             'Bedard\Shop\Models\Cart',
         ],
+        'orders' => [
+            'Bedard\Shop\Models\Order',
+        ],
     ];
 
     /**
@@ -46,4 +49,24 @@ class Customer extends Model
         'email'         => 'required|email',
     ];
 
+    /**
+     * Query Scops
+     */
+    public function selectAverageOrder($query)
+    {
+
+    }
+
+    /**
+     * Accessors and Mutators
+     */
+    public function setFirstNameAttribute($value)
+    {
+        $this->attributes['first_name'] = ucfirst($value);
+    }
+
+    public function setLastNameAttribute($value)
+    {
+        $this->attributes['last_name'] = ucfirst($value);
+    }
 }

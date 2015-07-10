@@ -78,12 +78,15 @@ class PaymentProcessor {
         ]);
 
         $order = new Order;
-        $order->payment_driver_id = $payment_driver_id;
-        $order->cart_cache        = $this->cart->toArray();
-        $order->cart_subtotal     = $this->cart->subtotal;
-        $order->shipping_total    = $this->cart->shipping_cost;
-        $order->promotion_total   = $this->cart->promotionSavings;
-        $order->payment_total     = $this->cart->total;
+        $order->payment_driver_id   = $payment_driver_id;
+        $order->customer_id         = $this->cart->customer_id;
+        $order->shipping_address_id = $this->cart->address_id;
+        $order->cart_id             = $this->cart->id;
+        $order->cart_cache          = $this->cart->toArray();
+        $order->cart_subtotal       = $this->cart->subtotal;
+        $order->shipping_total      = $this->cart->shipping_cost;
+        $order->promotion_total     = $this->cart->promotionSavings;
+        $order->payment_total       = $this->cart->total;
         $order->save();
 
         $this->inventory->down();
@@ -97,23 +100,4 @@ class PaymentProcessor {
         $this->cart->status = 'error';
         $this->cart->save();
     }
-
-    // protected function cacheCart()
-    // {
-    //     $cache = [
-    //         'items' => [],
-    //         'products' => [],
-    //         'promotion' => [],
-    //     ];
-    //
-    //     foreach ($this->cart->items as $item) {
-    //         $cache['items'][] = [
-    //             'id'            => $item->id,
-    //             'product_id'    => $item->product_id,
-    //             'quantity'      => $item->quantity,
-    //         ];
-    //     }
-    //
-    //     return $cache;
-    // }
 }

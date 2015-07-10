@@ -207,6 +207,15 @@ return [
         'thousands_placeholder'         => '',
     ],
 
+    'customers' => [
+        'controller'                    => 'Customers',
+        'customer_since'                => 'Customer Since',
+        'email'                         => 'Email',
+        'last_order'                    => 'Last Order',
+        'model'                         => 'Customer',
+        'name'                          => 'Name',
+    ],
+
     'discounts' => [
         'amount'                        => 'Amount',
         'amount_exact'                  => 'The exact amount to reduce prices by.',

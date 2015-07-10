@@ -189,7 +189,7 @@ class Product extends Model
         return $query->whereHas('current_price', function($price) {
             $price
                 ->isRunning()
-                ->whereRaw('`bedard_shop_prices`.`price` < `bedard_shop_products`.`base_price`');
+                ->whereRaw('`bedard_shop_prices`.`price` <> `bedard_shop_products`.`base_price`');
         });
     }
 

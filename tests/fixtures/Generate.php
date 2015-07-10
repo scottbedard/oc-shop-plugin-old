@@ -4,6 +4,7 @@ use Bedard\Shop\Models\Address;
 use Bedard\Shop\Models\Cart;
 use Bedard\Shop\Models\CartItem;
 use Bedard\Shop\Models\Category;
+use Bedard\Shop\Models\Customer;
 use Bedard\Shop\Models\Discount;
 use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Option;
@@ -19,19 +20,20 @@ class Generate {
     /**
      * Generate an address for use in tests
      *
-     * @param   array       $data
      * @return  Address
      */
-    public static function address($data)
+    public static function address()
     {
-        $address = new Address;
+        $faker = \Faker\Factory::create();
 
-        foreach ($data as $key => $value) {
-            $address->$key = $value;
-        }
-
-        $address->save();
-        return $address;
+        return Address::create([
+            'street_1'      => $faker->streetAddress,
+            'street_2'      => $faker->secondaryAddress,
+            'city'          => $faker->city,
+            'postal_code'   => $faker->postcode,
+            'country_id'    => 1,
+            'state_id'      => rand(1, 50),
+        ]);
     }
 
     /**
@@ -86,6 +88,21 @@ class Generate {
 
         $category->save();
         return $category;
+    }
+
+    /**
+     * Creates a customer for use in tests
+     *
+     * @return  Customer
+     */
+    public static function customer()
+    {
+        $faker = \Faker\Factory::create();
+        return Customer::create([
+            'first_name' => $faker->firstName,
+            'last_name' => $faker->lastName,
+            'email' => $faker->email,
+        ]);
     }
 
     /**

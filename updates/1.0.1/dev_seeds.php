@@ -1,8 +1,10 @@
 <?php namespace Bedard\Shop\Updates;
 
 use Bedard\Shop\Models\Category;
+use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Product;
 use Bedard\Shop\Tests\Fixtures\Generate;
+use Bedard\Shop\Classes\PaymentProcessor;
 use RainLab\Location\Models\Country;
 use Carbon\Carbon;
 use October\Rain\Database\Updates\Seeder;
@@ -16,11 +18,29 @@ class DevSeeds extends Seeder
             return false;
         }
 
+        echo "Seeding categories...\n";
         $this->seedCategories();
+
+        echo "Seeding products...\n";
         $this->seedProducts();
+
+        echo "Seeding discounts...\n";
         $this->seedDiscounts();
+
+        echo "Seeding promotions...\n";
         $this->seedPromotions();
+
+        echo "Seeding shipping table...\n";
         $this->seedShippingTable();
+
+        echo "Seeding customers...\n";
+        $this->seedCustomers(25);
+
+        echo "Seeding addresses...\n";
+        $this->seedAddresses(25);
+
+        echo "Seeding orders...\n";
+        $this->seedOrders(35);
     }
 
     public function seedCategories()
@@ -213,5 +233,34 @@ class DevSeeds extends Seeder
         $rate1->countries()->sync([1]);
         $rate2->countries()->sync([1,2]);
         $rate3->countries()->sync([1,2,3]);
+    }
+
+    public function seedCustomers($max)
+    {
+        for ($i = 0; $i < $max; $i++) {
+            Generate::customer();
+        }
+    }
+
+    public function seedAddresses($max)
+    {
+        for ($i = 0; $i < $max; $i++) {
+            Generate::address();
+        }
+    }
+
+    public function seedOrders($max)
+    {
+        for ($i = 0; $i < $max; $i++) {
+            $cart = Generate::cart();
+            $cart->customer_id = rand(1, 25);
+            $cart->address_id = rand(1, 25);
+            for ($j = 0; $j < rand(3, 10); $j++) {
+                $item = Generate::cartItem($cart, Inventory::find(rand(1, 59)), ['quantity' => rand(1, 3)]);
+            }
+
+            $processor = new PaymentProcessor($cart);
+            $processor->complete();
+        }
     }
 }

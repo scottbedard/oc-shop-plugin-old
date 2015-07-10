@@ -3,6 +3,21 @@
 # ===================================
 
 columns:
-    id:
-        label: ID
-        searchable: true
+
+    name:
+        label: bedard.shop::lang.customers.name
+        select: CONCAT(`bedard_shop_customers`.`first_name`, ' ', `bedard_shop_customers`.`last_name`)
+
+    email:
+        label: bedard.shop::lang.customers.email
+
+    created_at:
+        label: bedard.shop::lang.customers.customer_since
+        type: date
+
+    updated_at:
+        label: bedard.shop::lang.customers.last_order
+        type: timesince
+
+    average_order:
+        label: bedard.shop::lang.customers.average_order
