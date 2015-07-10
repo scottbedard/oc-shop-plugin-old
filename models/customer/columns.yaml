@@ -11,13 +11,21 @@ columns:
     email:
         label: bedard.shop::lang.customers.email
 
-    created_at:
-        label: bedard.shop::lang.customers.customer_since
-        type: date
+    average_order:
+        label: bedard.shop::lang.customers.average_order
+        type: partial
+        path: $/bedard/shop/models/customer/_average_order.htm
+        select: >
+            (
+                SELECT AVG(`bedard_shop_orders`.`payment_total`)
+                FROM `bedard_shop_orders`
+                WHERE `bedard_shop_orders`.`customer_id` = `bedard_shop_customers`.`id`
+            )
 
     updated_at:
         label: bedard.shop::lang.customers.last_order
         type: timesince
 
-    average_order:
-        label: bedard.shop::lang.customers.average_order
+    created_at:
+        label: bedard.shop::lang.customers.customer_since
+        type: date

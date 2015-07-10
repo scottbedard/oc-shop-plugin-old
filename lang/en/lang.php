@@ -208,12 +208,16 @@ return [
     ],
 
     'customers' => [
+        'average_order'                 => 'Average Order',
         'controller'                    => 'Customers',
         'customer_since'                => 'Customer Since',
         'email'                         => 'Email',
+        'first_name'                    => 'First Name',
+        'last_name'                     => 'Last Name',
         'last_order'                    => 'Last Order',
         'model'                         => 'Customer',
         'name'                          => 'Name',
+        'order_history'                 => 'Order History',
     ],
 
     'discounts' => [

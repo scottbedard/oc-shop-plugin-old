@@ -1,0 +1,13 @@
+# ===================================
+#  Relation Behavior Config
+# ===================================
+
+orders:
+    label: bedard.shop::lang.customers.order_history
+    view:
+        list: $/bedard/shop/models/order/columns.yaml
+        toolbarPartial: # this exists to override and remove the default toolbar
+    manage:
+        form: $/bedard/shop/models/order/fields.yaml
+        recordsPerPage: 10
+        deferredBinding: true

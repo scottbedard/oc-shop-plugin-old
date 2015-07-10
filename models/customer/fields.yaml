@@ -3,6 +3,19 @@
 # ===================================
 
 fields:
-    id:
-        label: ID
-        disabled: true
+
+    first_name:
+        label: bedard.shop::lang.customers.first_name
+        span: left
+
+    last_name:
+        label: bedard.shop::lang.customers.last_name
+        span: right
+
+    email:
+        label: bedard.shop::lang.customers.email
+
+    orders@update:
+        label: bedard.shop::lang.customers.order_history
+        type: partial
+        path: $/bedard/shop/models/customer/_order_history.htm
