@@ -1,6 +1,7 @@
 <?php namespace Bedard\Shop\Models;
 
 use Model;
+use Adamlc\AddressFormat\Format;
 
 /**
  * Address Model
@@ -62,6 +63,11 @@ class Address extends Model
     /**
      * Accessors and Mutators
      */
+    public function getFormattedAddressAttribute()
+    {
+        var_dump ('hey');
+    }
+
     public function getStateOrNameAttribute()
     {
         if (!$this->state) {

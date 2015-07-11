@@ -218,6 +218,7 @@ return [
         'list_title'                    => 'Manage Customers',
         'model'                         => 'Customer',
         'name'                          => 'Name',
+        'order_count'                   => 'Orders',
         'order_history'                 => 'Order History',
     ],
 
@@ -305,6 +306,8 @@ return [
         'status_change'                 => 'Change Status',
         'status_changed'                => 'Status changed to :status by :author',
         'status_unknown'                => 'Unknown',
+        'update_singular'               => 'Order status changed to :status.',
+        'update_plural'                 => 'Order statuses changed to :status.',
     ],
 
     'products' => [

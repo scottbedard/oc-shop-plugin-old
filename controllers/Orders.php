@@ -4,6 +4,8 @@ use BackendMenu;
 use Backend\Classes\Controller;
 use Bedard\Shop\Models\Order;
 use Bedard\Shop\Models\Status;
+use Flash;
+use Lang;
 
 /**
  * Orders Back-end Controller
@@ -51,7 +53,7 @@ class Orders extends Controller
      */
     public function listExtendQuery($query)
     {
-        $query->with('events', 'status');
+        $query->with('events', 'status', 'shipping_address', 'billing_address');
     }
 
     /**
@@ -88,7 +90,9 @@ class Orders extends Controller
     {
         $model = $this->formFindModelObject($recordId);
         $model->changeStatus(input('Order')['status'], null, $this->user);
-        $model->load('events');
+        $model->load('status', 'events');
+
+        Flash::success(Lang::get('bedard.shop::lang.orders.update_singular', ['status' => $model->status->name]));
 
         return [
             '#Form-field-Order-events-group' => $this->makePartial('$/bedard/shop/models/order/_form_events.htm', [

@@ -21,6 +21,7 @@
     },
     "require": {
         "php": ">=5.4.0",
+        "adamlc/address-format": "~1.3",
         "owl/comment": "~1.0@dev",
         "owl/list-delete": "~1.0@dev",
         "owl/knob": "~1.0@dev",

@@ -51,11 +51,19 @@ class Order extends Model
      * @var array Relations
      */
     public $belongsTo = [
+        'billing_address' => [
+            'Bedard\Shop\Models\Address',
+            'key' => 'billing_address_id',
+        ],
         'cart' => [
             'Bedard\Shop\Models\Cart',
         ],
         'customer' => [
             'Bedard\Shop\Models\Customer',
+        ],
+        'shipping_address' => [
+            'Bedard\Shop\Models\Address',
+            'key' => 'shipping_address_id',
         ],
         'status' => [
             'Bedard\Shop\Models\Status',

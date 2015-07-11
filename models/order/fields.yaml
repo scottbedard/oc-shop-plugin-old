@@ -8,6 +8,10 @@ fields:
         type: partial
         path: $/bedard/shop/models/order/_form_toolbar.htm
 
+    address:
+        type: partial
+        path: $/bedard/shop/models/order/_form_address.htm
+
 secondaryTabs:
     fields:
 

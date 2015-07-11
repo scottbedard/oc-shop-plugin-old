@@ -11,6 +11,15 @@ columns:
     email:
         label: bedard.shop::lang.customers.email
 
+    order_count:
+        label: bedard.shop::lang.customers.order_count
+        select: >
+            (
+                SELECT COUNT(*)
+                FROM `bedard_shop_orders`
+                WHERE `bedard_shop_orders`.`customer_id` = `bedard_shop_customers`.`id`
+            )
+
     average_order:
         label: bedard.shop::lang.customers.average_order
         type: partial
