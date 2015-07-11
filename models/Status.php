@@ -21,7 +21,11 @@ class Status extends Model
     /**
      * @var array Fillable fields
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'name',
+        'icon',
+        'class',
+    ];
 
     /**
      * @var array Relations
