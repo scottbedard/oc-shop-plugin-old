@@ -215,6 +215,7 @@ return [
         'first_name'                    => 'First Name',
         'last_name'                     => 'Last Name',
         'last_order'                    => 'Last Order',
+        'list_title'                    => 'Manage Customers',
         'model'                         => 'Customer',
         'name'                          => 'Name',
         'order_history'                 => 'Order History',
@@ -291,6 +292,16 @@ return [
         'widget_label'                  => 'Options',
     ],
 
+    'orders' => [
+        'created_at'                    => 'Order Date',
+        'controller'                    => 'Orders',
+        'customer'                      => 'Customer',
+        'list_title'                    => 'Manager Orders',
+        'model'                         => 'Order',
+        'payment_total'                 => 'Payment Total',
+        'status_change'                 => 'Change Status',
+    ],
+
     'products' => [
         'base_price_min'                => 'The price must be greater than zero.',
         'base_price_numeric'            => 'The price must be a number.',
@@ -305,7 +316,7 @@ return [
         'images'                        => 'Images',
         'images_tab'                    => 'Images',
         'in_stock'                      => ':quantity in stock',
-        'is_enabled'                     => 'Product is enabled',
+        'is_enabled'                    => 'Product is enabled',
         'list_title'                    => 'Manage Products',
         'markdown_allowed'              => 'You may use markdown syntax.',
         'model'                         => 'Product',
@@ -427,6 +438,14 @@ return [
         'rate_comment'                  => 'Cost per :units',
         'states'                        => 'States',
         'states_comment'                => 'Leaving all states unselected will apply the rate to every state'
+    ],
+
+    'statuses' => [
+        'awaiting_payment'              => 'Awaiting payment',
+        'payment_received'              => 'Payment received',
+        'canceled'                      => 'Canceled',
+        'complete'                      => 'Complete',
+        'abandoned'                     => 'Abandoned',
     ],
 
     'values' => [

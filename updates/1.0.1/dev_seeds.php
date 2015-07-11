@@ -2,6 +2,7 @@
 
 use Bedard\Shop\Models\Category;
 use Bedard\Shop\Models\Inventory;
+use Bedard\Shop\Models\Order;
 use Bedard\Shop\Models\Product;
 use Bedard\Shop\Tests\Fixtures\Generate;
 use Bedard\Shop\Classes\PaymentProcessor;
@@ -261,6 +262,13 @@ class DevSeeds extends Seeder
 
             $processor = new PaymentProcessor($cart);
             $processor->complete();
+
+            // Apply a random day in the past to the order
+            $day = Carbon::now()->subDays(rand(0, 60));
+            $order = Order::orderBy('id', 'desc')->first();
+            $order->created_at = $day;
+            $order->updated_at = $day;
+            $order->save();
         }
     }
 }

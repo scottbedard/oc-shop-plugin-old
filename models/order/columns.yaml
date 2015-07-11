@@ -3,6 +3,27 @@
 # ===================================
 
 columns:
-    id:
-        label: ID
-        searchable: true
+
+    custome:
+        label: bedard.shop::lang.orders.customer
+        select: >
+            (
+                SELECT CONCAT(`bedard_shop_customers`.`first_name`, ' ', `bedard_shop_customers`.`last_name`)
+                FROM `bedard_shop_customers`
+                WHERE `bedard_shop_customers`.`id` = `bedard_shop_orders`.`customer_id`
+            )
+
+    payment_total:
+        label: bedard.shop::lang.orders.payment_total
+        type: partial
+        path: $/bedard/shop/models/order/_payment_total.htm
+
+    created_at:
+        label: bedard.shop::lang.orders.created_at
+        type: datetime
+
+    status:
+        label: bedard.shop::lang.common.status
+        type: partial
+        path: $/bedard/shop/models/order/_status.htm
+        sortable: false

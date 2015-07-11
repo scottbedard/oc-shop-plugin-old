@@ -9,7 +9,7 @@ list: $/bedard/shop/models/customer/columns.yaml
 modelClass: Bedard\Shop\Models\Customer
 
 # List Title
-title: Manage Customers
+title: bedard.shop::lang.customers.list_title
 
 # Link URL for each record
 recordUrl: bedard/shop/customers/update/:id

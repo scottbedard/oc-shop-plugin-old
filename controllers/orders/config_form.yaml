@@ -3,29 +3,29 @@
 # ===================================
 
 # Record name
-name: Order
+name: bedard.shop::lang.orders.model
 
 # Model Form Field configuration
 form: $/bedard/shop/models/order/fields.yaml
 
 # Model Class name
-modelClass: Bedard\Shop\Models\Order
+modelClass: Bedard\Shop\Models\order
 
 # Default redirect location
 defaultRedirect: bedard/shop/orders
 
 # Create page
 create:
-    title: Create Order
+    title: backend::lang.relation.create_name
     redirect: bedard/shop/orders/update/:id
     redirectClose: bedard/shop/orders
 
 # Update page
 update:
-    title: Edit Order
+    title: backend::lang.relation.update_name
     redirect: bedard/shop/orders
     redirectClose: bedard/shop/orders
 
 # Preview page
 preview:
-    title: Preview Order
+    title: backend::lang.relations.preview_name

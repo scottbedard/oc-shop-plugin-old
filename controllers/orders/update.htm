@@ -1,13 +1,13 @@
 <?php Block::put('breadcrumb') ?>
     <ul>
-        <li><a href="<?= Backend::url('bedard/shop/orders') ?>">Orders</a></li>
-        <li><?= e($this->pageTitle) ?></li>
+        <li><a href="<?= Backend::url('bedard/shop/orders') ?>"><?= e(trans('bedard.shop::lang.orders.controller')) ?></a></li>
+        <li><?= e(trans('backend::lang.form.update_title', ['name' => trans('bedard.shop::lang.orders.model')])) ?></li>
     </ul>
 <?php Block::endPut() ?>
 
 <?php if (!$this->fatalError): ?>
 
-    <?= Form::open(['class' => 'layout']) ?>
+    <?= Form::open(['class' => 'bedard-shop form layout']) ?>
 
         <div class="layout-row">
             <?= $this->formRender() ?>
@@ -20,28 +20,36 @@
                     data-request="onSave"
                     data-request-data="redirect:0"
                     data-hotkey="ctrl+s, cmd+s"
-                    data-load-indicator="Saving Order..."
+                    data-load-indicator="<?= e(trans('backend::lang.form.saving_name', [
+                        'name' => trans('bedard.shop::lang.orders.model')
+                    ])) ?>"
                     class="btn btn-primary">
-                    <u>S</u>ave
+                    <?= e(trans('backend::lang.form.save')) ?>
                 </button>
                 <button
                     type="button"
                     data-request="onSave"
                     data-request-data="close:1"
                     data-hotkey="ctrl+enter, cmd+enter"
-                    data-load-indicator="Saving Order..."
+                    data-load-indicator="<?= e(trans('backend::lang.form.saving_name', [
+                        'name' => trans('bedard.shop::lang.orders.model')
+                    ])) ?>"
                     class="btn btn-default">
-                    Save and Close
+                    <?= e(trans('backend::lang.form.save_and_close')) ?>
                 </button>
                 <button
                     type="button"
                     class="oc-icon-trash-o btn-icon danger pull-right"
                     data-request="onDelete"
-                    data-load-indicator="Deleting Order..."
-                    data-request-confirm="Do you really want to delete this order?">
+                    data-load-indicator="<?= e(trans('backend::lang.form.deleting_name', [
+                        'name' => trans('bedard.shop::lang.orders.model')
+                    ])) ?>"
+                    data-request-confirm="<?= e(trans('bedard.shop::lang.form.delete_confirm_name', [
+                        'name' => trans('bedard.shop::lang.orders.model')
+                    ])) ?>">
                 </button>
                 <span class="btn-text">
-                    or <a href="<?= Backend::url('bedard/shop/orders') ?>">Cancel</a>
+                    <?= e(trans('backend::lang.form.or')) ?> <a href="<?= Backend::url('bedard/shop/orders') ?>"><?= e(trans('backend::lang.form.cancel')) ?></a>
                 </span>
             </div>
         </div>
@@ -51,6 +59,10 @@
 <?php else: ?>
 
     <p class="flash-message static error"><?= e($this->fatalError) ?></p>
-    <p><a href="<?= Backend::url('bedard/shop/orders') ?>" class="btn btn-default">Return to orders list</a></p>
+    <p>
+        <a href="<?= Backend::url('bedard/shop/orders') ?>" class="btn btn-default">
+            <?= e(trans('bedard.shop::lang.form.return_to_name_list', ['name' => trans('bedard.shop::lang.orders.model')])) ?>
+        </a>
+    </p>
 
 <?php endif ?>

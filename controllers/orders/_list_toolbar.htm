@@ -1,7 +1,39 @@
-<div data-control="toolbar">
-    <a
-        href="<?= Backend::url('bedard/shop/orders/create') ?>"
-        class="btn btn-primary oc-icon-plus">
-        New Order
-    </a>
+<div>
+    <div class="dropdown">
+        <button
+            class="btn oc-icon-flag"
+            disabled="disabled"
+            data-toggle="dropdown"
+            data-trigger-action="enable"
+            data-trigger-condition="checked"
+            data-trigger=".control-list input[type=checkbox]">
+            <?= e(trans('bedard.shop::lang.orders.status_change')) ?>
+        </button>
+        <ul class="dropdown-menu" role="menu" data-dropdown-title="<?= e(trans('bedard.shop::lang.orders.status_change')) ?>">
+            <?php foreach ($statuses as $status): ?>
+                <li role="presentation">
+                    <a
+                        href="#"
+                        tabindex="-1"
+                        role="menuitem"
+                        class="oc-<?= $status->icon ?>"
+                        onclick="
+                            $(this).data('request-data', {
+                                checked: $('.control-list').listWidget('getChecked'),
+                                status_id: <?= $status->id ?>,
+                            });
+                            $('body').trigger('click');
+                        "
+                        data-request="onUpdateStatus"
+                        data-request-success="$(this).closest('div').find('button').prop('disabled',true)"
+                        data-request-complete="$('input[type=checkbox]').each(function() {
+                            $(this).prop('checked', false).closest('tr').removeClass('active');
+                        });"
+                        data-stripe-load-indicator>
+                        <?= e(trans($status->name)) ?>
+                    </a>
+                </li>
+            <?php endforeach ?>
+        </ul>
+    </div>
 </div>

@@ -17,3 +17,7 @@
 .bedard-shop.list .yellow {
   color: #e5a91a;
 }
+.bedard-shop.list .spinning {
+  -webkit-animation: fa-spin 1s infinite steps(8);
+          animation: fa-spin 1s infinite steps(8);
+}

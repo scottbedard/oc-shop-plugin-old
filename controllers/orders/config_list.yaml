@@ -9,7 +9,7 @@ list: $/bedard/shop/models/order/columns.yaml
 modelClass: Bedard\Shop\Models\Order
 
 # List Title
-title: Manage Orders
+title: bedard.shop::lang.orders.list_title
 
 # Link URL for each record
 recordUrl: bedard/shop/orders/update/:id
@@ -27,12 +27,12 @@ showSetup: true
 showSorting: true
 
 # Default sorting column
-# defaultSort:
-#     column: created_at
-#     direction: desc
+defaultSort:
+    column: created_at
+    direction: desc
 
 # Display checkboxes next to each record
-# showCheckboxes: true
+showCheckboxes: true
 
 # Toolbar widget configuration
 toolbar:

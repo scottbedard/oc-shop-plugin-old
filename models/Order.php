@@ -1,5 +1,7 @@
 <?php namespace Bedard\Shop\Models;
 
+use Bedard\Shop\Models\StatusEvent;
+use DB;
 use Model;
 
 /**
@@ -31,15 +33,20 @@ class Order extends Model
     /**
      * @var array Relations
      */
-    public $hasOne = [];
-    public $hasMany = [];
-    public $belongsTo = [];
-    public $belongsToMany = [];
-    public $morphTo = [];
-    public $morphOne = [];
-    public $morphMany = [];
-    public $attachOne = [];
-    public $attachMany = [];
+    public $hasMany = [
+        'events' => [
+            'Bedard\Shop\Models\StatusEvent',
+            'order' => 'status_at desc',
+        ],
+    ];
+
+    /**
+     * Model Events
+     */
+    public function afterCreate()
+    {
+        $this->changeStatus(1);
+    }
 
     /**
      * Accessors and Mutators
@@ -62,6 +69,34 @@ class Order extends Model
     public function setShippingTotalAttribute($value)
     {
         $this->attributes['shipping_total'] = $value ?: 0;
+    }
+
+    /**
+     * Accessors and Mutators
+     */
+    public function getStatusAttribute()
+    {
+        $current = $this->events->first();
+        return $current ? $current->status : false;
+    }
+
+    /**
+     * Change the order's status
+     *
+     * @param   integer     $status_id      The new status
+     * @param   integer     $user_id        The backend user making the change
+     */
+    public function changeStatus($status_id, $user_id = null)
+    {
+        if (($current = $this->events->first()) && $current->status_id == $status_id) {
+            return;
+        }
+
+        StatusEvent::create([
+            'order_id'  => $this->id,
+            'status_id' => $status_id,
+            'user_id'   => $user_id,
+        ]);
     }
 
 }

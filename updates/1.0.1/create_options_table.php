@@ -16,6 +16,9 @@ class CreateOptionsTable extends Migration
             $table->string('name')->nullable();
             $table->string('placeholder')->nullable();
             $table->integer('position')->unsigned()->default(0);
+            $table->timestamp('abandoned_at')->nullable();
+            $table->timestamp('payment_at')->nullable();
+            $table->timestamp('completed_at')->nullable();
             $table->timestamps();
         });
     }

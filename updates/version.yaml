@@ -19,11 +19,14 @@
     - 1.0.1/create_country_promotion_table.php
     - 1.0.1/create_customers_table.php
     - 1.0.1/create_addresses_table.php
-    - 1.0.1/create_payments_table.php
+    - 1.0.1/create_orders_table.php
     - 1.0.1/create_drivers_table.php
     - 1.0.1/create_shipping_methods_table.php
     - 1.0.1/create_shipping_rates_table.php
     - 1.0.1/create_shipping_country_rate_table.php
     - 1.0.1/create_shipping_rate_state_table.php
+    - 1.0.1/create_statuses_table.php
+    - 1.0.1/create_status_events_table.php
     - 1.0.1/seed_default_drivers.php
+    - 1.0.1/seed_default_statuses.php
     - 1.0.1/dev_seeds.php
