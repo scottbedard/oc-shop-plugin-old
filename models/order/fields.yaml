@@ -7,3 +7,15 @@ fields:
     toolbar:
         type: partial
         path: $/bedard/shop/models/order/_form_toolbar.htm
+
+secondaryTabs:
+    fields:
+
+        status:
+            label: bedard.shop::lang.common.status
+            type: dropdown
+
+        events:
+            label: bedard.shop::lang.orders.event_log
+            type: partial
+            path: $/bedard/shop/models/order/_form_events.htm

@@ -28,12 +28,14 @@ class Status extends Model
     ];
 
     /**
+     * @var array Date fields
+     */
+    protected $dates = ['status_at'];
+
+    /**
      * @var array Relations
      */
     public $hasMany = [
-        'events' => [
-            'Bedard\Shop\Models\OrderEvent',
-        ],
         'orders' => [
             'Bedard\Shop\Models\Order',
         ],

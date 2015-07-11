@@ -23,6 +23,8 @@ class CreatePaymentsTable extends Migration
             $table->decimal('shipping_total', 10, 2)->default(0);
             $table->decimal('promotion_total', 10, 2)->default(0);
             $table->decimal('payment_total', 10, 2)->default(0);
+            $table->integer('status_id')->nullable();
+            $table->timestamp('status_at')->nullable();
             $table->timestamps();
         });
     }

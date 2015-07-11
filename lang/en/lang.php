@@ -296,11 +296,15 @@ return [
         'created_at'                    => 'Order Date',
         'controller'                    => 'Orders',
         'customer'                      => 'Customer',
+        'event_log'                     => 'Event Log',
         'list_title'                    => 'Manager Orders',
         'model'                         => 'Order',
         'order_number'                  => 'Order #',
+        'order_received'                => 'Order received',
         'payment_total'                 => 'Payment Total',
         'status_change'                 => 'Change Status',
+        'status_changed'                => 'Status changed to :status by :author',
+        'status_unknown'                => 'Unknown',
     ],
 
     'products' => [

@@ -13,7 +13,6 @@ class CreateOrderEventsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('order_id')->unsigned()->nullable()->index();
-            $table->integer('status_id')->unsigned()->nullable()->index();
             $table->integer('user_id')->unsigned()->nullable()->index();
             $table->integer('driver_id')->unsigned()->nullable()->index();
             $table->string('message')->nullable();

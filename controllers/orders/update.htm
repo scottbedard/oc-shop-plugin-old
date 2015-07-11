@@ -52,11 +52,11 @@
     <?php Block::endPut() ?>
 
     <?php Block::put('form-sidebar') ?>
-        <div class="hide-tabs"><?= $this->formRenderSecondaryTabs() ?></div>
+        <div class="hide-tabs bedard-shop form"><?= $this->formRenderSecondaryTabs() ?></div>
     <?php Block::endPut() ?>
 
     <?php Block::put('body') ?>
-        <?= Form::open(['class'=>'layout stretch']) ?>
+        <?= Form::open(['class'=>'layout stretch bedard-shop form']) ?>
             <?= $this->makeLayout('form-with-sidebar') ?>
         <?= Form::close() ?>
     <?php Block::endPut() ?>

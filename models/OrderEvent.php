@@ -24,8 +24,8 @@ class OrderEvent extends Model
      */
     protected $fillable = [
         'order_id',
-        'status_id',
         'user_id',
+        'message',
         'created_at',
     ];
 
@@ -45,9 +45,6 @@ class OrderEvent extends Model
     public $belongsTo = [
         'order' => [
             'Bedard\Shop\Models\Order',
-        ],
-        'status' => [
-            'Bedard\Shop\Models\Status',
         ],
     ];
 

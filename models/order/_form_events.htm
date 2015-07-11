@@ -1,0 +1,12 @@
+<ul class="event-log">
+    <li>
+        <div class="timestamp"><?= $formModel->created_at->format('M jS, Y \a\t g:ia') ?></div>
+        <div class="message"><?= e(trans('bedard.shop::lang.orders.order_received')) ?></div>
+    </li>
+    <?php foreach ($formModel->events as $event): ?>
+        <li>
+            <div class="timestamp"><?= $event->created_at->format('M jS, Y \a\t g:ia') ?></div>
+            <div class="message"><?= trans($event->message) ?></div>
+        </li>
+    <?php endforeach ?>
+</ul>

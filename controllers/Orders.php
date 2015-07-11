@@ -51,7 +51,7 @@ class Orders extends Controller
      */
     public function listExtendQuery($query)
     {
-        $query->with('events.status');
+        $query->with('events', 'status');
     }
 
     /**
@@ -62,7 +62,7 @@ class Orders extends Controller
      */
     public function formExtendQuery($query)
     {
-        $query->with('customer', 'events');
+        $query->with('customer', 'events', 'status');
     }
 
     /**
@@ -74,7 +74,7 @@ class Orders extends Controller
         if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
             $orders = Order::whereIn('id', $checkedIds)->with('events')->get();
             foreach ($orders as $order) {
-                $order->changeStatus($status_id, $this->user->id);
+                $order->changeStatus($status_id, null, $this->user);
             }
         }
 

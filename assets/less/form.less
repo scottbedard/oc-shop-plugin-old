@@ -4,15 +4,31 @@
 .bedard-shop.form {
 
     // Enables "padded" fancy-layout forms
-    .fancy-layout.padded div.tab-pane { padding: 15px 20px; }
+    .fancy-layout.padded div.tab-pane {
+        padding: 15px 20px;
+    }
 
     @import 'form/relation-selector';
+    @import 'form/event-log';
 }
 
 .bedard-shop.form, .select2-results, .modal {
     .select2-chosen, li:not(.select2-highlighted) {
-        span.parent { color: #aaa; }
+        span.parent {
+            color: #aaa;
+        }
     }
 
-    i.delimeter { padding: 0 5px; }
+    i.delimeter {
+        padding: 0 5px;
+    }
+
+    // Used in order pages for status dropdowns
+    i.status-icon {
+        display: inline-block;
+        font-size: 16px;
+        margin-right: 3px;
+        text-align: center;
+        width: 22px;
+    }
 }
