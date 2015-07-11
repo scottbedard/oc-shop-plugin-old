@@ -7,11 +7,6 @@ class SeedDefaultStatuses extends Seeder
 {
     public function run()
     {
-        // Don't run seeds during unit tests
-        if (app()->env == 'testing') {
-            return false;
-        }
-
         Status::create([
             'name'  => 'bedard.shop::lang.statuses.awaiting_payment',
             'icon'  => 'icon-spinner',

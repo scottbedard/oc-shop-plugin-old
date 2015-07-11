@@ -4,15 +4,15 @@ use Carbon\Carbon;
 use Model;
 
 /**
- * StatusEvent Model
+ * OrderEvent Model
  */
-class StatusEvent extends Model
+class OrderEvent extends Model
 {
 
     /**
      * @var string  The database table used by the model.
      */
-    public $table = 'bedard_shop_status_events';
+    public $table = 'bedard_shop_order_events';
 
     /**
      * @var array   Guarded fields
@@ -26,7 +26,7 @@ class StatusEvent extends Model
         'order_id',
         'status_id',
         'user_id',
-        'status_at',
+        'created_at',
     ];
 
     /**
@@ -37,7 +37,7 @@ class StatusEvent extends Model
     /**
      * @var boolean Date fields
      */
-    protected $dates = ['status_at'];
+    protected $dates = ['created_at'];
 
     /**
      * @var array   Relations
@@ -56,7 +56,7 @@ class StatusEvent extends Model
      */
     public function beforeCreate()
     {
-        $this->status_at = Carbon::now();
+        $this->created_at = Carbon::now();
     }
 
 }

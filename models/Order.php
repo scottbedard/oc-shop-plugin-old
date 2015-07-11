@@ -1,6 +1,6 @@
 <?php namespace Bedard\Shop\Models;
 
-use Bedard\Shop\Models\StatusEvent;
+use Bedard\Shop\Models\OrderEvent;
 use DB;
 use Model;
 
@@ -35,8 +35,8 @@ class Order extends Model
      */
     public $hasMany = [
         'events' => [
-            'Bedard\Shop\Models\StatusEvent',
-            'order' => 'status_at desc',
+            'Bedard\Shop\Models\OrderEvent',
+            'order' => 'created_at desc',
         ],
     ];
 
@@ -92,7 +92,7 @@ class Order extends Model
             return;
         }
 
-        StatusEvent::create([
+        OrderEvent::create([
             'order_id'  => $this->id,
             'status_id' => $status_id,
             'user_id'   => $user_id,

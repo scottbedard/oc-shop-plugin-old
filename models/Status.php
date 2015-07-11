@@ -32,7 +32,7 @@ class Status extends Model
      */
     public $hasMany = [
         'events' => [
-            'Bedard\Shop\Models\StatusEvent',
+            'Bedard\Shop\Models\OrderEvent',
         ],
         'orders' => [
             'Bedard\Shop\Models\Order',

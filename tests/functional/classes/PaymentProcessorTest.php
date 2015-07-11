@@ -77,7 +77,7 @@ class PaymentProcessorTest extends \OctoberPluginTestCase
         $this->assertEquals(5, Inventory::find($inventory->id)->quantity);
         $this->assertFalse(Cart::find($cart->id)->is_inventoried);
 
-        // Completing the payment should remove inventory
+        // // Completing the payment should remove inventory
         $processor->complete();
         $this->assertEquals(3, Inventory::find($inventory->id)->quantity);
         $this->assertTrue(Cart::find($cart->id)->is_inventoried);
