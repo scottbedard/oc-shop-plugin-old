@@ -16,7 +16,8 @@ class CreateCartsTable extends Migration
             $table->string('key')->nullable();
             $table->string('hash')->nullable();
             $table->integer('customer_id')->unsigned()->nullable()->index();
-            $table->integer('address_id')->unsigned()->nullable()->index();
+            $table->integer('shipping_address_id')->unsigned()->nullable()->index();
+            $table->integer('billing_address_id')->unsigned()->nullable()->index();
             $table->integer('promotion_id')->unsigned()->nullable()->index();
             $table->text('shipping_rates')->nullable();
             $table->string('shipping_id')->nullable();

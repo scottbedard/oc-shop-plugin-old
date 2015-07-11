@@ -50,7 +50,8 @@ class PaymentProcessor {
         }
 
         $order->customer_id         = $this->cart->customer_id;
-        $order->shipping_address_id = $this->cart->address_id;
+        $order->shipping_address_id = $this->cart->shipping_address_id;
+        $order->billing_address_id  = $this->cart->billing_address_id;
         $order->cart_id             = $this->cart->id;
         $order->cart_cache          = $this->cart->toArray();
         $order->cart_subtotal       = $this->cart->subtotal;
@@ -102,8 +103,6 @@ class PaymentProcessor {
 
     /**
      * Complete a payment
-     *
-     * @param   integer     $payment_driver_id
      */
     public function complete()
     {
@@ -117,6 +116,9 @@ class PaymentProcessor {
         $this->cart->save();
     }
 
+    /**
+     * A payment error occured
+     */
     public function error()
     {
         $this->inventory->up();

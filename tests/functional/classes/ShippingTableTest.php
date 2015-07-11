@@ -46,9 +46,9 @@ class ShippingTableTest extends \OctoberPluginTestCase
         $manager = new CartManager;
         $manager->addItem($product->id);
         $manager->loadItemData(true);
-        $manager->cart->address_id = $address->id;
+        $manager->cart->shipping_address_id = $address->id;
         $manager->cart->save();
-        $manager->cart->load('address');
+        $manager->cart->load('shipping_address');
 
         $table = new BasicTable();
         $table->setCart($manager->cart);

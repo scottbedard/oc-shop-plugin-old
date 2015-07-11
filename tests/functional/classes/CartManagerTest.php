@@ -185,20 +185,23 @@ class CartManagerTest extends \OctoberPluginTestCase
         $manager = new CartManager;
         $manager->loadCart();
         $this->assertNull($manager->cart->customer_id);
-        $this->assertNull($manager->cart->address_id);
+        $this->assertNull($manager->cart->shipping_address_id);
+        $this->assertNull($manager->cart->billing_address_id);
 
-        $manager->setCustomerAddress($customer, $address);
-        $manager->cart->load('customer', 'address');
+        $manager->setCustomerAddress($customer, $address, $address);
+        $manager->cart->load('customer', 'shipping_address', 'billing_address');
         $this->assertInstanceOf('Bedard\Shop\Models\Customer', $manager->cart->customer);
-        $this->assertInstanceOf('Bedard\Shop\Models\Address', $manager->cart->address);
+        $this->assertInstanceOf('Bedard\Shop\Models\Address', $manager->cart->shipping_address);
+        $this->assertInstanceOf('Bedard\Shop\Models\Address', $manager->cart->billing_address);
 
         $manager->removeCustomer();
         $manager->cart->load('customer');
         $this->assertNull($manager->cart->customer_id);
 
         $manager->removeAddress();
-        $manager->cart->load('address');
-        $this->assertNull($manager->cart->address_id);
+        $manager->cart->load('shipping_address', 'billing_address');
+        $this->assertNull($manager->cart->shipping_address_id);
+        $this->assertNull($manager->cart->billing_address_id);
     }
 
     public function test_shipping_is_cleared_when_actions_are_completed()

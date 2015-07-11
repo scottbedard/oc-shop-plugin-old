@@ -255,7 +255,7 @@ class DevSeeds extends Seeder
         for ($i = 0; $i < $max; $i++) {
             $cart = Generate::cart();
             $cart->customer_id = rand(1, 25);
-            $cart->address_id = rand(1, 25);
+            $cart->shipping_address_id = rand(1, 25);
             for ($j = 0; $j < rand(3, 10); $j++) {
                 $item = Generate::cartItem($cart, Inventory::find(rand(1, 59)), ['quantity' => rand(1, 3)]);
             }

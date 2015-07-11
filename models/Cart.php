@@ -44,14 +44,19 @@ class Cart extends Model
      * @var array Relations
      */
     public $belongsTo = [
-        'address' => [
+        'billing_address' => [
             'Bedard\Shop\Models\Address',
+            'key' => 'billing_address_id',
         ],
         'customer' => [
             'Bedard\Shop\Models\Customer',
         ],
         'promotion' => [
             'Bedard\Shop\Models\Promotion',
+        ],
+        'shipping_address' => [
+            'Bedard\Shop\Models\Address',
+            'key' => 'shipping_address_id',
         ],
     ];
 
@@ -110,9 +115,9 @@ class Cart extends Model
         return $this->items->sum('baseSubtotal');
     }
 
-    public function getHasAddressAttribute()
+    public function getHasAddressesAttribute()
     {
-        return $this->address_id != null;
+        return $this->shipping_address_id != null && $this->billing_address_id != null;
     }
 
     public function getHasCustomerAttribute()

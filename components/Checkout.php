@@ -14,7 +14,12 @@ class Checkout extends ComponentBase
     /**
      * @var Bedard\Shop\Models\Address
      */
-    public $address;
+    public $billing_address;
+
+    /**
+     * @var Bedard\Shop\Models\Address
+     */
+    public $shipping_address;
 
     /**
      * @var Bedard\Shop\Models\Customer
@@ -81,12 +86,13 @@ class Checkout extends ComponentBase
             $this->customer = $this->cart->customer;
         }
 
-        if ($this->cart->hasAddress) {
-            $this->address = $this->cart->address;
+        if ($this->cart->hasAddresses) {
+            $this->shipping_address = $this->cart->shipping_address;
+            $this->billing_address = $this->cart->billing_address;
             $this->manager->calculateShipping();
         }
 
-        $this->readyToPay = $this->cart->hasCustomer && $this->cart->hasAddress && !$this->cart->shippingIsRequired;
+        $this->readyToPay = $this->cart->hasCustomer && $this->cart->hasAddresses && !$this->cart->shippingIsRequired;
     }
 
     /**
@@ -114,10 +120,17 @@ class Checkout extends ComponentBase
      */
     public function onSubmitDetails()
     {
-        $customer   = input('customer');
-        $address    = input('address');
+        $customer = input('customer');
+        $shipping = input('shipping');
 
-        $this->manager->setCustomerAddress($customer, $address);
+        if (isset($shipping['is_billing'])) {
+            unset($shipping['is_billing']);
+            $billing = $shipping;
+        } else {
+            $billing = input('billing');
+        }
+
+        $this->manager->setCustomerAddress($customer, $shipping, $billing);
         $this->prepareCart();
         $this->prepareVars();
     }

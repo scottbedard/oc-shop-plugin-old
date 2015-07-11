@@ -245,7 +245,8 @@ class CartManager extends CartSession {
     {
         $this->loadCart();
 
-        $this->cart->address = null;
+        $this->cart->shipping_address_id = null;
+        $this->cart->billing_address_id = null;
 
         $this->actionCompleted();
     }
@@ -329,9 +330,10 @@ class CartManager extends CartSession {
      * Attaches a customer and address to the cart
      *
      * @param   array   $customerData
-     * @param   array   $addressData
+     * @param   array   $shipping
+     * @param   array   $billing
      */
-    public function setCustomerAddress($customerData, $addressData)
+    public function setCustomerAddress($customerData, $shipping, $billing)
     {
         $this->loadCart();
 
@@ -342,8 +344,13 @@ class CartManager extends CartSession {
                 $save = true;
             }
 
-            if (is_array($addressData) && array_filter($addressData) && ($address = Address::firstOrCreate($addressData))) {
-                $this->cart->address_id = $address->id;
+            if (is_array($shipping) && array_filter($shipping) && ($address = Address::firstOrCreate($shipping))) {
+                $this->cart->shipping_address_id = $address->id;
+                $save = true;
+            }
+
+            if (is_array($billing) && array_filter($billing) && ($address = Address::firstOrCreate($billing))) {
+                $this->cart->billing_address_id = $address->id;
                 $save = true;
             }
 

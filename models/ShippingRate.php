@@ -69,8 +69,8 @@ class ShippingRate extends Model
     {
         return $query
             ->weight($cart->weight)
-            ->country($cart->address->country_id)
-            ->state($cart->address->state_id);
+            ->country($cart->shipping_address->country_id)
+            ->state($cart->shipping_address->state_id);
     }
 
     public function scopeState($query, $id)
