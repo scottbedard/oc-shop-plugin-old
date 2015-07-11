@@ -13,9 +13,11 @@ use Bedard\Shop\Models\PaymentSettings;
 Route::get('bedard/shop/payments/{cart}/{driver}/{hash}/{status}', ['as' => 'bedard.shop.payments',
     function($cart_id, $driver_id, $hash, $status) {
         $cart = Cart::where('hash', $hash)->isPaying()->find($cart_id);
-        $payment = new PaymentProcessor($cart);
+        $driver = Driver::find($driver_id);
+        $payment = new PaymentProcessor($cart, $driver);
+
         if ($status == 'success') {
-            $payment->complete($driver_id);
+            $payment->complete();
             return Redirect::to(PaymentSettings::getSuccessUrl());
         } elseif ($status == 'canceled') {
             $payment->cancel();

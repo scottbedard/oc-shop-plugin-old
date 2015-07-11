@@ -10,7 +10,7 @@ class PaymentBase extends DriverBase {
      */
     public function beginPaymentProcessor()
     {
-        $processor = new PaymentProcessor($this->cart);
+        $processor = new PaymentProcessor($this->cart, $this->driver);
         $processor->begin();
     }
 

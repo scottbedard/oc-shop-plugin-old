@@ -80,4 +80,20 @@ class Orders extends Controller
 
         return $this->listRefresh();
     }
+
+    /**
+     * Overwrite the default save behavior
+     */
+    public function update_onSave($recordId = null, $context = null)
+    {
+        $model = $this->formFindModelObject($recordId);
+        $model->changeStatus(input('Order')['status'], null, $this->user);
+        $model->load('events');
+
+        return [
+            '#Form-field-Order-events-group' => $this->makePartial('$/bedard/shop/models/order/_form_events.htm', [
+                'formModel' => $model
+            ])
+        ];
+    }
 }

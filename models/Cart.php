@@ -50,16 +50,20 @@ class Cart extends Model
         'customer' => [
             'Bedard\Shop\Models\Customer',
         ],
-        'order' => [
-            'Bedard\Shop\Models\Order',
-        ],
         'promotion' => [
             'Bedard\Shop\Models\Promotion',
         ],
     ];
+
     public $hasMany = [
         'items' => [
             'Bedard\Shop\Models\CartItem',
+        ],
+    ];
+
+    public $hasOne = [
+        'order' => [
+            'Bedard\Shop\Models\Order',
         ],
     ];
 
@@ -203,6 +207,32 @@ class Cart extends Model
     public function getWeightAttribute()
     {
         return $this->items->sum('weight');
+    }
+
+    /**
+     * Load the cacheable data for an Order
+     */
+    public function loadOrderCache()
+    {
+        $this->load([
+            'items' => function($item) {
+                $item->withTrashed()->with([
+                    'inventory' => function($inventory) {
+                        $inventory->addSelect('id', 'product_id', 'sku', 'modifier')->with([
+                            'product' => function($product) {
+                                $product->joinPrices()->addSelect('id', 'name', 'base_price', 'price');
+                            },
+                            'values' => function($values) {
+                                $values->addSelect('id', 'option_id', 'name')->with(['option' => function($option) {
+                                    $option->addSelect('id', 'name');
+                                }]);
+                            }
+                        ]);
+                    }
+                ]);
+            },
+            'promotion',
+        ]);
     }
 
     /**

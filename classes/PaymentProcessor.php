@@ -2,8 +2,10 @@
 
 use Bedard\Shop\Classes\InventoryManager;
 use Bedard\Shop\Models\Cart;
+use Bedard\Shop\Models\Driver;
 use Bedard\Shop\Models\Order;
 use Bedard\Shop\Models\PaymentSettings;
+use Bedard\Shop\Models\Status;
 
 class PaymentProcessor {
 
@@ -13,6 +15,11 @@ class PaymentProcessor {
     protected $cart;
 
     /**
+     * @var Driver
+     */
+    protected $driver;
+
+    /**
      * @var InventoryManager
      */
     protected $inventory;
@@ -20,10 +27,49 @@ class PaymentProcessor {
     /**
      * Constructor
      */
-    public function __construct(Cart $cart)
+    public function __construct(Cart $cart, Driver $driver = null)
     {
         $this->cart = $cart;
+        $this->driver = $driver;
         $this->inventory = new InventoryManager($cart);
+    }
+
+    /**
+     * Create a new order
+     *
+     * @return  Order
+     */
+    protected function createOrder()
+    {
+        $this->cart->loadOrderCache();
+
+        $order = new Order;
+
+        if ($this->driver) {
+            $order->payment_driver_id = $this->driver->id;
+        }
+
+        $order->customer_id         = $this->cart->customer_id;
+        $order->shipping_address_id = $this->cart->address_id;
+        $order->cart_id             = $this->cart->id;
+        $order->cart_cache          = $this->cart->toArray();
+        $order->cart_subtotal       = $this->cart->subtotal;
+        $order->shipping_total      = $this->cart->shipping_cost;
+        $order->promotion_total     = $this->cart->promotionSavings;
+        $order->payment_total       = $this->cart->total;
+        $order->save();
+
+        return $order;
+    }
+
+    /**
+     * Get the order if one exists, otherwise create one
+     *
+     * @return  Order
+     */
+    public function getOrder()
+    {
+        return $this->cart->order ?: $this->createOrder();
     }
 
     /**
@@ -33,6 +79,11 @@ class PaymentProcessor {
     {
         if (PaymentSettings::getTiming() == 'immediate') {
             $this->inventory->down();
+        }
+
+        $order = $this->createOrder();
+        if ($status = Status::getCore('started')) {
+            $order->changeStatus($status->id, $this->driver);
         }
 
         $this->cart->status = 'paying';
@@ -54,40 +105,12 @@ class PaymentProcessor {
      *
      * @param   integer     $payment_driver_id
      */
-    public function complete($payment_driver_id = null)
+    public function complete()
     {
-        // Only cache the relevant cart data
-        $this->cart->load([
-            'items' => function($item) {
-                $item->withTrashed()->with([
-                    'inventory' => function($inventory) {
-                        $inventory->addSelect('id', 'product_id', 'sku', 'modifier')->with([
-                            'product' => function($product) {
-                                $product->joinPrices()->addSelect('id', 'name', 'base_price', 'price');
-                            },
-                            'values' => function($values) {
-                                $values->addSelect('id', 'option_id', 'name')->with(['option' => function($option) {
-                                    $option->addSelect('id', 'name');
-                                }]);
-                            }
-                        ]);
-                    }
-                ]);
-            },
-            'promotion',
-        ]);
-
-        $order = new Order;
-        $order->payment_driver_id   = $payment_driver_id;
-        $order->customer_id         = $this->cart->customer_id;
-        $order->shipping_address_id = $this->cart->address_id;
-        $order->cart_id             = $this->cart->id;
-        $order->cart_cache          = $this->cart->toArray();
-        $order->cart_subtotal       = $this->cart->subtotal;
-        $order->shipping_total      = $this->cart->shipping_cost;
-        $order->promotion_total     = $this->cart->promotionSavings;
-        $order->payment_total       = $this->cart->total;
-        $order->save();
+        $order = $this->getOrder();
+        if ($status = Status::getCore('received')) {
+            $order->changeStatus($status->id, $this->driver);
+        }
 
         $this->inventory->down();
         $this->cart->status = 'complete';

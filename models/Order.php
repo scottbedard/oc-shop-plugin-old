@@ -51,6 +51,9 @@ class Order extends Model
      * @var array Relations
      */
     public $belongsTo = [
+        'cart' => [
+            'Bedard\Shop\Models\Cart',
+        ],
         'customer' => [
             'Bedard\Shop\Models\Customer',
         ],

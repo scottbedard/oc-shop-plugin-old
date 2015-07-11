@@ -41,4 +41,12 @@ class Status extends Model
         ],
     ];
 
+    /**
+     * Query Scopes
+     */
+    public function scopeGetCore($query, $status)
+    {
+        return $query->where('core_status', $status)->first();
+    }
+
 }

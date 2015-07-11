@@ -16,6 +16,5 @@ secondaryTabs:
             type: dropdown
 
         events:
-            label: bedard.shop::lang.orders.event_log
             type: partial
             path: $/bedard/shop/models/order/_form_events.htm
