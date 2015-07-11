@@ -14,18 +14,8 @@ modelClass: Bedard\Shop\Models\order
 # Default redirect location
 defaultRedirect: bedard/shop/orders
 
-# Create page
-create:
-    title: backend::lang.relation.create_name
-    redirect: bedard/shop/orders/update/:id
-    redirectClose: bedard/shop/orders
-
 # Update page
 update:
     title: backend::lang.relation.update_name
     redirect: bedard/shop/orders
     redirectClose: bedard/shop/orders
-
-# Preview page
-preview:
-    title: backend::lang.relations.preview_name

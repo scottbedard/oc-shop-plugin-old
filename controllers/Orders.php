@@ -12,13 +12,15 @@ class Orders extends Controller
 {
     public $implement = [
         'Backend.Behaviors.FormController',
-        'Backend.Behaviors.ListController'
+        'Backend.Behaviors.ListController',
     ];
 
     public $formConfig = 'config_form.yaml';
     public $listConfig = 'config_list.yaml';
 
     public $requiredPermissions = ['bedard.shop.access_orders'];
+
+    public $bodyClass = 'compact-container';
 
     public function __construct()
     {
@@ -50,6 +52,17 @@ class Orders extends Controller
     public function listExtendQuery($query)
     {
         $query->with('events.status');
+    }
+
+    /**
+     * Extend the form query
+     *
+     * @param   OctoberRainDatabaseBuilder   $query
+     * @return  OctoberRainDatabaseBuilder
+     */
+    public function formExtendQuery($query)
+    {
+        $query->with('customer', 'events');
     }
 
     /**

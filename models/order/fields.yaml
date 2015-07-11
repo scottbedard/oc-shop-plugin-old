@@ -3,6 +3,7 @@
 # ===================================
 
 fields:
-    id:
-        label: ID
-        disabled: true
+
+    toolbar:
+        type: partial
+        path: $/bedard/shop/models/order/_form_toolbar.htm

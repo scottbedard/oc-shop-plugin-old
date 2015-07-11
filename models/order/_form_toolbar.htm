@@ -1,0 +1,22 @@
+<div class="scoreboard">
+    <div class="scoreboard-item title-value">
+        <h4><?= e(trans('bedard.shop::lang.orders.order_number')) ?></h4>
+        <p><?= $formModel->id ?></p>
+    </div>
+
+    <div class="scoreboard-item title-value">
+        <h4><?= e(trans('bedard.shop::lang.orders.customer')) ?></h4>
+        <p class="oc-icon-user"><?= $formModel->customer->fullName ?></p>
+    </div>
+
+    <div class="scoreboard-item title-value">
+        <h4><?= e(trans('bedard.shop::lang.customers.email')) ?></h4>
+        <p><?= $formModel->customer->email ?></p>
+    </div>
+
+    <div class="scoreboard-item title-value" data-control="goal-meter" data-value="88">
+        <h4>goal meter</h4>
+        <p>88%</p>
+        <p class="description">37 posts remain</p>
+    </div>
+</div>

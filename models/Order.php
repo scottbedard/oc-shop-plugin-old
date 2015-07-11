@@ -33,6 +33,12 @@ class Order extends Model
     /**
      * @var array Relations
      */
+    public $belongsTo = [
+        'customer' => [
+            'Bedard\Shop\Models\Customer',
+        ],
+    ];
+
     public $hasMany = [
         'events' => [
             'Bedard\Shop\Models\OrderEvent',

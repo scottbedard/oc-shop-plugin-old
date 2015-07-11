@@ -298,6 +298,7 @@ return [
         'customer'                      => 'Customer',
         'list_title'                    => 'Manager Orders',
         'model'                         => 'Order',
+        'order_number'                  => 'Order #',
         'payment_total'                 => 'Payment Total',
         'status_change'                 => 'Change Status',
     ],
