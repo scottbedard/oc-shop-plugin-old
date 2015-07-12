@@ -294,6 +294,7 @@ return [
     ],
 
     'orders' => [
+        'billing_address'               => 'Billing Address',
         'created_at'                    => 'Order Date',
         'controller'                    => 'Orders',
         'customer'                      => 'Customer',
@@ -302,7 +303,10 @@ return [
         'model'                         => 'Order',
         'order_number'                  => 'Order #',
         'order_received'                => 'Order received',
-        'payment_total'                 => 'Payment Total',
+        'payment_total'                 => 'Total',
+        'purchased'                     => 'Purchased',
+        'removed'                       => 'Removed',
+        'shipping_address'              => 'Shipping Address',
         'status_change'                 => 'Change Status',
         'status_changed'                => 'Status changed to :status by :author',
         'status_unknown'                => 'Unknown',

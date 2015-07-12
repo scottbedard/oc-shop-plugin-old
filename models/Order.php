@@ -87,6 +87,22 @@ class Order extends Model
     /**
      * Accessors and Mutators
      */
+    public function getFormattedBillingAddressAttribute()
+    {
+        if ($this->billing_address_id == $this->shipping_address_id) {
+            return $this->formattedShippingAddress;
+        } elseif ($this->billing_address_id) {
+            return $this->billing_address->getFormatted($this->customer->fullName);
+        }
+    }
+
+    public function getFormattedShippingAddressAttribute()
+    {
+        if ($this->shipping_address_id) {
+            return $this->shipping_address->getFormatted($this->customer->fullName);
+        }
+    }
+
     public function setCartSubtotalAttribute($value)
     {
         $this->attributes['cart_subtotal'] = $value ?: 0;

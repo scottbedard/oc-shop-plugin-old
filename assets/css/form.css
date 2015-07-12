@@ -79,26 +79,36 @@
 .modal-body .relationselector .relationselector-partial ul span.discounted-price {
   color: green;
 }
-.bedard-shop.form ul.event-log,
-.modal-body ul.event-log {
+.order-form div.address p.label {
+  color: #666666;
+  font-size: 22px;
+}
+.order-form div.address p.label.shipping:before,
+.order-form div.address p.label.billing:before {
+  color: #577390;
+}
+.order-form ul.event-log {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
-.bedard-shop.form ul.event-log li,
-.modal-body ul.event-log li {
+.order-form ul.event-log li {
   border-top: 1px solid #C5CACF;
   padding: 10px 0;
 }
-.bedard-shop.form ul.event-log li .timestamp,
-.modal-body ul.event-log li .timestamp {
+.order-form ul.event-log li .timestamp {
   color: #666;
   font-size: 11px;
   padding-bottom: 5px;
 }
-.bedard-shop.form ul.event-log li .message,
-.modal-body ul.event-log li .message {
+.order-form ul.event-log li .message {
   font-size: 12px;
+}
+.order-form.no-tabs div.layout-row.min-size {
+  display: none;
+}
+.form-scoreboard {
+  padding-bottom: 0;
 }
 .bedard-shop.form .select2-chosen span.parent,
 .select2-results .select2-chosen span.parent,

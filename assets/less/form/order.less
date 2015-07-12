@@ -1,0 +1,47 @@
+//
+// Order form
+//
+.order-form {
+
+    // Address fields
+    div.address {
+
+        p.label {
+            color: #666666;
+            font-size: 22px;
+
+            &.shipping:before, &.billing:before {
+                color: #577390;
+            }
+        }
+    }
+
+    // Event log
+    ul.event-log {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            border-top: 1px solid #C5CACF;
+            padding: 10px 0;
+
+            .timestamp {
+                color: #666;
+                font-size: 11px;
+                padding-bottom: 5px;
+            }
+            .message {
+                font-size: 12px;
+            }
+        }
+    }
+
+    &.no-tabs div.layout-row.min-size {
+        display: none;
+    }
+}
+
+.form-scoreboard {
+    padding-bottom: 0;
+}

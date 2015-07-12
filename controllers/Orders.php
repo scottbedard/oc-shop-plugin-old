@@ -53,7 +53,7 @@ class Orders extends Controller
      */
     public function listExtendQuery($query)
     {
-        $query->with('events', 'status', 'shipping_address', 'billing_address');
+        $query->with('events', 'status');
     }
 
     /**
@@ -64,7 +64,7 @@ class Orders extends Controller
      */
     public function formExtendQuery($query)
     {
-        $query->with('customer', 'events', 'status');
+        $query->with('customer', 'events', 'status', 'shipping_address', 'billing_address');
     }
 
     /**

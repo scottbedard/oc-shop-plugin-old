@@ -7,12 +7,36 @@ fields:
     toolbar:
         type: partial
         path: $/bedard/shop/models/order/_form_toolbar.htm
+        cssClass: order-form form-scoreboard
 
-    address:
+    shipping:
         type: partial
-        path: $/bedard/shop/models/order/_form_address.htm
+        path: $/bedard/shop/models/order/_form_shipping.htm
+        cssClass: order-form
+        span: left
+
+    billing:
+        type: partial
+        path: $/bedard/shop/models/order/_form_billing.htm
+        cssClass: order-form
+        span: right
+
+tabs:
+    cssClass: order-form
+    fields:
+
+        purchased:
+            tab: bedard.shop::lang.orders.purchased
+            type: partial
+            path: $/bedard/shop/models/order/_form_purchased.htm
+
+        removed:
+            tab: bedard.shop::lang.orders.removed
+            type: partial
+            path: $/bedard/shop/models/order/_form_removed.htm
 
 secondaryTabs:
+    cssClass: order-form no-tabs
     fields:
 
         status:

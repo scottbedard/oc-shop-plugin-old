@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Models;
 
+use Exception;
 use Model;
 use Adamlc\AddressFormat\Format;
 
@@ -63,11 +64,6 @@ class Address extends Model
     /**
      * Accessors and Mutators
      */
-    public function getFormattedAddressAttribute()
-    {
-        var_dump ('hey');
-    }
-
     public function getStateOrNameAttribute()
     {
         if (!$this->state) {
@@ -84,6 +80,42 @@ class Address extends Model
         }
 
         return $this->state->code;
+    }
+
+    /**
+     * Return the address in a localized format
+     *
+     * @param   string      $recipient
+     * @param   boolean     $html
+     * @return  string
+     */
+    public function getFormatted($recipient = null)
+    {
+        $formatter = new Format;
+        try {
+            $formatter->setLocale($this->country->code);
+        } catch(Exception $e) {
+            // todo: allow shops to specify their origin country,
+            // and use that code here
+            $formatter->setLocale('SP');
+        }
+
+        if ($recipient) {
+            $formatter['RECIPIENT'] = $recipient;
+        }
+
+        $formatter['ORGANIZATION']      = $this->organization;
+
+        $formatter['STREET_ADDRESS'] = $this->street_2
+            ? $this->street_1.', '.$this->street_2
+            : $this->street_1;
+
+        $formatter['LOCALITY']          = $this->city;
+        $formatter['ADMIN_AREA']        = $this->stateCodeOrName;
+        $formatter['POSTAL_CODE']       = $this->postal_code;
+        $formatter['COUNTRY']           = $this->country->name;
+
+        return $formatter->formatAddress(true).'<br />'.$this->country->name;
     }
 
 }
