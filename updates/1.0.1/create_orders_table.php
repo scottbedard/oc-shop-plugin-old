@@ -25,6 +25,7 @@ class CreatePaymentsTable extends Migration
             $table->decimal('payment_total', 10, 2)->default(0);
             $table->integer('status_id')->nullable();
             $table->timestamp('status_at')->nullable();
+            $table->boolean('is_paid')->default(false);
             $table->timestamps();
         });
     }

@@ -112,6 +112,7 @@ class PaymentProcessor {
     {
         $order = $this->getOrder();
         if ($status = Status::getCore('received')) {
+            $order->is_paid = true;
             $order->changeStatus($status->id, $this->driver);
         }
 

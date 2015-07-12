@@ -19,6 +19,13 @@ class Order extends Model
     public $table = 'bedard_shop_orders';
 
     /**
+     * @var array Attribute type casting
+     */
+    public $casts = [
+        'is_paid'   => 'boolean',
+    ];
+
+    /**
      * @var array Guarded fields
      */
     protected $guarded = ['*'];
