@@ -307,7 +307,8 @@ return [
         'purchased'                     => 'Purchased',
         'removed'                       => 'Removed',
         'shipping_address'              => 'Shipping Address',
-        'status_change'                 => 'Change Status',
+        'status_change'                 => 'Change status',
+        'status_manage'                 => 'Manage statuses',
         'status_changed'                => 'Status changed to :status by :author',
         'status_unknown'                => 'Unknown',
         'update_singular'               => 'Order status changed to :status.',
@@ -453,11 +454,15 @@ return [
     ],
 
     'statuses' => [
-        'awaiting_payment'              => 'Awaiting payment',
-        'payment_received'              => 'Payment received',
-        'canceled'                      => 'Canceled',
-        'complete'                      => 'Complete',
-        'abandoned'                     => 'Abandoned',
+        'back_to_orders'                => 'Back to orders',
+        'class'                         => 'CSS Class',
+        'controller'                    => 'Statuses',
+        'icon'                          => 'Icon',
+        'icon_comment'                  => 'May be any valid Font Autumn icon class, see http://daftspunk.github.io/Font-Autumn for more information.',
+        'list_title'                    => 'Manage Statuses',
+        'model'                         => 'Status',
+        'order_count'                   => 'Orders',
+        'protected_status'              => 'Protected statuses are required by drivers, and cannot be deleted.',
     ],
 
     'values' => [

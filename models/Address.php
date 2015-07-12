@@ -86,7 +86,6 @@ class Address extends Model
      * Return the address in a localized format
      *
      * @param   string      $recipient
-     * @param   boolean     $html
      * @return  string
      */
     public function getFormatted($recipient = null)
@@ -100,7 +99,7 @@ class Address extends Model
             $formatter->setLocale('SP');
         }
 
-        if ($recipient) {
+        if ($recipient !== null) {
             $formatter['RECIPIENT'] = $recipient;
         }
 

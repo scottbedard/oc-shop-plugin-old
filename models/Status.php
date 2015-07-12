@@ -1,5 +1,7 @@
 <?php namespace Bedard\Shop\Models;
 
+use Flash;
+use Lang;
 use Model;
 
 /**
@@ -7,6 +9,7 @@ use Model;
  */
 class Status extends Model
 {
+    use \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string The database table used by the model.
@@ -40,6 +43,25 @@ class Status extends Model
             'Bedard\Shop\Models\Order',
         ],
     ];
+
+    /**
+     * Validation
+     */
+    public $rules = [
+        // 'name' => 'required|unique',
+        // 'icon' => 'required',
+    ];
+
+    /**
+     * Model Events
+     */
+    public function beforeDelete()
+    {
+        if (!is_null($this->core_status)) {
+            Flash::error(Lang::get('bedard.shop::lang.statuses.protected_status'));
+            return false;
+        }
+    }
 
     /**
      * Query Scopes

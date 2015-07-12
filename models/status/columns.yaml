@@ -3,6 +3,22 @@
 # ===================================
 
 columns:
-    id:
-        label: ID
-        searchable: true
+
+    name:
+        label: bedard.shop::lang.common.name
+        type: partial
+        path: $/bedard/shop/models/status/_name.htm
+
+    icon:
+        label: bedard.shop::lang.statuses.icon
+        type: partial
+        path: $/bedard/shop/models/status/_icon.htm
+
+    orders:
+        label: bedard.shop::lang.statuses.order_count
+        select: >
+            (
+                SELECT COUNT(*)
+                FROM `bedard_shop_orders`
+                WHERE `bedard_shop_orders`.`status_id` = `bedard_shop_statuses`.`id`
+            )

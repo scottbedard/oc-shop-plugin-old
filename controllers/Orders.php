@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Controllers;
 
+use Backend;
 use BackendMenu;
 use Backend\Classes\Controller;
 use Bedard\Shop\Models\Order;
@@ -37,6 +38,7 @@ class Orders extends Controller
     public function prepareVars()
     {
         $this->vars['statuses'] = Status::all();
+        $this->vars['status_controller'] = Backend::url('bedard/shop/statuses');
     }
 
     public function index($userId = null)

@@ -3,6 +3,13 @@
 # ===================================
 
 fields:
-    id:
-        label: ID
-        disabled: true
+
+    name:
+        label: bedard.shop::lang.common.name
+
+    icon:
+        label: bedard.shop::lang.statuses.icon
+        comment: bedard.shop::lang.statuses.icon_comment
+
+    class:
+        label: bedard.shop::lang.statuses.class
