@@ -15,16 +15,25 @@ trait OmnipayGatewayTrait {
     {
         $card = new CreditCard;
 
+        // Set contact details
         $card->setFirstName($this->cart->customer->first_name);
         $card->setLastName($this->cart->customer->last_name);
         $card->setEmail($this->cart->customer->email);
 
-        $card->setAddress1($this->cart->address->street_1);
-        $card->setAddress2($this->cart->address->street_2);
-        $card->setCity($this->cart->address->city);
-        $card->setPostcode($this->cart->address->postal_code);
-        $card->setState($this->cart->address->state->code);
-        $card->setCountry($this->cart->address->country->code);
+        // Set billing and shipping addresses
+        $card->setBillingAddress1($this->cart->billing_address->street_1);
+        $card->setBillingAddress2($this->cart->billing_address->street_2);
+        $card->setBillingCity($this->cart->billing_address->city);
+        $card->setBillingPostcode($this->cart->billing_address->postal_code);
+        $card->setBillingState($this->cart->billing_address->state->code);
+        $card->setBillingCountry($this->cart->billing_address->country->code);
+
+        $card->setShippingAddress1($this->cart->shipping_address->street_1);
+        $card->setShippingAddress2($this->cart->shipping_address->street_2);
+        $card->setShippingCity($this->cart->shipping_address->city);
+        $card->setShippingPostcode($this->cart->shipping_address->postal_code);
+        $card->setShippingState($this->cart->shipping_address->state->code);
+        $card->setShippingCountry($this->cart->shipping_address->country->code);
 
         return $card;
     }

@@ -6,7 +6,7 @@ trait NumericColumnTrait {
 
     /**
      * This scope is used to help make columns sortable when they contain
-     * an monetary value or a percentage value.
+     * a monetary value or a percentage value.
      *
      * @param   string  $table      The model table
      * @param   string  $left       The left side of the condition

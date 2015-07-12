@@ -43,7 +43,7 @@ class PaymentProcessor {
     {
         $this->cart->loadOrderCache();
 
-        $order = new Order;
+        $order = Order::firstOrNew(['cart_id' => $this->cart->id]);
 
         if ($this->driver) {
             $order->payment_driver_id = $this->driver->id;
@@ -52,7 +52,6 @@ class PaymentProcessor {
         $order->customer_id         = $this->cart->customer_id;
         $order->shipping_address_id = $this->cart->shipping_address_id;
         $order->billing_address_id  = $this->cart->billing_address_id;
-        $order->cart_id             = $this->cart->id;
         $order->cart_cache          = $this->cart->toArray();
         $order->cart_subtotal       = $this->cart->subtotal;
         $order->shipping_total      = $this->cart->shipping_cost;
@@ -96,6 +95,11 @@ class PaymentProcessor {
      */
     public function cancel()
     {
+        $order = $this->getOrder();
+        if ($status = Status::getCore('canceled')) {
+            $order->changeStatus($status->id, $this->driver);
+        }
+
         $this->inventory->up();
         $this->cart->status = 'canceled';
         $this->cart->save();
