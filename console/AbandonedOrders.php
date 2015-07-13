@@ -5,6 +5,7 @@ use Bedard\Shop\Models\Order;
 use Bedard\Shop\Models\PaymentSettings;
 use Bedard\Shop\Models\Status;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Console\Command;
 use Lang;
 use Symfony\Component\Console\Input\InputOption;
@@ -39,14 +40,15 @@ class AbandonedOrders extends Command
     {
         $abandoned = PaymentSettings::getAbandoned();
         if (!$abandoned) {
+            $this->error(Lang::get('bedard.shop::lang.console.abandoned_disabled'));
             return;
         }
 
-        $orders = Order::shouldBeAbandoned()
+        $orders = Order::shouldBeAbandoned($abandoned)
             ->with('cart', 'payment_driver')
             ->get();
 
-        if ($orders) {
+        if ($orders && count($orders)) {
             $status = Status::getCore('abandoned');
             foreach ($orders as $order) {
                 $driver = $order->payment_driver->getClass();
@@ -55,6 +57,10 @@ class AbandonedOrders extends Command
                 $driver->setOrder($order);
                 $driver->abandonPaymentProcess($status);
             }
+
+            $this->info(Lang::get('bedard.shop::lang.console.abandoned_success', ['num' => count($orders)]));
+        } else {
+            $this->info(Lang::get('bedard.shop::lang.console.abandoned_none'));
         }
     }
 

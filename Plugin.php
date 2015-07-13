@@ -34,14 +34,6 @@ class Plugin extends PluginBase
     }
 
     /**
-     * Register console commands
-     */
-    public function register()
-    {
-        $this->registerConsoleCommand('shop:abandoned', 'Bedard\Shop\Console\AbandonedOrders');
-    }
-
-    /**
      * Plugin startup
      */
     public function boot()
@@ -50,6 +42,22 @@ class Plugin extends PluginBase
         App::singleton('Bedard\Shop\Classes\CartManager', function() {
             return new CartManager;
         });
+    }
+
+    /**
+     * Register a console command to process payments that have been abandoned
+     */
+    public function register()
+    {
+        $this->registerConsoleCommand('shop:abandoned', 'Bedard\Shop\Console\AbandonedOrders');
+    }
+
+    /**
+     * Look for abandoned payments every 10 minutes
+     */
+    public function registerSchedule($schedule)
+    {
+        $schedule->command('shop:abandoned')->everyTenMinutes();
     }
 
     /**

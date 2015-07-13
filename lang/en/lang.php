@@ -15,6 +15,9 @@ return [
     //
     'console' => [
         'abandoned_description'         => 'Updates payments that have been abandoned.',
+        'abandoned_disabled'            => 'Abandoned payments are not defined, see your backend settings for more information.',
+        'abandoned_none'                => 'There are no abandoend payments to update.',
+        'abandoned_success'             => 'Successfully updated :num abandoned payments.',
     ],
 
     //
