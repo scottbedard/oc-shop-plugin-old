@@ -85,6 +85,17 @@ class Order extends Model
     ];
 
     /**
+     * Query Scopes
+     *
+     * @param   October\Rain\Database\Builder   $query
+     * @return  October\Rain\Database\Builder
+     */
+    public function scopeFilterByStatus($query, $filter)
+    {
+        return $query->whereIn('status_id', $filter);
+    }
+
+    /**
      * Accessors and Mutators
      */
     public function getFormattedBillingAddressAttribute()

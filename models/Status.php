@@ -28,12 +28,8 @@ class Status extends Model
         'name',
         'icon',
         'class',
+        'core_status',
     ];
-
-    /**
-     * @var array Date fields
-     */
-    protected $dates = ['status_at'];
 
     /**
      * @var array Relations
@@ -48,8 +44,7 @@ class Status extends Model
      * Validation
      */
     public $rules = [
-        // 'name' => 'required|unique',
-        // 'icon' => 'required',
+        'name' => 'required',
     ];
 
     /**
