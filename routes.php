@@ -1,6 +1,5 @@
 <?php
 
-use Bedard\Shop\Classes\PaymentProcessor;
 use Bedard\Shop\Models\Cart;
 use Bedard\Shop\Models\Driver;
 use Bedard\Shop\Models\PaymentSettings;
@@ -18,8 +17,6 @@ Route::get('bedard/shop/payments/{cart}/{driver}/{hash}/{status}', ['as' => 'bed
         $class = $driver->getClass();
         $class->setCart($cart);
         $class->setDriver($driver);
-
-        $payment = new PaymentProcessor($cart, $driver);
 
         if ($status == 'success') {
             $class->completePaymentProcess();
