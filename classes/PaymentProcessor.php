@@ -25,13 +25,19 @@ class PaymentProcessor {
     protected $inventory;
 
     /**
+     * @var Order
+     */
+    protected $order;
+
+    /**
      * Constructor
      */
-    public function __construct(Cart $cart, Driver $driver = null)
+    public function __construct(Cart $cart, Driver $driver = null, Order $order = null)
     {
-        $this->cart = $cart;
-        $this->driver = $driver;
-        $this->inventory = new InventoryManager($cart);
+        $this->cart         = $cart;
+        $this->driver       = $driver;
+        $this->order        = $order;
+        $this->inventory    = new InventoryManager($cart);
     }
 
     /**
@@ -69,7 +75,29 @@ class PaymentProcessor {
      */
     public function getOrder()
     {
-        return $this->cart->order ?: $this->createOrder();
+        if ($this->order) {
+            return $this->order;
+        }
+
+        elseif ($this->cart->order) {
+            return $this->cart->order;
+        }
+
+        return $this->createOrder();
+    }
+
+    /**
+     * Abandon an order
+     */
+    public function abandon(Status $status = null)
+    {
+        if (is_null($status)) {
+            $status = Status::getCore('abandoned');
+        }
+
+        $order = $this->getOrder();
+        $order->changeStatus($status, $this->driver);
+        $this->inventory->up();
     }
 
     /**
@@ -83,7 +111,7 @@ class PaymentProcessor {
 
         $order = $this->createOrder();
         if ($status = Status::getCore('started')) {
-            $order->changeStatus($status->id, $this->driver);
+            $order->changeStatus($status, $this->driver);
         }
 
         $this->cart->status = 'paying';
@@ -97,7 +125,7 @@ class PaymentProcessor {
     {
         $order = $this->getOrder();
         if ($status = Status::getCore('canceled')) {
-            $order->changeStatus($status->id, $this->driver);
+            $order->changeStatus($status, $this->driver);
         }
 
         $this->inventory->up();
@@ -113,7 +141,7 @@ class PaymentProcessor {
         $order = $this->getOrder();
         if ($status = Status::getCore('received')) {
             $order->is_paid = true;
-            $order->changeStatus($status->id, $this->driver);
+            $order->changeStatus($status, $this->driver);
         }
 
         $this->inventory->down();

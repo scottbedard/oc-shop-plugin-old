@@ -74,11 +74,11 @@ class Orders extends Controller
      */
     public function index_onUpdateStatus()
     {
-        $status_id = input('status_id');
+        $status = Status::find(input('status_id'));
         if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
             $orders = Order::whereIn('id', $checkedIds)->with('events')->get();
             foreach ($orders as $order) {
-                $order->changeStatus($status_id, null, $this->user);
+                $order->changeStatus($status, null, $this->user);
             }
         }
 

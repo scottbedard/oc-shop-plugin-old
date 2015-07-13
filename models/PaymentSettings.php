@@ -35,6 +35,16 @@ class PaymentSettings extends Model
     }
 
     /**
+     * Get the amount of time before an Order is considered abandoned
+     *
+     * @return  integer
+     */
+    public static function getAbandoned()
+    {
+        return self::get('abandoned', 60);
+    }
+
+    /**
      * Returns the payment gateway driver
      *
      * @param   Cart|null   $cart

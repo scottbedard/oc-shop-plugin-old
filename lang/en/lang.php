@@ -11,6 +11,13 @@ return [
     ],
 
     //
+    // Console
+    //
+    'console' => [
+        'abandoned_description'         => 'Updates payments that have been abandoned.',
+    ],
+
+    //
     // Components
     //
     'components' => [
@@ -248,7 +255,7 @@ return [
         ],
         'nopayment' => [
             'name'                      => 'No Payment',
-            'message'                   => 'This driver should only be used if you wish to handle payments manually. Users will be redirected to the success page upon order completion.',
+            'message'                   => 'This driver should only be used if you wish to handle payments manually. Users will be redirected to the success page upon placing their order. Also note that payments using this driver will never be automatically abandoned.',
         ],
         'paypalexpress' => [
             'api_username'              => 'API username',
@@ -299,6 +306,7 @@ return [
         'controller'                    => 'Orders',
         'customer'                      => 'Customer',
         'event_log'                     => 'Event Log',
+        'filter_label'                  => 'Filter by status',
         'list_title'                    => 'Manager Orders',
         'model'                         => 'Order',
         'order_number'                  => 'Order #',
@@ -405,10 +413,17 @@ return [
             'validation_on'             => 'On, adjust shopping carts when inventory changes',
         ],
         'payment' => [
+            'abandoned_label'           => 'Consider payments abandoned',
+            'abandoned_never'           => 'Never, I will do this manually',
+            'abandoned_half_hour'       => 'After 30 minutes',
+            'abandoned_one_hour'        => 'After 1 hour',
+            'abandoned_six_hours'       => 'After 6 hours',
+            'abandoned_twelve_hours'    => 'After 12 hours',
+            'abandoned_one_day'         => 'After 24 hours',
             'driver_not_found'          => 'The payment gateway driver could not be found.',
             'default'                   => 'Default payment gateway',
             'default_placeholder'       => '-- select payment gateway --',
-            'manage'                    => 'Manage payment gateways',
+            'manage'                    => 'Configure payment gateways',
             'timing'                    => 'Reduce inventory',
             'timing_completed'          => 'When payment is received',
             'timing_immediate'          => 'When the payment process begins',
@@ -457,6 +472,13 @@ return [
         'back_to_orders'                => 'Back to orders',
         'class'                         => 'CSS Class',
         'controller'                    => 'Statuses',
+        'defaults'                      => [
+            'abandoned'                 => 'Abandoned',
+            'awaiting_payment'          => 'Awaiting payment',
+            'canceled'                  => 'Canceled',
+            'complete'                  => 'Complete',
+            'payment_received'          => 'Payment received',
+        ],
         'icon'                          => 'Icon',
         'icon_comment'                  => 'May be any valid Font Autumn icon class, see http://daftspunk.github.io/Font-Autumn for more information.',
         'list_title'                    => 'Manage Statuses',

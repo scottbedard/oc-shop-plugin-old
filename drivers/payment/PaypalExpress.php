@@ -129,7 +129,7 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
                 throw new PaymentException($response->getMessage());
             }
 
-            $this->beginPaymentProcessor();
+            $this->beginPaymentProcess();
             return Redirect::to($response->getRedirectUrl());
 
         } catch (Exception $e) {

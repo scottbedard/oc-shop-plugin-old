@@ -6,7 +6,9 @@ use Bedard\Shop\Models\CartItem;
 use Bedard\Shop\Models\Inventory;
 use Bedard\Shop\Models\Order;
 use Bedard\Shop\Models\PaymentSettings;
+use Bedard\Shop\Models\Status;
 use Bedard\Shop\Tests\Fixtures\Generate;
+use Carbon\Carbon;
 
 class PaymentProcessorTest extends \OctoberPluginTestCase
 {
@@ -96,5 +98,31 @@ class PaymentProcessorTest extends \OctoberPluginTestCase
         $processor->complete();
 
         $this->assertEquals(1, Order::where('cart_id', $cart->id)->count());
+    }
+
+    public function test_abandoning_payments()
+    {
+        $cart       = Generate::cart();
+        $product    = Generate::product('Foo');
+        $inventory  = Generate::inventory($product, [], ['quantity' => 10]);
+        $item       = Generate::cartItem($cart, $inventory, ['quantity' => 5]);
+        $status     = Status::getCore('started');
+
+        $processor = new PaymentProcessor($cart);
+        $processor->begin();
+
+        $order = Order::where('cart_id', $cart->id)->first();
+        $this->assertEquals($status->id, $order->status_id);
+
+        $settings = PaymentSettings::instance();
+        $settings->abandoned = 360;
+        $settings->forceSave();
+
+        $order->status_at = Carbon::yesterday()->toDateTimeString();
+        $order->save();
+
+        $processor->abandon();
+        $abandoned = Order::find($order->id);
+        $this->assertEquals('abandoned', $abandoned->status->core_status);
     }
 }

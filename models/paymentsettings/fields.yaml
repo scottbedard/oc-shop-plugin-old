@@ -4,17 +4,23 @@
 
 fields:
 
+    gateway:
+        label: bedard.shop::lang.settings.payment.default
+        placeholder: bedard.shop::lang.settings.payment.default_placeholder
+        type: dropdown
+        span: left
+
     success_url:
         label: bedard.shop::lang.settings.payment.url_success
-        span: left
+        span: right
 
     canceled_url:
         label: bedard.shop::lang.settings.payment.url_canceled
-        span: right
+        span: left
 
     error_url:
         label: bedard.shop::lang.settings.payment.url_error
-        span: left
+        span: right
 
     timing:
         label: bedard.shop::lang.settings.payment.timing
@@ -23,13 +29,20 @@ fields:
             completed: bedard.shop::lang.settings.payment.timing_completed
             immediate: bedard.shop::lang.settings.payment.timing_immediate
         default: completed
-        span: right
-
-    gateway:
-        label: bedard.shop::lang.settings.payment.default
-        placeholder: bedard.shop::lang.settings.payment.default_placeholder
-        type: dropdown
         span: left
+
+    abandoned:
+        label: bedard.shop::lang.settings.payment.abandoned_label
+        type: dropdown
+        options:
+            0: bedard.shop::lang.settings.payment.abandoned_never
+            30: bedard.shop::lang.settings.payment.abandoned_half_hour
+            60: bedard.shop::lang.settings.payment.abandoned_one_hour
+            360: bedard.shop::lang.settings.payment.abandoned_six_hours
+            720: bedard.shop::lang.settings.payment.abandoned_twelve_hours
+            1440: bedard.shop::lang.settings.payment.abandoned_one_day
+        default: 60
+        span: right
 
     driversettings:
         label: bedard.shop::lang.settings.payment.manage

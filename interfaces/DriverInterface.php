@@ -2,6 +2,7 @@
 
 use Bedard\Shop\Models\Cart;
 use Bedard\Shop\Models\Driver;
+use Bedard\Shop\Models\Order;
 
 interface DriverInterface {
 
@@ -23,9 +24,16 @@ interface DriverInterface {
     /**
      * Set the Driver model and config
      *
-     * @param   Driver      $driver
+     * @param   Driver  $driver
      */
     public function setDriver(Driver $driver);
+
+    /**
+     * Set the Order model
+     *
+     * @param   Order   $order
+     */
+    public function setOrder(Order $order);
 
     /**
      * Register configuration fields

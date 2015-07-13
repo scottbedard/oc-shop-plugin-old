@@ -2,6 +2,7 @@
 
 use Bedard\Shop\Models\Cart;
 use Bedard\Shop\Models\Driver;
+use Bedard\Shop\Models\Order;
 
 class DriverBase {
 
@@ -19,6 +20,11 @@ class DriverBase {
      * @var Bedard\Shop\Models\Driver   The driver model
      */
     protected $driver;
+
+    /**
+     * @var Bedard\Shop\Models\Order    The order model
+     */
+    protected $order;
 
     /**
      * @var array                       Validation rules for driver configuration
@@ -56,12 +62,22 @@ class DriverBase {
     /**
      * Set the Driver model and config
      *
-     * @param   Driver      $driver
+     * @param   Driver  $driver
      */
     public function setDriver(Driver $driver)
     {
         $this->driver = $driver;
         $this->config = $driver->config;
+    }
+
+    /**
+     * Set the Order model
+     *
+     * @param   Order   $order
+     */
+    public function setOrder(Order $order)
+    {
+        $this->order = $order;
     }
 
     /**

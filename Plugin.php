@@ -34,6 +34,14 @@ class Plugin extends PluginBase
     }
 
     /**
+     * Register console commands
+     */
+    public function register()
+    {
+        $this->registerConsoleCommand('shop:abandoned', 'Bedard\Shop\Console\AbandonedOrders');
+    }
+
+    /**
      * Plugin startup
      */
     public function boot()

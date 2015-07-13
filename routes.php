@@ -14,16 +14,21 @@ Route::get('bedard/shop/payments/{cart}/{driver}/{hash}/{status}', ['as' => 'bed
     function($cart_id, $driver_id, $hash, $status) {
         $cart = Cart::where('hash', $hash)->isPaying()->find($cart_id);
         $driver = Driver::find($driver_id);
+
+        $class = $driver->getClass();
+        $class->setCart($cart);
+        $class->setDriver($driver);
+
         $payment = new PaymentProcessor($cart, $driver);
 
         if ($status == 'success') {
-            $payment->complete();
+            $class->completePaymentProcess();
             return Redirect::to(PaymentSettings::getSuccessUrl());
         } elseif ($status == 'canceled') {
-            $payment->cancel();
+            $class->cancelPaymentProcess();
             return Redirect::to(PaymentSettings::getCanceledUrl());
         } else {
-            $payment->error();
+            $class->errorPaymentProcess();
             return Redirect::to(PaymentSettings::getErrorUrl());
         }
     }

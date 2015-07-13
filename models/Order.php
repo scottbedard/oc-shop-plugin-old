@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Models;
 
+use Bedard\Shop\Models\Driver;
 use Bedard\Shop\Models\OrderEvent;
 use Bedard\Shop\Models\Status;
 use Carbon\Carbon;
@@ -47,6 +48,7 @@ class Order extends Model
         'payment_total',
         'status_id',
         'status_at',
+        'is_paid',
     ];
 
     /**
@@ -67,6 +69,10 @@ class Order extends Model
         ],
         'customer' => [
             'Bedard\Shop\Models\Customer',
+        ],
+        'payment_driver' => [
+            'Bedard\Shop\Models\Driver',
+            'key' => 'payment_driver_id',
         ],
         'shipping_address' => [
             'Bedard\Shop\Models\Address',
@@ -93,6 +99,18 @@ class Order extends Model
     public function scopeFilterByStatus($query, $filter)
     {
         return $query->whereIn('status_id', $filter);
+    }
+
+    public function scopeShouldBeAbandoned($query, $minutes)
+    {
+        return $query->where(function($query) use ($minutes) {
+            $query
+                ->where('is_paid', false)
+                ->where('status_at', '<', Carbon::now()->subMinutes($minutes))
+                ->whereHas('status', function($status) {
+                    $status->where('core_status', 'started');
+                });
+        });
     }
 
     /**
@@ -137,17 +155,17 @@ class Order extends Model
     /**
      * Change the order's status
      *
-     * @param   integer     $status_id      The new status
-     * @param   integer     $driver         Driver making the status change
+     * @param   Status      $status         The new status
+     * @param   Driver      $driver         Driver making the status change
      * @param   integer     $user           Backend user making the status change
      */
-    public function changeStatus($status_id, $driver = null, $user = null)
+    public function changeStatus(Status $status, Driver $driver = null, $user = null)
     {
-        if ($this->status_id == $status_id) {
+        if ($this->status_id == $status->id) {
             return;
         }
 
-        $this->status_id = $status_id;
+        $this->status_id = $status->id;
         $this->status_at = Carbon::now();
         $this->save();
 
@@ -158,16 +176,12 @@ class Order extends Model
             $author = $user->fullName;
         }
 
-        $status = ($newStatus = Status::find($status_id))
-            ? $newStatus->name
-            : 'bedard.shop::lang.orders.status_unknown';
-
         OrderEvent::create([
             'order_id'  => $this->id,
             'user_id'   => $user ? $user->id : null,
             'driver_id' => $driver ? $driver->id : null,
             'message'   => Lang::get('bedard.shop::lang.orders.status_changed', [
-                'status' => '<strong>'.Lang::get($status).'</strong>',
+                'status' => '<strong>'.Lang::get($status->name).'</strong>',
                 'author' => Lang::get($author),
             ]),
         ]);

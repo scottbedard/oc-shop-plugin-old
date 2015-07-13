@@ -27,7 +27,15 @@ class NoPayment extends PaymentBase implements PaymentInterface {
      */
     public function executePayment()
     {
-        $this->beginPaymentProcessor();
+        $this->beginPaymentProcess();
         return Redirect::to($this->getResponseURL('success'));
+    }
+
+    /**
+     * Since payments through this driver will never be automatically completed,
+     * overwrite the abandon method to prevent them from timing out.
+     */
+    public function abandonPaymentProcess()
+    {
     }
 }
