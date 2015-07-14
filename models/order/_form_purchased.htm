@@ -1,1 +1,32 @@
-<p class="oc-icon-cart"><?= e(trans('bedard.shop::lang.orders.purchased')) ?></p>
+<?php
+use Bedard\Shop\Classes\CurrencyHelper;
+$cart = $formModel->getCachedCart();
+?>
+
+<?= $this->makePartial('$/bedard/shop/models/order/_form_cart_table.htm', [
+    'items' => $cart->items->where('deleted_at', null)
+]) ?>
+
+<?php if ($cart->promotion): ?>
+    <div class="footer">
+        <div class="row">
+            <div class="cell left">
+                Promotion
+            </div>
+            <div class="cell right">
+                <?= CurrencyHelper::format($cart->promotionSavings) ?>
+            </div>
+        </div>
+    </div>
+<?php endif ?>
+
+<div class="footer">
+    <div class="row">
+        <div class="cell left">
+            <?= e(trans('bedard.shop::lang.orders.cart_total')) ?>
+        </div>
+        <div class="cell right">
+            <?= CurrencyHelper::format($cart->total) ?>
+        </div>
+    </div>
+</div>

@@ -305,6 +305,13 @@ return [
 
     'orders' => [
         'billing_address'               => 'Billing Address',
+        'cart_shipping'                 => 'Shipping',
+        'cart_sku'                      => 'SKU',
+        'cart_subtotal'                 => 'Subtotal',
+        'cart_product'                  => 'Product',
+        'cart_quantity'                 => 'Quantity',
+        'cart_total'                    => 'Total',
+        'cart_unit_price'               => 'Unit price',
         'created_at'                    => 'Order Date',
         'controller'                    => 'Orders',
         'customer'                      => 'Customer',
@@ -317,6 +324,9 @@ return [
         'payment_total'                 => 'Total',
         'purchased'                     => 'Purchased',
         'removed'                       => 'Removed',
+        'removed_empty'                 => 'No items were removed from the cart.',
+        'removed_warning'               => 'Warning: Do not ship these items',
+        'removed_warning_content'       => 'This area shows items that were added to a user\'s cart, but were later removed. Do not ship these items, they were not purchased.',
         'shipping_address'              => 'Shipping Address',
         'status_change'                 => 'Change status',
         'status_manage'                 => 'Manage statuses',

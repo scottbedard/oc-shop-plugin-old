@@ -104,6 +104,118 @@
 .order-form ul.event-log li .message {
   font-size: 12px;
 }
+.order-form div.contents {
+  border: 1px solid #e2e2e2;
+  border-collapse: collapse;
+  border-spacing: 0;
+  display: table;
+  font-size: 12px;
+  width: 100%;
+}
+.order-form div.contents .head,
+.order-form div.contents .body {
+  display: table-row-group;
+}
+.order-form div.contents .row {
+  display: table-row;
+  margin-left: 0;
+  margin-right: 0;
+}
+.order-form div.contents .cell {
+  display: table-cell;
+  vertical-align: middle;
+}
+.order-form div.contents .cell .mobile-label {
+  display: none;
+}
+.order-form div.contents .cell .inner {
+  width: 100%;
+}
+.order-form div.contents .head {
+  background-color: #fff;
+}
+.order-form div.contents .head .cell {
+  border-bottom: 1px solid #e2e2e2;
+  color: #333333;
+  padding: 13px 15px;
+  text-transform: uppercase;
+}
+.order-form div.contents .body .row:nth-child(even) {
+  background-color: #F5F5F5;
+}
+.order-form div.contents .body .row:not(:first-of-type) .cell {
+  border-top: 1px solid #eaeaea;
+}
+.order-form div.contents .body .cell {
+  padding: 11px 15px;
+  color: #666666;
+}
+.order-form div.contents .body .cell .full {
+  text-decoration: line-through;
+}
+.order-form div.contents .body .cell .discounted {
+  color: #95b753;
+}
+@media (max-width: 960px) {
+  .order-form div.contents {
+    display: block;
+  }
+  .order-form div.contents .head {
+    display: none;
+  }
+  .order-form div.contents .body,
+  .order-form div.contents .row,
+  .order-form div.contents .cell {
+    display: inline-block;
+    width: 100%;
+  }
+  .order-form div.contents .cell {
+    border: 0 !important;
+    overflow: hidden;
+  }
+  .order-form div.contents .cell .mobile-label,
+  .order-form div.contents .cell .inner {
+    display: inline-block;
+    float: left;
+  }
+  .order-form div.contents .cell .mobile-label {
+    width: 35%;
+  }
+  .order-form div.contents .cell .inner {
+    width: 65%;
+  }
+  .order-form div.contents .row:not(:first-of-type) {
+    border-top: 1px solid #eaeaea;
+  }
+}
+.order-form .footer {
+  border: 1px solid #e2e2e2;
+  border-radius: 3px;
+  display: table;
+  font-size: 12px;
+  margin-top: 15px;
+  width: 100%;
+}
+.order-form .footer .row {
+  display: table-row;
+  background: #fff;
+  text-transform: uppercase;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 10px;
+  width: 100%;
+}
+.order-form .footer .row .cell {
+  display: table-cell;
+  padding: 13px 15px;
+  vertical-align: middle;
+}
+.order-form .footer .row .right {
+  text-align: right;
+}
+.order-form .callout {
+  margin-bottom: 20px;
+}
 .order-form.no-tabs div.layout-row.min-size {
   display: none;
 }

@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Models;
 
+use Bedard\Shop\Classes\CartCache;
 use Bedard\Shop\Models\Driver;
 use Bedard\Shop\Models\OrderEvent;
 use Bedard\Shop\Models\Status;
@@ -185,6 +186,16 @@ class Order extends Model
                 'author' => Lang::get($author),
             ]),
         ]);
+    }
+
+    /**
+     * Returns the Cart model as it was at the time of sale
+     *
+     * @return  Bedard\Shop\Models\Cart
+     */
+    public function getCachedCart()
+    {
+        return (new CartCache)->build($this->cart_cache);
     }
 
     /**

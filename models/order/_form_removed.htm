@@ -1,1 +1,25 @@
-Removed
+<?php
+$removed = $formModel->getCachedCart()->items->filter(function($item) {
+    return $item->deleted_at;
+});
+?>
+
+<?php if ($removed && $removed->count() > 0): ?>
+    <div class="callout callout-warning fade in no-subheader">
+        <div class="header">
+            <i class="icon-exclamation-circle"></i>
+            <h3><?= e(trans('bedard.shop::lang.orders.removed_warning')) ?></h3>
+        </div>
+        <div class="content">
+            <p><?= e(trans('bedard.shop::lang.orders.removed_warning_content')) ?></p>
+        </div>
+    </div>
+
+    <?= $this->makePartial('$/bedard/shop/models/order/_form_cart_table.htm', [
+        'items' => $removed
+    ]) ?>
+<?php else: ?>
+    <p class="removed-empty">
+        <?= e(trans('bedard.shop::lang.orders.removed_empty')) ?>
+    </p>
+<?php endif ?>

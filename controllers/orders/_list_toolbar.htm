@@ -1,4 +1,10 @@
 <div>
+    <a
+        href="<?= $status_controller ?>"
+        class="btn btn-primary oc-icon-clipboard">
+        <?= e(trans('bedard.shop::lang.orders.status_manage')) ?>
+    </a>
+
     <div class="dropdown">
         <button
             class="btn oc-icon-pencil"
@@ -36,11 +42,4 @@
             <?php endforeach ?>
         </ul>
     </div>
-
-    <a
-        href="<?= $status_controller ?>"
-        class="btn btn-default oc-icon-chevron-right">
-        <?= e(trans('bedard.shop::lang.orders.status_manage')) ?>
-    </a>
-
 </div>

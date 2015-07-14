@@ -1,6 +1,7 @@
 <?php namespace Bedard\Shop\Models;
 
 use Bedard\Shop\Classes\WeightHelper;
+use Bedard\Shop\Models\Driver;
 use Bedard\Shop\Models\ShippingSettings;
 use Model;
 
@@ -28,11 +29,27 @@ class Cart extends Model
     ];
 
     /**
-     * @var array Attribute casting
+     * @var array   Cacheable fields
      */
-    protected $casts = [
-        'is_inventoried'    => 'boolean',
-        'shipping_failed'   => 'boolean',
+    public $cacheable = [
+        'id',
+        'customer_id',
+        'shipping_address_id',
+        'billing_address_id',
+        'promotion_id',
+        'shipping_rates',
+        'shipping_id',
+        'shipping_failed',
+        'is_inventoried',
+        'created_at',
+        'updated_at',
+    ];
+
+    /**
+     * @var array   Attribute casting
+     */
+    public $casts = [
+        'is_inventoried' => 'boolean',
     ];
 
     /**
@@ -238,6 +255,35 @@ class Cart extends Model
             },
             'promotion',
         ]);
+    }
+
+    /**
+     * Return a value from the selected shipping rate
+     *
+     * @param   string|null     $property
+     * @return  mixed
+     */
+    public function getSelectedShipping($property = null)
+    {
+        if ($this->shipping_id && is_array($this->shipping_rates)) {
+            foreach ($this->shipping_rates as $rate) {
+                if ($rate['id'] = $this->shipping_id) {
+                    return !is_null($property)
+                        ? $rate[$property]
+                        : $rate;
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns the driver used to calculate the selected shipping
+     *
+     * @return  Driver
+     */
+    public function getSelectedShippingDriver()
+    {
+        return Driver::where('class', $this->getSelectedShipping('class'))->first();
     }
 
     /**

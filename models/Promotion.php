@@ -38,6 +38,24 @@ class Promotion extends Model
     ];
 
     /**
+     * @var array   Cacheable fields
+     */
+    public $cacheable = [
+        'id',
+        'code',
+        'message',
+        'cart_exact',
+        'cart_percentage',
+        'cart_is_percentage',
+        'shipping_exact',
+        'shipping_percentage',
+        'shipping_is_percentage',
+        'cart_minimum',
+        'start_at',
+        'end_at',
+    ];
+
+    /**
      * @var array   Relations
      */
     public $belongsToMany = [

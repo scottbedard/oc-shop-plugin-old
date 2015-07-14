@@ -28,6 +28,23 @@ class Inventory extends Model
     protected $fillable = [];
 
     /**
+     * @var array   Fields that should be cached by the Order model
+     */
+    public $cacheable = [
+        'id',
+        'product_id',
+        'sku',
+        'modifier',
+    ];
+
+    /**
+     * @var array   Attribute casting
+     */
+    public $casts = [
+        'modifier'  => 'float',
+    ];
+
+    /**
      * @var array Relations
      */
     public $belongsTo = [

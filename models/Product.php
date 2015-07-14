@@ -40,6 +40,24 @@ class Product extends Model
     ];
 
     /**
+     * @var array   Cacheable fields
+     */
+    public $cacheable = [
+        'id',
+        'name',
+        'base_price',
+        'price',
+    ];
+
+    /**
+     * @var array   Attribute casting
+     */
+    public $casts = [
+        'base_price'    => 'float',
+        'price'         => 'float',
+    ];
+
+    /**
      * @var array Purgeable fields
      */
     protected $purgeable = ['optionsinventories'];

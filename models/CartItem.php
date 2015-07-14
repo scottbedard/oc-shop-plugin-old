@@ -30,6 +30,17 @@ class CartItem extends Model
     ];
 
     /**
+     * @var array   Cacheable fields
+     */
+    public $cacheable = [
+        'id',
+        'quantity',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
+    /**
      * @var array   Timestamp fields
      */
     protected $dates = ['deleted_at'];

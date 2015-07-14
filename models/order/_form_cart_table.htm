@@ -1,0 +1,52 @@
+<?php
+use Bedard\Shop\Classes\CurrencyHelper;
+?>
+
+<div class="contents">
+    <div class="head">
+        <div class="row">
+            <div class="cell"><?= e(trans('bedard.shop::lang.orders.cart_product')) ?></div>
+            <div class="cell"><?= e(trans('bedard.shop::lang.orders.cart_quantity')) ?></div>
+            <div class="cell"><?= e(trans('bedard.shop::lang.orders.cart_unit_price')) ?></div>
+        </div>
+    </div>
+    <div class="body">
+        <?php foreach ($items as $item): ?>
+            <div class="row">
+                <div class="cell">
+                    <div class="mobile-label"><?= e(trans('bedard.shop::lang.orders.cart_product')) ?></div>
+                    <div class="inner">
+                        <div class="label"><?= $item->name ?></div>
+                        <div class="details">
+                            <?php if ($item->inventory->sku): ?>
+                                <div><?= e(trans('bedard.shop::lang.orders.cart_sku')) ?>: <?= $item->inventory->sku ?></div>
+                            <?php endif ?>
+                            <?php if ($item->inventory->values): ?>
+                                <?php foreach ($item->inventory->values as $value): ?>
+                                    <div><?= $value->option->name ?>: <?= $value->name ?></div>
+                                <?php endforeach ?>
+                            <?php endif ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="cell">
+                    <div class="mobile-label"><?= e(trans('bedard.shop::lang.orders.cart_quantity')) ?></div>
+                    <div class="inner">
+                        <?= $item->quantity ?>
+                    </div>
+                </div>
+                <div class="cell">
+                    <div class="mobile-label"><?= e(trans('bedard.shop::lang.orders.cart_unit_price')) ?></div>
+                    <div class="inner">
+                        <?php if ($item->isDiscounted): ?>
+                            <span class="full"><?= CurrencyHelper::format($item->base_price) ?></span>
+                            <span class="discounted"><?= CurrencyHelper::format($item->price) ?></span>
+                        <?php else: ?>
+                            <?= CurrencyHelper::format($item->price) ?>
+                        <?php endif ?>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach ?>
+    </div>
+</div>
