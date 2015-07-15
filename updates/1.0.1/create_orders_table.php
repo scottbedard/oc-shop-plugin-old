@@ -20,6 +20,9 @@ class CreatePaymentsTable extends Migration
             $table->integer('payment_driver_id')->unsigned()->nullable();
             $table->json('cart_cache')->nullable();
             $table->decimal('cart_subtotal', 10, 2)->default(0);
+            $table->string('shipping_driver')->nullable();
+            $table->string('shipping_name')->nullable();
+            $table->decimal('shipping_original', 10, 2)->default(0);
             $table->decimal('shipping_total', 10, 2)->default(0);
             $table->decimal('promotion_total', 10, 2)->default(0);
             $table->decimal('payment_total', 10, 2)->default(0);

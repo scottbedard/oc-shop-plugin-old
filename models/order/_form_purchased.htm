@@ -10,7 +10,7 @@ $cart = $formModel->getCachedCart();
 <div class="footer">
     <div class="row">
         <div class="cell left">
-            <strong><?= e(trans('bedard.shop::lang.orders.cart_subtotal')) ?></strong>
+            <?= e(trans('bedard.shop::lang.orders.cart_subtotal')) ?>
         </div>
         <div class="cell right">
             <?= CurrencyHelper::format($cart->subtotal) ?>
@@ -23,7 +23,7 @@ $cart = $formModel->getCachedCart();
     <div class="footer">
         <div class="row">
             <div class="cell left">
-                <strong><?= e(trans('bedard.shop::lang.orders.cart_promotion', ['code' => $cart->promotion->code])) ?></strong>
+                <?= e(trans('bedard.shop::lang.orders.cart_promotion', ['code' => $cart->promotion->code])) ?>
                 <?php if ($cart->promotion->cart_exact > 0 && !$cart->promotion->is_cart_percentage): ?>
                     <div>
                         <?= e(trans('bedard.shop::lang.orders.cart_promotion_subtotal', [
@@ -52,7 +52,9 @@ $cart = $formModel->getCachedCart();
                 <?php endif ?>
             </div>
             <div class="cell right">
-                <?= CurrencyHelper::format($formModel->promotion_total) ?>
+                <?php if ($formModel->promotion_total > 0): ?>
+                    - <?= CurrencyHelper::format($formModel->promotion_total) ?>
+                <?php endif ?>
             </div>
         </div>
     </div>
@@ -62,11 +64,16 @@ $cart = $formModel->getCachedCart();
     <div class="footer">
         <div class="row">
             <div class="cell left">
-                <strong><?= e(trans('bedard.shop::lang.orders.cart_shipping')) ?></strong>
-                <?= $cart->getSelectedShipping('name'); ?>
+                <?= e(trans('bedard.shop::lang.orders.cart_shipping')) ?>
+                <div><?= $formModel->shipping_driver ?>: <?= $formModel->shipping_name ?></div>
             </div>
             <div class="cell right">
-                <?= CurrencyHelper::format($formModel->shipping_total) ?>
+                <?php if ($formModel->shipping_original > $formModel->shipping_total): ?>
+                    <span class="full"><?= CurrencyHelper::format($formModel->shipping_original) ?></span>
+                    <span class="discounted"><?= CurrencyHelper::format($formModel->shipping_total) ?></span>
+                <?php else: ?>
+                    <?= CurrencyHelper::format($formModel->shipping_total) ?>
+                <?php endif ?>
             </div>
         </div>
     </div>
@@ -76,7 +83,7 @@ $cart = $formModel->getCachedCart();
 <div class="footer">
     <div class="row">
         <div class="cell left">
-            <strong><?= e(trans('bedard.shop::lang.orders.cart_total')) ?></strong>
+            <?= e(trans('bedard.shop::lang.orders.cart_total')) ?>
         </div>
         <div class="cell right">
             <?= CurrencyHelper::format($formModel->payment_total) ?>

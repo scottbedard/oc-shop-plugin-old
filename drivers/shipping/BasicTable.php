@@ -58,10 +58,11 @@ class BasicTable extends ShippingBase implements ShippingInterface {
 
             if (!$better) {
                 $final[] = [
-                    'id'    => $this->driver_id.'_'.$i,
-                    'class' => 'Bedard\Shop\Drivers\Shipping\BasicTable',
-                    'name'  => $result['name'],
-                    'cost'  => $result['cost'],
+                    'id'        => $this->driver_id.'_'.$i,
+                    'driver'    => 'Shipping Table',
+                    'class'     => 'Bedard\Shop\Drivers\Shipping\BasicTable',
+                    'name'      => $result['name'],
+                    'cost'      => $result['cost'],
                 ];
                 $i++;
             }

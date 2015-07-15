@@ -59,7 +59,15 @@ class PaymentProcessor {
         $order->billing_address_id  = $this->cart->billing_address_id;
         $order->cart_cache          = (new CartCache)->cache($this->cart);
         $order->cart_subtotal       = $this->cart->subtotal;
-        $order->shipping_total      = $this->cart->shipping_cost;
+
+        $shipping = $this->cart->getSelectedShipping();
+        $order->shipping_total      = $shipping['cost'];
+        $order->shipping_driver     = $shipping['driver'];
+        $order->shipping_name       = $shipping['name'];
+        $order->shipping_original   = isset($shipping['original'])
+            ? $shipping['original']
+            : 0;
+
         $order->promotion_total     = $this->cart->promotionSavings;
         $order->payment_total       = $this->cart->total;
         $order->save();

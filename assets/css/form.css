@@ -150,11 +150,9 @@
   padding: 11px 15px;
   color: #666666;
 }
-.order-form div.contents .body .cell .full {
-  text-decoration: line-through;
-}
-.order-form div.contents .body .cell .discounted {
-  color: #95b753;
+.order-form div.contents .body .cell .label {
+  padding-bottom: 5px;
+  text-transform: uppercase;
 }
 @media (max-width: 960px) {
   .order-form div.contents {
@@ -187,6 +185,12 @@
   .order-form div.contents .row:not(:first-of-type) {
     border-top: 1px solid #eaeaea;
   }
+}
+.order-form .full {
+  text-decoration: line-through;
+}
+.order-form .discounted {
+  color: #95b753;
 }
 .order-form .footer {
   border: 1px solid #e2e2e2;
