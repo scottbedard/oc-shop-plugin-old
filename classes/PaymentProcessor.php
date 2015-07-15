@@ -1,5 +1,6 @@
 <?php namespace Bedard\Shop\Classes;
 
+use Bedard\Shop\Classes\CartCache;
 use Bedard\Shop\Classes\InventoryManager;
 use Bedard\Shop\Models\Cart;
 use Bedard\Shop\Models\Driver;
@@ -47,8 +48,6 @@ class PaymentProcessor {
      */
     protected function createOrder()
     {
-        $this->cart->loadOrderCache();
-
         $order = Order::firstOrNew(['cart_id' => $this->cart->id]);
 
         if ($this->driver) {
@@ -58,7 +57,7 @@ class PaymentProcessor {
         $order->customer_id         = $this->cart->customer_id;
         $order->shipping_address_id = $this->cart->shipping_address_id;
         $order->billing_address_id  = $this->cart->billing_address_id;
-        $order->cart_cache          = $this->cart->toArray();
+        $order->cart_cache          = (new CartCache)->cache($this->cart);
         $order->cart_subtotal       = $this->cart->subtotal;
         $order->shipping_total      = $this->cart->shipping_cost;
         $order->promotion_total     = $this->cart->promotionSavings;

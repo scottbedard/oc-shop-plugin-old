@@ -160,8 +160,27 @@ class CartManager extends CartSession {
         $this->loadItemData();
 
         $calculator = ShippingSettings::getCalculator($this->cart);
+        $rates = $calculator->getRates();
 
-        if (!$this->cart->shipping_rates = $calculator->getRates()) {
+        if ($rates) {
+            if ($this->cart->isUsingShippingPromotion) {
+                array_walk($rates, function(&$rate) {
+                    $rate['original'] = $rate['cost'];
+                    $rate['cost'] -= $this->cart->promotion->is_shipping_percentage
+                        ? $rate['cost'] * ($this->cart->promotion->shipping_percentage / 100)
+                        : $this->cart->promotion->shipping_exact;
+
+                    $rate['cost'] = round($rate['cost'], 2);
+
+                    if ($rate['cost'] < 0) {
+                        $rate['cost'] = 0;
+                    }
+                });
+            }
+
+            $this->cart->shipping_rates = $rates;
+            $this->cart->shipping_failed = false;
+        } else {
             $this->cart->shipping_failed = true;
         }
 

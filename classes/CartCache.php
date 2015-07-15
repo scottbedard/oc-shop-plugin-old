@@ -12,11 +12,6 @@ use Illuminate\Database\Eloquent\Collection;
 class CartCache {
     // todo: write tests
 
-    public function makeCache(Cart $cart)
-    {
-
-    }
-
     /**
      * Build a Cart collection from cached data
      *
@@ -30,6 +25,45 @@ class CartCache {
         $cart->setRelation('promotion', $this->buildPromotion($data));
 
         return $cart;
+    }
+
+    /**
+     * Loads cache data and returns the array value of a cart
+     *
+     * @param   Cart        $cart
+     * @return  array
+     */
+    public function cache(Cart $cart)
+    {
+        $cart->load([
+            'items' => function($item) {
+                $item->withTrashed()->with([
+                    'inventory' => function($inventory) {
+                        $inventory->selectCacheable()->with([
+                            'product' => function($product) {
+                                $product->joinPrices()->selectCacheable();
+                            },
+                            'values' => function($values) {
+                                $values->selectCacheable()->with([
+                                    'option' => function($option) {
+                                        $option->selectCacheable();
+                                    }
+                                ]);
+                            }
+                        ]);
+                    }
+                ]);
+            },
+            'promotion' => function($promotion) {
+                $promotion->selectCacheable()->with([
+                    'products' => function($product) {
+                        $product->addSelect('id');
+                    }
+                ]);
+            },
+        ]);
+
+        return $cart->toArray();
     }
 
     /**

@@ -12,7 +12,8 @@ use October\Rain\Exception\ValidationException;
  */
 class Option extends Model
 {
-    use \October\Rain\Database\Traits\Validation;
+    use \Bedard\Shop\Traits\CartCacheTrait,
+        \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string  The database table used by the model.
@@ -34,7 +35,6 @@ class Option extends Model
      */
     public $cacheable = [
         'id',
-        'option_id',
         'name',
     ];
 
@@ -47,6 +47,7 @@ class Option extends Model
             'order' => 'position asc',
         ],
     ];
+
     public $belongsTo = [
         'product' => [
             'Bedard\Shop\Models\Product',

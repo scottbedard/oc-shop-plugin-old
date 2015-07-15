@@ -7,6 +7,7 @@ use Model;
  */
 class Value extends Model
 {
+    use \Bedard\Shop\Traits\CartCacheTrait;
 
     /**
      * @var string  The database table used by the model.

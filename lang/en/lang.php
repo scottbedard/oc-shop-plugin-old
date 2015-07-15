@@ -306,9 +306,12 @@ return [
     'orders' => [
         'billing_address'               => 'Billing Address',
         'cart_shipping'                 => 'Shipping',
-        'cart_sku'                      => 'SKU',
+        'cart_sku'                      => 'SKU: :sku',
         'cart_subtotal'                 => 'Subtotal',
         'cart_product'                  => 'Product',
+        'cart_promotion'                => 'Promotion ":code"',
+        'cart_promotion_shipping'       => ':value off shipping',
+        'cart_promotion_subtotal'       => ':value off subtotal',
         'cart_quantity'                 => 'Quantity',
         'cart_total'                    => 'Total',
         'cart_unit_price'               => 'Unit price',

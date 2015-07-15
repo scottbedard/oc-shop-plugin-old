@@ -191,6 +191,17 @@ class Cart extends Model
             $this->hasPromotionProducts;
     }
 
+    public function getIsUsingShippingPromotionAttribute()
+    {
+        if (!$this->isUsingPromotion || !$this->shipping_address_id || !$this->shipping_address) {
+            return false;
+        }
+
+        $countries = $this->promotion->countries->lists('id');
+
+        return !$countries || in_array($this->shipping_address->country_id, $countries);
+    }
+
     public function getSubtotalAttribute()
     {
         return $this->items->sum('subtotal');
@@ -226,35 +237,14 @@ class Cart extends Model
         return !$this->shipping_failed || ShippingSettings::getIsRequired();
     }
 
+    public function getShippingCostAttribute()
+    {
+        return $this->getSelectedShipping('cost') ?: 0;
+    }
+
     public function getWeightAttribute()
     {
         return $this->items->sum('weight');
-    }
-
-    /**
-     * Load the cacheable data for an Order
-     */
-    public function loadOrderCache()
-    {
-        $this->load([
-            'items' => function($item) {
-                $item->withTrashed()->with([
-                    'inventory' => function($inventory) {
-                        $inventory->addSelect('id', 'product_id', 'sku', 'modifier')->with([
-                            'product' => function($product) {
-                                $product->joinPrices()->addSelect('id', 'name', 'base_price', 'price');
-                            },
-                            'values' => function($values) {
-                                $values->addSelect('id', 'option_id', 'name')->with(['option' => function($option) {
-                                    $option->addSelect('id', 'name');
-                                }]);
-                            }
-                        ]);
-                    }
-                ]);
-            },
-            'promotion',
-        ]);
     }
 
     /**
@@ -265,15 +255,18 @@ class Cart extends Model
      */
     public function getSelectedShipping($property = null)
     {
+        // todo: write a test for this
         if ($this->shipping_id && is_array($this->shipping_rates)) {
             foreach ($this->shipping_rates as $rate) {
-                if ($rate['id'] = $this->shipping_id) {
+                if ($rate['id'] == $this->shipping_id) {
                     return !is_null($property)
                         ? $rate[$property]
                         : $rate;
                 }
             }
         }
+
+        return false;
     }
 
     /**

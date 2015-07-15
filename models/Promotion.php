@@ -7,7 +7,8 @@ use Model;
  */
 class Promotion extends Model
 {
-    use \Bedard\Shop\Traits\NumericColumnTrait,
+    use \Bedard\Shop\Traits\CartCacheTrait,
+        \Bedard\Shop\Traits\NumericColumnTrait,
         \October\Rain\Database\Traits\Validation;
 
     /**
@@ -46,13 +47,26 @@ class Promotion extends Model
         'message',
         'cart_exact',
         'cart_percentage',
-        'cart_is_percentage',
+        'is_cart_percentage',
         'shipping_exact',
         'shipping_percentage',
-        'shipping_is_percentage',
+        'is_shipping_percentage',
         'cart_minimum',
         'start_at',
         'end_at',
+    ];
+
+    /**
+     * @var array   Attribute casting
+     */
+    public $casts = [
+        'cart_exact'                => 'float',
+        'cart_percentage'           => 'integer',
+        'is_cart_percentage'        => 'boolean',
+        'shipping_exact'            => 'float',
+        'shipping_percentage'       => 'integer',
+        'is_shipping_percentage'    => 'boolean',
+        'cart_minimum'              => 'float',
     ];
 
     /**

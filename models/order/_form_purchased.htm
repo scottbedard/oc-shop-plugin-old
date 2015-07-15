@@ -7,26 +7,79 @@ $cart = $formModel->getCachedCart();
     'items' => $cart->items->where('deleted_at', null)
 ]) ?>
 
+<div class="footer">
+    <div class="row">
+        <div class="cell left">
+            <strong><?= e(trans('bedard.shop::lang.orders.cart_subtotal')) ?></strong>
+        </div>
+        <div class="cell right">
+            <?= CurrencyHelper::format($cart->subtotal) ?>
+        </div>
+    </div>
+</div>
+
+
 <?php if ($cart->promotion): ?>
     <div class="footer">
         <div class="row">
             <div class="cell left">
-                Promotion
+                <strong><?= e(trans('bedard.shop::lang.orders.cart_promotion', ['code' => $cart->promotion->code])) ?></strong>
+                <?php if ($cart->promotion->cart_exact > 0 && !$cart->promotion->is_cart_percentage): ?>
+                    <div>
+                        <?= e(trans('bedard.shop::lang.orders.cart_promotion_subtotal', [
+                            'value' => CurrencyHelper::format($cart->promotion->cart_exact)
+                        ])) ?>
+                    </div>
+                <?php elseif ($cart->promotion->cart_percentage > 0 && $cart->promotion->is_cart_percentage): ?>
+                    <div>
+                        <?= e(trans('bedard.shop::lang.orders.cart_promotion_subtotal', [
+                            'value' => $cart->promotion->cart_percentage.'%'
+                        ])) ?>
+                    </div>
+                <?php endif ?>
+                <?php if ($cart->promotion->shipping_exact > 0 && !$cart->promotion->is_shipping_percentage): ?>
+                    <div>
+                        <?= e(trans('bedard.shop::lang.orders.cart_promotion_shipping', [
+                            'value' => CurrencyHelper::format($cart->promotion->shipping_exact)
+                        ])) ?>
+                    </div>
+                <?php elseif ($cart->promotion->shipping_percentage > 0 && $cart->promotion->is_shipping_percentage): ?>
+                    <div>
+                        <?= e(trans('bedard.shop::lang.orders.cart_promotion_shipping', [
+                            'value' => $cart->promotion->shipping_percentage.'%'
+                        ])) ?>
+                    </div>
+                <?php endif ?>
             </div>
             <div class="cell right">
-                <?= CurrencyHelper::format($cart->promotionSavings) ?>
+                <?= CurrencyHelper::format($formModel->promotion_total) ?>
             </div>
         </div>
     </div>
 <?php endif ?>
 
+<?php if ($cart->getSelectedShipping()): ?>
+    <div class="footer">
+        <div class="row">
+            <div class="cell left">
+                <strong><?= e(trans('bedard.shop::lang.orders.cart_shipping')) ?></strong>
+                <?= $cart->getSelectedShipping('name'); ?>
+            </div>
+            <div class="cell right">
+                <?= CurrencyHelper::format($formModel->shipping_total) ?>
+            </div>
+        </div>
+    </div>
+<?php endif ?>
+
+
 <div class="footer">
     <div class="row">
         <div class="cell left">
-            <?= e(trans('bedard.shop::lang.orders.cart_total')) ?>
+            <strong><?= e(trans('bedard.shop::lang.orders.cart_total')) ?></strong>
         </div>
         <div class="cell right">
-            <?= CurrencyHelper::format($cart->total) ?>
+            <?= CurrencyHelper::format($formModel->payment_total) ?>
         </div>
     </div>
 </div>

@@ -10,7 +10,8 @@ use October\Rain\Exception\ValidationException;
  */
 class Inventory extends Model
 {
-    use \October\Rain\Database\Traits\Validation;
+    use \Bedard\Shop\Traits\CartCacheTrait,
+        \October\Rain\Database\Traits\Validation;
 
     /**
      * @var string The database table used by the model.

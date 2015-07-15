@@ -14,7 +14,8 @@ use Model;
  */
 class Product extends Model
 {
-    use \October\Rain\Database\Traits\Purgeable,
+    use \Bedard\Shop\Traits\CartCacheTrait,
+        \October\Rain\Database\Traits\Purgeable,
         \October\Rain\Database\Traits\Validation;
 
     /**
