@@ -28,6 +28,7 @@ class Status extends Model
         'name',
         'icon',
         'class',
+        'inventory',
         'core_status',
     ];
 

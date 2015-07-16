@@ -13,3 +13,13 @@ fields:
 
     class:
         label: bedard.shop::lang.statuses.class
+
+    inventory:
+        label: bedard.shop::lang.statuses.inventory
+        comment: bedard.shop::lang.statuses.inventory_comment
+        type: radio
+        options:
+            -1: bedard.shop::lang.statuses.inventory_reduce
+            0: bedard.shop::lang.statuses.inventory_none
+            1: bedard.shop::lang.statuses.inventory_restock
+        default: 0
