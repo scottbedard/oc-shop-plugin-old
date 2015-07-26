@@ -165,7 +165,10 @@
     }
 
     $(document).ready(function() {
-        $('[data-control="inventory-selector"]').inventorySelector();
+        var $selector = $('[data-control="inventory-selector"]');
+        if ($selector.length) {
+            $selector.inventorySelector();
+        }
     });
 
 }(window.jQuery);
