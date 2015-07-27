@@ -139,6 +139,7 @@ class CartManager extends CartSession {
     public function applyPromotion($code)
     {
         $this->loadCart();
+        $this->loadItemData();
 
         if (!$promotion = Promotion::isRunning()->where('code', $code)->first()) {
             throw new AjaxException('PROMOTION_NOT_FOUND');
@@ -311,6 +312,7 @@ class CartManager extends CartSession {
     public function removePromotion()
     {
         $this->loadCart();
+        $this->loadItemData();
 
         $this->cart->promotion_id = null;
 
@@ -409,7 +411,7 @@ class CartManager extends CartSession {
         }
 
         // Update the new values
-        $this->cart->items->load('inventory');
+        $this->loadItemData();
         foreach ($this->cart->items as $cartItem) {
             if (!array_key_exists($cartItem->id, $items)) {
                 continue;
