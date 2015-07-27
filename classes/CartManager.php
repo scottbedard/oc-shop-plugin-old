@@ -68,6 +68,7 @@ class CartManager extends CartSession {
                 'inventory.product' => function($product) {
                     $product->joinPrices();
                 },
+                'inventory.product.thumbnails',
                 'inventory.values.option',
             ]);
 
