@@ -14,8 +14,8 @@ class DevSeeds extends Seeder
 {
     public function run()
     {
-        // Don't run seeds during unit tests
-        if (app()->env == 'testing') {
+        // Don't run seeds during unit tests or in production
+        if (app()->env == 'testing' || app()->env == 'production') {
             return false;
         }
 
