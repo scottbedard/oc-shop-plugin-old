@@ -161,7 +161,7 @@ class CartCache {
      */
     protected function buildPromotion($data)
     {
-        return array_key_exists('promotion', $data)
+        return array_key_exists('promotion', $data) && !is_null($data['promotion'])
             ? $this->fillModel((new Promotion), $data['promotion'])
             : null;
     }

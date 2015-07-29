@@ -204,7 +204,7 @@ class Cart extends Model
 
     public function getSubtotalAttribute()
     {
-        return $this->items->sum('subtotal');
+        return $this->items->where('deleted_at', null)->sum('subtotal');
     }
 
     public function getTotalAttribute()
