@@ -76,6 +76,22 @@ class PaymentProcessor {
     }
 
     /**
+     * Adjusts the inventory up or down based on the status behavior.
+     *
+     * @param   Status  $status
+     */
+    protected function adjustInventory(Status $status)
+    {
+        if ($status->inventory === 1) {
+            $this->inventory->up();
+        }
+
+        elseif ($status->inventory === -1) {
+            $this->inventory->down();
+        }
+    }
+
+    /**
      * Get the order if one exists, otherwise create one
      *
      * @return  Order
@@ -110,14 +126,12 @@ class PaymentProcessor {
     /**
      * Begin a payment
      */
-    public function begin()
+    public function begin(Status $status = null)
     {
-        if (PaymentSettings::getTiming() == 'immediate') {
-            $this->inventory->down();
-        }
-
         $order = $this->createOrder();
-        if ($status = Status::getCore('started')) {
+
+        if ($status) {
+            $this->adjustInventory($status);
             $order->changeStatus($status, $this->driver);
         }
 
@@ -128,14 +142,15 @@ class PaymentProcessor {
     /**
      * Cancel a payment
      */
-    public function cancel()
+    public function cancel(Status $status = null)
     {
         $order = $this->getOrder();
-        if ($status = Status::getCore('canceled')) {
+
+        if ($status) {
+            $this->adjustInventory($status);
             $order->changeStatus($status, $this->driver);
         }
 
-        $this->inventory->up();
         $this->cart->status = 'canceled';
         $this->cart->save();
     }
@@ -143,15 +158,16 @@ class PaymentProcessor {
     /**
      * Complete a payment
      */
-    public function complete()
+    public function complete(Status $status = null)
     {
         $order = $this->getOrder();
-        if ($status = Status::getCore('received')) {
+
+        if ($status) {
+            $this->adjustInventory($status);
             $order->is_paid = true;
             $order->changeStatus($status, $this->driver);
         }
 
-        $this->inventory->down();
         $this->cart->status = 'complete';
         $this->cart->save();
     }

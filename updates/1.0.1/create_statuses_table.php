@@ -15,8 +15,9 @@ class CreateStatusesTable extends Migration
             $table->string('name')->nullable();
             $table->string('icon')->nullable();
             $table->string('class')->nullable();
+            $table->string('color', 7)->nullable();
             $table->tinyInteger('inventory')->default(0);
-            $table->string('core_status')->nullable();
+            $table->boolean('is_pending')->default(false);
             $table->timestamps();
         });
     }

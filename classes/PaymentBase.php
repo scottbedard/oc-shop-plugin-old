@@ -7,6 +7,21 @@ use Bedard\Shop\Models\Status;
 class PaymentBase extends DriverBase {
 
     /**
+     * Returns a Status for a given payment event
+     *
+     * @param   string      $event
+     * @return  Status|null
+     */
+    public function getEventStatus($event)
+    {
+        if ($id = $this->getConfig('status_'.$event)) {
+            return Status::find($id);
+        }
+
+        return null;
+    }
+
+    /**
      * Abandon the payment process
      *
      * @param   Status  $status     The abandoned payment status
@@ -23,7 +38,7 @@ class PaymentBase extends DriverBase {
     public function beginPaymentProcess()
     {
         $processor = new PaymentProcessor($this->cart, $this->driver);
-        $processor->begin();
+        $processor->begin($this->getEventStatus('begin'));
     }
 
     /**
@@ -32,7 +47,7 @@ class PaymentBase extends DriverBase {
     public function cancelPaymentProcess()
     {
         $processor = new PaymentProcessor($this->cart, $this->driver);
-        $processor->cancel();
+        $processor->cancel($this->getEventStatus('cancel'));
     }
 
     /**
@@ -41,7 +56,7 @@ class PaymentBase extends DriverBase {
     public function completePaymentProcess()
     {
         $processor = new PaymentProcessor($this->cart, $this->driver);
-        $processor->complete();
+        $processor->complete($this->getEventStatus('complete'));
     }
 
     /**
@@ -50,7 +65,7 @@ class PaymentBase extends DriverBase {
     public function errorPaymentProcess()
     {
         $processor = new PaymentProcessor($this->cart, $this->driver);
-        $processor->error();
+        $processor->error($this->getEventStatus('error'));
     }
 
     /**

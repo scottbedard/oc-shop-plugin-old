@@ -11,8 +11,9 @@ fields:
         label: bedard.shop::lang.statuses.icon
         comment: bedard.shop::lang.statuses.icon_comment
 
-    class:
-        label: bedard.shop::lang.statuses.class
+    color:
+        label: bedard.shop::lang.statuses.color
+        type: colorpicker
 
     inventory:
         label: bedard.shop::lang.statuses.inventory
@@ -23,3 +24,8 @@ fields:
             0: bedard.shop::lang.statuses.inventory_none
             1: bedard.shop::lang.statuses.inventory_restock
         default: 0
+
+    is_pending:
+        label: bedard.shop::lang.statuses.pending
+        comment: bedard.shop::lang.statuses.pending_comment
+        type: checkbox

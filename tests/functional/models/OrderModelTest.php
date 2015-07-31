@@ -29,22 +29,4 @@ class OrderModelTest extends \OctoberPluginTestCase
         $order->changeStatus($status, $driver);
         $this->assertEquals(1, OrderEvent::where('order_id', $order->id)->count());
     }
-
-    public function test_should_be_abandoned_scope()
-    {
-        $started = Status::getCore('started');
-        $order = Order::create(['status_id' => $started->id, 'is_paid' => false]);
-
-        $order->status_at = Carbon::now()->subMinutes(360);
-        $order->save();
-        $this->assertEquals(0, Order::shouldBeAbandoned(360)->count());
-
-        $order->status_at = Carbon::now()->subMinutes(361);
-        $order->save();
-        $this->assertEquals(1, Order::shouldBeAbandoned(360)->count());
-
-        $order->status_id = Status::getCore('received')->id;
-        $order->save();
-        $this->assertEquals(0, Order::shouldBeAbandoned(360)->count());
-    }
 }

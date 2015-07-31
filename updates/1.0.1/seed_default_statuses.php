@@ -9,41 +9,38 @@ class SeedDefaultStatuses extends Seeder
     public function run()
     {
         Status::create([
-            'name'          => Lang::get('bedard.shop::lang.statuses.defaults.awaiting_payment'),
-            'icon'          => 'icon-spinner',
-            'class'         => 'spinning',
-            'inventory'     => 0,
-            'core_status'   => 'started',
+            'name'      => Lang::get('bedard.shop::lang.statuses.defaults.awaiting_payment'),
+            'icon'      => 'icon-spinner spinning',
+            'inventory' => 0,
+            'is_pending'=> true,
         ]);
 
         Status::create([
-            'name'          => Lang::get('bedard.shop::lang.statuses.defaults.payment_received'),
-            'icon'          => 'icon-money',
-            'class'         => 'blue',
-            'inventory'     => -1,
-            'core_status'   => 'received',
+            'name'      => Lang::get('bedard.shop::lang.statuses.defaults.payment_received'),
+            'icon'      => 'icon-money',
+            'inventory' => -1,
+            'color'     => '#3498db',
         ]);
 
         Status::create([
-            'name'          => Lang::get('bedard.shop::lang.statuses.defaults.canceled'),
-            'icon'          => 'icon-minus',
-            'core_status'   => 'canceled',
-            'inventory'     => 1,
+            'name'      => Lang::get('bedard.shop::lang.statuses.defaults.canceled'),
+            'icon'      => 'icon-minus',
+            'inventory' => 1,
+            'color'     => '#f39c12',
         ]);
 
         Status::create([
-            'name'          => Lang::get('bedard.shop::lang.statuses.defaults.abandoned'),
-            'icon'          => 'icon-times',
-            'class'         => 'red',
-            'inventory'     => 1,
-            'core_status'   => 'abandoned',
+            'name'      => Lang::get('bedard.shop::lang.statuses.defaults.abandoned'),
+            'icon'      => 'icon-times',
+            'inventory' => 1,
+            'color'     => '#c0392b',
         ]);
 
         Status::create([
-            'name'          => Lang::get('bedard.shop::lang.statuses.defaults.complete'),
-            'icon'          => 'icon-check',
-            'class'         => 'green',
-            'inventory'     => -1,
+            'name'      => Lang::get('bedard.shop::lang.statuses.defaults.complete'),
+            'icon'      => 'icon-check',
+            'inventory' => -1,
+            'color'     => '#27ae60',
         ]);
     }
 }

@@ -77,16 +77,6 @@ class PaymentSettings extends Model
     }
 
     /**
-     * Returns the inventory reduction behavior
-     *
-     * @return  string
-     */
-    public static function getTiming()
-    {
-        return self::get('timing', 'completed');
-    }
-
-    /**
      * Returns the success URL
      *
      * @return  string

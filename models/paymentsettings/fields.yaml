@@ -22,15 +22,6 @@ fields:
         label: bedard.shop::lang.settings.payment.url_error
         span: right
 
-    timing:
-        label: bedard.shop::lang.settings.payment.timing
-        type: dropdown
-        options:
-            completed: bedard.shop::lang.settings.payment.timing_completed
-            immediate: bedard.shop::lang.settings.payment.timing_immediate
-        default: completed
-        span: left
-
     abandoned:
         label: bedard.shop::lang.settings.payment.abandoned_label
         type: dropdown

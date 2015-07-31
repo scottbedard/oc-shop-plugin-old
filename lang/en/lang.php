@@ -264,6 +264,10 @@ return [
             'api_username'              => 'API username',
             'api_password'              => 'API password',
             'api_signature'             => 'API signature',
+            'status_begin'              => 'Payment started',
+            'status_cancel'             => 'Payment canceled',
+            'status_complete'           => 'Payment received',
+            'behavior_comment'          => 'This area describes how the driver should behave at certain points during the checkout process. You may select which statuses should be triggered and when.',
             'brand_name'                => 'Brand name',
             'border_color'              => 'Border color',
             'driver'                    => 'Paypal Express',
@@ -273,6 +277,7 @@ return [
             'sandbox'                   => 'Sandbox',
             'server'                    => 'Server',
             'tab_appearance'            => 'Appearance',
+            'tab_behavior'              => 'Behavior',
             'tab_connection'            => 'Connection',
         ],
     ],
@@ -486,7 +491,7 @@ return [
 
     'statuses' => [
         'back_to_orders'                => 'Back to orders',
-        'class'                         => 'CSS Class',
+        'color'                         => 'Color',
         'controller'                    => 'Statuses',
         'defaults'                      => [
             'abandoned'                 => 'Abandoned',
@@ -505,6 +510,8 @@ return [
         'list_title'                    => 'Manage Statuses',
         'model'                         => 'Status',
         'order_count'                   => 'Orders',
+        'pending'                       => 'Payment pending',
+        'pending_comment'               => 'Statuses marked as "pending" are eligible to be automatically abandoned.',
         'protected_status'              => 'Protected statuses are required by drivers, and cannot be deleted.',
     ],
 

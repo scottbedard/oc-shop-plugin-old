@@ -1,2 +1,4 @@
-<i class="list-icon <?= $record->icon ?> <?= $record->class ?>"></i>
+<i
+    <?php if ($record->color): ?>style="color: <?= $record->color ?>"<?php endif ?>
+    class="list-icon <?= $record->icon ?> <?= $record->class ?>"></i>
 <?= $record->icon ?>

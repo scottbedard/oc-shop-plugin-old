@@ -109,7 +109,7 @@ class Order extends Model
                 ->where('is_paid', false)
                 ->where('status_at', '<', Carbon::now()->subMinutes($minutes))
                 ->whereHas('status', function($status) {
-                    $status->where('core_status', 'started');
+                    $status->where('is_pending', true);
                 });
         });
     }

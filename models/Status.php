@@ -27,9 +27,9 @@ class Status extends Model
     protected $fillable = [
         'name',
         'icon',
-        'class',
+        'color',
         'inventory',
-        'core_status',
+        'is_pending',
     ];
 
     /**
@@ -47,24 +47,5 @@ class Status extends Model
     public $rules = [
         'name' => 'required',
     ];
-
-    /**
-     * Model Events
-     */
-    public function beforeDelete()
-    {
-        if (!is_null($this->core_status)) {
-            Flash::error(Lang::get('bedard.shop::lang.statuses.protected_status'));
-            return false;
-        }
-    }
-
-    /**
-     * Query Scopes
-     */
-    public function scopeGetCore($query, $status)
-    {
-        return $query->where('core_status', $status)->first();
-    }
 
 }

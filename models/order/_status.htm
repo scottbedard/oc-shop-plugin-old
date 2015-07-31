@@ -1,4 +1,6 @@
 <?php if ($record->status): ?>
-    <i class="list-icon <?= $record->status->icon . ' ' . $record->status->class ?>"></i>
+    <i
+        <?php if ($record->status->color): ?>style="color: <?= $record->status->color ?>"<?php endif ?>
+        class="list-icon <?= $record->status->icon . ' ' . $record->status->class ?>"></i>
     <?= e(trans($record->status->name)) ?>
 <?php endif ?>

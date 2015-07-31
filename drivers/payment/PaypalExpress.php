@@ -6,6 +6,7 @@ use Bedard\Shop\Classes\PaymentException;
 use Bedard\Shop\Interfaces\PaymentInterface;
 use Bedard\Shop\Models\Currency;
 use Bedard\Shop\Models\PaymentSettings;
+use Bedard\Shop\Models\Status;
 use Cms\Classes\MediaLibrary;
 use Exception;
 use Omnipay\Omnipay;
@@ -33,6 +34,8 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
      */
     public function registerTabFields()
     {
+        $statuses = Status::all()->lists('name', 'id');
+
         return [
             'api_username' => [
                 'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_connection',
@@ -66,6 +69,29 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
                 'required'  => true,
                 'span'      => 'right',
             ],
+            'behavior_comment' => [
+                'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_behavior',
+                'type'      => 'owl-comment',
+                'comment'   => 'bedard.shop::lang.drivers.paypalexpress.behavior_comment',
+            ],
+            'status_begin' => [
+                'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_behavior',
+                'label'     => 'bedard.shop::lang.drivers.paypalexpress.status_begin',
+                'type'      => 'dropdown',
+                'options'   => $statuses,
+            ],
+            'status_cancel' => [
+                'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_behavior',
+                'label'     => 'bedard.shop::lang.drivers.paypalexpress.status_cancel',
+                'type'      => 'dropdown',
+                'options'   => $statuses,
+            ],
+            'status_complete' => [
+                'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_behavior',
+                'label'     => 'bedard.shop::lang.drivers.paypalexpress.status_complete',
+                'type'      => 'dropdown',
+                'options'   => $statuses,
+            ],
             'brand_name' => [
                 'tab'       => 'bedard.shop::lang.drivers.paypalexpress.tab_appearance',
                 'label'     => 'bedard.shop::lang.drivers.paypalexpress.brand_name',
@@ -83,6 +109,32 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
                 'type'      => 'colorpicker',
             ],
         ];
+    }
+
+    /**
+     * Open an the Paypal Express gateway
+     */
+    protected function openGateway()
+    {
+        $username   = $this->getConfig('api_username');
+        $password   = $this->getConfig('api_password');
+        $signature  = $this->getConfig('api_signature');
+        $server     = $this->getConfig('server');
+
+        if (!$username || !$password || !$signature || !$server) {
+            throw new PaymentException('Required API credentials are not defined.');
+        }
+
+        $gateway = Omnipay::create('PayPal_Express');
+        $gateway->setUsername($username);
+        $gateway->setPassword($password);
+        $gateway->setSignature($signature);
+
+        if ($server == 'sandbox') {
+            $gateway->setTestMode(true);
+        }
+
+        return $gateway;
     }
 
     /**
@@ -129,37 +181,12 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
                 throw new PaymentException($response->getMessage());
             }
 
+            // Notify the payment processor that we've started
             $this->beginPaymentProcess();
             return Redirect::to($response->getRedirectUrl());
 
         } catch (Exception $e) {
             throw new PaymentException($e->getMessage());
         }
-    }
-
-    /**
-     * Open an the Paypal Express gateway
-     */
-    protected function openGateway()
-    {
-        $username   = $this->getConfig('api_username');
-        $password   = $this->getConfig('api_password');
-        $signature  = $this->getConfig('api_signature');
-        $server     = $this->getConfig('server');
-
-        if (!$username || !$password || !$signature || !$server) {
-            throw new PaymentException('Required API credentials are not defined.');
-        }
-
-        $gateway = Omnipay::create('PayPal_Express');
-        $gateway->setUsername($username);
-        $gateway->setPassword($password);
-        $gateway->setSignature($signature);
-
-        if ($server == 'sandbox') {
-            $gateway->setTestMode(true);
-        }
-
-        return $gateway;
     }
 }
