@@ -3,6 +3,7 @@
 use Backend;
 use BackendMenu;
 use Backend\Classes\Controller;
+use Bedard\Shop\Classes\InventoryManager;
 use Bedard\Shop\Models\Order;
 use Bedard\Shop\Models\Status;
 use Flash;
@@ -76,9 +77,18 @@ class Orders extends Controller
     {
         $status = Status::find(input('status_id'));
         if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
-            $orders = Order::whereIn('id', $checkedIds)->with('events')->get();
+            $orders = Order::whereIn('id', $checkedIds)->with('cart', 'events')->get();
             foreach ($orders as $order) {
                 $order->changeStatus($status, null, $this->user);
+
+                if ($order->cart && $status && ($status->inventory === -1 || $status->inventory === 1)) {
+                    $inventoryManager = new InventoryManager($order->cart);
+                    if ($status->inventory === -1) {
+                        $inventoryManager->down();
+                    } elseif ($status->inventory === 1) {
+                        $inventoryManager->up();
+                    }
+                }
             }
         }
 
@@ -94,7 +104,16 @@ class Orders extends Controller
 
         $model = $this->formFindModelObject($recordId);
         $model->changeStatus($status, null, $this->user);
-        $model->load('status', 'events');
+        $model->load('cart', 'status', 'events');
+
+        if ($model->cart && $status && ($status->inventory === -1 || $status->inventory === 1)) {
+            $inventoryManager = new InventoryManager($model->cart);
+            if ($status->inventory === -1) {
+                $inventoryManager->down();
+            } elseif ($status->inventory === 1) {
+                $inventoryManager->up();
+            }
+        }
 
         Flash::success(Lang::get('bedard.shop::lang.orders.update_singular', ['status' => $model->status->name]));
 
