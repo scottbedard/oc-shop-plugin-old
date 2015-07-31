@@ -11,6 +11,7 @@ use Cms\Classes\MediaLibrary;
 use Exception;
 use Omnipay\Omnipay;
 use Redirect;
+use Session;
 use URL;
 
 class PaypalExpress extends PaymentBase implements PaymentInterface {
@@ -148,12 +149,17 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
 
             $total = number_format($this->cart->total, 2, '.', '');
 
-            $payment = $gateway->purchase([
-                    'returnUrl' => $this->getResponseURL('success'),
-                    'cancelUrl' => $this->getResponseURL('canceled'),
-                    'amount'    => $total,
-                    'currency'  => Currency::getCode(),
-                ])
+            $params = [
+                'returnUrl' => $this->getResponseURL('success'),
+                'cancelUrl' => $this->getResponseURL('canceled'),
+                'amount'    => $total,
+                'currency'  => Currency::getCode(),
+            ];
+
+            Session::put('paypal_express_params', $params);
+        	Session::save();
+
+            $payment = $gateway->purchase($params)
                 ->setShippingAmount($this->cart->shipping_cost)
                 ->setItems($this->getItems())
                 ->setAmount($total)
@@ -187,6 +193,24 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
 
         } catch (Exception $e) {
             throw new PaymentException($e->getMessage());
+        }
+    }
+
+    /**
+     * Charge the user
+     */
+    public function completePaymentProcess()
+    {
+        $gateway = $this->openGateway();
+
+        $params = Session::get('paypal_express_params');
+        $response = $gateway->completePurchase($params)->send();
+        $paypalResponse = $response->getData();
+
+        if(isset($paypalResponse['PAYMENTINFO_0_ACK']) && $paypalResponse['PAYMENTINFO_0_ACK'] === 'Success') {
+            parent::completePaymentProcess();
+        } else {
+            // Payment failed
         }
     }
 }
