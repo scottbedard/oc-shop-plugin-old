@@ -147,22 +147,29 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
 
         try {
 
-            $total = number_format($this->cart->total, 2, '.', '');
+            $shipping   = $this->cart->shipping_cost;
+            $items      = $this->getItems();
+            $amount     = number_format($this->cart->total, 2, '.', '');
 
             $params = [
                 'returnUrl' => $this->getResponseURL('success'),
                 'cancelUrl' => $this->getResponseURL('canceled'),
-                'amount'    => $total,
+                'amount'    => $amount,
                 'currency'  => Currency::getCode(),
             ];
 
-            Session::put('paypal_express_params', $params);
+            Session::put('paypal_express_data', [
+                'params'    => $params,
+                'shipping'  => $shipping,
+                'items'     => $items,
+                'amount'    => $amount,
+            ]);
         	Session::save();
 
             $payment = $gateway->purchase($params)
-                ->setShippingAmount($this->cart->shipping_cost)
-                ->setItems($this->getItems())
-                ->setAmount($total)
+                ->setShippingAmount($shipping)
+                ->setItems($items)
+                ->setAmount($amount)
                 ->setCard($this->getCard())
                 ->setTaxAmount(0)
                 ->setAddressOverride(1)
@@ -197,14 +204,19 @@ class PaypalExpress extends PaymentBase implements PaymentInterface {
     }
 
     /**
-     * Charge the user
+     * Complete the payment and charge the user
      */
     public function completePaymentProcess()
     {
         $gateway = $this->openGateway();
 
-        $params = Session::get('paypal_express_params');
-        $response = $gateway->completePurchase($params)->send();
+        $data = Session::pull('paypal_express_data');
+        $response = $gateway->completePurchase($data['params'])
+            ->setShippingAmount($data['shipping'])
+            ->setItems($data['items'])
+            ->setAmount($data['amount'])
+            ->send();
+
         $paypalResponse = $response->getData();
 
         if(isset($paypalResponse['PAYMENTINFO_0_ACK']) && $paypalResponse['PAYMENTINFO_0_ACK'] === 'Success') {
