@@ -90,8 +90,10 @@ class Orders extends Controller
      */
     public function update_onSave($recordId = null, $context = null)
     {
+        $status = Status::find(input('Order')['status']);
+
         $model = $this->formFindModelObject($recordId);
-        $model->changeStatus(input('Order')['status'], null, $this->user);
+        $model->changeStatus($status, null, $this->user);
         $model->load('status', 'events');
 
         Flash::success(Lang::get('bedard.shop::lang.orders.update_singular', ['status' => $model->status->name]));
