@@ -9,7 +9,7 @@ name: bedard.shop::lang.customers.model
 form: $/bedard/shop/models/customer/fields.yaml
 
 # Model Class name
-modelClass: Bedard\Shop\Models\customer
+modelClass: Bedard\Shop\Models\Customer
 
 # Default redirect location
 defaultRedirect: bedard/shop/customers
