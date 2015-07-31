@@ -2,6 +2,7 @@
 
 use Bedard\Shop\Models\Cart;
 use Bedard\Shop\Models\Driver;
+use Bedard\Shop\Models\Status;
 use Exception;
 use Model;
 
@@ -34,6 +35,11 @@ class PaymentSettings extends Model
         return Driver::isPayment()->isConfigured()->orderBy('name')->lists('name', 'class');
     }
 
+    public function getAbandonedStatusOptions()
+    {
+        return Status::where('is_pending', false)->lists('name', 'id');
+    }
+
     /**
      * Get the amount of time before an Order is considered abandoned
      *
@@ -42,6 +48,16 @@ class PaymentSettings extends Model
     public static function getAbandoned()
     {
         return self::get('abandoned', 60);
+    }
+
+    /**
+     * Return the status to use for abandoned payments
+     *
+     * @return  integer
+     */
+    public static function getAbandonedStatus()
+    {
+        return self::get('abandoned_status');
     }
 
     /**

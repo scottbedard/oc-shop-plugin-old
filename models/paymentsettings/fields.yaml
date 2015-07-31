@@ -33,6 +33,11 @@ fields:
             720: bedard.shop::lang.settings.payment.abandoned_twelve_hours
             1440: bedard.shop::lang.settings.payment.abandoned_one_day
         default: 60
+        span: left
+
+    abandoned_status:
+        label: bedard.shop::lang.settings.payment.abandoned_status
+        type: dropdown
         span: right
 
     driversettings:

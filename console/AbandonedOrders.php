@@ -49,7 +49,8 @@ class AbandonedOrders extends Command
             ->get();
 
         if ($orders && count($orders)) {
-            $status = Status::getCore('abandoned');
+            $status = Status::find(PaymentSettings::getAbandonedStatus());
+
             foreach ($orders as $order) {
                 $driver = $order->payment_driver->getClass();
                 $driver->setCart($order->cart);

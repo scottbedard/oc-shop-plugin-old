@@ -435,6 +435,7 @@ return [
         ],
         'payment' => [
             'abandoned_label'           => 'Consider payments abandoned',
+            'abandoned_status'          => 'Abandoned status',
             'abandoned_never'           => 'Never, I will do this manually',
             'abandoned_half_hour'       => 'After 30 minutes',
             'abandoned_one_hour'        => 'After 1 hour',
