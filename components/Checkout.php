@@ -120,19 +120,23 @@ class Checkout extends ComponentBase
      */
     public function onSubmitDetails()
     {
-        $customer = input('customer');
-        $shipping = input('shipping');
+        try {
+            $customer = input('customer');
+            $shipping = input('shipping');
 
-        if (isset($shipping['is_billing'])) {
-            unset($shipping['is_billing']);
-            $billing = $shipping;
-        } else {
-            $billing = input('billing');
+            if (isset($shipping['is_billing'])) {
+                unset($shipping['is_billing']);
+                $billing = $shipping;
+            } else {
+                $billing = input('billing');
+            }
+
+            $this->manager->setCustomerAddress($customer, $shipping, $billing);
+            $this->prepareCart();
+            $this->prepareVars();
+        } catch (Exception $e) {
+            throw new AjaxException($e->getMessage());
         }
-
-        $this->manager->setCustomerAddress($customer, $shipping, $billing);
-        $this->prepareCart();
-        $this->prepareVars();
     }
 
     /**
