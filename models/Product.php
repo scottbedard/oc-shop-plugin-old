@@ -17,6 +17,7 @@ class Product extends Model
     use \Bedard\Shop\Traits\CartCacheTrait,
         \October\Rain\Database\Traits\Purgeable,
         \October\Rain\Database\Traits\Validation;
+        \October\Rain\Database\Traits\Sluggable;
 
     /**
      * @var string The database table used by the model.
@@ -62,6 +63,11 @@ class Product extends Model
      * @var array Purgeable fields
      */
     protected $purgeable = ['optionsinventories'];
+
+    /**
+     * @var array List of attributes to automatically generate unique URL names (slugs) for.
+     */
+    protected $slugs = ['slug' => 'name'];
 
     /**
      * @var array Relations
@@ -119,7 +125,7 @@ class Product extends Model
      */
     public $rules = [
         'name'          => 'required',
-        'slug'          => 'required|between:3,64|unique:bedard_shop_products',
+        'slug'          => 'between:3,64|unique:bedard_shop_products',
         'base_price'    => 'numeric|min:0',
     ];
 
