@@ -251,7 +251,7 @@ class Plugin extends PluginBase
                 'code'  => 'optionsinventories',
             ],
             'Bedard\Shop\FormWidgets\RelationSelector' => [
-                'labek' => 'Relation Selector',
+                'label' => 'Relation Selector',
                 'code'  => 'relationselector',
             ],
             'Bedard\Shop\FormWidgets\ValueManager' => [

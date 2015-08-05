@@ -85,7 +85,7 @@ class Product extends ComponentBase
     }
 
     /**
-     * Returns arrays of values cooresponding to in-stock inventories
+     * Returns arrays of values corresponding to in-stock inventories
      *
      * @return  array
      */

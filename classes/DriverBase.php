@@ -101,7 +101,7 @@ class DriverBase {
     }
 
     /**
-     * Run custom messages through the Transliterator
+     * Run custom messages through the Translator
      *
      * @return  array
      */
