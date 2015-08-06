@@ -1,0 +1,17 @@
+# ===================================
+#  Import/Export Behavior Config
+# ===================================
+
+import:
+
+    # Page title
+    title: bedard.shop::lang.products.import
+
+    # Model List Column configuration
+    list: $/bedard/shop/models/productimport/columns.yaml
+
+    # Import Model class
+    modelClass: Bedard\Shop\Models\ProductImport
+
+    # Redirect when finished
+    redirect: bedard/shop/products

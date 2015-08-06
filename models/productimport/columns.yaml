@@ -1,0 +1,13 @@
+columns:
+
+    name:
+        label: bedard.shop::lang.common.name
+
+    categories:
+        label: bedard.shop::lang.categories.controller
+
+    base_price:
+        label: bedard.shop::lang.products.price
+
+    weight:
+        label: bedard.shop::lang.products.weight

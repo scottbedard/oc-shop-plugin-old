@@ -16,7 +16,7 @@ class Product extends Model
 {
     use \Bedard\Shop\Traits\CartCacheTrait,
         \October\Rain\Database\Traits\Purgeable,
-        \October\Rain\Database\Traits\Validation;
+        \October\Rain\Database\Traits\Validation,
         \October\Rain\Database\Traits\Sluggable;
 
     /**
