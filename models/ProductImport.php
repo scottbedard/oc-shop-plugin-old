@@ -14,7 +14,8 @@ class ProductImport extends ImportModel
      * Validation rules
      */
     public $rules = [
-        'name' => 'required'
+        'name'          => 'required',
+        'base_price'    => 'numeric|min:0'
     ];
 
     protected $categoryNameCache = [];
@@ -28,11 +29,19 @@ class ProductImport extends ImportModel
                     continue;
                 }
 
+                /*
+                 * Find or create
+                 */
                 $product = Product::firstOrNew(['name' => $name]);
                 $productExists = $product->exists;
 
-                foreach ($data as $attribute => $value) {
-                    $product->{$attribute} = $value;
+                /*
+                 * Set attributes
+                 */
+                $except = ['categories'];
+
+                foreach (array_except($data, $except) as $attribute => $value) {
+                    $product->{$attribute} = $value ?: null;
                 }
 
                 $product->forceSave();
@@ -41,6 +50,9 @@ class ProductImport extends ImportModel
                     $product->categories()->sync($categoryIds);
                 }
 
+                /*
+                 * Log results
+                 */
                 if ($productExists) {
                     $this->logUpdated();
                 } else {
@@ -56,7 +68,7 @@ class ProductImport extends ImportModel
     {
         $ids = [];
 
-        $categoryNames = explode(',', array_get($data, 'categories'));
+        $categoryNames = $this->decodeArrayValue(array_get($data, 'categories'));
         foreach ($categoryNames as $name) {
             if (!$name = trim($name)) {
                 continue;
