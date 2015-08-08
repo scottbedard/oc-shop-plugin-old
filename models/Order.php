@@ -207,7 +207,7 @@ class Order extends Model
     {
         $options = [];
         foreach (Status::all() as $status) {
-            $options[$status->id] = '<i class="status-icon '.$status->icon.' '.$status->class.'"></i> '.Lang::get($status->name);
+            $options[$status->id] = '<i style="color:'.$status->color.'" class="status-icon '.$status->icon.'"></i> '.Lang::get($status->name);
         }
 
         return $options;
