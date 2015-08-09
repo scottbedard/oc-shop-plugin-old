@@ -22,9 +22,16 @@
         <?= e(trans('backend::lang.list.delete_selected')) ?>
     </button>
 
-    <a
-        href="<?= Backend::url('bedard/shop/products/import') ?>"
-        class="btn btn-default oc-icon-upload">
-        <?= e(trans('bedard.shop::lang.products.import')) ?>
-    </a>
+    <div class="btn-group">
+        <a
+            href="<?= Backend::url('bedard/shop/products/export') ?>"
+            class="btn btn-default oc-icon-download">
+            <?= e(trans('bedard.shop::lang.products.export')) ?>
+        </a>
+        <a
+            href="<?= Backend::url('bedard/shop/products/import') ?>"
+            class="btn btn-default oc-icon-upload">
+            <?= e(trans('bedard.shop::lang.products.import')) ?>
+        </a>
+    </div>
 </div>

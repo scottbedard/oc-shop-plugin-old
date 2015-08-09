@@ -71,6 +71,18 @@ class Products extends Controller
         $this->asExtension('ListController')->index();
     }
 
+    public function export()
+    {
+        $this->bodyClass = '';
+        return $this->asExtension('ImportExportController')->export();
+    }
+
+    public function import()
+    {
+        $this->bodyClass = '';
+        return $this->asExtension('ImportExportController')->import();
+    }
+
     /**
      * Extend the form fields
      */
