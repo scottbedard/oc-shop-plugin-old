@@ -361,17 +361,17 @@ class CartManager extends CartSession {
 
         try {
             $save = false;
-            if (is_array($customerData) && array_filter($customerData) && ($customer = Customer::firstOrCreate($customerData))) {
+            if (is_array($customerData) && ($customer = Customer::firstOrCreate($customerData))) {
                 $this->cart->customer_id = $customer->id;
                 $save = true;
             }
 
-            if (is_array($shipping) && array_filter($shipping) && ($address = Address::firstOrCreate($shipping))) {
+            if (is_array($shipping) && ($address = Address::firstOrCreate($shipping))) {
                 $this->cart->shipping_address_id = $address->id;
                 $save = true;
             }
 
-            if (is_array($billing) && array_filter($billing) && ($address = Address::firstOrCreate($billing))) {
+            if (is_array($billing) && ($address = Address::firstOrCreate($billing))) {
                 $this->cart->billing_address_id = $address->id;
                 $save = true;
             }
