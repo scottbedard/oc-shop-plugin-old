@@ -20,7 +20,7 @@ tabs:
     fields:
 
         filter:
-            tab: bedard.shop::lang.categories.behavior_tab
+            tab: bedard.shop::lang.categories.general_tab
             label: bedard.shop::lang.categories.filter
             comment: bedard.shop::lang.categories.filter_comment
             type: dropdown
@@ -35,72 +35,18 @@ tabs:
             span: left
 
         filter_value:
-            tab: bedard.shop::lang.categories.behavior_tab
+            tab: bedard.shop::lang.categories.general_tab
             label: bedard.shop::lang.categories.filter_value
             span: right
 
-        sort:
-            tab: bedard.shop::lang.categories.display_tab
-            label: bedard.shop::lang.categories.sort
-            comment: bedard.shop::lang.categories.sort_comment
-            type: dropdown
-            options:
-                created_at-asc: bedard.shop::lang.categories.sort_date_asc
-                created_at-desc: bedard.shop::lang.categories.sort_date_desc
-                name-asc: bedard.shop::lang.categories.sort_name_asc
-                name-desc: bedard.shop::lang.categories.sort_name_desc
-                price-asc: bedard.shop::lang.categories.sort_price_asc
-                price-desc: bedard.shop::lang.categories.sort_price_desc
-                random: bedard.shop::lang.categories.sort_random
-                # custom: bedard.shop::lang.categories.sort_custom
-
-        rows:
-            tab: bedard.shop::lang.categories.display_tab
-            label: bedard.shop::lang.categories.rows
-            type: dropdown
-            options:
-                0: bedard.shop::lang.categories.rows_display_all
-                1: 1
-                2: 2
-                3: 3
-                4: 4
-                5: 5
-                6: 6
-                7: 7
-                8: 8
-                9: 9
-                10: 10
-                11: 11
-                12: 12
-            span: left
-
-        columns:
-            tab: bedard.shop::lang.categories.display_tab
-            label: bedard.shop::lang.categories.columns
-            type: dropdown
-            options:
-                1: 1
-                2: 2
-                3: 3
-                4: 4
-                5: 5
-                6: 6
-                7: 7
-                8: 8
-                9: 9
-                10: 10
-                11: 11
-                12: 12
-            span: right
-
         is_hidden:
-            tab: bedard.shop::lang.categories.display_tab
+            tab: bedard.shop::lang.categories.general_tab
             label: bedard.shop::lang.categories.is_hidden
             type: switch
             default: false
 
         hide_out_of_stock:
-            tab: bedard.shop::lang.categories.display_tab
+            tab: bedard.shop::lang.categories.general_tab
             label: bedard.shop::lang.categories.hide_out_of_stock
             type: switch
             default: false

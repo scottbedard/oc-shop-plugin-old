@@ -1,34 +1,30 @@
 <div class="page-header">
-    <h2>{{ __SELF__.category.name }}</h2>
+    <h2>{{ category.name }}</h2>
 </div>
 
-{% for row in __SELF__.products|batch(__SELF__.category.columns) %}
+{% for row in products.chunk(__SELF__.columns) %}
     <div class="row">
         {% for product in row %}
-            <div class="col span-{{ __SELF__.category.columns }}">
+            <div class="col-sm-{{ __SELF__.columns }}">
                 <div class="inner">
                     <h4>{{ product.name }}</h4>
                     {% if product.isDiscounted %}
-                        <s>{{ product.basePrice|moneyFormat }}</s>
-                        <span class="text-success">{{ product.price|moneyFormat }}</span>
+                        <s>{{ product.basePrice|currency }}</s>
+                        <span class="text-success">{{ product.price|currency }}</span>
                     {% else %}
-                        {{ product.price|moneyFormat }}
+                        {{ product.price|currency }}
                     {% endif %}
-
-                    <div class="description">
-                        {{ product.snippet_html|raw }}
-                    </div>
 
                     <div class="buttons">
                         {% if product.isInStock %}
                             <a
-                                href="{{ 'product'|page({ slug: product.slug }) }}"
+                                href="{{ product.url }}"
                                 class="btn btn-primary">
                                 Details
                             </a>
                         {% else %}
                             <a
-                                href="{{ 'product'|page({ slug: product.slug }) }}"
+                                href="{{ product.url }}"
                                 class="btn btn-default">
                                 Out Of Stock
                             </a>
@@ -39,3 +35,5 @@
         {% endfor %}
     </div>
 {% endfor %}
+
+{% partial __SELF__ ~ "::pagination" %}

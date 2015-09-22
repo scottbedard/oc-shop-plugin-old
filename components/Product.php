@@ -42,7 +42,6 @@ class Product extends ComponentBase
                 'title'             => 'bedard.shop::lang.components.product.use_selector',
                 'description'       => 'bedard.shop::lang.components.product.use_selector_info',
                 'type'              => 'checkbox',
-                'type'              => 'checkbox',
                 'default'           => true,
                 'showExternalParam' => false,
             ],

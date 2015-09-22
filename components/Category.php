@@ -1,26 +1,45 @@
 <?php namespace Bedard\Shop\Components;
 
-use Bedard\Shop\Models\Category as CategoryModel;
+use Request;
+use Redirect;
+use Cms\Classes\Page;
 use Cms\Classes\ComponentBase;
-use Lang;
+use Bedard\Shop\Models\Category as CategoryModel;
+use Bedard\Shop\Models\Product as ProductModel;
 
 class Category extends ComponentBase
 {
 
     /**
-     * @var CategoryModel   The category being viewed
+     * The category being viewed
+     *
+     * @var CategoryModel
      */
     public $category;
 
     /**
-     * @var Collection      The category's products
+     * The category's products
+     *
+     * @var Collection
      */
     public $products;
 
     /**
-     * @var array           Pagination data (keys: first, last, current, previous, next)
+     * Message to display when there are no messages.
+     *
+     * @var string
      */
-    public $pagination = [];
+    public $noProductsMessage;
+
+    /**
+     * Reference to the page name for linking to products.
+     *
+     * @var string
+     */
+    public $productPage;
+
+    public $columns;
+    public $rows;
 
     /**
      * Component details
@@ -48,6 +67,7 @@ class Category extends ComponentBase
                 'description'       => 'bedard.shop::lang.components.category.slug_description',
                 'default'           => '{{ :slug }}',
                 'type'              => 'dropdown',
+                'showExternalParam' => false,
             ],
             'default' => [
                 'title'             => 'bedard.shop::lang.components.category.default',
@@ -55,59 +75,40 @@ class Category extends ComponentBase
                 'type'              => 'dropdown',
                 'showExternalParam' => false,
             ],
-            'page' => [
-                'title'             => 'bedard.shop::lang.components.category.page',
-                'description'       => 'bedard.shop::lang.components.category.page_description',
-                'default'           => '{{ :page }}',
+            'productPage' => [
+                'title'       => 'Product page',
+                'description' => 'Name of the product page file.',
+                'type'        => 'dropdown',
+                'showExternalParam' => false,
+            ],
+            'rows'   => [
+                'title'             => 'Rows',
                 'type'              => 'string',
-                'validationPattern' => '^[1-9][0-9]*$',
-                'validationMessage' => Lang::get('bedard.shop::lang.components.category.page_invalid'),
-            ],
-            'notfound' => [
-                'title'             => 'bedard.shop::lang.components.category.notfound',
-                'description'       => 'bedard.shop::lang.components.category.notfound_description',
-                'type'              => 'checkbox',
-                'default'           => true,
+                'validationPattern' => '^[0-9]+$',
+                'validationMessage' => 'Invalid format of the rows value',
+                'default'           => '3',
                 'showExternalParam' => false,
             ],
-            'descriptions' => [
-                'group'             => 'bedard.shop::lang.components.category.data',
-                'title'             => 'bedard.shop::lang.components.category.load_description',
-                'description'       => 'bedard.shop::lang.components.category.load_description_info',
-                'type'              => 'checkbox',
-                'default'           => false,
+            'columns' => [
+                'title'             => 'Columns',
+                'type'              => 'string',
+                'validationPattern' => '^[0-9]+$',
+                'validationMessage' => 'Invalid format of the rows value',
+                'default'           => '4',
                 'showExternalParam' => false,
             ],
-            'snippets' => [
-                'group'             => 'bedard.shop::lang.components.category.data',
-                'title'             => 'bedard.shop::lang.components.category.load_snippet',
-                'description'       => 'bedard.shop::lang.components.category.load_snippet_info',
-                'type'              => 'checkbox',
-                'default'           => false,
+            'noProductsMessage' => [
+                'title'       => 'No products message',
+                'description' => 'Message to display in the product list in case if there are no products.',
+                'type'        => 'string',
+                'default'     => 'No products found',
                 'showExternalParam' => false,
             ],
-            'thumbnails' => [
-                'group'             => 'bedard.shop::lang.components.category.data',
-                'title'             => 'bedard.shop::lang.components.category.thumbnails',
-                'description'       => 'bedard.shop::lang.components.category.thumbnails_description',
-                'type'              => 'checkbox',
-                'default'           => true,
-                'showExternalParam' => false,
-            ],
-            'gallery' => [
-                'group'             => 'bedard.shop::lang.components.category.data',
-                'title'             => 'bedard.shop::lang.components.category.gallery',
-                'description'       => 'bedard.shop::lang.components.category.gallery_description',
-                'type'              => 'checkbox',
-                'default'           => false,
-                'showExternalParam' => false,
-            ],
-            'inventories' => [
-                'group'             => 'bedard.shop::lang.components.category.data',
-                'title'             => 'bedard.shop::lang.components.category.inventories',
-                'description'       => 'bedard.shop::lang.components.category.inventories_description',
-                'type'              => 'checkbox',
-                'default'           => true,
+            'sortOrder' => [
+                'title'       => 'Product order',
+                'description' => 'Attribute on which the products should be ordered',
+                'type'        => 'dropdown',
+                'default'     => 'created_at desc',
                 'showExternalParam' => false,
             ],
         ];
@@ -118,19 +119,17 @@ class Category extends ComponentBase
      *
      * @return  array
      */
-    public function getCategorySlugs()
-    {
-        return CategoryModel::orderBy('name', 'asc')->lists('name', 'slug');
+    public function getDefaultOptions() {
+        return ['' => '- None -'] + CategoryModel::orderBy('name', 'asc')->lists('name', 'slug');
     }
 
-    public function getDefaultOptions()
-    {
-        return $this->getCategorySlugs();
+    public function getProductPageOptions() {
+        return Page::withComponent('shopProduct')->sortBy('baseFileName')->lists('baseFileName', 'baseFileName');
     }
 
-    public function getSlugOptions()
+    public function getSortOrderOptions()
     {
-        return $this->getCategorySlugs();
+        return ProductModel::$allowedSortingOptions;
     }
 
     /**
@@ -138,68 +137,89 @@ class Category extends ComponentBase
      */
     public function onRun()
     {
-        // Query the selected category
-        $slug = $this->property('slug') ?: $this->property('default');
-        if (!$this->category = CategoryModel::where('slug', $slug)->first()) {
-            return $this->property('notfound')
-                ? $this->controller->run('404')
-                : false;
-        }
+        $this->prepareVars();
 
-        // Load the pagination
-        $this->loadPagination();
-
-        // Determine if descriptions should be selected
-        $select = [];
-        if ($this->property('snippets')) $select[] = 'snippet_html';
-        if ($this->property('descriptions')) $select[] = 'description_html';
-
-        // Determine which relationships to load
-        $relationships = [];
-        if ($this->property('gallery')) $relationships[] = 'images';
-        if ($this->property('thumbnails')) $relationships[] = 'thumbnails';
-        if ($this->property('inventories')) $relationships[] = 'inventories';
-
-        // Execute the product query
-        $this->products = $this->category->getProducts($this->pagination['current'], $select, $relationships);
-        if ($this->rows == 0) {
-            $this->totalProducts = $this->products->count();
-        }
+        $this->category = $this->page['category'] = $this->getCategory();
+        return $this->prepareProductList();
     }
 
-    /**
-     * Loads a category's pagination data
-     */
-    protected function loadPagination()
+    public function onFilter()
     {
-        // Non-paginated categories
-        if ($this->category->rows == 0) {
-            $this->pagination = [
-                'first'     => 1,
-                'last'      => 1,
-                'current'   => 1,
-                'next'      => false,
-                'previous'  => false,
-            ];
-        }
+        $this->prepareVars();
+        $this->prepareProductList();
+    }
 
-        // Paginated categories
-        else {
-            $this->totalProducts = $this->category->countProducts();
 
-            $perPage    = $this->category->rows * $this->category->columns;
-            $last       = ceil($this->totalProducts / $perPage);
-            $current    = intval($this->property('page'));
-            if ($current > $last) $current = $last;
-            if ($current < 1) $current = 1;
+    protected function prepareVars()
+    {
+        $this->rows = $this->property('rows');
+        $this->columns = $this->property('columns');
+        $this->noProductsMessage = $this->page['noProductsMessage'] = $this->property('noProductsMessage');
 
-            $this->pagination = [
-                'first'     => 1,
-                'last'      => ceil($this->totalProducts / $perPage),
-                'current'   => $current,
-                'next'      => $current < $last ? $current + 1 : false,
-                'previous'  => $current > 1 ? $current - 1 : false,
-            ];
+        /*
+         * Page links
+         */
+        $this->productPage = $this->page['productPage'] = $this->property('productPage');
+    }
+
+    public function getCategory()
+    {
+        $slug = $this->property('slug') ?: $this->property('default');
+        return CategoryModel::whereSlug($slug)->first();
+    }
+
+    protected function prepareProductList()
+    {
+        /*
+         * If category exists, load the products
+         */
+        if ($category = $this->getCategory()) {
+            $currentPage = input('page');
+            $searchString = trim(input('search'));
+            $sortOrder = input('sort', $this->property('sortOrder'));
+            $perPage = input('per_page', $this->rows * $this->columns);
+            $products = ProductModel::with('categories')->listFrontEnd([
+                'page'     => $currentPage,
+                'sort'     => $sortOrder,
+                'perPage'  => $perPage,
+                'search'   => $searchString,
+                'category' => $category->id
+            ]);
+
+            /*
+             * Add a "url" helper attribute for linking to each product
+             */
+            $products->each(function($product) {
+                $product->setUrl($this->productPage, $this->controller);
+            });
+
+            $this->page['products'] = $this->products = $products;
+
+            /*
+             * Pagination
+             */
+            if ($products) {
+                $queryArr = [];
+                if ($searchString) {
+                    $queryArr['search'] = $searchString;
+                }
+
+                if ($perPage) {
+                    $queryArr['per_page'] = $perPage;
+                }
+
+                if ($sortOrder) {
+                    $queryArr['sort'] = $sortOrder;
+                }
+
+                $queryArr['page'] = '';
+                $paginationUrl = Request::url() . '?' . http_build_query($queryArr);
+                if ($currentPage > ($lastPage = $products->lastPage()) && $currentPage > 1) {
+                    return Redirect::to($paginationUrl . $lastPage);
+                }
+
+                $this->page['paginationUrl'] = $paginationUrl;
+            }
         }
     }
 }

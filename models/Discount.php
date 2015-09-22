@@ -1,8 +1,5 @@
 <?php namespace Bedard\Shop\Models;
 
-use Bedard\Shop\Models\Price;
-use Bedard\Shop\Models\Product;
-use DB;
 use Model;
 use Queue;
 

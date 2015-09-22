@@ -1,8 +1,8 @@
 <?php namespace Bedard\Shop\Models;
 
-use Bedard\Shop\Classes\WeightHelper;
 use Lang;
 use Model;
+use Bedard\Shop\Classes\WeightHelper;
 
 /**
  * ShippingMethod Model

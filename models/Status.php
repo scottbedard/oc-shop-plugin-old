@@ -1,7 +1,5 @@
 <?php namespace Bedard\Shop\Models;
 
-use Flash;
-use Lang;
 use Model;
 
 /**

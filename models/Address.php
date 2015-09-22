@@ -1,7 +1,7 @@
 <?php namespace Bedard\Shop\Models;
 
-use Exception;
 use Model;
+use Exception;
 use Adamlc\AddressFormat\Format;
 
 /**

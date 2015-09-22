@@ -1,13 +1,11 @@
 <?php namespace Bedard\Shop\Models;
 
-use Bedard\Shop\Classes\WeightHelper;
-use Bedard\Shop\Models\Category;
-use Bedard\Shop\Models\Discount;
-use Bedard\Shop\Models\Price;
-use DB;
+use Carbon\Carbon;
+use Db;
 use Lang;
 use Markdown;
 use Model;
+use Bedard\Shop\Classes\WeightHelper;
 
 /**
  * Product Model
@@ -135,6 +133,20 @@ class Product extends Model
     ];
 
     /**
+     * The attributes on which the product list can be ordered
+     *
+     * @var array
+     */
+    public static $allowedSortingOptions = [
+        'name asc'        => 'Name (A-Z)',
+        'name desc'       => 'Name (Z-A)',
+        'created_at asc'  => 'Date created (Oldest first)',
+        'created_at desc' => 'Date created (Newest first)',
+        'price asc'       => 'Price (Lowest to highest)',
+        'price desc'      => 'Price (Highest to lowest)'
+    ];
+
+    /**
      * @var boolean     These help determine when prices need to be calculated
      */
     public $changedCategories = false;
@@ -164,7 +176,7 @@ class Product extends Model
     public function afterDelete()
     {
         // Keep pivot tables clean
-        DB::table($this->belongsToMany['categories']['table'])
+        Db::table($this->belongsToMany['categories']['table'])
             ->where('product_id', $this->attributes['id'])
             ->delete();
 
@@ -240,7 +252,7 @@ class Product extends Model
         ") AS `prices`";
 
         return $query
-            ->join(DB::raw($prices), 'prices.product_id', '=', 'bedard_shop_products.id');
+            ->join(Db::raw($prices), 'prices.product_id', '=', 'bedard_shop_products.id');
     }
 
     public function scopeJoinStock($query)
@@ -253,14 +265,14 @@ class Product extends Model
         ') AS `stocks`';
 
         return $query
-            ->leftJoin(DB::raw($stock), 'stocks.product_id', '=', 'bedard_shop_products.id');
+            ->leftJoin(Db::raw($stock), 'stocks.product_id', '=', 'bedard_shop_products.id');
     }
 
     public function scopeSelectStatus($query)
     {
         // Select the product's status
         return $query
-            ->addSelect(DB::raw(
+            ->addSelect(Db::raw(
                 '('.
                     'CASE '.
                         'WHEN (`bedard_shop_products`.`is_enabled` = 0) THEN 0 '.
@@ -277,7 +289,93 @@ class Product extends Model
             ? '`bedard_shop_products`.`base_price`'
             : floatval($amount);
 
-        return $query->where('price', $operator, DB::raw($amount));
+        return $query->where('price', $operator, Db::raw($amount));
+    }
+
+    /**
+     * Lists products for the front end
+     *
+     * @param  array $options Display options
+     * @return self
+     */
+    public function scopeListFrontEnd($query, $options)
+    {
+        /*
+         * Default options
+         */
+        extract(array_merge([
+            'page'      => 1,
+            'perPage'   => 30,
+            'sort'      => 'created_at',
+            'category'  => null,
+            'search'    => ''
+        ], $options));
+
+        $query->joinPrices();
+
+        /*
+         * Sorting
+         */
+        if (!is_array($sort)) {
+            $sort = [$sort];
+        }
+
+        foreach ($sort as $_sort) {
+            if (in_array($_sort, array_keys(self::$allowedSortingOptions))) {
+                $parts = explode(' ', $_sort);
+                if (count($parts) < 2) {
+                    array_push($parts, 'desc');
+                }
+
+                list($sortField, $sortDirection) = $parts;
+                $query->orderBy($sortField, $sortDirection);
+            }
+        }
+
+        /*
+         * Search
+         */
+        $search = trim($search);
+        if (strlen($search)) {
+            $query->searchWhere($search, ['name', 'description']);
+        }
+
+        /*
+         * Category
+         */
+        if ($category !== null) {
+            $category = Category::find($category);
+
+            if ($filter = $category->filter) {
+                if ($filter == 'discounted') {
+                    $query->wherePrice('<', 'base_price');
+                }
+                elseif ($filter == 'created_less') {
+                    $query->where('created_at', '>', Carbon::now()->subDay($category->filter_value));
+                }
+                elseif ($filter == 'created_greater') {
+                    $query->where('created_at', '<', Carbon::now()->subDay($category->filter_value));
+                }
+                elseif ($filter == 'price_less') {
+                    $query->wherePrice('<', $category->filter_value);
+                }
+                elseif ($filter == 'price_greater') {
+                    $query->wherePrice('>', $category->filter_value);
+                }
+            }
+            else {
+                $categories = $category->getAllChildrenAndSelf()->lists('id');
+                $query->whereHas('categories', function($q) use ($categories) {
+                    $q->whereIn('shop_categories.id', $categories);
+                });
+            }
+
+            if ($category->hide_out_of_stock) {
+                $query->inStock();
+            }
+        }
+
+        return $query->paginate($perPage, $page);
     }
 
     /**
@@ -414,5 +512,22 @@ class Product extends Model
                 'end_at'        => $discount->end_at,
             ]);
         }
+    }
+
+    /**
+     * Sets the "url" attribute with a URL to this object
+     *
+     * @param string $pageName
+     * @param \Cms\Classes\Controller $controller
+     * @return string
+     */
+    public function setUrl($pageName, $controller)
+    {
+        $params = [
+            'id'   => $this->id,
+            'slug' => $this->slug
+        ];
+
+        return $this->url = $controller->pageUrl($pageName, $params);
     }
 }

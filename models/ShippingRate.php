@@ -1,10 +1,9 @@
 <?php namespace Bedard\Shop\Models;
 
-use Bedard\Shop\Classes\WeightHelper;
-use Bedard\Shop\Models\Cart;
 use Lang;
 use Model;
 use RainLab\Location\Models\State;
+use Bedard\Shop\Classes\WeightHelper;
 
 /**
  * ShippingRate Model

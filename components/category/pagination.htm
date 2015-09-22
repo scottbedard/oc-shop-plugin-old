@@ -1,25 +1,15 @@
-{% if __SELF__.pagination.last > 1 %}
-    <nav>
-        <ul class="pagination">
-            <li{% if __SELF__.pagination.current == 1 %} class="disabled"{% endif %}>
-                <a href="{{ 'category'|page({ slug: __SELF__.category.slug, page: __SELF__.pagination.previous }) }}" aria-label="Previous">
-                    <span aria-hidden="true">«</span>
-                </a>
-            </li>
+{% set
+    paginationEnabled =
+    products.currentPage > 1 or
+    products.lastPage > 1 or
+    products.lastPage > products.currentPage
+%}
 
-            {% for i in 1..__SELF__.pagination.last %}
-                <li{% if __SELF__.pagination.current == i %} class="active"{% endif %}>
-                    <a href="{{ 'category'|page({ slug: __SELF__.category.slug, page: i }) }}">
-                        {{ i }}
-                    </a>
-                </li>
-            {% endfor %}
-
-            <li>
-                <a href="{{ 'category'|page({ slug: __SELF__.category.slug, page: __SELF__.pagination.next }) }}" aria-label="Next">
-                    <span aria-hidden="true">»</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-{% endif %}
+<div class="row product-pagination {{ paginationEnabled ? "enabled" : "disabled" }}">
+    <div class="col-md-8">
+        {% partial __SELF__ ~ "::pagination-list" records = products %}
+    </div>
+    <div class="col-md-4 text-right products-total-summary">
+        <p>{{ products.firstItem }}-{{ products.lastItem }} of {{ products.total }}</p>
+    </div>
+</div>

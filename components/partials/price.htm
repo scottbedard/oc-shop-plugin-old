@@ -1,0 +1,6 @@
+{% if product.isDiscounted %}
+    <span class="old-price">{{ product.base_price|currency }}</span>
+    <span class="discounted-price">{{ product.price|currency }}</span>
+{% else %}
+    <span class="normal-price">{{ product.price|currency }}</span>
+{% endif %}

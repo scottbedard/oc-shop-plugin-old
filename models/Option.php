@@ -1,7 +1,5 @@
 <?php namespace Bedard\Shop\Models;
 
-use Bedard\Shop\Models\Product;
-use Bedard\Shop\Models\Value;
 use Flash;
 use Lang;
 use Model;

@@ -1,13 +1,9 @@
 <?php namespace Bedard\Shop\Models;
 
-use Bedard\Shop\Classes\CartCache;
-use Bedard\Shop\Models\Driver;
-use Bedard\Shop\Models\OrderEvent;
-use Bedard\Shop\Models\Status;
-use Carbon\Carbon;
-use DB;
 use Lang;
 use Model;
+use Carbon\Carbon;
+use Bedard\Shop\Classes\CartCache;
 
 /**
  * Payment Model

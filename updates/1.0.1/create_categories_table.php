@@ -19,10 +19,6 @@ class CreateCategoriesTable extends Migration
             $table->integer('nest_left')->nullable();
             $table->integer('nest_right')->nullable();
             $table->integer('nest_depth')->nullable();
-            $table->string('sort_key')->nullable()->default('created_at');
-            $table->string('sort_order')->nullable()->default('desc');
-            $table->tinyInteger('columns')->unsigned()->default(4);
-            $table->tinyInteger('rows')->unsigned()->default(3);
             $table->string('filter')->nullable();
             $table->decimal('filter_value', 10, 2)->default(0);
             $table->boolean('hide_out_of_stock')->default(false);

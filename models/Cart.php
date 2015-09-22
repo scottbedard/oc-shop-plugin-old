@@ -1,9 +1,7 @@
 <?php namespace Bedard\Shop\Models;
 
-use Bedard\Shop\Classes\WeightHelper;
-use Bedard\Shop\Models\Driver;
-use Bedard\Shop\Models\ShippingSettings;
 use Model;
+use Bedard\Shop\Classes\WeightHelper;
 
 /**
  * Cart Model

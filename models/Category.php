@@ -1,13 +1,6 @@
 <?php namespace Bedard\Shop\Models;
 
-use Bedard\Shop\Models\Discount;
-use Bedard\Shop\Models\Product;
-use Carbon\Carbon;
-use DB;
-use Flash;
-use Lang;
 use Model;
-use October\Rain\Exception\ValidationException;
 
 /**
  * Category Model
@@ -41,10 +34,6 @@ class Category extends Model
         'slug',
         'filter',
         'is_hidden',
-        'sort_key',
-        'sort_order',
-        'rows',
-        'columns',
     ];
 
     /**
@@ -67,8 +56,6 @@ class Category extends Model
     public $rules = [
         'name'              => 'required',
         'slug'              => 'between:3,64|unique:bedard_shop_categories',
-        'rows'              => 'integer|min:0',
-        'columns'           => 'integer|min:1',
         'hide_out_of_stock' => 'boolean',
         'is_hidden'         => 'boolean',
         'filter_value'      => 'numeric|min:0'
@@ -117,13 +104,6 @@ class Category extends Model
             : $value;
     }
 
-    public function getSortAttribute()
-    {
-        return $this->sort_order != 'random'
-            ? $this->sort_key . '-' . $this->sort_order
-            : 'random';
-    }
-
     public function setFilterAttribute($value)
     {
         $this->attributes['filter'] = $value ?: null;
@@ -132,18 +112,6 @@ class Category extends Model
     public function setFilterValueAttribute($value)
     {
         $this->attributes['filter_value'] = $value ?: 0;
-    }
-
-    public function setSortAttribute($value)
-    {
-        if ($value == 'random') {
-            $this->attributes['sort_order'] = 'random';
-            $this->attributes['sort_key'] = null;
-        } else {
-            $parts = explode('-', $value);
-            $this->attributes['sort_key'] = $parts[0];
-            $this->attributes['sort_order'] = $parts[1];
-        }
     }
 
     /**

@@ -1,9 +1,7 @@
 <?php namespace Bedard\Shop\Models;
 
-use Bedard\Shop\Models\Cart;
-use Bedard\Shop\Models\Driver;
-use Exception;
 use Model;
+use Exception;
 
 class ShippingSettings extends Model
 {
