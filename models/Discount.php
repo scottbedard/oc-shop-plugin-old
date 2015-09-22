@@ -127,15 +127,17 @@ class Discount extends Model
      */
     public function syncProducts()
     {
+        $categories = [];
+        foreach ($this->categories as $category) {
+            $categories = array_merge($categories, $category->getAllChildrenAndSelf()->lists('id', 'id'));
+        }
+
+
         // First, grab all products within the scope of this discount
         $products = Product::whereIn('id', $this->products->lists('id'))
-            ->orWhereHas('categories', function($category) {
-                $category->where(function($query) {
-                    $query
-                        ->whereIn('id', $this->categories->lists('id'))
-                        ->orWhereHas('inherited_by', function($inherited_by) {
-                            $inherited_by->whereIn('parent_id', $this->categories->lists('id'));
-                        });
+            ->orWhereHas('categories', function($category) use($categories) {
+                $category->where(function($query) use($categories) {
+                   $query->whereIn('id', $categories);
                 });
             })
             ->get();

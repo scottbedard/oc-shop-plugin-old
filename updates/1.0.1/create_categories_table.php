@@ -12,10 +12,13 @@ class CreateCategoriesTable extends Migration
         {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('parent_id')->unsigned()->nullable()->index();
-            $table->integer('position')->unsigned()->nullable();
             $table->string('name')->nullable();
             $table->string('slug')->nullable()->unique();
+            $table->text('description')->nullable();
+            $table->integer('parent_id')->nullable();
+            $table->integer('nest_left')->nullable();
+            $table->integer('nest_right')->nullable();
+            $table->integer('nest_depth')->nullable();
             $table->string('sort_key')->nullable()->default('created_at');
             $table->string('sort_order')->nullable()->default('desc');
             $table->tinyInteger('columns')->unsigned()->default(4);
@@ -23,7 +26,6 @@ class CreateCategoriesTable extends Migration
             $table->string('filter')->nullable();
             $table->decimal('filter_value', 10, 2)->default(0);
             $table->boolean('hide_out_of_stock')->default(false);
-            $table->boolean('is_inheriting')->default(true);
             $table->boolean('is_hidden')->default(false);
             $table->timestamps();
         });

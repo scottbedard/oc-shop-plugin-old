@@ -2,7 +2,6 @@
 
 use BackendMenu;
 use Backend\Classes\Controller;
-use Bedard\Shop\Models\Discount;
 use DB;
 
 /**

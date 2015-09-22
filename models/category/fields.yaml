@@ -39,22 +39,6 @@ tabs:
             label: bedard.shop::lang.categories.filter_value
             span: right
 
-        parent_id:
-            tab: bedard.shop::lang.categories.behavior_tab
-            label: bedard.shop::lang.categories.parent_category
-            type: dropdown
-            span: left
-
-        is_inheriting:
-            tab: bedard.shop::lang.categories.behavior_tab
-            label: bedard.shop::lang.categories.inherit_children
-            type: radio
-            options:
-                1: bedard.shop::lang.categories.inherit_children_on
-                0: bedard.shop::lang.categories.inherit_children_off
-            default: 1
-            span: right
-
         sort:
             tab: bedard.shop::lang.categories.display_tab
             label: bedard.shop::lang.categories.sort

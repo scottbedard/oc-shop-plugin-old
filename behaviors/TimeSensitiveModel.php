@@ -24,7 +24,8 @@ class TimeSensitiveModel extends ModelBehavior {
     {
         parent::__construct($model);
 
-        $model->dates = ['start_at', 'end_at'];
+        $model->addDateAttribute('start_at');
+        $model->addDateAttribute('end_at');
         $model->addFillable(['start_at', 'end_at']);
 
         if (in_array('October\Rain\Database\Traits\Validation', class_uses($model))) {

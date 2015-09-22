@@ -108,7 +108,7 @@ class Plugin extends PluginBase
                     ],
                     'promotions' => [
                         'label'         => 'bedard.shop::lang.navigation.promotions',
-                        'icon'          => 'icon-star',
+                        'icon'          => 'icon-ticket',
                         'url'           => Backend::url('bedard/shop/promotions'),
                         'permissions'   => ['bedard.shop.access_promotions'],
                     ],
@@ -117,12 +117,6 @@ class Plugin extends PluginBase
                         'icon'          => 'icon-table',
                         'url'           => Backend::url('bedard/shop/shippingmethods'),
                         'permissions'   => ['bedard.shop.access_shipping_table'],
-                    ],
-                    'settings' => [
-                        'label'         => 'bedard.shop::lang.navigation.settings.sidebar',
-                        'icon'          => 'icon-cog',
-                        'url'           => Backend::url('system/settings/update/bedard/shop/settings'),
-                        'permissions'   => ['bedard.shop.access_settings'],
                     ],
                 ],
             ],

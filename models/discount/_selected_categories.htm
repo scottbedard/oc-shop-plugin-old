@@ -4,8 +4,8 @@ $scroll = 7;
 
 // Lazy load the inherited categories, ordered alphabetically
 $models->load([
-    'inherited' => function($inherited) {
-        $inherited->orderBy('name', 'asc');
+    'children' => function($children) {
+        $children->orderBy('name', 'asc');
     }
 ]);
 ?>
@@ -22,12 +22,12 @@ $models->load([
                             <input type="checkbox" data-remove="<?= $category->id ?>">
                             <div class="left"><?= $category->name ?></div>
                             <div class="right">
-                                <?php if ($category->inherited->count() > 0): ?>
+                                <?php if ($category->children->count() > 0): ?>
                                     <span class="inherited"
                                         data-toggle="tooltip"
                                         data-placement="left"
-                                        title="<?= implode(', ', $category->inherited->lists('name')) ?>">
-                                        +<?= $category->inherited->count() ?>
+                                        title="<?= implode(', ', $category->children->lists('name')) ?>">
+                                        +<?= $category->children->count() ?>
                                     </span>
                                 <?php endif ?>
                             </div>
