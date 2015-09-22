@@ -10,6 +10,7 @@ fields:
 
     slug:
         label: bedard.shop::lang.common.slug
+        required: true
         span: right
         placeholder: bedard.shop::lang.products.slug_placeholder
         preset:

@@ -379,6 +379,8 @@ return [
         'thumbnails'                    => 'Thumbnails',
         'weight'                        => 'Weight',
         'weight_comment'                => 'Product weight in :units',
+        'import'                        => 'Import Products',
+        'export'                        => 'Export Products'
     ],
 
     'promotions' => [

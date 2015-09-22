@@ -14,11 +14,13 @@ class Products extends Controller
     public $implement = [
         'Backend.Behaviors.FormController',
         'Backend.Behaviors.ListController',
+        'Backend.Behaviors.ImportExportController',
         'Owl.Behaviors.ListDelete.Behavior',
     ];
 
     public $formConfig = 'config_form.yaml';
     public $listConfig = 'config_list.yaml';
+    public $importExportConfig = 'config_import_export.yaml';
 
     public $requiredPermissions = ['bedard.shop.access_products'];
 
@@ -67,6 +69,18 @@ class Products extends Controller
     {
         $this->prepareVars();
         $this->asExtension('ListController')->index();
+    }
+
+    public function export()
+    {
+        $this->bodyClass = '';
+        return $this->asExtension('ImportExportController')->export();
+    }
+
+    public function import()
+    {
+        $this->bodyClass = '';
+        return $this->asExtension('ImportExportController')->import();
     }
 
     /**

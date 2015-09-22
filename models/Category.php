@@ -15,7 +15,8 @@ use October\Rain\Exception\ValidationException;
 class Category extends Model
 {
     use \October\Rain\Database\Traits\SimpleTree,
-        \October\Rain\Database\Traits\Validation;
+        \October\Rain\Database\Traits\Validation,
+        \October\Rain\Database\Traits\Sluggable;
 
     public function __construct()
     {
@@ -32,6 +33,11 @@ class Category extends Model
      * @var array Guarded fields
      */
     protected $guarded = ['*'];
+
+    /**
+     * @var array List of attributes to automatically generate unique URL names (slugs) for.
+     */
+    protected $slugs = ['slug' => 'name'];
 
     /**
      * @var array Fillable fields
@@ -86,7 +92,7 @@ class Category extends Model
      */
     public $rules = [
         'name'              => 'required',
-        'slug'              => 'required|between:3,64|unique:bedard_shop_categories',
+        'slug'              => 'between:3,64|unique:bedard_shop_categories',
         'rows'              => 'integer|min:0',
         'columns'           => 'integer|min:1',
         'hide_out_of_stock' => 'boolean',
