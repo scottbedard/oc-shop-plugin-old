@@ -3,7 +3,7 @@
 </div>
 
 <ul>
-    {% for category in __SELF__.categories %}
+    {% for category in categories %}
         <li>
             {% partial __SELF__ ~ '::branch' category=category %}
         </li>

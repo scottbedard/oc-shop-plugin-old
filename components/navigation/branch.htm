@@ -1,8 +1,8 @@
-<a href="{{ 'category'|page({ slug: category.slug, page: false }) }}">
+<a href="{{ category.url }}">
     {{ category.name }}
 </a>
 
-{% if category.hasChildren %}
+{% if category.children.count %}
     <ul>
         {% for child in category.children %}
             <li>
