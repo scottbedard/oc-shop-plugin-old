@@ -15,6 +15,7 @@ class DevSeeds extends Seeder
     public function run()
     {
         // Don't run seeds during unit tests or in production
+        echo app()->env;
         if (app()->env == 'testing' || app()->env == 'production') {
             return false;
         }
@@ -33,15 +34,15 @@ class DevSeeds extends Seeder
 
         echo "Seeding shipping table...\n";
         $this->seedShippingTable();
-        //
-        // echo "Seeding customers...\n";
-        // $this->seedCustomers(25);
-        //
-        // echo "Seeding addresses...\n";
-        // $this->seedAddresses(25);
 
-        // echo "Seeding orders...\n";
-        // $this->seedOrders(35);
+        echo "Seeding customers...\n";
+        $this->seedCustomers(10);
+
+        echo "Seeding addresses...\n";
+        $this->seedAddresses(10);
+
+        echo "Seeding orders...\n";
+        $this->seedOrders(10);
     }
 
     public function seedCategories()

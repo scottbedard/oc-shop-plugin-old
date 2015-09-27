@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Exception;
+use Bedard\Shop\Classes\CartAction;
 use Bedard\Shop\Classes\CartSession;
 use Bedard\Shop\Models\Address;
 use Bedard\Shop\Models\CartItem;

@@ -17,11 +17,11 @@ class Category extends Model
     use \October\Rain\Database\Traits\SimpleTree,
         \October\Rain\Database\Traits\Validation;
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->setTreeOrderBy('position', 'asc');
-    }
+    // public function __construct()
+    // {
+    //     parent::__construct();
+    //     $this->setTreeOrderBy('position', 'asc');
+    // }
 
     /**
      * @var string The database table used by the model.
