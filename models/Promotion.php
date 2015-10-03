@@ -27,6 +27,14 @@ class Promotion extends Model
     protected $guarded = ['*'];
 
     /**
+     * @var array   Dates
+     */
+    protected $dates = [
+        'start_at',
+        'end_at',
+    ];
+
+    /**
      * @var array   Fillable fields
      */
     protected $fillable = [
