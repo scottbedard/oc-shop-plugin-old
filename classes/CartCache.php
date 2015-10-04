@@ -76,7 +76,7 @@ class CartCache {
     {
         $items = new Collection;
 
-        if (array_key_exists('items', $data)) {
+        if (is_array($data) && array_key_exists('items', $data)) {
             foreach ($data['items'] as $item) {
                 $model = $this->fillModel((new CartItem), $item);
                 $model->setRelation('inventory', $this->buildInventory($item));
@@ -97,7 +97,7 @@ class CartCache {
     {
         $inventory = new Inventory;
 
-        if (array_key_exists('inventory', $data)) {
+        if (is_array($data) && array_key_exists('inventory', $data)) {
             $inventory = $this->fillModel($inventory, $data['inventory']);
             $inventory->setRelation('product', $this->buildProduct($data['inventory']));
             $inventory->setRelation('values', $this->buildValues($data['inventory']));
@@ -114,7 +114,7 @@ class CartCache {
      */
     protected function buildProduct($data)
     {
-        return array_key_exists('product', $data)
+        return is_array($data) && array_key_exists('product', $data)
             ? $this->fillModel((new Product), $data['product'])
             : new Product;
     }
@@ -129,7 +129,7 @@ class CartCache {
     {
         $values = new Collection;
 
-        if (array_key_exists('values', $data)) {
+        if (is_array($data) && array_key_exists('values', $data)) {
             foreach ($data['values'] as $value) {
                 $model = $this->fillModel((new Value), $value);
                 $model->setRelation('option', $this->buildOption($value));
@@ -148,7 +148,7 @@ class CartCache {
      */
     protected function buildOption($data)
     {
-        return array_key_exists('option', $data)
+        return is_array($data) && array_key_exists('option', $data)
             ? $this->fillModel((new Option), $data['option'])
             : new Option;
     }
@@ -161,7 +161,7 @@ class CartCache {
      */
     protected function buildPromotion($data)
     {
-        return array_key_exists('promotion', $data) && !is_null($data['promotion'])
+        return is_array($data) && array_key_exists('promotion', $data) && !is_null($data['promotion'])
             ? $this->fillModel((new Promotion), $data['promotion'])
             : null;
     }
