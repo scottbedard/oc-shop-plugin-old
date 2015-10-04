@@ -175,7 +175,7 @@ class CartCache {
      */
     protected function fillModel($model, $data = [])
     {
-        if (is_array($model->cacheable) && $data) {
+        if (is_array($model->cacheable) && $data && is_array($data)) {
             foreach ($model->cacheable as $property) {
                 if (array_key_exists($property, $data)) {
                     $array = $this->isJson($data[$property]);
