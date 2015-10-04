@@ -173,7 +173,7 @@ class CartCache {
      * @param   array   $data
      * @return  Model
      */
-    protected function fillModel($model, array $data = [])
+    protected function fillModel($model, $data = [])
     {
         if (is_array($model->cacheable) && $data) {
             foreach ($model->cacheable as $property) {
