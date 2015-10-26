@@ -110,14 +110,12 @@ class Category extends Model
     public function afterCreate()
     {
         // Add the new category to it's parent's inherited categories
-        self::clearTreeCache();
         $this->syncParents();
     }
 
     public function beforeUpdate()
     {
         // Prevent categories from being nested in their own tree
-        self::clearTreeCache();
         if ($this->parent_id == $this->id || $this->getAllChildren()->find($this->parent_id)) {
             $error = Lang::get('bedard.shop::lang.categories.invalid_parent');
             Flash::error($error);
@@ -382,13 +380,24 @@ class Category extends Model
      */
     public static function syncAllCategories()
     {
-        self::clearTreeCache();
-
         DB::table(self::make()->belongsToMany['inherited']['table'])->truncate();
         foreach (self::all() as $category) {
             $category->syncParents();
         }
 
         Discount::syncAllProducts();
+    }
+    
+    public function getParents()
+    {
+        $result = [];
+        $parent = $this->parent;
+
+        while ($parent != null) {
+            $result[] = $parent;
+            $parent = $parent->parent;
+        }
+
+        return array_reverse($result);
     }
 }
