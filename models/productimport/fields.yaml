@@ -1,0 +1,26 @@
+fields:
+
+    update_existing:
+        label: Update existing products
+        comment: Check this box to update products that have exactly the same title or slug.
+        type: checkbox
+        default: true
+        span: left
+
+    auto_create_categories:
+        label: Create categories specified in the import file
+        comment: You should match the Categories column to use this feature, otherwise select the default categories to use from the items below.
+        type: checkbox
+        default: true
+        span: right
+
+    product_categories:
+        label: Categories
+        commentAbove: Select the categories that imported products will belong to (optional).
+        type: checkboxlist
+        span: right
+        cssClass: field-indent
+        trigger:
+            action: hide
+            field: auto_create_categories
+            condition: checked

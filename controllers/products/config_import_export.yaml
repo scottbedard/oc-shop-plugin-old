@@ -1,0 +1,37 @@
+# ===================================
+#  Import/Export Behavior Config
+# ===================================
+
+import:
+
+    # Page title
+    title: bedard.shop::lang.products.import
+
+    # Model List Column configuration
+    list: $/bedard/shop/models/productimport/columns.yaml
+
+    # Import Form Field configuration
+    form: $/bedard/shop/models/productimport/fields.yaml
+
+    # Import Model class
+    modelClass: Bedard\Shop\Models\ProductImport
+
+    # Redirect when finished
+    redirect: bedard/shop/products
+
+export:
+
+    # Page title
+    title: bedard.shop::lang.products.export
+
+    # Output file name
+    fileName: products.csv
+
+    # Model List Column configuration
+    list: $/bedard/shop/models/productexport/columns.yaml
+
+    # Import Model class
+    modelClass: Bedard\Shop\Models\ProductExport
+
+    # Redirect when finished
+    redirect: bedard/shop/products
